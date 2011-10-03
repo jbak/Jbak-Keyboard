@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical"
+  >
+  <TextView 
+  	  android:id="@+id/key_label"
+  	  style="@style/label_big"
+	  android:text="@string/ks_press_key"
+  	/>
+  <ScrollView
+  	  android:id="@+id/ks_key_set"
+	  android:layout_width="fill_parent"
+	  android:layout_height="0px"
+  >
+  <LinearLayout
+	  android:layout_width="fill_parent"
+	  android:layout_height="wrap_content"
+	  android:orientation="vertical"
+  	>
+	  	<TextView style="@style/label_set"
+	  		android:text="@string/ks_type"
+	  	/>
+	  <Spinner
+	  	  android:id="@+id/ks_type"	
+	  	  style="@style/hw"
+		  android:prompt="@string/ks_type"
+		  android:entries="@array/ks_type_variants"
+	  />	
+	  
+	  <TextView style="@style/label_set" android:text="@string/ks_press_type"/>
+	  <Spinner style="@style/hw"
+	  	android:id="@+id/ks_press_type"	
+	  	android:prompt="@string/ks_press_type"
+	  	android:entries="@array/ks_press_type_variants"
+	  />	  
+	  <TextView style="@style/label_set" android:text="@string/ks_action"/>
+<!-- Переключатель действий  -->
+	  <Spinner style="@style/hw"
+			  	android:id="@+id/ks_action"
+			  	android:prompt="@string/ks_action"
+			  	android:entries="@array/ks_action_variants"
+	  	/>
+<!-- Слой для настроек выбранного действия  -->	  	
+	  <TextView style="@style/label_delim" 
+	  			android:text=""
+	  			android:id="@+id/ks_aw_title"
+	  			/>
+	  <LinearLayout style="@style/hw" 
+	  				android:id="@+id/ks_aw" 
+	  				android:orientation="vertical"/>
+  	   </LinearLayout>
+	</ScrollView>
+</LinearLayout>

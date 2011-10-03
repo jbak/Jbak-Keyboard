@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  >
+<SeekBar
+	  android:max="100" 
+	  android:id="@+id/key_height"
+	  android:layout_width="fill_parent"
+	  android:layout_height="wrap_content" 
+ 	  android:layout_alignParentTop="true"
+	  />  
+<com.jbak.JbakKeyboard.JbKbdView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/keyboard"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+		android:clickable="false"
+	  	android:layout_alignParentBottom="true"
+	/>
+</RelativeLayout>

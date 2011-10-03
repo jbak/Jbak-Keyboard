@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="label_set" parent="@android:style/TextAppearance">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">5sp</item>
+    </style>
+    <style name="label_delim" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@android:drawable/title_bar</item>
+        <!-- item name="android:textStyle">bold</item-->
+        <item name="android:textColor">#ff00ffff</item>
+        <!-- item name="android:textColor">#ff179bcf</item-->
+    </style>
+    <style name="label_big" parent="@android:style/TextAppearance.Large">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@android:drawable/toast_frame</item>
+        <!-- item name="android:textColor">#ff179bcf</item-->
+    </style>
+    <style name="label_warn" parent="@android:style/TextAppearance.Small">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@android:drawable/toast_frame</item>
+        <item name="android:textColor">#ffffсс00</item>
+    </style>
+    <style name="label_desc" parent="@android:style/TextAppearance.Small">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@android:drawable/toast_frame</item>
+		<item name="android:autoLink">all</item>
+    </style>
+    <style name="hw">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+</resources>

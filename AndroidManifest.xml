@@ -1,0 +1,59 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
+        package="com.jbak.JbakKeyboard">
+<uses-permission android:name="android.permission.READ_USER_DICTIONARY"></uses-permission>
+    <application android:label="@string/ime_name" android:icon="@drawable/icon">
+<!-- ============================================================================== -->
+        <service android:name="ServiceJbKbd"
+                android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data android:name="android.view.im" android:resource="@xml/method" />
+        </service>
+<!-- ============================================================================== -->
+        <service android:name="ClipbrdService">
+        </service>
+<!-- ============================================================================== -->
+        <activity android:name="JbKbdPreference" 
+				android:excludeFromRecents="true"
+        		android:label="@string/ime_settings">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+        </activity> 
+<!-- ============================================================================== -->
+        <activity android:name="SetKbdActivity"
+        		  android:excludeFromRecents="true"
+        	>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+        </activity> 
+<!-- ============================================================================== -->
+        <activity android:name="TplEditorActivity" 
+        			android:launchMode="singleTop" 
+        			android:label="@string/tpl_editor"
+        			android:finishOnTaskLaunch="true"
+        			android:excludeFromRecents="true"
+        			>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+        </activity>
+<!-- ============================================================================== -->
+       	<receiver android:name=".JbKbdReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_OFF"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_ON"/>
+            </intent-filter>
+       	</receiver> 
+<!-- ============================================================================== -->
+		<activity android:name="KeySetActivity" 
+					android:excludeFromRecents="true"
+					android:label="@string/set_keys"
+					android:launchMode="singleTop"
+					/>
+      </application>
+</manifest>

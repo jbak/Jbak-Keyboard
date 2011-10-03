@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Title for Latin keyboard  -->
+    <string name="ime_name">Jbak Keyboard</string>
+    <string name="ime_settings">Настройки Jbak Keyboard</string>
+    <!-- Labels on soft keys -->
+    <string name="label_go_key">Go</string>
+    <string name="label_next_key">След</string>
+    <string name="label_send_key">Отпр</string>
+    <string name="set_ch_keys_preview">Показ просмотра клавиш</string>
+    <string name="set_ch_keys_preview_desc">Отключите настройку, если не хотите видеть всплывающие окна с нажимаемыми клавишами</string>
+    <string name="set_key_height_portrait">Высота клавиш - портрет</string>
+    <string name="set_key_height_portrait_desc">Изменение высоты клавиш в портретном режиме </string>
+    <string name="set_key_height_landscape">Высота клавиш - ландшафт</string>
+    <string name="set_key_height_landscape_desc">Изменение высоты клавиш в ландшафтном режиме</string>
+    <string name="mm_settings">Настройки Jbak Keyboard</string>
+    <string name="mm_close">Закрыть</string>
+</resources>

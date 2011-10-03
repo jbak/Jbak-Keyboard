@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+ <EditText
+ 	android:id="@+id/tpl_name"
+ 	android:hint="@string/tpl_name"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:layout_alignParentTop="true"  
+	android:layout_alignParentLeft="true"
+	android:maxLines="1"  
+	/>
+	<ImageButton android:id="@+id/tpl_save"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:src="@android:drawable/ic_menu_save"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@id/tpl_name"
+			/>
+	<ImageButton android:id="@+id/close"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:src="@android:drawable/ic_menu_close_clear_cancel"
+			android:layout_toRightOf="@id/tpl_save"
+			android:layout_below="@id/tpl_name"
+			/>
+	<ImageButton android:id="@+id/tpl_spec_options"
+			android:src="@android:drawable/ic_menu_edit"
+			android:text="@string/tpl_spec_options"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_toRightOf="@id/close"
+			android:layout_below="@id/tpl_name"
+			/>
+ <EditText
+ 	android:id="@+id/tpl_text"
+ 	android:hint="@string/tpl_text"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:layout_below="@id/tpl_save"
+	android:layout_alignParentLeft="true"  
+	android:layout_alignParentBottom="true"  
+	android:gravity="top"  
+	/>
+</RelativeLayout>

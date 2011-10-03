@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Title for Latin keyboard  -->
+    <string name="ime_name">Jbak Keyboard</string>
+    <string name="ime_settings">Jbak Keyboard settings</string>
+
+    <!-- Symbols that are commonly considered word separators in this language -->
+    <string name="word_separators">\u0020.,;:!?\n()[]*&amp;@{}/&lt;&gt;_+=|&quot;</string>
+    
+    <!-- Labels on soft keys -->
+    <string name="label_go_key">Go</string>
+    <string name="label_next_key">Next</string>
+    <string name="label_send_key">Send</string>
+    <string name="set_ch_keys_preview">Show keys preview</string>
+
+    <string name="set_keys">Manage keys</string>
+    <string name="set_keys_desc">Here you can manage hardware keys (except Home and Power)</string>
+    
+    <string name="set_ch_keys_preview_desc">Disable this, if you don\'t want see popup previews of pressed keys</string>
+    <string name="set_key_height_portrait">Key height portrait</string>
+    <string name="set_key_height_portrait_desc">Change key height for qwerty-keyboard in portrait mode </string>
+    <string name="set_key_height_landscape">Key height landscape</string>
+    <string name="set_key_height_landscape_desc">Change key height for qwerty-keyboard in landscape mode </string>
+    <string name="set_languages">Select languages</string>
+    <string name="set_languages_desc">Here you can select languages for switching</string>
+    
+    <string name="mm_templates">Templates</string>
+    <string name="mm_multiclipboard">Clipboard</string>
+    <string name="mm_settings">Settings</string>
+    <string name="mm_close">Close</string>
+
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    
+    <string name="tpl_new_template">New\ntemplate</string>
+    <string name="tpl_new_folder">New\nfolder</string>
+    <string name="tpl_folder_name">Type folder name</string>
+    <string name="tpl_name">Template name</string>
+    <string name="tpl_text">Template text</string>
+    <string name="tpl_editor">Template editor</string>
+    <string name="tpl_save">Save</string>
+    <string name="tpl_spec_options">Special options</string>
+    <string name="tpl_fields_empty">All template fields must be completed!</string>
+    
+    <string name="ks_press_key">Press key...</string>
+    <string name="ks_type">Processing </string>
+    <string-array name="ks_type_variants">
+        <item>Always</item>
+        <item>In input fields</item>
+        <item>Not in input fields</item>
+    </string-array>
+    <string name="ks_press_type">Key press type</string>
+    <string name="ks_press_type_short">Short press</string>
+    <string name="ks_press_type_long">Long press</string>
+    
+    <string-array name="ks_press_type_variants">
+        <item>@string/ks_press_type_short</item>
+        <item>@string/ks_press_type_long</item>
+    </string-array>
+    <string name="ks_action">Action</string>
+    <string name="ks_action_run_app">Run application</string>
+    <string name="ks_action_input_text">Input text</string>
+    <string-array name="ks_action_variants">
+        <item>Default</item>
+        <item>@string/ks_action_run_app</item>
+        <item>@string/ks_action_input_text</item>
+    </string-array>
+    <string name="ks_select_app">Select app</string>
+    <string name="ks_app_for_launch">App for launch</string>
+    <string name="ks_text_for_input">Text for input</string>
+    
+<!-- Known key name format. If key is letter or one of other known key (see below) -->    
+    <string name="ks_char_label">Key \"%s\"</string>
+    <string name="ks_non_char_label">Key with keycode "%d"</string>
+    
+<!-- Names for some keys -->    
+    <string name="k_search">Search</string>
+    <string name="k_back">Back</string>
+    <string name="k_menu">Menu</string>
+    <string name="k_volumeDown">Volume down</string>
+    <string name="k_volumeUp">Volume up</string>
+</resources>

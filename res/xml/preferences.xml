@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  
+         <CheckBoxPreference
+         	android:key="ch_preview"
+         	android:title="@string/set_ch_keys_preview"
+         	android:summary="@string/set_ch_keys_preview_desc"
+         	android:defaultValue="true"
+         />       
+         <Preference 
+         	android:title="@string/set_key_height_portrait"
+         	android:summary="@string/set_key_height_portrait_desc"
+         	/>
+         <Preference 
+         	android:title="@string/set_key_height_landscape"
+         	android:summary="@string/set_key_height_landscape_desc"
+         	/>
+         <Preference 
+         	android:title="@string/set_languages"
+         	android:summary="@string/set_languages_desc"
+         	/>
+         <Preference
+         	android:title="@string/set_keys" 
+         	android:summary="@string/set_keys_desc"
+         />	
+</PreferenceScreen>
