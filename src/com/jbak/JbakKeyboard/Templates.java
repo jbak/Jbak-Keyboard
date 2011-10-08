@@ -155,12 +155,15 @@ public class Templates
 		}
 		return null;
 	}
-	String processString(String s)
+/** Преобразует специальные инструкции в тексте шаблона s, возвращает модифицированную строку*/	
+	void processTemplate(String s)
 	{
+		if(s==null)
+			return;
+		int del = 0;
 		int pos = 0;
 		int len = s.length();
 		String buf[] = null;
-		String repl="";
 		while(true)
 		{
 			int f = s.indexOf(TPL_SPEC_CHAR, pos);
@@ -171,29 +174,55 @@ public class Templates
 				pos = f+2;
 				continue;
 			}
-			int p = -1;
+			boolean bFound = false;
 			for(int i=0;i<Instructions.length;i++)
 			{
-				String instr = Instructions[i];
-				if(s.indexOf(instr, f+1)==0)
+				String ss = Instructions[i];
+				if(s.indexOf(ss, f+1)==f+1)
 				{
-					repl = TPL_SPEC_CHAR+instr;
+					bFound = true;
+					if(buf==null)
+						buf = getInputBuffers();
+					String repl = buf[IB_SEL];
+					switch(i)
+					{
+						case 0:  break;
+						case 1: 
+							if(repl.length()==0)
+							{
+								if(del==0)
+									del=IB_WORD;
+								repl = buf[IB_WORD]; 
+							}break;
+						case 2: if(repl.length()==0)
+							{
+								del = IB_LINE;
+								repl = buf[IB_LINE]; break;
+							}break;
+					}
+					pos = i+repl.length();
+					s = s.substring(0,i)+repl+s.substring(i+ss.length()+1);
 					break;
 				}
-			}
-			if(p>-1&&repl.length()>0)
-			{
-				if(buf==null)
-					buf = getInputBuffers();
-				
-				repl = "";
+				if(!bFound)
+					pos++;
 			}
 		}
-		return s;
+		if(del==IB_WORD)
+			deleteCurrentWord();
+		else if(del==IB_LINE)
+			deleteCurrentLine();
+		ServiceJbKbd.inst.onText(s);
 	}
+/** Обрабатывает щелчок по элементу шаблона */	
 	void processTemplateClick(int index, ArrayList<File> ar)
 	{
-		if(index<0||index>ar.size())
+		if(index<0)
+		{
+			openFolder(m_curDir.getParentFile());
+			return;
+		}
+		if(index>ar.size())
 			return;
 		File f = ar.get(index);
 		if(f.isDirectory())
@@ -202,19 +231,25 @@ public class Templates
 		}
 		else
 		{
-			String s = getFileString(f);
-			if(s!=null)
-				ServiceJbKbd.inst.onText(s);
+			processTemplate(getFileString(f));
 		}
 	}
 /** Основная функция для вывода шаблонов в CommonMenu*/
 	void makeCommonMenu()
 	{
+		if(m_curDir==null)
+			return;
 		ComMenu menu = new ComMenu();
 		menu.m_state|=ComMenu.STAT_TEMPLATES;
 		ArrayList<File> ar = getSortedFiles();
+		if(ar==null)
+			return;
 		Iterator<File> it = ar.iterator();
 		int pos = 0;
+		if(!m_curDir.getAbsolutePath().equals(m_rootDir.getAbsolutePath()))
+		{
+			menu.add("[..]",-1);
+		}
 		while(it.hasNext())
 		{
 			File f = it.next();
@@ -275,6 +310,7 @@ public class Templates
 		return s;
 	}
 /** Функция для получения текстов из редактора
+ * @param positions
  *@return Возвращает массив текстов - выделенный текст ({@link #IB_SEL}, строка {@link #IB_LINE}, слово {@link #IB_WORD} */
 	static String[] getInputBuffers()
 	{
@@ -290,7 +326,10 @@ public class Templates
 			ic.beginBatchEdit();
 			String sel="",word="",line="";
 			int cnt = se-ss;
-			int cp = se>ss?ss:se;
+			
+			int cp = se;
+			if(se>ss)
+				cp=ss;
 			if(cnt<0)
 				cnt = 0-cnt;
 			if(cnt>0)
@@ -308,34 +347,12 @@ public class Templates
 			int s = chkPos(bef.lastIndexOf('\n'), bef.lastIndexOf('\r'), true, bef.length());
 			int e = chkPos(aft.indexOf('\n'), aft.indexOf('\r'), false, bef.length());
 			if(s!=-1&&e!=-1)
-				line=bef.substring(s)+aft.substring(0,e);
-			s = -1;e=-1;
-			for(int i=sec1.length()-1;i>=0;i--)
 			{
-				if(!Character.isLetterOrDigit(sec1.charAt(i)))
-				{
-					s = i+1;
-					break;
-				}
+				String s1 = bef.substring(s);
+				String s2 =aft.substring(0,e); 
+				line=s1+s2;
 			}
-			if(s==-1&&sec1.length()<4000)
-				s = 0;
-			int len = sec2.length();
-			for(int i=0;i<len;i++)
-			{
-				if(!Character.isLetterOrDigit(sec2.charAt(i)))
-				{
-					e = i;
-					break;
-				}
-			}
-			if(e==-1&&sec2.length()<4000)
-				e = 0;
-			if(s>-1&&e>-1)
-			{
-				word = bef.substring(s, bef.length());
-				word+=aft.substring(0, e);
-			}
+			word = getCurWordStart(sec1)+getCurWordStart(sec2);
 			if(cnt>0)
 				ic.setSelection(ss, se);
 			ic.endBatchEdit();
@@ -350,25 +367,62 @@ public class Templates
 		}
 		return null;
 	}
-/** Возвращает позицию начала слова под курсором 
+/** Возвращает текст начала слова вверх от курсора
 *@param seq Текст, взятый функцией {@link InputConnection#getTextBeforeCursor(int, int)}. Может быть null
-*@return Позиция начала слова под курсором **/
-	static int getCurWordStart(CharSequence seq)
+*@return Текст начала слова под курсором **/
+	static String getCurWordStart(CharSequence seq)
 	{
 		if(seq==null)
 		{
-			ServiceJbKbd.inst.getCurrentInputConnection().getTextBeforeCursor(40, 0);
+			seq = ServiceJbKbd.inst.getCurrentInputConnection().getTextBeforeCursor(40, 0);
 		}
-		int s = -1;
 		for(int i=seq.length()-1;i>=0;i--)
 		{
 			if(!Character.isLetterOrDigit(seq.charAt(i)))
 			{
-				s = i+1;
-				break;
+				return seq.subSequence(i+1, seq.length()).toString();
 			}
 		}
-		return s;
+		return "";
+	}
+	static boolean deleteCurrentLine()
+	{
+		InputConnection ic = ServiceJbKbd.inst.getCurrentInputConnection(); 
+		String bef = ic.getTextBeforeCursor(4000, 0).toString();
+		String aft = ic.getTextAfterCursor(4000, 0).toString();
+		int s = chkPos(bef.lastIndexOf('\n'), bef.lastIndexOf('\r'), true, bef.length());
+		int e = chkPos(aft.indexOf('\n'), aft.indexOf('\r'), false, bef.length());
+		if(s==-1||e!=-1)
+		{
+			return false;
+		}
+		ic.deleteSurroundingText(bef.length()-s, e);
+		return true;
+	}
+	static void deleteCurrentWord()
+	{
+		String s1 = getCurWordStart(null);
+		String s2 = getCurWordEnd(null);
+		ServiceJbKbd.inst.getCurrentInputConnection().deleteSurroundingText(s1.length(), s2.length());
+	}
+/** Возвращает текст конца слова вниз от курсора
+*@param seq Текст, взятый функцией {@link InputConnection#getTextBeforeCursor(int, int)}. Может быть null
+*@return Текст конца слова под курсором **/
+	static String getCurWordEnd(CharSequence seq)
+	{
+		if(seq==null)
+		{
+			seq=ServiceJbKbd.inst.getCurrentInputConnection().getTextAfterCursor(40, 0);
+		}
+		int len = seq.length();
+		for(int i=0;i<seq.length();i++)
+		{
+			if(!Character.isLetterOrDigit(seq.charAt(i)))
+			{
+				return seq.subSequence(0, i).toString();
+			}
+		}
+		return "";
 	}
 /** Текущая папка */	
 	File m_cd;

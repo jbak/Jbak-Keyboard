@@ -11,6 +11,7 @@
 	android:layout_alignParentTop="true"  
 	android:layout_alignParentLeft="true"
 	android:maxLines="1"  
+	android:inputType="text|textAutoCorrect|textAutoComplete"
 	/>
 	<ImageButton android:id="@+id/tpl_save"
 			android:layout_width="wrap_content"
@@ -42,6 +43,8 @@
 	android:layout_below="@id/tpl_save"
 	android:layout_alignParentLeft="true"  
 	android:layout_alignParentBottom="true"  
+	android:autoText="true"
+	android:inputType="text|textAutoCorrect|textAutoComplete"
 	android:gravity="top"  
 	/>
 </RelativeLayout>

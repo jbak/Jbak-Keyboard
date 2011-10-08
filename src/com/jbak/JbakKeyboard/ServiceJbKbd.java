@@ -61,6 +61,7 @@ public class ServiceJbKbd extends InputMethodService
      * a QWERTY keyboard to Chinese), but may not be used for input methods
      * that are primarily intended to be used for on-screen text entry.
      */
+    Words m_words;
     static final boolean PROCESS_HARD_KEYS = true;
     public boolean m_bComplete = false;
     private CandidateView mCandidateView;
@@ -80,6 +81,7 @@ public class ServiceJbKbd extends InputMethodService
  * to super class.
  */
     @Override public void onCreate() {
+    	m_words = new Words();
 		startService(new Intent(this,ClipbrdService.class));
     	inst = this;
     	m_kp = new KeyPressProcessor();
@@ -117,7 +119,8 @@ public class ServiceJbKbd extends InputMethodService
 /*        mCandidateView = new CandidateView(this);
         mCandidateView.setService(this);
        return mCandidateView;
-*/    	return null;
+*///    	return null;
+    	return null;
     }
     @Override public void onStartInputView(EditorInfo attribute, boolean restarting) {
     	m_SelStart = attribute.initialSelStart;
@@ -157,7 +160,16 @@ public class ServiceJbKbd extends InputMethodService
             	break;
         }
         st.curKbd().setImeOptions(getResources(), attribute.imeOptions);
+        openWords();
         super.onStartInputView(attribute, restarting);
+    }
+    final void openWords()
+    {
+        Lang l = st.langForId(st.curKbd().resId);
+        if(l!=null)
+        	m_words.open(l.name);
+        else
+        	m_words.close();
     }
     /**
      * This is the main point where we do our initialization of the input method
@@ -202,6 +214,19 @@ public class ServiceJbKbd extends InputMethodService
         // clear whatever candidate text we have.
         m_SelStart = newSelStart;
         m_SelEnd = newSelEnd;
+        if(m_SelStart==m_SelEnd)
+        {
+/*        	String word = Templates.getCurWordStart(null)+Templates.getCurWordEnd(null);
+        	if(word.length()>0)
+        	{
+        		ArrayList<String> ar = m_words.getWords(word);
+        		setSuggestions(ar, true, false);
+        	}
+        	else
+        	{
+        		setSuggestions(new ArrayList<String>(), true, false);
+        	}
+*/        }
         if (mComposing.length() > 0 && (newSelStart != candidatesEnd
                 || newSelEnd != candidatesEnd)) {
             mComposing.setLength(0);
@@ -214,7 +239,7 @@ public class ServiceJbKbd extends InputMethodService
     }
 /** Предлагает юзеру набор автодополнений. В браузере - показывает какой-то набор из закладок и посещенных ссылок*/
     @Override public void onDisplayCompletions(CompletionInfo[] completions) {
-        if (mCompletionOn) {
+//        if (mCompletionOn) {
             mCompletions = completions;
             if (completions == null) {
                 setSuggestions(null, false, false);
@@ -227,7 +252,7 @@ public class ServiceJbKbd extends InputMethodService
                 if (ci != null) stringList.add(ci.getText().toString());
             }
             setSuggestions(stringList, true, true);
-        }
+  //      }
     }
 /** Транслирует кнопку в InputConnection */    
     private boolean translateKeyDown(int keyCode, KeyEvent event) {
@@ -567,30 +592,18 @@ public class ServiceJbKbd extends InputMethodService
         return separators.contains(String.valueOf((char)code));
     }
 
-    public void pickDefaultCandidate() {
-        pickSuggestionManually(0);
-    }
     
-    public void pickSuggestionManually(int index) {
-        if (mCompletionOn && mCompletions != null && index >= 0
-                && index < mCompletions.length) {
-            CompletionInfo ci = mCompletions[index];
-            getCurrentInputConnection().commitCompletion(ci);
-            if (mCandidateView != null) {
-                mCandidateView.clear();
-            }
-        } else if (mComposing.length() > 0) {
-            // If we were generating candidate suggestions for the current
-            // text, we would commit one of them here.  But for this sample,
-            // we will just commit the current text.
-            commitTyped(getCurrentInputConnection());
-        }
+    public void SetWord(String word)
+    {
+    	CharSequence bef = Templates.getCurWordStart(null);
+    	CharSequence after = Templates.getCurWordStart(null);
+    	InputConnection ic = getCurrentInputConnection();
+    	ic.beginBatchEdit();
+    	ic.deleteSurroundingText(bef.length(), after.length());
+    	ic.commitText(word, 0);
+    	ic.endBatchEdit();
     }
-    
     public void swipeRight() {
-        if (mCompletionOn) {
-            pickDefaultCandidate();
-        }
     }
     
     public void swipeLeft() {
@@ -628,6 +641,7 @@ public class ServiceJbKbd extends InputMethodService
     		l = st.defLang();
     	st.kv().setKeyboard(new JbKbd(this, l.resId));
     	st.saveCurLang();
+    	openWords();
     }
     public void onOptions()
     {
