@@ -58,7 +58,7 @@ public class JbKbdPreference extends PreferenceActivity
 		pref.setOnPreferenceClickListener(new PrefRunSetKbd(st.SET_LANGUAGES_SELECTION, this));
 		pref = getPreferenceScreen().getPreference(3);
 		pref.setOnPreferenceClickListener(new PrefRunSetKbd(st.SET_LANGUAGES_SELECTION, this));
-		pref = getPreferenceScreen().getPreference(4);
+		pref = getPreferenceScreen().getPreference(5);
 		pref.setOnPreferenceClickListener(new PrefRunSetKbd(st.SET_KEYS, this));
 	}
 	void selectLanguages()

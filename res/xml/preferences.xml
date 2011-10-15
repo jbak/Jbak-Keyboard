@@ -20,6 +20,23 @@
          	android:title="@string/set_languages"
          	android:summary="@string/set_languages_desc"
          	/>
+         <PreferenceScreen
+         	android:title="@string/set_key_voice" 
+         	android:summary="@string/set_key_voice_desc"
+         >
+         <CheckBoxPreference
+         	android:key="vs"
+         	android:title="@string/set_key_short_vibro"
+         	android:summary="@string/set_key_short_vibro_desc"
+         	android:defaultValue="false"
+         />       
+         <CheckBoxPreference
+         	android:key="vl"
+         	android:title="@string/set_key_long_vibro"
+         	android:summary="@string/set_key_long_vibro_desc"
+         	android:defaultValue="false"
+         />       
+         </PreferenceScreen>	
          <Preference
          	android:title="@string/set_keys" 
          	android:summary="@string/set_keys_desc"

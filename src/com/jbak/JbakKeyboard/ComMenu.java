@@ -8,9 +8,11 @@ import android.graphics.Rect;
 import android.graphics.drawable.StateListDrawable;
 import android.location.Address;
 import android.view.Gravity;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -45,6 +47,63 @@ public class ComMenu
     	inst = this;
         m_MainView = ServiceJbKbd.inst.getLayoutInflater().inflate(R.layout.com_menu, null);
     }
+/** Устанавливает фон ненажатой кнопки, соответствующий текущему оформлению клавиатуры*/    
+	void setButtonKeyboardBackground(View btn)
+	{
+    	if(st.kv().m_KeyBackDrw!=null)
+    	{
+    		btn.setBackgroundDrawable(st.kv().m_drwKeyBack);
+    		btn.setOnTouchListener(m_btnListener);
+    	}
+	}
+/** Создаёт новую кнопку элемента меню */	
+    View newView(MenuEntry ent)
+    {
+    	Button btn = new Button(st.c());
+    	setButtonKeyboardBackground(btn);
+		btn.setTextColor(st.kv().m_tpMainKey.getColor());
+    	if(st.has(m_state, STAT_TEMPLATES))
+    	{
+    		btn.setLongClickable(true);
+    		btn.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+    		btn.setLongClickable(true);
+    		btn.setOnLongClickListener(m_longListener);
+    	}
+    	btn.setDuplicateParentStateEnabled(false);
+    	btn.setTag(ent);
+    	btn.setText(ent.text);
+    	btn.setOnClickListener(m_listener);
+    	return btn;
+    }
+/** Обработчик нажатия кнопки меню */  
+    st.UniObserver m_lvObserver = new st.UniObserver()
+    {
+        @Override
+        int OnObserver(Object param1, Object param2)
+        {
+        	if(m_MenuObserver==null)return 0;
+            m_MenuObserver.m_param1 = param1;
+            m_MenuObserver.Observ();
+            return 0;
+        }
+    };
+/** Обработчик длинного нажатия кнопки меню */
+    OnLongClickListener m_longListener = new OnLongClickListener()
+	{
+		@Override
+		public boolean onLongClick(View v)
+		{
+			v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+			close();
+			if(m_MenuObserver!=null)
+			{
+				MenuEntry me = (MenuEntry)v.getTag();
+				m_MenuObserver.OnObserver(new Integer(me.id),new Boolean(true));
+			}
+			return true;
+		}
+	};
+/** Обработчик событий сенсора. Нужен для отрисовки кнопок меню */    
     OnTouchListener m_btnListener = new OnTouchListener()
 	{
 		@Override
@@ -62,41 +121,6 @@ public class ComMenu
 			return false;
 		}
 	};
-	void setButtonKeyboardBackground(View btn)
-	{
-    	if(st.kv().m_KeyBackDrw!=null)
-    	{
-    		btn.setBackgroundDrawable(st.kv().m_drwKeyBack);
-    		btn.setOnTouchListener(m_btnListener);
-    	}
-	}
-    View newView(MenuEntry ent)
-    {
-    	Button btn = new Button(st.c());
-    	setButtonKeyboardBackground(btn);
-		btn.setTextColor(st.kv().m_tpMainKey.getColor());
-    	if(st.has(m_state, STAT_TEMPLATES))
-    	{
-    		btn.setLongClickable(true);
-    		btn.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-    	}
-    	btn.setDuplicateParentStateEnabled(false);
-    	btn.setTag(ent);
-    	btn.setText(ent.text);
-    	btn.setOnClickListener(m_listener);
-    	return btn;
-    }
-/** Обработчик нажатия элемента */  
-    st.UniObserver m_lvObserver = new st.UniObserver()
-    {
-        @Override
-        int OnObserver(Object param1, Object param2)
-        {
-            m_MenuObserver.m_param1 = param1;
-            m_MenuObserver.Observ();
-            return 0;
-        }
-    };
 /** Сторонний обработчик, который был передан в функции {@link #show(com.jbak.JbakTaskMan.st.UniObserver)}*/    
     st.UniObserver m_MenuObserver;
 /** Добавляет в меню элемент с текстом text и идентификатором id */ 
@@ -118,6 +142,7 @@ public class ComMenu
     		ServiceJbKbd.inst.setInputView(st.kv());
     	}
     }
+/** Обработчик короткого нажатия кнопок меню */    
     View.OnClickListener m_listener = new View.OnClickListener()
 	{
 		
@@ -134,7 +159,7 @@ public class ComMenu
 			MenuEntry me = (MenuEntry)v.getTag();
 			if(m_MenuObserver!=null)
 			{
-				m_MenuObserver.OnObserver(new Integer(me.id), m_MenuObserver.m_param2);
+				m_MenuObserver.OnObserver(new Integer(me.id), new Boolean(false));
 			}
 		}
 	};
@@ -182,6 +207,7 @@ public class ComMenu
     	lp.height = st.kv().getHeight();
     	m_MainView.setLayoutParams(lp);
     }
+/** Функция создаёт меню для мультибуфера обмена */    
     static boolean showClipboard()
     {
     	ComMenu menu = new ComMenu();

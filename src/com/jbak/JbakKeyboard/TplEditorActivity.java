@@ -1,12 +1,13 @@
 package com.jbak.JbakKeyboard;
 
+import java.io.File;
+
 import android.app.Activity;
-import android.inputmethodservice.InputMethodService;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ public class TplEditorActivity extends Activity
 		View v = getLayoutInflater().inflate(R.layout.tpl_editor, null);
 		v.findViewById(R.id.tpl_save).setOnClickListener(m_clkListener);
 		v.findViewById(R.id.close).setOnClickListener(m_clkListener);
+		v.findViewById(R.id.delete).setOnClickListener(m_clkListener);
 		View bSpec =v.findViewById(R.id.tpl_spec_options); 
 		bSpec.setOnClickListener(m_clkListener);
 		m_edName = (EditText)v.findViewById(R.id.tpl_name);
@@ -31,6 +33,18 @@ public class TplEditorActivity extends Activity
 			m_edName.setHint(R.string.tpl_folder_name);
 			m_edText.getLayoutParams().width=0;
 			bSpec.getLayoutParams().width=0;
+		}
+		File f =Templates.inst.m_editFile; 
+		if(f!=null)
+		{
+			m_edName.setText(f.getName());
+			if(!f.isDirectory())
+			{
+				String txt = Templates.getFileString(f);
+				if(txt!=null)
+					m_edText.setText(txt);
+			}
+			v.findViewById(R.id.delete).getLayoutParams().width = -2;
 		}
 		m_edName.setOnFocusChangeListener(new OnFocusChangeListener()
 		{
@@ -84,8 +98,49 @@ public class TplEditorActivity extends Activity
 		}
 		Templates.inst.onCloseEditor();
 	}
+	void delete()
+	{
+		String query = getString(R.string.tpl_delete,Templates.inst.m_editFile.getName());
+		new Dlg.RunOnYes(this,query){
+			@Override
+			public void run()
+			{
+				Templates.inst.onDelete();
+				finish();
+			}
+		};
+	}
+	@Override
+	public void onBackPressed() 
+	{
+		finish();
+	};
 	void onSpecOptions()
 	{
+		int rlist = R.layout.tpl_instr_list;
+		final ArrayAdapter<String> ar = new ArrayAdapter<String>(this, 
+													rlist,
+													getResources().getStringArray(R.array.tpl_spec_instructions)
+													);
+		Dlg.CustomMenu(this, ar, null, new st.UniObserver()
+		{
+			@Override
+			int OnObserver(Object param1, Object param2)
+			{
+				int which = ((Integer)param1).intValue();
+				if(which>=0)
+				{
+					String txt = ar.getItem(which);
+					int f = txt.indexOf(' ');
+					if(f>0)
+						txt = txt.substring(0,f);
+					int s = m_edText.getSelectionStart();
+					int e = m_edText.getSelectionEnd();
+					m_edText.getText().replace(s<e?s:e,e>s?e:s, txt);
+				}
+				return 0;
+			}
+		});
 		
 	}
 	View.OnClickListener m_clkListener = new View.OnClickListener()
@@ -98,6 +153,7 @@ public class TplEditorActivity extends Activity
 				case  R.id.tpl_save: onSave(); break;
 				case  R.id.tpl_spec_options: onSpecOptions(); break;
 				case  R.id.close: finish(); Templates.inst.onCloseEditor();break;
+				case R.id.delete:delete();break;
 			}
 		}
 	};

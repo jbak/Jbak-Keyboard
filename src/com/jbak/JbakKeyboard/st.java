@@ -373,6 +373,10 @@ public class st
     public static final String PREF_KEY_DEF_HEIGHT = "dh";
 /** Ключ, String, хранящий порядок переключения языков */    
     public static final String PREF_KEY_LANGS = "langs";
+/** Ключ, boolean, хранящий настройку вибро при коротком нажатии */    
+    public static final String PREF_KEY_VIBRO_SHORT_KEY = "vs";
+/** Ключ, boolean, хранящий настройку вибро при коротком нажатии */    
+    public static final String PREF_KEY_VIBRO_LONG_KEY = "vl";
 
  /** Значение для запуска {@link SetKbdActivity}. С этим ключом передаётся параметр типа int<br>
  *  Параметр int - одно из значений SET_*/    

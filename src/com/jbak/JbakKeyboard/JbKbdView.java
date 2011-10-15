@@ -34,6 +34,7 @@ import android.preference.PreferenceManager;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -165,7 +166,8 @@ public class JbKbdView extends KeyboardView {
 
 	@Override
     protected boolean onLongPress(Key key) {
-
+		if(st.has(m_state, STATE_VIBRO_LONG))
+			performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
         if(key.codes[0] == Keyboard.KEYCODE_MODE_CHANGE)
         {
         	ServiceJbKbd.inst.onOptions();
@@ -239,31 +241,35 @@ public class JbKbdView extends KeyboardView {
 	void setPreferences()
 	{
     	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
-    	if(pref!=null)
-    	{
-    		boolean bp = pref.getBoolean(st.PREF_KEY_PREVIEW, true);
-    		setPreviewEnabled(bp);
-    		WindowManager wm = (WindowManager)st.c().getSystemService(Service.WINDOW_SERVICE);
-    		boolean bPortrait = true;
-    		boolean bSet = false;
-    		if(SetKbdActivity.inst!=null)
-    		{
-    			if(SetKbdActivity.inst.m_curAction==st.SET_KEY_HEIGHT_PORTRAIT)
-    			{
-    				bPortrait = true;
-    				bSet = true;
-    			}
-    			else if(SetKbdActivity.inst.m_curAction==st.SET_KEY_HEIGHT_LANDSCAPE)
-    			{
-    				bPortrait = false;
-    				bSet = true;
-    			}
-    				
-    		}
-    		if(!bSet&&wm.getDefaultDisplay().getHeight()<wm.getDefaultDisplay().getWidth())
-    			bPortrait = false;
-    		m_KeyHeight = pref.getInt(bPortrait?st.PREF_KEY_HEIGHT_PORTRAIT:st.PREF_KEY_HEIGHT_LANDSCAPE, 0);
-    	}
+    	if(pref==null)
+    		return;
+    	m_state = 0;
+    	if(pref.getBoolean(st.PREF_KEY_VIBRO_SHORT_KEY, false))
+    		m_state|=STATE_VIBRO_SHORT;
+    	if(pref.getBoolean(st.PREF_KEY_VIBRO_LONG_KEY, false))
+    		m_state|=STATE_VIBRO_LONG;
+		boolean bp = pref.getBoolean(st.PREF_KEY_PREVIEW, true);
+		setPreviewEnabled(bp);
+		WindowManager wm = (WindowManager)st.c().getSystemService(Service.WINDOW_SERVICE);
+		boolean bPortrait = true;
+		boolean bSet = false;
+		if(SetKbdActivity.inst!=null)
+		{
+			if(SetKbdActivity.inst.m_curAction==st.SET_KEY_HEIGHT_PORTRAIT)
+			{
+				bPortrait = true;
+				bSet = true;
+			}
+			else if(SetKbdActivity.inst.m_curAction==st.SET_KEY_HEIGHT_LANDSCAPE)
+			{
+				bPortrait = false;
+				bSet = true;
+			}
+				
+		}
+		if(!bSet&&wm.getDefaultDisplay().getHeight()<wm.getDefaultDisplay().getWidth())
+			bPortrait = false;
+		m_KeyHeight = pref.getInt(bPortrait?st.PREF_KEY_HEIGHT_PORTRAIT:st.PREF_KEY_HEIGHT_LANDSCAPE, 0);
 	}
 	
 /** Высота клавиш */	
@@ -282,6 +288,10 @@ public class JbKbdView extends KeyboardView {
     public static final int STATE_TEMP_SHIFT = 0x0000001;
 /** Состояние - включён CAPS_LOCK */    
     public static final int STATE_CAPS_LOCK = 0x0000002;
+/** Состояние - вибрируем при коротком нажатии */    
+    public static final int STATE_VIBRO_SHORT = 0x0000004;
+/** Состояние - вибрируем при долгом нажатии */    
+    public static final int STATE_VIBRO_LONG = 0x0000008;
     int m_state = 0;
     int m_PreviewHeight;
 }

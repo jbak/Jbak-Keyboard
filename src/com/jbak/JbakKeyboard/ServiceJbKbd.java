@@ -27,6 +27,7 @@ import android.inputmethodservice.KeyboardView;
 import android.preference.PreferenceManager;
 import android.text.method.MetaKeyKeyListener;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
@@ -40,6 +41,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
+import com.jbak.JbakKeyboard.Templates.CurInput;
 import com.jbak.JbakKeyboard.st.Lang;
 
 /**
@@ -444,6 +446,9 @@ public class ServiceJbKbd extends InputMethodService
 
     // Implementation of KeyboardViewListener
     public void onKey(int primaryCode, int[] keyCodes) {
+		if(st.has(st.kv().m_state, JbKbdView.STATE_VIBRO_LONG))
+			st.kv().performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+
         if (isWordSeparator(primaryCode)) 
         {
             // Handle separator
@@ -595,12 +600,13 @@ public class ServiceJbKbd extends InputMethodService
     
     public void SetWord(String word)
     {
-    	CharSequence bef = Templates.getCurWordStart(null);
-    	CharSequence after = Templates.getCurWordStart(null);
+    	CurInput ci = new CurInput();
     	InputConnection ic = getCurrentInputConnection();
     	ic.beginBatchEdit();
-    	ic.deleteSurroundingText(bef.length(), after.length());
-    	ic.commitText(word, 0);
+    	if(ci.init(ic))
+    	{
+    		ci.replaceCurWord(ic, word);
+    	}
     	ic.endBatchEdit();
     }
     public void swipeRight() {
@@ -660,7 +666,7 @@ public class ServiceJbKbd extends InputMethodService
     	menu.add(R.string.mm_close, 0);
     	menu.show(onMenu);
     }
-    void onVoiceRecognition(ArrayList<String> ar)
+    void onVoiceRecognition(final ArrayList<String> ar)
     {
     	if(ar==null)
     	{
@@ -672,14 +678,12 @@ public class ServiceJbKbd extends InputMethodService
     	{
     		menu.add(ar.get(i), i);
     	}
-    	st.UniObserver obs = new st.UniObserver(null,ar)
+    	st.UniObserver obs = new st.UniObserver()
 		{
 			@Override
 			int OnObserver(Object param1, Object param2)
 			{
 				int index = ((Integer)param1).intValue();
-				@SuppressWarnings("unchecked")
-				ArrayList<String> ar = (ArrayList<String>)param2;
 				onText(ar.get(index));
 				return 0;
 			}

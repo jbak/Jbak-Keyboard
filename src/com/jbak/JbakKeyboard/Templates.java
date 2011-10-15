@@ -70,18 +70,41 @@ public class Templates
 		ServiceJbKbd.inst.showWindow(true);
 		Templates.inst.makeCommonMenu();
 	}
-/** Создаёт папку с именем name */	
+	void onDelete()
+	{
+		if(m_editFile==null)return;
+		if(isEditFolder())
+			deleteDir(m_editFile);
+		else
+			m_editFile.delete();
+	}
+/** Если m_editFile!=null - переименовывает эту папку в name.<br>
+ *  Иначе создаёт новую папку с именем name */	
 	void saveFolder(String name)
 	{
 		String fpath = m_curDir.getAbsolutePath()+File.separator+name;
 		File f = new File(fpath);
-		f.mkdirs();
+		if(m_editFile!=null)
+		{
+			m_editFile.renameTo(f);
+		}
+		else
+		{
+			f.mkdirs();
+		}
 	}
 /** Сохраняет шаблон с названием name и текстом text */	
 	void saveTemplate(String name,String text)
 	{
 		String fpath = m_curDir.getAbsolutePath()+File.separator+name;
 		try{
+			if(m_editFile!=null)
+			{
+				if(!m_editFile.delete())
+				{
+					return;
+				}
+			}
 			File f = new File(fpath);
 			FileOutputStream os = new FileOutputStream(f);
 			os.write(new byte[]{(byte)0xef,(byte)0xbb,(byte)0xbf});
@@ -163,7 +186,8 @@ public class Templates
 		int del = 0;
 		int pos = 0;
 		int len = s.length();
-		String buf[] = null;
+		CurInput ci = new CurInput();
+		InputConnection ic = ServiceJbKbd.inst.getCurrentInputConnection();
 		while(true)
 		{
 			int f = s.indexOf(TPL_SPEC_CHAR, pos);
@@ -178,12 +202,16 @@ public class Templates
 			for(int i=0;i<Instructions.length;i++)
 			{
 				String ss = Instructions[i];
-				if(s.indexOf(ss, f+1)==f+1)
+				int ff = s.indexOf(ss, f+1); 
+				if(ff==f+1)
 				{
 					bFound = true;
-					if(buf==null)
-						buf = getInputBuffers();
-					String repl = buf[IB_SEL];
+					if(!ci.isInited())
+					{
+						ci.init(ic);
+						ic.beginBatchEdit();
+					}
+					String repl = ci.sel;
 					switch(i)
 					{
 						case 0:  break;
@@ -192,46 +220,71 @@ public class Templates
 							{
 								if(del==0)
 									del=IB_WORD;
-								repl = buf[IB_WORD]; 
+								repl = ci.getWordText();
 							}break;
 						case 2: if(repl.length()==0)
 							{
 								del = IB_LINE;
-								repl = buf[IB_LINE]; break;
+								repl = ci.getLineText(); break;
 							}break;
 					}
-					pos = i+repl.length();
-					s = s.substring(0,i)+repl+s.substring(i+ss.length()+1);
+					if(repl==null)
+					{
+						pos = s.length()-1;
+						break;
+					}
+					s = s.substring(0,f)+repl+s.substring(f+ss.length()+1);
+					pos = f+repl.length();
 					break;
 				}
-				if(!bFound)
-					pos++;
 			}
+			if(!bFound)
+				pos++;
 		}
 		if(del==IB_WORD)
-			deleteCurrentWord();
+			ci.replaceCurWord(ic, s);
 		else if(del==IB_LINE)
-			deleteCurrentLine();
-		ServiceJbKbd.inst.onText(s);
+			ci.replaceCurLine(ic, s);
+		else
+			ServiceJbKbd.inst.onText(s);
+		if(ci.isInited())
+			ic.endBatchEdit();
 	}
 /** Обрабатывает щелчок по элементу шаблона */	
-	void processTemplateClick(int index, ArrayList<File> ar)
+	void processTemplateClick(int index, boolean bLong)
 	{
 		if(index<0)
 		{
 			openFolder(m_curDir.getParentFile());
 			return;
 		}
-		if(index>ar.size())
+		if(index>m_arFiles.size())
 			return;
-		File f = ar.get(index);
+		File f = m_arFiles.get(index);
 		if(f.isDirectory())
 		{
-			openFolder(f);
+			if(bLong)
+			{
+				setEditTpl(f);
+				setEditFolder(true);
+				st.kbdCommand(st.CMD_TPL_EDITOR);
+			}
+			else
+			{
+				openFolder(f);
+			}
 		}
 		else
 		{
-			processTemplate(getFileString(f));
+			if(bLong)
+			{
+				setEditTpl(f);
+				st.kbdCommand(st.CMD_TPL_EDITOR);
+			}
+			else
+			{
+				processTemplate(getFileString(f));
+			}
 		}
 	}
 /** Основная функция для вывода шаблонов в CommonMenu*/
@@ -241,18 +294,16 @@ public class Templates
 			return;
 		ComMenu menu = new ComMenu();
 		menu.m_state|=ComMenu.STAT_TEMPLATES;
-		ArrayList<File> ar = getSortedFiles();
-		if(ar==null)
+		m_arFiles = getSortedFiles();
+		if(m_arFiles==null)
 			return;
-		Iterator<File> it = ar.iterator();
-		int pos = 0;
 		if(!m_curDir.getAbsolutePath().equals(m_rootDir.getAbsolutePath()))
 		{
 			menu.add("[..]",-1);
 		}
-		while(it.hasNext())
+		int pos = 0;
+		for(File f:m_arFiles)
 		{
-			File f = it.next();
 			if(f.isDirectory())
 			{
 				menu.add("["+f.getName()+"]",pos);
@@ -263,13 +314,14 @@ public class Templates
 			}
 			pos++;
 		}
-		st.UniObserver obs = new st.UniObserver(null,ar)
+		st.UniObserver obs = new st.UniObserver()
 		{
-			@SuppressWarnings("unchecked")
 			@Override
 			int OnObserver(Object param1, Object param2)
 			{
-				processTemplateClick(((Integer)param1).intValue(),(ArrayList<File>)param2);
+				int pos = ((Integer)param1).intValue();
+				boolean bLong = ((Boolean)param2).booleanValue();
+				processTemplateClick(pos,bLong);
 				return 0;
 			}
 		};
@@ -309,68 +361,111 @@ public class Templates
 		}
 		return s;
 	}
-/** Функция для получения текстов из редактора
- * @param positions
- *@return Возвращает массив текстов - выделенный текст ({@link #IB_SEL}, строка {@link #IB_LINE}, слово {@link #IB_WORD} */
-	static String[] getInputBuffers()
+/** Класс для получения информации о текущем выделении, текущем слове и текущей строке */	
+	static class CurInput
 	{
-		try{
-			if(ServiceJbKbd.inst==null)
-				return null;
-			if(ServiceJbKbd.inst.m_SelStart<0||ServiceJbKbd.inst.m_SelEnd<0)
-				return null;
-			String ret[] = new String[3];
-			int ss = ServiceJbKbd.inst.m_SelStart,  se = ServiceJbKbd.inst.m_SelEnd;
-			// ss - реальная позиция курсора, может быть меньше, чем ss
-			InputConnection ic = ServiceJbKbd.inst.getCurrentInputConnection();
-			ic.beginBatchEdit();
-			String sel="",word="",line="";
-			int cnt = se-ss;
-			
-			int cp = se;
-			if(se>ss)
-				cp=ss;
-			if(cnt<0)
-				cnt = 0-cnt;
-			if(cnt>0)
-			{
-				ic.setSelection(cp, cp);
-				sel = ic.getTextAfterCursor(cnt, 0).toString();
-			}
-			cp = se;
-			if(cnt>0)
-				ic.setSelection(cp, cp);
-			CharSequence sec1 = ic.getTextBeforeCursor(4000, 0);
-			CharSequence sec2 = ic.getTextAfterCursor(4000, 0);
-			String bef = sec1.toString();
-			String aft = sec2.toString();
-			int s = chkPos(bef.lastIndexOf('\n'), bef.lastIndexOf('\r'), true, bef.length());
-			int e = chkPos(aft.indexOf('\n'), aft.indexOf('\r'), false, bef.length());
-			if(s!=-1&&e!=-1)
-			{
-				String s1 = bef.substring(s);
-				String s2 =aft.substring(0,e); 
-				line=s1+s2;
-			}
-			word = getCurWordStart(sec1)+getCurWordStart(sec2);
-			if(cnt>0)
-				ic.setSelection(ss, se);
-			ic.endBatchEdit();
-			ret[IB_SEL] = sel;
-			ret[IB_LINE] = line;
-			ret[IB_WORD] = word;
-			return ret;
-		}
-		catch(Throwable e)
+		String wordStart;
+		String wordEnd;
+		String lineStart;
+		String lineEnd;
+		String sel="";
+		boolean bInited = false;
+		boolean isInited()
 		{
-			st.logEx(e);
+			return bInited;
 		}
-		return null;
+		String getLineText()
+		{
+			if(lineStart==null||lineEnd==null)
+				return null;
+			return lineStart+lineEnd;
+		}
+		String getWordText()
+		{
+			if(wordStart==null||wordEnd==null)
+				return null;
+			return wordStart+wordEnd;
+		}
+		boolean replaceCurWord(InputConnection ic,String repl)
+		{
+			if(!deleteCurWord(ic))
+				return false;
+			ic.commitText(repl, 0);
+			return true;
+		}
+		boolean replaceCurLine(InputConnection ic,String repl)
+		{
+			if(!deleteCurLine(ic))
+				return false;
+			ic.commitText(repl, 0);
+			return true;
+		}
+		boolean deleteCurLine(InputConnection ic)
+		{
+			if(lineStart==null||lineEnd==null)
+				return false;
+			ic.deleteSurroundingText(lineStart.length(), lineEnd.length());
+			return true;
+		}
+		boolean deleteCurWord(InputConnection ic)
+		{
+			if(wordStart==null||wordEnd==null)
+				return false;
+			ic.deleteSurroundingText(wordStart.length(), wordEnd.length());
+			return true;
+		}
+		/** Функция для получения текстов из редактора
+		 * @param positions
+		 *@return Возвращает массив текстов - выделенный текст ({@link #IB_SEL}, строка {@link #IB_LINE}, слово {@link #IB_WORD} */
+			boolean init(InputConnection ic)
+			{
+				bInited = true;
+				try{
+					if(ServiceJbKbd.inst==null)
+						return false;
+					if(ServiceJbKbd.inst.m_SelStart<0||ServiceJbKbd.inst.m_SelEnd<0)
+						return false;
+					int ss = ServiceJbKbd.inst.m_SelStart,  se = ServiceJbKbd.inst.m_SelEnd;
+					// ss - реальная позиция курсора, может быть меньше, чем ss
+					int cnt = se>ss?se-ss:ss-se;
+					int cp = se>ss?ss:se;
+					if(cnt>0)
+					{
+						// Получаем выделенный фрагмент
+						ic.setSelection(cp, cp);
+						sel = ic.getTextAfterCursor(cnt, 0).toString();
+					}
+					cp = se;
+					if(cnt>0)
+						ic.setSelection(cp, cp);
+					CharSequence sec1 = ic.getTextBeforeCursor(4000, 0);
+					CharSequence sec2 = ic.getTextAfterCursor(4000, 0);
+					String bef = sec1.toString();
+					String aft = sec2.toString();
+					int s = chkPos(bef.lastIndexOf('\n'), bef.lastIndexOf('\r'), true, bef.length());
+					int e = chkPos(aft.indexOf('\n'), aft.indexOf('\r'), false, aft.length());
+					if(s!=-1&&e!=-1)
+					{
+						lineStart = bef.substring(s); 
+						lineEnd =aft.substring(0,e); 
+					}
+					wordStart = getCurWordStart(sec1,sec1.length()==4000); 
+					wordEnd = getCurWordEnd(sec2,sec2.length()==4000); 
+					if(cnt>0)
+						ic.setSelection(ss, se);
+					return true;
+				}
+				catch(Throwable e)
+				{
+					st.logEx(e);
+				}
+				return false;
+			}
 	}
 /** Возвращает текст начала слова вверх от курсора
 *@param seq Текст, взятый функцией {@link InputConnection#getTextBeforeCursor(int, int)}. Может быть null
 *@return Текст начала слова под курсором **/
-	static String getCurWordStart(CharSequence seq)
+	static String getCurWordStart(CharSequence seq,boolean bRetEmptyIfNotDelimiter)
 	{
 		if(seq==null)
 		{
@@ -383,32 +478,15 @@ public class Templates
 				return seq.subSequence(i+1, seq.length()).toString();
 			}
 		}
-		return "";
-	}
-	static boolean deleteCurrentLine()
-	{
-		InputConnection ic = ServiceJbKbd.inst.getCurrentInputConnection(); 
-		String bef = ic.getTextBeforeCursor(4000, 0).toString();
-		String aft = ic.getTextAfterCursor(4000, 0).toString();
-		int s = chkPos(bef.lastIndexOf('\n'), bef.lastIndexOf('\r'), true, bef.length());
-		int e = chkPos(aft.indexOf('\n'), aft.indexOf('\r'), false, bef.length());
-		if(s==-1||e!=-1)
-		{
-			return false;
-		}
-		ic.deleteSurroundingText(bef.length()-s, e);
-		return true;
-	}
-	static void deleteCurrentWord()
-	{
-		String s1 = getCurWordStart(null);
-		String s2 = getCurWordEnd(null);
-		ServiceJbKbd.inst.getCurrentInputConnection().deleteSurroundingText(s1.length(), s2.length());
+		if(bRetEmptyIfNotDelimiter)
+			return null;
+		return seq.toString();
 	}
 /** Возвращает текст конца слова вниз от курсора
 *@param seq Текст, взятый функцией {@link InputConnection#getTextBeforeCursor(int, int)}. Может быть null
+*@param bRetEmptyIfNotDelimiter - true - если не найден конец слова, вернёт пустую строку. false - вернёт строку seq
 *@return Текст конца слова под курсором **/
-	static String getCurWordEnd(CharSequence seq)
+	static String getCurWordEnd(CharSequence seq,boolean bRetEmptyIfNotDelimiter)
 	{
 		if(seq==null)
 		{
@@ -422,8 +500,32 @@ public class Templates
 				return seq.subSequence(0, i).toString();
 			}
 		}
-		return "";
+		if(bRetEmptyIfNotDelimiter)
+			return null;
+		return seq.toString();
 	}
+	public static boolean deleteDir(File dir)
+    {
+		if(!dir.isDirectory())
+			return false;
+        String[] children = dir.list();
+        for (String p:children) 
+        {
+           File temp =  new File(dir, p);
+           if(temp.isDirectory())
+           {
+               if(!deleteDir(temp))
+            	   return false;
+           }
+           else
+           {
+               if(!temp.delete())
+            	   return false;
+           }
+        }
+        dir.delete();
+        return true;
+    }
 /** Текущая папка */	
 	File m_cd;
 	public static final String TEMPLATE_PATH = "JbakKeyboard/templates";
@@ -438,5 +540,5 @@ public class Templates
 	public static final int IB_LINE = 2;
 	public static final char TPL_SPEC_CHAR = '$';
 	public static final String[] Instructions = {"select","selword","selline"};
-	
+	ArrayList<File> m_arFiles;
 }

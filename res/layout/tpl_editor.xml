@@ -27,6 +27,13 @@
 			android:layout_toRightOf="@id/tpl_save"
 			android:layout_below="@id/tpl_name"
 			/>
+	<ImageButton android:id="@+id/delete"
+			android:layout_width="0px"
+			android:layout_height="wrap_content" 
+			android:src="@android:drawable/ic_menu_delete"
+			android:layout_toRightOf="@id/tpl_save"
+			android:layout_below="@id/tpl_name"
+			/>
 	<ImageButton android:id="@+id/tpl_spec_options"
 			android:src="@android:drawable/ic_menu_edit"
 			android:text="@string/tpl_spec_options"

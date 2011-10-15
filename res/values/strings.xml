@@ -15,7 +15,6 @@
 
     <string name="set_keys">Manage keys</string>
     <string name="set_keys_desc">Here you can manage hardware keys (except Home and Power)</string>
-    
     <string name="set_ch_keys_preview_desc">Disable this, if you don\'t want see popup previews of pressed keys</string>
     <string name="set_key_height_portrait">Key height portrait</string>
     <string name="set_key_height_portrait_desc">Change key height for qwerty-keyboard in portrait mode </string>
@@ -23,6 +22,12 @@
     <string name="set_key_height_landscape_desc">Change key height for qwerty-keyboard in landscape mode </string>
     <string name="set_languages">Select languages</string>
     <string name="set_languages_desc">Here you can select languages for switching</string>
+    <string name="set_key_voice">Voice and vibro</string>
+    <string name="set_key_voice_desc">Here you can change settings for tactile feedback </string>
+    <string name="set_key_short_vibro">Vibro on short press</string>
+    <string name="set_key_short_vibro_desc">If enabled - screen vibrates on key press</string>
+    <string name="set_key_long_vibro">Vibro on long press</string>
+    <string name="set_key_long_vibro_desc">If enabled - screen vibrates on key long press</string>
     
     <string name="mm_templates">Templates</string>
     <string name="mm_multiclipboard">Clipboard</string>
@@ -31,6 +36,8 @@
 
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">Yes</string>
     
     <string name="tpl_new_template">New\ntemplate</string>
     <string name="tpl_new_folder">New\nfolder</string>
@@ -41,6 +48,13 @@
     <string name="tpl_save">Save</string>
     <string name="tpl_spec_options">Special options</string>
     <string name="tpl_fields_empty">All template fields must be completed!</string>
+    <string name="tpl_delete">Do you want to delete \"%s\"?</string>
+    <string-array name="tpl_spec_instructions">
+        <item><b>$select</b> - instruction will replaced with text of current selection</item>
+        <item><b>$selword</b> - if nothing selected - instruction will replaced with current word, otherwise - with selection</item>
+        <item><b>$selline</b> - if nothing selected - instruction will replaced with current paragraph, otherwise - with selection</item>
+        <item><b>$$</b> - dollar symbol</item>
+    </string-array>
     
     <string name="ks_press_key">Press key...</string>
     <string name="ks_type">Processing </string>
