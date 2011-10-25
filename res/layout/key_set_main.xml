@@ -3,21 +3,30 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
-<ImageButton
-  android:src="@android:drawable/ic_menu_add"
+<Button
+	style="@style/img_button"	
+  android:drawableTop="@drawable/add"
   android:id="@+id/ks_add_key"	
   android:text="@string/tpl_new_template"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
   android:layout_alignParentTop="true"
   android:layout_alignParentRight="true"
+/>
+<TextView 
+  android:id="@+id/empty_text"	
+  android:layout_alignParentTop="true"
+  android:layout_width="wrap_content"
+  android:layout_height="0px"
+  android:layout_alignParentLeft="true"
+  android:layout_toLeftOf="@id/ks_add_key"
+  android:text="@string/ks_empty_keys"
+  style="@style/label_warn"
 />
 <ListView
   android:layout_width="wrap_content"
   android:layout_height="fill_parent"
   android:id="@+id/ks_key_list"	
   android:layout_toLeftOf="@id/ks_add_key"
-  android:layout_alignParentTop="true"
   android:layout_alignParentLeft="true"
+  android:layout_below="@id/empty_text"
 />
 </RelativeLayout>

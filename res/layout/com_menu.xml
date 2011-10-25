@@ -16,25 +16,23 @@
 android:layout_alignParentTop="true"
 android:layout_alignParentRight="true"
 >
-<ImageButton
-	android:src="@android:drawable/ic_menu_close_clear_cancel"
-  	android:layout_width="wrap_content"
-  	android:layout_height="wrap_content"
+<Button
+  	style="@style/img_button"
+	android:drawableTop="@drawable/keyboard"
 	android:id="@+id/close"
+	android:text="@string/mm_close"
 />  
-<ImageButton
-  android:src="@android:drawable/ic_menu_add"
+<Button
+  style="@style/img_button"
+  android:drawableTop="@drawable/add"
   android:id="@+id/but_new_template"	
   android:text="@string/tpl_new_template"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
 />
-<ImageButton
-  android:src="@android:drawable/ic_menu_agenda"
+<Button
+  style="@style/img_button"
+  android:drawableTop="@drawable/folder_add"
   android:id="@+id/but_new_template_folder"	
   android:text="@string/tpl_new_folder"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
 />
 </LinearLayout>
 <LinearLayout

@@ -37,7 +37,9 @@
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
-    <string name="no">Yes</string>
+    <string name="no">No</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
     
     <string name="tpl_new_template">New\ntemplate</string>
     <string name="tpl_new_folder">New\nfolder</string>
@@ -49,13 +51,19 @@
     <string name="tpl_spec_options">Special options</string>
     <string name="tpl_fields_empty">All template fields must be completed!</string>
     <string name="tpl_delete">Do you want to delete \"%s\"?</string>
+
+<!-- List for menu with special template instructions -->    
     <string-array name="tpl_spec_instructions">
         <item><b>$select</b> - instruction will replaced with text of current selection</item>
         <item><b>$selword</b> - if nothing selected - instruction will replaced with current word, otherwise - with selection</item>
         <item><b>$selline</b> - if nothing selected - instruction will replaced with current paragraph, otherwise - with selection</item>
         <item><b>$$</b> - dollar symbol</item>
     </string-array>
-    
+
+<!-- Text, which shown to user when key list is empty -->    
+    <string name="ks_empty_keys">Keys list is empty. You can add new actions for hardware keys, which works when Jbak Keyboard set as default input method</string>
+
+    <string name="ks_add_key">New key</string>
     <string name="ks_press_key">Press key...</string>
     <string name="ks_type">Processing </string>
     <string-array name="ks_type_variants">

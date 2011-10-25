@@ -20,6 +20,7 @@ package com.jbak.JbakKeyboard;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PixelFormat;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.Keyboard.Key;
@@ -31,6 +32,7 @@ import android.view.HapticFeedbackConstants;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -98,9 +100,6 @@ public class ServiceJbKbd extends InputMethodService
     	JbKbdView.inst = null;
 		super.onDestroy();
 	}
-/** Инициализация интерфейса */
-    @Override public void onInitializeInterface() {
-    }
 /** Стартует ввод */    
     @Override public View onCreateInputView() {
         getLayoutInflater().inflate(R.layout.input, null);
@@ -108,12 +107,9 @@ public class ServiceJbKbd extends InputMethodService
         st.setQwertyKeyboard();
         return JbKbdView.inst;
     }
-
-    /**
-     * Called by the framework when your view for showing candidates needs to
-     * be generated, like {@link #onCreateInputView}.
-     */
-    @Override public View onCreateCandidatesView() {
+/** Должен вернуть просмотр кандидатов или null */
+    @Override public View onCreateCandidatesView() 
+    {
 /*    	if(!m_bComplete)
     		return null;
 */    	
@@ -127,7 +123,7 @@ public class ServiceJbKbd extends InputMethodService
     @Override public void onStartInputView(EditorInfo attribute, boolean restarting) {
     	m_SelStart = attribute.initialSelStart;
     	m_SelEnd = attribute.initialSelEnd;
-        setCandidatesViewShown(true);
+        setCandidatesViewShown(false);
         if(JbKbdView.inst==null)
         {
         	getLayoutInflater().inflate(R.layout.input, null);
@@ -148,14 +144,9 @@ public class ServiceJbKbd extends InputMethodService
             case EditorInfo.TYPE_CLASS_NUMBER:
             case EditorInfo.TYPE_CLASS_DATETIME:
             case EditorInfo.TYPE_CLASS_PHONE:
-                // Numbers and dates default to the symbols keyboard, with
-                // no extra features.
-                // Phones will also default to the symbols keyboard, though
-                // often you will want to have a dedicated phone keyboard.
             	st.setSymbolKeyboard(false);
                 break;
             default:
-            	
             	mPredictionOn = m_bComplete;
             	mCompletionOn=m_bComplete;
             	st.setQwertyKeyboard();
@@ -167,25 +158,29 @@ public class ServiceJbKbd extends InputMethodService
     }
     final void openWords()
     {
-        Lang l = st.langForId(st.curKbd().resId);
-        if(l!=null)
-        	m_words.open(l.name);
-        else
-        	m_words.close();
+//        Lang l = st.langForId(st.curKbd().resId);
+//        if(l!=null)
+//        	m_words.open(l.name);
+//        else
+//        	m_words.close();
     }
-    /**
-     * This is the main point where we do our initialization of the input method
-     * to begin operating on an application.  At this point we have been
-     * bound to the client, and are now receiving all of the detailed information
-     * about the target of our edits.
-     */
-    @Override public void onStartInput(EditorInfo attribute, boolean restarting) {
+    @Override 
+    public void onStartInput(EditorInfo attribute, boolean restarting) {
+    	if(m_kp!=null)
+    		m_kp.onStartInput();
     	super.onStartInput(attribute, restarting);
     }
-    @Override public void onFinishInputView(boolean finishingInput) 
+    @Override 
+    public void onFinishInputView(boolean finishingInput) 
     {
     	super.onFinishInputView(finishingInput);
     };
+    @Override
+    public void onBindInput() 
+    {
+    	super.onBindInput();
+    };
+    
 /** Закрытие поля ввода */
     @Override public void onFinishInput() {
         st.saveCurLang();
@@ -256,38 +251,7 @@ public class ServiceJbKbd extends InputMethodService
             setSuggestions(stringList, true, true);
   //      }
     }
-/** Транслирует кнопку в InputConnection */    
-    private boolean translateKeyDown(int keyCode, KeyEvent event) {
-        mMetaState = MetaKeyKeyListener.handleKeyDown(mMetaState,
-                keyCode, event);
-        int c = event.getUnicodeChar(MetaKeyKeyListener.getMetaState(mMetaState));
-        mMetaState = MetaKeyKeyListener.adjustMetaAfterKeypress(mMetaState);
-        InputConnection ic = getCurrentInputConnection();
-        if (c == 0 || ic == null) {
-            return false;
-        }
-        
-        boolean dead = false;
-
-        if ((c & KeyCharacterMap.COMBINING_ACCENT) != 0) {
-            dead = true;
-            c = c & KeyCharacterMap.COMBINING_ACCENT_MASK;
-        }
-        
-        if (mComposing.length() > 0) {
-            char accent = mComposing.charAt(mComposing.length() -1 );
-            int composed = KeyEvent.getDeadChar(accent, c);
-
-            if (composed != 0) {
-                c = composed;
-                mComposing.setLength(mComposing.length()-1);
-            }
-        }
-        
-        onKey(c, null);
-        
-        return true;
-    }
+/** Обаботка нажатия BACK */    
     public boolean handleBackPress()
     {
     	if(isInputViewShown())
@@ -302,99 +266,38 @@ public class ServiceJbKbd extends InputMethodService
     	}
     	return false;
     }
-    /**
-     * Use this to monitor key events being delivered to the application.
-     * We get first crack at them, and can either resume them or let them
-     * continue to the app.
-     */
-    @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
+    AbstractInputMethodSessionImpl m_is;
+/** key down*/    
+    @Override 
+    public boolean onKeyDown(int keyCode, KeyEvent event) 
+    {
     	if(KeySetActivity.inst!=null&&KeySetActivity.inst.onHardwareKey(event))
     		return true;
     	if(m_kp!=null&&m_kp.onKeyDown(event, getCurrentInputEditorInfo()))
     		return true;
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_BACK:
-            {
-                if (event.getRepeatCount() == 0 && st.kv() != null) {
-                	if(handleBackPress())
-                		return true;
-                }
-                break;
-            }
-            case KeyEvent.KEYCODE_DEL:
-                // Special handling of the delete key: if we currently are
-                // composing text for the user, we want to modify that instead
-                // of let the application to the delete itself.
-                if (mComposing.length() > 0) {
-                    onKey(Keyboard.KEYCODE_DELETE, null);
-                    return true;
-                }
-                break;
-                
-            case KeyEvent.KEYCODE_ENTER:
-                // Let the underlying text editor always handle these.
-                return false;
-                
-            default:
-                // For all other keys, if we want to do transformations on
-                // text being entered with a hard keyboard, we need to process
-                // it and do the appropriate action.
-                if (PROCESS_HARD_KEYS) {
-                    if (keyCode == KeyEvent.KEYCODE_SPACE
-                            && (event.getMetaState()&KeyEvent.META_ALT_ON) != 0) {
-                        // A silly example: in our input method, Alt+Space
-                        // is a shortcut for 'android' in lower case.
-                        InputConnection ic = getCurrentInputConnection();
-                        if (ic != null) {
-                            // First, tell the editor that it is no longer in the
-                            // shift state, since we are consuming this.
-                            ic.clearMetaKeyStates(KeyEvent.META_ALT_ON);
-                            keyDownUp(KeyEvent.KEYCODE_A);
-                            keyDownUp(KeyEvent.KEYCODE_N);
-                            keyDownUp(KeyEvent.KEYCODE_D);
-                            keyDownUp(KeyEvent.KEYCODE_R);
-                            keyDownUp(KeyEvent.KEYCODE_O);
-                            keyDownUp(KeyEvent.KEYCODE_I);
-                            keyDownUp(KeyEvent.KEYCODE_D);
-                            // And we consume this event.
-                            return true;
-                        }
-                    }
-                    if (mPredictionOn && translateKeyDown(keyCode, event)) {
-                        return true;
-                    }
-                }
-        }
-        return super.onKeyDown(keyCode, event);
+    	if(keyCode==KeyEvent.KEYCODE_BACK&&event.getRepeatCount()==0&&handleBackPress())
+    		return true;
+        return false;//super.onKeyDown(keyCode, event);
     }
-    @Override
-	public boolean onKeyLongPress (int keyCode, KeyEvent event)
-    {
-    	if(m_kp!=null)
-    		return m_kp.onKeyLong(event, getCurrentInputEditorInfo());
-    	return false;
-    }
-    /**
-     * Use this to monitor key events being delivered to the application.
-     * We get first crack at them, and can either resume them or let them
-     * continue to the app.
-     */
+/** Ловим keyUp */    
     @Override 
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
+    public boolean onKeyUp(int keyCode, KeyEvent event) 
+    {
+    	
     	if(KeySetActivity.inst!=null&&KeySetActivity.inst.onHardwareKey(event))
     		return true;
     	if(m_kp!=null&&m_kp.onKeyUp(event, getCurrentInputEditorInfo()))
     		return true;
-        if (PROCESS_HARD_KEYS) {
-            if (mPredictionOn) {
-                mMetaState = MetaKeyKeyListener.handleKeyUp(mMetaState,
-                        keyCode, event);
-            }
-        }
-        return super.onKeyUp(keyCode, event);
+        return false;//super.onKeyUp(keyCode, event);
     }
-
-    /**
+/*    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) 
+    {
+    	if(m_kp!=null)
+    		return m_kp.onLongPress();
+    	return super.onKeyLongPress(keyCode, event);
+    };
+*/    /**
      * Helper function to commit any text being composed in to the editor.
      */
     private void commitTyped(InputConnection inputConnection) {

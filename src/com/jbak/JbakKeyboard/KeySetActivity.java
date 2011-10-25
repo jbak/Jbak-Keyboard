@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
@@ -31,9 +32,9 @@ public class KeySetActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		inst = this;
-		View v = getLayoutInflater().inflate(R.layout.key_set_main, null);
-		m_ListView = (ListView)v.findViewById(R.id.ks_key_list);
-		v.findViewById(R.id.ks_add_key).setOnClickListener(new OnClickListener()
+		m_MainView = getLayoutInflater().inflate(R.layout.key_set_main, null);
+		m_ListView = (ListView)m_MainView.findViewById(R.id.ks_key_list);
+		m_MainView.findViewById(R.id.ks_add_key).setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
@@ -47,6 +48,7 @@ public class KeySetActivity extends Activity
 		{
 			m_ListView.setAdapter(new KeysAdapter(this, c));
 		}
+		onListChanged();
 		m_ListView.setOnItemClickListener(new OnItemClickListener()
 		{
 
@@ -58,7 +60,7 @@ public class KeySetActivity extends Activity
 				runKeySet();
 			}
 		});
-		setView(new BackEntry(v, new st.UniObserver()
+		setView(new BackEntry(m_MainView, new st.UniObserver()
 		{
 			@Override
 			int OnObserver(Object param1, Object param2)
@@ -69,6 +71,22 @@ public class KeySetActivity extends Activity
 		}));
 		super.onCreate(savedInstanceState);
 		m_appList = new AppsList(this);
+	}
+	void onListChanged()
+	{
+		boolean bEmpty=m_ListView.getAdapter()==null||m_ListView.getAdapter().getCount()==0;
+		View v = m_MainView.findViewById(R.id.empty_text);
+		ViewGroup.LayoutParams lp = v.getLayoutParams();
+		if(bEmpty)
+		{
+			lp.height =ViewGroup.LayoutParams.WRAP_CONTENT; 
+		}
+		else
+		{
+			lp.height =0;
+		}
+		v.setLayoutParams(lp);
+		
 	}
 	@Override
 	public void onBackPressed()
@@ -83,7 +101,7 @@ public class KeySetActivity extends Activity
 		m_BackStack.remove(index);
 		be.onBack();
 		--index;
-		setContentView(m_BackStack.get(index).view);
+		m_BackStack.get(index).setView(this);
 	};
 	@Override
 	protected void onDestroy()
@@ -95,7 +113,7 @@ public class KeySetActivity extends Activity
 	void setView(BackEntry be)
 	{
 		m_BackStack.add(be);
-		setContentView(be.view);
+		be.setView(this);
 	}
 /** Сохраняет текущую клавишу */	
 	void saveKey()
@@ -115,6 +133,7 @@ public class KeySetActivity extends Activity
 		}
 		if(KeyPressProcessor.inst!=null)
 			KeyPressProcessor.inst.loadKeys();
+		onListChanged();
 	}
 /** Запускает настройку клавиши <br>
 *	Если в текущей клавише m_key keycode>0 - то выводим на экран редактирование клавиши
@@ -158,6 +177,7 @@ public class KeySetActivity extends Activity
 		}
 		setView(new BackEntry(v, obs));
 	}
+/** Возвращает */	
 	String getKeyString(int code,char disp)
 	{
 		String s = null;
@@ -179,6 +199,7 @@ public class KeySetActivity extends Activity
 		}	
 		return s;
 	}
+/** Вызывается при редактировании клавиши, если m_key заполнена*/	
 	void editKey()
 	{
 		m_ksKey.setText(getKeyString(m_key.keycode, m_key.keychar));	
@@ -220,6 +241,18 @@ public class KeySetActivity extends Activity
 			view = v;
 			onClose = close;
 		}
+		void setView(Activity act)
+		{
+			act.setContentView(view);
+			act.onContentChanged();
+			InputMethodManager imm = (InputMethodManager)act.getSystemService(INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromInputMethod(view.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+			boolean bAct = imm.isActive(view);
+			if(bAct)
+			{
+				boolean bAcc = imm.isAcceptingText();
+			}
+		}
 		void onBack()
 		{
 			if(onClose!=null)
@@ -232,6 +265,7 @@ public class KeySetActivity extends Activity
 /** Действие для выполнения при закрытии окна  */		
 		st.UniObserver onClose;
 	}
+/** Устанавливает программу для запуска в  текущем окне настроек*/	
 	void setApp(ComponentName cn)
 	{
 		if(cn==null)
@@ -242,6 +276,11 @@ public class KeySetActivity extends Activity
 		((ImageView)m_ksAW.findViewById(R.id.app_icon)).setImageDrawable(me.icon);
 		((TextView)m_ksAW.findViewById(R.id.app_title)).setText(me.text);
 	}
+	@Override
+	public void onConfigurationChanged(android.content.res.Configuration newConfig) 
+	{
+		super.onConfigurationChanged(newConfig);
+	};
 /** Устанавливает выбор действия на слой */	
 	void setAction(int action)
 	{
@@ -360,6 +399,7 @@ public class KeySetActivity extends Activity
 		@Override
 		public void onNothingSelected(AdapterView<?> arg0){}
 	};
+	
 /** Стек окон*/	
 	ArrayList<BackEntry> m_BackStack = new ArrayList<KeySetActivity.BackEntry>();
 /** Флаги статусов*/	
@@ -381,4 +421,5 @@ public class KeySetActivity extends Activity
 	Spinner m_spinAction;
 	Spinner m_spinKeyPressType;
 	Spinner m_spinType;
+	View m_MainView;
 }

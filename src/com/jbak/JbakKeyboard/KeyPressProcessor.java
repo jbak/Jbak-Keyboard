@@ -3,12 +3,16 @@ package com.jbak.JbakKeyboard;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Timer;
+import java.util.TimerTask;
 
+import android.app.Service;
 import android.database.Cursor;
+import android.graphics.PixelFormat;
 import android.os.SystemClock;
-import android.view.HapticFeedbackConstants;
+import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 
@@ -19,8 +23,9 @@ public class KeyPressProcessor
 	static KeyPressProcessor inst;
 	public KeyPressProcessor()
 	{
-		m_v = new View(ServiceJbKbd.inst);
 		inst = this;
+//		m_console = KbdConsole.getConsole();
+		m_vibro = (Vibrator)ServiceJbKbd.inst.getSystemService(Service.VIBRATOR_SERVICE);
 		loadKeys();
 	}
 	void destroy()
@@ -29,86 +34,136 @@ public class KeyPressProcessor
 	}
 	boolean onKeyDown(KeyEvent evt,EditorInfo ei)
 	{
-		if(evt.getRepeatCount()>0)
-			return false;
-		if(st.has(evt.getFlags(),KeyEvent.FLAG_VIRTUAL_HARD_KEY))
-			st.log("keyDown hard"+KeySet.getKeyName(evt.getKeyCode()));
-		else	
-			st.log("keyDown soft"+KeySet.getKeyName(evt.getKeyCode()));
-		m_bLongProcessed = false;
-		m_ksShort = getKey(evt, false, isEditor(ei));
-		m_ksLong = getKey(evt, true, isEditor(ei));
-		if(m_ksLong==null&&m_ksShort==null)
-		{
-			return false;
-		}
-		if(m_ksLong!=null)
-		{
-			evt.startTracking();
-/*			m_timer = new Timer();
-			m_timer.schedule(new TimerTask()
-			{
-				@Override
-				public void run()
-				{
-					onLongPress();
-				}
-			}, 500);
-*/		}
-		return true;
-	}
-	void onLongPress()
-	{
-/*		if(m_ksLong==null)
-			return;
-		m_bLongProcessed = true;
-		m_ksShort = null;
-		m_ksLong.run();
-		return;
-*/	}
-/** */
-	boolean onKeyUp(KeyEvent evt,EditorInfo ei)
-	{
-		if(st.has(evt.getFlags(),KeyEvent.FLAG_VIRTUAL_HARD_KEY))
-			st.log("keyUp hard"+KeySet.getKeyName(evt.getKeyCode()));
-		else	
-			st.log("keyUp soft"+KeySet.getKeyName(evt.getKeyCode()));
-		if(m_timer!=null)
-		{
-			m_timer.cancel();
-			m_timer = null;
-		}
-		if(m_ksLong!=null&&m_bLongProcessed)
+		int rep = evt.getRepeatCount(); 
+		st.log("keyDown "+KeySet.getKeyName(evt.getKeyCode())+" "+rep);
+		if(rep==0)
 		{
 			m_bLongProcessed = false;
-			m_ksShort = null;
-			m_ksLong = null;
+			m_ksShort = getKey(evt, false, isEditor(ei));
+			m_ksLong = getKey(evt, true, isEditor(ei));
+			if(m_ksShort==null&&m_ksLong==null)
+			{
+				return false;
+			}
+			if(m_ksLong!=null)
+			{
+				//evt.startTracking();
+			}
 			return true;
 		}
+		else if(rep==1)
+		{
+			return onLongPress();
+		}
+		else if(rep>1&&m_ksLong!=null)
+			return true;
+		return false;
+	}
+	boolean onLongPress()
+	{
+		if(m_ksLong!=null)
+		{
+			try{
+			m_vibro.vibrate(25);
+			m_ksLong.run();
+			}catch (Throwable e) {
+				st.logEx(e);
+			}
+			m_bLongProcessed = true;
+			st.log("m_bLongProcessed = true");
+		}
+		return m_ksLong!=null;
+	}
+	/** */
+	boolean onKeyUp(KeyEvent evt,EditorInfo ei)
+	{
+		st.log("keyUp "+KeySet.getKeyName(evt.getKeyCode()));
 		if(m_ksShort!=null)
 		{
 			m_ksShort.run();
 			m_ksShort = null;
+			st.log("true");
 			return true;
 		}
 		if(m_ksLong!=null)
 		{
-			// Ждали длинного нажатия, но не дождались, возвращаем короткое
-			// Если нажата back - то проверяем наличие открытой софт-клавиатуры
-			if(evt.getKeyCode()==KeyEvent.KEYCODE_BACK&&
-					ServiceJbKbd.inst!=null&&
-					ServiceJbKbd.inst.handleBackPress())
+			if(m_bLongProcessed)
 			{
 				return true;
 			}
-			sendKeyEvent(evt.getKeyCode());
-			return true;
+			else
+			{
+				// Ждали длинного нажатия, но не дождались, возвращаем короткое
+				// Если нажата back - то проверяем наличие открытой софт-клавиатуры
+				if(evt.getKeyCode()==KeyEvent.KEYCODE_BACK&&
+						ServiceJbKbd.inst!=null&&
+						ServiceJbKbd.inst.handleBackPress())
+				{
+					return true;
+				}
+				sendKeyEvent(evt);
+				return true;
+			}
 		}
 		return false;
 	}
-/** Отправляет нажатие клавиши системе */	
-	void sendKeyEvent(final int keyEventCode)
+	boolean inputFromCmdLine(KeyEvent evt)
 	{
+		if(m_console==null||!m_console.runKeyCode(evt.getKeyCode()))
+			return false;
+		mBlockedKey = evt.getKeyCode();
+		return true;
+	}
+/** Этот мегакосстыль разруливает ситуацию с пропаданием фокуса окна в некоторых случаях<br>
+ * Создаём временное окно нулевого размера с фокусом ввода, вызываем и сразу же убираем. Пиздец, но работает */	
+	void addNullView(final KeyEvent ke)
+	{
+		final WindowManager wm = (WindowManager)ServiceJbKbd.inst.getSystemService(Service.WINDOW_SERVICE);
+		WindowManager.LayoutParams lp = 
+			new WindowManager.LayoutParams(0, 0, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+		final View v = new View(ServiceJbKbd.inst);
+		wm.addView(v,lp);
+		st.UniObserver obs = new st.UniObserver()
+		{
+			@Override
+			int OnObserver(Object param1, Object param2)
+			{
+				m_RunKey = ke.getKeyCode();
+				wm.removeView(v);
+				return 0;
+			}
+		};
+		st.SyncAsycOper ao = new st.SyncAsycOper(obs)
+		{
+			@Override
+			void makeOper(UniObserver obs)
+			{
+				try
+				{
+					Thread.currentThread().join(30);
+				} catch (Throwable e)
+				{
+					st.logEx(e);
+				}
+			}
+		};
+		ao.startAsync();
+	}
+	void onStartInput()
+	{
+		if(m_RunKey!=0)
+		{
+			ServiceJbKbd.inst.sendDownUpKeyEvents(m_RunKey);
+			m_RunKey = 0;
+		}
+	}
+	int m_RunKey = 0;
+/** Отправляет нажатие клавиши системе */	
+	void sendKeyEvent(KeyEvent evt)
+	{
+		addNullView(evt);
+/*		final int keyEventCode = evt.getKeyCode();
+		final int keyEventScanCode = evt.getScanCode();
 		st.SyncAsycOper op = new st.SyncAsycOper(null)
 		{
 			@Override
@@ -117,17 +172,27 @@ public class KeyPressProcessor
 		        InputConnection ic = ServiceJbKbd.inst.getCurrentInputConnection();
 		        if (ic == null) return;
 		        long eventTime = SystemClock.uptimeMillis();
-		        ic.sendKeyEvent(new KeyEvent(eventTime, eventTime,
-		                KeyEvent.ACTION_DOWN, keyEventCode, 0, 0, 0, 0,
-		                KeyEvent.FLAG_SOFT_KEYBOARD));
-		        ic.sendKeyEvent(new KeyEvent(SystemClock.uptimeMillis(), eventTime,
-		                KeyEvent.ACTION_UP, keyEventCode, 0, 0, 0, 0,
-		                KeyEvent.FLAG_SOFT_KEYBOARD));
+		        boolean bSendDown = ic.sendKeyEvent(new KeyEvent(eventTime, eventTime,
+		                KeyEvent.ACTION_DOWN, keyEventCode, 0, 0, 0, keyEventScanCode,
+		                KeyEvent.FLAG_VIRTUAL_HARD_KEY|KeyEvent.FLAG_KEEP_TOUCH_MODE));
+		        boolean bSendUp = ic.sendKeyEvent(new KeyEvent(SystemClock.uptimeMillis()+1, eventTime,
+		                KeyEvent.ACTION_UP, keyEventCode, 0, 0, 0, keyEventScanCode,
+		                KeyEvent.FLAG_VIRTUAL_HARD_KEY|KeyEvent.FLAG_KEEP_TOUCH_MODE));
+		        if(!bSendDown)
+		        {
+		        	st.log("no down");
+		        }
+		        if(!bSendUp)
+		        {
+		        	st.log("no down");
+		        }
 			}
 		};
 		op.startAsync();
-	}
+*/	}
+	
 /** Обработчик удержания клавиши */	
+/*	
 	boolean onKeyLong(KeyEvent evt,EditorInfo ei)
 	{
 		st.log("keyLong "+KeySet.getKeyName(evt.getKeyCode()));
@@ -139,8 +204,10 @@ public class KeyPressProcessor
 		m_bLongProcessed = true;
 		m_ksShort = null;
 		m_ksLong.run();
+		m_ksLong = null;
 		return true;
 	}
+*/	
 /** Возвращает true, если ei содержит сведения о поле редактирования*/	
 	final boolean isEditor(EditorInfo ei)
 	{
@@ -184,4 +251,7 @@ public class KeyPressProcessor
 	boolean m_bLongProcessed = false;
 	boolean m_bKeyEmulation = false;
 	View m_v;
+	int mBlockedKey = 0;
+	KbdConsole m_console;
+	Vibrator m_vibro;
 }
