@@ -3,6 +3,10 @@
     <!-- Title for Latin keyboard  -->
     <string name="ime_name">Jbak Keyboard</string>
     <string name="ime_settings">Настройки Jbak Keyboard</string>
+
+    <!-- Symbols that are commonly considered word separators in this language -->
+    <string name="word_separators">\u0020.,;:!?\n()[]*&amp;@{}/&lt;&gt;_+=|&quot;</string>
+    
     <!-- Labels on soft keys -->
     <string name="label_go_key">Go</string>
     <string name="label_next_key">След</string>
@@ -13,6 +17,96 @@
     <string name="set_key_height_portrait_desc">Изменение высоты клавиш в портретном режиме </string>
     <string name="set_key_height_landscape">Высота клавиш - ландшафт</string>
     <string name="set_key_height_landscape_desc">Изменение высоты клавиш в ландшафтном режиме</string>
+
+    <string name="set_keys">Управление клавишами</string>
+    <string name="set_keys_desc">Пользовательская настройка клавиш (кроме Home и Power)</string>
+    <string name="set_languages">Выбор языков</string>
+    <string name="set_languages_desc">Выбор языков для переключения и раскладок клавиатур</string>
+    <string name="set_key_voice">Вибрация</string>
+    <string name="set_key_voice_desc">Настройка вибрации при нажатии клавиш</string>
+    <string name="set_key_short_vibro">Вибрация при нажатии</string>
+    <string name="set_key_short_vibro_desc">Если включено - экран вибрирует при нажатии</string>
+    <string name="set_key_long_vibro">Вибрация при удержании</string>
+    <string name="set_key_long_vibro_desc">Если включено - экран вибрирует при долгом нажатии клавиши</string>
+    <string name="set_select_keyboard">Выбор клавиатуры</string>
+    
+    <string name="mm_templates">Шаблоны</string>
+    <string name="mm_multiclipboard">Буфер обмена</string>
     <string name="mm_settings">Настройки Jbak Keyboard</string>
     <string name="mm_close">Закрыть</string>
+
+    <string name="ok">Ok</string>
+    <string name="cancel">Отмена</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="save">Сохранить</string>
+    <string name="delete">Удалить</string>
+    
+    <string name="tpl_new_template">Новый\nшаблон</string>
+    <string name="tpl_new_folder">Новая\nпапка</string>
+    <string name="tpl_folder_name">Введите название папки</string>
+    <string name="tpl_name">Название шаблона</string>
+    <string name="tpl_text">Текст шаблона</string>
+    <string name="tpl_editor">Редактор шаблона</string>
+    <string name="tpl_save">Сохранить</string>
+    <string name="tpl_spec_options">Спец. инструкции</string>
+    <string name="tpl_fields_empty">Все поля шаблона должны быть заполнены!</string>
+    <string name="tpl_delete">Вы хотите удалить \"%s\"?</string>
+
+<!-- List for menu with special template instructions -->    
+    <string-array name="tpl_spec_instructions">
+        <item><b>$select</b> - инструкция заменяется на текст текущего выделения</item>
+        <item><b>$selword</b> - если ничего не выбрано - заменяется на слово под курсором, иначе - на текст выделения</item>
+        <item><b>$selline</b> - если ничего не выбрано - заменяется на текст текущего абзаца, иначе - на текст выделения</item>
+        <item><b>$$</b> - символ $ </item>
+    </string-array>
+
+<!-- Text, which shown to user when key list is empty -->    
+    <string name="ks_empty_keys">Список клавиш пуст. Вы можете добавить действие для клавиши, которое будет выполняться, пока Jbak Keyboard назначен вводом по умолчанию</string>
+
+    <string name="ks_add_key">Новая клавиша</string>
+    <string name="ks_press_key">Нажмите клавишу...</string>
+    <string name="ks_type">Выполняетс</string>
+    <string-array name="ks_type_variants">
+        <item>Всегда</item>
+        <item>В полях ввода</item>
+        <item>Не в текстовых полях</item>
+    </string-array>
+    <string name="ks_press_type">Тип нажатия</string>
+    <string name="ks_press_type_short">Короткое нажатие</string>
+    <string name="ks_press_type_long">Удержание клавиши</string>
+    
+    <string-array name="ks_press_type_variants">
+        <item>@string/ks_press_type_short</item>
+        <item>@string/ks_press_type_long</item>
+    </string-array>
+    <string name="ks_action">Действие</string>
+    <string name="ks_action_run_app">Запуск программы</string>
+    <string name="ks_action_input_text">Ввод текста</string>
+    <string-array name="ks_action_variants">
+        <item>По умолчанию</item>
+        <item>@string/ks_action_run_app</item>
+        <item>@string/ks_action_input_text</item>
+    </string-array>
+    <string name="ks_select_app">Выбор программы</string>
+    <string name="ks_app_for_launch">Программа для запуска</string>
+    <string name="ks_text_for_input">Текст для ввода</string>
+
+    
+<!-- Known key name format. If key is letter or one of other known key (see below) -->    
+    <string name="ks_char_label">Клавиша \"%s\"</string>
+<!-- Unknown key name format. %d replaced with keycode integer -->    
+    <string name="ks_non_char_label">Клавиша с кодом "%d"</string>
+
+<!-- Names for various keyboards -->
+    <string name="kbd_name_qwerty">Клавиатура Qwerty</string>    
+    <string name="kbd_name_qwerty_tablet">Qwerty для планшетов</string>
+        
+<!-- Names for some keys -->    
+    <string name="k_search">Поиск</string>
+    <string name="k_back">Назад</string>
+    <string name="k_menu">Меню</string>
+    <string name="k_volumeDown">Громкость +</string>
+    <string name="k_volumeUp">Громкость -</string>
+
 </resources>

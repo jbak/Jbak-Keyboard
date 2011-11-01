@@ -97,8 +97,8 @@ public class IKeyboard
     	return null;
     }
 //-----------------------------------------------------------------------------    
-/** ¬озвращает €зык по коду клавиатуры из ресурсов */    
-    public static Keybrd langForId(int rid)
+/** ¬озвращает клавиатуру по коду клавиатуры из ресурсов */    
+    public static Keybrd kbdForId(int rid)
     {
     	for(int i=0;i<arKbd.length;i++)
     	{
@@ -108,4 +108,5 @@ public class IKeyboard
     	}
     	return null;
     }
+    public static final int KEYCODE_LANG_CHANGE = -20;
 }

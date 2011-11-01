@@ -38,6 +38,7 @@ import android.view.HapticFeedbackConstants;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
 
 public class JbKbdView extends KeyboardView {
@@ -206,7 +207,7 @@ public class JbKbdView extends KeyboardView {
 	void handleShift()
 	{
 		int rid = getCurKeyboard().resId;
-		if(st.langForId(rid)!=null)
+		if(st.kbdForId(rid)!=null)
 		{
 	    	if(st.has(m_state, STATE_TEMP_SHIFT))
 	    	{
@@ -271,6 +272,26 @@ public class JbKbdView extends KeyboardView {
 			bPortrait = false;
 		m_KeyHeight = pref.getInt(bPortrait?st.PREF_KEY_HEIGHT_PORTRAIT:st.PREF_KEY_HEIGHT_LANDSCAPE, 0);
 	}
+	@Override
+	public void setKeyboard(Keyboard keyboard) 
+	{
+		m_state = st.rem(m_state, STATE_CAPS_LOCK);
+		m_state = st.rem(m_state, STATE_TEMP_SHIFT);
+		super.setKeyboard(keyboard);
+	}
+    public void handleLangChange()
+    {
+    	String ls[]=st.getLangsArray(st.c());
+    	int f = st.searchStr(st.getCurLang(), ls);
+    	String newLang = st.defKbd().lang.name;
+    	if(f==ls.length-1)
+    		newLang = ls[0];
+    	else if(f<ls.length-1)
+    		newLang = ls[f+1];
+    	Keybrd k = st.kbdForName(newLang);
+    	setKeyboard(new JbKbd(getContext(), k.resId));
+    	st.saveCurLang();
+    }
 	
 /** Высота клавиш */	
 	int m_KeyHeight =0;

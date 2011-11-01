@@ -3,6 +3,7 @@ package com.jbak.JbakKeyboard;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.os.Bundle;
 import android.view.View;
@@ -208,6 +209,16 @@ public class SetKbdActivity extends Activity
 		@Override
 		public void onKey(int primaryCode, int[] keyCodes)
 		{
+			if(st.kv()==null)
+				return;
+			if(primaryCode==Keyboard.KEYCODE_SHIFT)
+			{
+				st.kv().handleShift();
+			}
+			if(primaryCode==IKeyboard.KEYCODE_LANG_CHANGE&&m_curAction!=st.SET_LANGUAGES_SELECTION)
+			{
+				st.kv().handleLangChange();
+			}
 		}
 	};
 }

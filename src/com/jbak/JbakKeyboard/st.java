@@ -56,9 +56,12 @@ public class st extends IKeyboard
             Log.e(TAG, e.getMessage());
         Log.e(TAG, Log.getStackTraceString(e));
     }
-/** Возвращает язык для языка с именем langName, берется из {@link Locale#getLanguage()} */    
+/** Возвращает клавиатуру для языка с именем langName */    
     public static Keybrd kbdForName(String langName)
     {
+    	int index = pref().getInt(st.PREF_KEY_LANG_KBD+langName, -1);
+    	if(index>=0)
+    		return arKbd[index];
     	for(int i=0;i<arKbd.length;i++)
     	{
     		Keybrd l = arKbd[i];
@@ -77,13 +80,10 @@ public class st extends IKeyboard
     	JbKbd kb = curKbd();
     	if(kb==null)
     		return;
-    	Keybrd l = langForId(kb.resId);
+    	Keybrd l = kbdForId(kb.resId);
     	if(l==null)
     		return;
-        SharedPreferences pref =PreferenceManager.getDefaultSharedPreferences(JbKbdView.inst.getContext());
-        pref.edit()
-        	.putInt(st.PREF_KEY_LAST_LANG, l.lang.lang)
-        	.commit();
+        pref().edit().putString(st.PREF_KEY_LAST_LANG, l.lang.name).commit();
     }
 /** Возвращает текущий ресурс для qwerty-клавиатуры */    
     public static int getCurQwertyRes()
@@ -97,16 +97,7 @@ public class st extends IKeyboard
         		return l.resId;
         	return defKbd().resId;
         }
-        int lang = pref.getInt(PREF_KEY_LAST_LANG, defKbd().lang.lang);
-        String ln = arLangs[lang].name;
-        int idLang = pref.getInt(PREF_KEY_LANG_KBD+ln, -1);
-        if(idLang>=0)return arKbd[idLang].resId;
-        for(Keybrd k:arKbd)
-        {
-        	if(k.lang.lang==lang)
-        		return k.resId;
-        }
-        return defKbd().resId;
+        return kbdForName(pref.getString(PREF_KEY_LAST_LANG, defKbd().lang.name)).resId;
     }
 /** Возвращает текущую клавиатуру или null*/    
     public static JbKbd curKbd()
@@ -198,6 +189,11 @@ public class st extends IKeyboard
     	if(kb!=null&&!bForce&&getCurQwertyRes()==kb.resId)
     		return;
     	JbKbdView.inst.setKeyboard(new JbKbd(st.c(),getCurQwertyRes()));
+    	saveCurLang();
+    }
+    public static String getCurLang()
+    {
+    	return pref().getString(PREF_KEY_LAST_LANG, defKbd().lang.name);
     }
 /** Возвращает текущий запущеный {@link JbKbdView}*/    
     public static JbKbdView kv()
@@ -221,8 +217,7 @@ public class st extends IKeyboard
 /** Возвращает массив языков для переключения */    
     public static String[] getLangsArray(Context c)
     {
-    	SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(c);
-    	String langs = p.getString(st.PREF_KEY_LANGS, st.getDefaultLangString());
+    	String langs = pref().getString(st.PREF_KEY_LANGS, st.getDefaultLangString());
     	return langs.split(",");
     }
 /** Возвращает позицию строки search в массиве ar, или -1, если не найдено*/    
@@ -320,7 +315,7 @@ public class st extends IKeyboard
 /** Ключ, boolean, хранящий значение "включить/отключить просмотр клавиш" */    
     public static final String PREF_KEY_PREVIEW = "ch_preview";
 /** Ключ, int ,хранящий код последней используемой клавиатуры */    
-    public static final String PREF_KEY_LAST_LANG = "lastLang";
+    public static final String PREF_KEY_LAST_LANG = "lastLng";
 /** Ключ, int, хранящий высоту клавиш в портретном режиме */    
     public static final String PREF_KEY_HEIGHT_PORTRAIT = "kh";
 /** Ключ, int, хранящий высоту клавиш в ландшафтном режиме */    

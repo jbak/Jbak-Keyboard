@@ -378,15 +378,16 @@ public class ServiceJbKbd extends InputMethodService
         {
         	onOptions();
         } 
-        else if (primaryCode == -20) {
-        	onLangChange();
+        else if (primaryCode == IKeyboard.KEYCODE_LANG_CHANGE) {
+        	st.kv().handleLangChange();
+        	openWords();
         } 
         
         else if (primaryCode == Keyboard.KEYCODE_MODE_CHANGE
                 && JbKbdView.inst != null) {
         	JbKbd kb = st.curKbd();
         	int rid = kb.resId;
-            if (st.langForId(rid)==null) {
+            if (st.kbdForId(rid)==null) {
                 st.setQwertyKeyboard();
             } else {
                 st.setSymbolKeyboard(false);
@@ -522,32 +523,6 @@ public class ServiceJbKbd extends InputMethodService
     }
     
     public void onRelease(int primaryCode) {
-    }
-    public void onLangChange()
-    {
-    	String ls[]=st.getLangsArray(this);
-    	Keybrd l = st.langForId(st.curKbd().resId);
-    	int f = st.searchStr(l.lang.name, ls);
-    	String newLang = st.defKbd().lang.name;
-    	if(f==ls.length-1)
-    	{
-    		newLang = ls[0];
-    	}
-    	else if(f<ls.length-1)
-    	{
-    		newLang = ls[f+1];
-    	}
-    	int lang = st.LANG_EN;
-    	for(Lang lng:st.arLangs)
-    	{
-    		if(lng.name.equals(newLang))
-    		{
-    			lang = lng.lang;
-    		}
-    	}
-    	st.pref().edit().putInt(st.PREF_KEY_LAST_LANG, lang).commit();
-    	st.kv().setKeyboard(new JbKbd(this, st.getCurQwertyRes()));
-    	openWords();
     }
     public void onOptions()
     {
