@@ -453,6 +453,7 @@ public class ServiceJbKbd extends InputMethodService
 
     
     private void handleCharacter(int primaryCode, int[] keyCodes) {
+    	InputConnection ic = getCurrentInputConnection();
         if (isInputViewShown()) {
             if (JbKbdView.inst.isUpperCase()) {
                 primaryCode = Character.toUpperCase(primaryCode);
@@ -463,8 +464,9 @@ public class ServiceJbKbd extends InputMethodService
             getCurrentInputConnection().setComposingText(mComposing, 1);
             updateCandidates();
         } else {
-            getCurrentInputConnection().commitText(
-                    String.valueOf((char) primaryCode), 1);
+        	onText(String.valueOf((char) primaryCode));
+//            ic.commitText(, 1);
+//            updateFullscreenMode();
         }
         if(st.has(JbKbdView.inst.m_state, JbKbdView.STATE_TEMP_SHIFT))
         {
@@ -683,7 +685,7 @@ public class ServiceJbKbd extends InputMethodService
     @Override
     public boolean onExtractTextContextMenuItem(int id) 
     {
-    	return false;
+    	return super.onExtractTextContextMenuItem(id);
     };
     void handleEnd(boolean bSel)
     {
