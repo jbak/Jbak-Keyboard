@@ -56,6 +56,7 @@ public class JbKbd extends Keyboard {
     	{
     		sp.edit().putInt(st.PREF_KEY_DEF_HEIGHT, getHeightKey()).commit();
     	}
+    	KeyDrw.dm.finish();
     }
     public int getHeightKey()
     {
@@ -69,6 +70,8 @@ public class JbKbd extends Keyboard {
     @Override
     protected Key createKeyFromXml(Resources res, Row parent, int x, int y, 
             XmlResourceParser parser) {
+    	if(getKeys().size()==0)
+    		KeyDrw.dm = new KeyDrw.DrawMetrics();
         Key key = new LatinKey(res, parent, x, y, parser);
         if (key.codes[0] == 10) {
             mEnterKey = key;
@@ -122,93 +125,6 @@ public class JbKbd extends Keyboard {
     			return (LatinKey)k;
     	}
     	return null;
-    }
-/** —обственна€ картинка дл€ клавиш. √енерируетс€ на основе {@link Key#label}*/    
-    static class KeyDrw extends RectShape
-    {
-    	public static final String DRW_PREFIX = "d_"; 
-/**  онструктор
- * @param lab “екст метки, {@link Key#label}
- * @param w Ўирина клавиши, {@link Key#width}
- * @param h ¬ысота клавиши. ¬сегда одинакова€, поскольку не используютс€ клавиши разной высоты
- */
-    	public KeyDrw(CharSequence lab,int w,int h,boolean bPreview)
-		{
-    		m_bPreview = bPreview;
-        	int f = lab.toString().indexOf('\n');
-        	if(f>-1)
-        	{
-        		txtSmall = lab.subSequence(0, f).toString();
-        		bmp = st.getBitmapByCmd(st.getCmdByLabel(txtSmall));
-        		txtMain = lab.subSequence(f+1, lab.length()).toString();
-        	}
-        	else
-        	{
-        		txtMain = lab.toString();
-        		txtSmall = null;
-        	}
-        	rb = new Rect(0,0,w,h);
-		}
-    	Rect rb;
-		@Override
-		public void draw(Canvas canvas, Paint paint)
-		{
-//			Rect rb = canvas.getClipBounds();
-			
-			Paint p1 = JbKbdView.inst.m_tpMainKey;
-			if(m_bPreview)
-			{
-				p1 = JbKbdView.inst.m_tpPreview;
-			}
-			else
-			{
-				canvas.translate(0-rb.width()/2, 0-rb.height()/2);
-				if(txtMain.length()>1)
-				{
-					p1 = st.kv().m_tpLabel;
-				}
-			}
-			Paint p2 = JbKbdView.inst.m_tpSmallKey;
-			if(txtMain.length()==1)
-			{
-				if(JbKbdView.inst.isUpperCase())
-					txtMain = txtMain.toUpperCase();
-				else
-					txtMain = txtMain.toLowerCase();
-			}
-// txtMain всегда рисуем по центру canvas;
-// txtSmall, если позвол€ет остаток от верха txtMain до верха canvas - рисуем выше.
-// ≈сли не позвол€ет - то правее
-			float mw = p1.measureText(txtMain);
-			float y = rb.height()/2+(0-p1.ascent())/2;
-			float x = rb.width()/2-mw/2;
-			canvas.drawText(txtMain, x, y, p1);
-			if(txtSmall!=null&&!m_bPreview)
-			{
-				if(bmp!=null)
-				{
-					x = rb.width()/2-bmp.getWidth()/2;
-					canvas.drawBitmap(bmp, x, 4, null);
-					return;
-				}
-				float asc = 0-p2.ascent()+4;
-				float sw = p2.measureText(txtSmall);
-				if(y>=p2.getTextSize())
-				{
-					x = rb.width()/2-sw/2;
-					canvas.drawText(txtSmall, x, asc, p2);
-				}
-				else
-				{
-					x+=mw+1;
-					canvas.drawText(txtSmall, x, asc, p2);
-				}
-			}
-		}
-		Bitmap bmp;
-		String txtMain;
-		String txtSmall;
-		boolean m_bPreview = false;
     }
 /** —обственный класс клавиш. ќтнаследован от системного. <br>
  * ѕри создании клавиши, если метка содержит разделитель \n - рисуетс€ собственна€ картинка через {@link KeyDrw} 

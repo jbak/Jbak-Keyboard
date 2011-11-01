@@ -17,34 +17,24 @@
 package com.jbak.JbakKeyboard;
 
 
-import android.content.ComponentName;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.PixelFormat;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
-import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
-import android.preference.PreferenceManager;
-import android.text.method.MetaKeyKeyListener;
-import android.util.Log;
 import android.view.HapticFeedbackConstants;
-import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
-import android.view.inputmethod.InputMethodManager;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
+import com.jbak.JbakKeyboard.IKeyboard.Lang;
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
 import com.jbak.JbakKeyboard.Templates.CurInput;
-import com.jbak.JbakKeyboard.st.Lang;
 
 /**
  * Example of writing an input method for a soft keyboard.  This code is
@@ -534,9 +524,9 @@ public class ServiceJbKbd extends InputMethodService
     public void onLangChange()
     {
     	String ls[]=st.getLangsArray(this);
-    	Lang l = st.langForId(st.curKbd().resId);
-    	int f = st.searchStr(l.name, ls);
-    	String newLang = st.defLang().name;
+    	Keybrd l = st.langForId(st.curKbd().resId);
+    	int f = st.searchStr(l.lang.name, ls);
+    	String newLang = st.defKbd().lang.name;
     	if(f==ls.length-1)
     	{
     		newLang = ls[0];
@@ -545,11 +535,16 @@ public class ServiceJbKbd extends InputMethodService
     	{
     		newLang = ls[f+1];
     	}
-    	l = st.langForName(newLang);
-    	if(l==null)
-    		l = st.defLang();
-    	st.kv().setKeyboard(new JbKbd(this, l.resId));
-    	st.saveCurLang();
+    	int lang = st.LANG_EN;
+    	for(Lang lng:st.arLangs)
+    	{
+    		if(lng.name.equals(newLang))
+    		{
+    			lang = lng.lang;
+    		}
+    	}
+    	st.pref().edit().putInt(st.PREF_KEY_LAST_LANG, lang).commit();
+    	st.kv().setKeyboard(new JbKbd(this, st.getCurQwertyRes()));
     	openWords();
     }
     public void onOptions()

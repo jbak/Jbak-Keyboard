@@ -6,8 +6,6 @@ import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -17,7 +15,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
-import com.jbak.JbakKeyboard.st.Lang;
+import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 
 public class JbKbdPreference extends PreferenceActivity
 {
@@ -31,7 +29,6 @@ public class JbKbdPreference extends PreferenceActivity
 	void runSetKbd(int action)
 	{
     	try{
-    		
 	    	Intent in = new Intent(Intent.ACTION_VIEW)
 	    	.setComponent(new ComponentName(this, SetKbdActivity.class))
 	    	.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -56,8 +53,6 @@ public class JbKbdPreference extends PreferenceActivity
 		pref.setOnPreferenceClickListener(new PrefRunSetKbd(st.SET_KEY_HEIGHT_LANDSCAPE, this));
 		pref = getPreferenceScreen().getPreference(3);
 		pref.setOnPreferenceClickListener(new PrefRunSetKbd(st.SET_LANGUAGES_SELECTION, this));
-		pref = getPreferenceScreen().getPreference(3);
-		pref.setOnPreferenceClickListener(new PrefRunSetKbd(st.SET_LANGUAGES_SELECTION, this));
 		pref = getPreferenceScreen().getPreference(5);
 		pref.setOnPreferenceClickListener(new PrefRunSetKbd(st.SET_KEYS, this));
 	}
@@ -67,14 +62,14 @@ public class JbKbdPreference extends PreferenceActivity
 		LinearLayout ll = (LinearLayout)v.findViewById(R.id.com_menu_container);
 		v.findViewById(R.id.com_menu_buttons).getLayoutParams().width=0;
 		String ls[] = st.getLangsArray(this);
-		for(int i=0;i<st.arLangs.length;i++)
+		for(int i=0;i<st.arKbd.length;i++)
 		{
-			Lang lang = st.arLangs[i];
-			Locale loc = new Locale(lang.name);
+			Keybrd lang = st.arKbd[i];
+			Locale loc = new Locale(lang.lang.name);
 			CheckBox chk = new CheckBox(this);
 			chk.setText(loc.getDisplayLanguage());
-			chk.setTag(lang.name);
-			if(st.searchStr(lang.name, ls)>-1)
+			chk.setTag(lang.lang.name);
+			if(st.searchStr(lang.lang.name, ls)>-1)
 				chk.setChecked(true);
 			else
 				chk.setChecked(false);
@@ -121,17 +116,18 @@ public class JbKbdPreference extends PreferenceActivity
 		@Override
 		public boolean onPreferenceClick(Preference preference)
 		{
-			if(m_act==st.SET_KEYS)
+			switch(m_act)
 			{
-				st.runAct(KeySetActivity.class,m_a);
-				return true;
+				case st.SET_KEYS: 
+					st.runAct(KeySetActivity.class,m_a);
+					break;
+				case st.SET_LANGUAGES_SELECTION: 
+					m_a.startActivity(new Intent(m_a,LangSetActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+					break;
+				default:
+					m_a.runSetKbd(m_act);
+					break;
 			}
-			if(m_act==st.SET_LANGUAGES_SELECTION)
-			{
-				m_a.selectLanguages();
-				return true;
-			}
-			m_a.runSetKbd(m_act);
 			return true;
 		}
 	}

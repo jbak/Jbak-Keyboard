@@ -58,5 +58,11 @@
 					android:label="@string/set_keys"
 					android:configChanges="orientation"
 					/>
+<!-- ============================================================================== -->
+		<activity android:name="LangSetActivity" 
+					android:excludeFromRecents="true"
+					android:label="@string/set_languages"
+					android:configChanges="orientation"
+					/>
       </application>
 </manifest>

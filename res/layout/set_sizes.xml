@@ -11,6 +11,41 @@
 	  android:layout_height="wrap_content" 
  	  android:layout_alignParentTop="true"
 	  />  
+<RelativeLayout 
+	  android:id="@+id/select_kbd"	
+	  android:layout_width="fill_parent"
+	  android:layout_height="wrap_content"
+	  android:visibility="invisible" 
+>
+<ImageButton 
+	  android:id="@+id/prew"	
+	android:src="@android:drawable/ic_media_rew"
+	  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content" 
+	  android:layout_alignParentLeft="true"
+	  android:layout_alignParentTop="true"
+/>
+<ImageButton 
+	  android:id="@+id/next"	
+	  android:src="@android:drawable/ic_media_next"
+	  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content"
+	  android:layout_gravity="right" 
+	  android:layout_alignParentRight="true"
+	  android:layout_alignParentTop="true"
+/>
+<TextView 
+	  android:id="@+id/keyboard_name"	
+	  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content" 
+	  android:layout_alignParentTop="true"
+	  android:layout_alignBottom="@id/next"
+	  android:layout_toLeftOf="@id/next"
+	  android:layout_toRightOf="@id/prew"
+	  android:gravity="center"
+	  style="@android:style/TextAppearance.Medium"
+/>
+</RelativeLayout>	  
 <com.jbak.JbakKeyboard.JbKbdView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/keyboard"
         android:layout_width="fill_parent"

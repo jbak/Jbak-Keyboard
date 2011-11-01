@@ -12,21 +12,8 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 /** Класс содержит полезные статические переменные */
-public class st
+public class st extends IKeyboard
 {
-    public static final int KBD_QWERTY_EN = 1;
-    public static final int KBD_QWERTY_RU = 2;
-    public static final int KBD_QWERTY_BE = 3;
-    public static final int KBD_QWERTY_UA = 4;
-//--------------------------------------------------------------------------
- /** Массив ресурсов для клавиатуры */    
-    public static Lang[] arLangs = 
-    {
-    	new Lang(KBD_QWERTY_EN,"en",R.xml.qwerty),
-    	new Lang(KBD_QWERTY_RU,"ru",R.xml.qwerty_ru),
-    	new Lang(KBD_QWERTY_BE,"be",R.xml.qwerty_be),
-    	new Lang(KBD_QWERTY_UA,"uk ",R.xml.qwerty_ua),
-    };
 //--------------------------------------------------------------------------
     /** Универсальный обсервер. Содержит 2 параметра m_param1 и m_param2, которые вызываются и меняются в зависимости от контекста*/
     public static abstract class UniObserver
@@ -70,12 +57,12 @@ public class st
         Log.e(TAG, Log.getStackTraceString(e));
     }
 /** Возвращает язык для языка с именем langName, берется из {@link Locale#getLanguage()} */    
-    public static Lang langForName(String langName)
+    public static Keybrd kbdForName(String langName)
     {
-    	for(int i=0;i<arLangs.length;i++)
+    	for(int i=0;i<arKbd.length;i++)
     	{
-    		Lang l = arLangs[i];
-    		if(langName.equals(l.name))
+    		Keybrd l = arKbd[i];
+    		if(langName.equals(l.lang.name))
     			return l;
     	}
     	return null;
@@ -84,77 +71,42 @@ public class st
     {
     	Log.w(TAG, txt);
     }
-    public static Lang defLang()
-    {
-    	return arLangs[0];
-    }
-/** Возвращает язык по внутреннему коду, константы KBD_ */
-    public static Lang langForCode(int kbd)
-    {
-    	for(int i=0;i<arLangs.length;i++)
-    	{
-    		Lang l = arLangs[i];
-    		if(kbd==l.kbdCode)
-    			return l;
-    	}
-    	return null;
-    }
-/** Возвращает язык по коду клавиатуры из ресурсов */    
-    public static Lang langForId(int rid)
-    {
-    	for(int i=0;i<arLangs.length;i++)
-    	{
-    		Lang l = arLangs[i];
-    		if(rid==l.resId)
-    			return l;
-    	}
-    	return null;
-    }
-/** Класс для хранения сведений о языке и ресурсе для клавиатуры */    
-    public static class Lang
-    {
-    	Lang(int kbd,String n, int r)
-    	{
-    		
-    		kbdCode = kbd;
-    		name = n;
-    		resId = r;
-    	}
-    	String name;
-    	int resId;
-    	int kbdCode;
-    }
 /** Сохраняет текущий ресурс qwerty-клавиатуры, если редактирование происходит в qwerty */    
     public static void saveCurLang()
     {
     	JbKbd kb = curKbd();
     	if(kb==null)
     		return;
-    	Lang l = langForId(kb.resId);
+    	Keybrd l = langForId(kb.resId);
     	if(l==null)
     		return;
         SharedPreferences pref =PreferenceManager.getDefaultSharedPreferences(JbKbdView.inst.getContext());
         pref.edit()
-        	.putInt(st.PREF_KEY_LAST_LANG, l.kbdCode)
+        	.putInt(st.PREF_KEY_LAST_LANG, l.lang.lang)
         	.commit();
     }
 /** Возвращает текущий ресурс для qwerty-клавиатуры */    
     public static int getCurQwertyRes()
     {
-        SharedPreferences pref =PreferenceManager.getDefaultSharedPreferences(c());
+        SharedPreferences pref =pref();
         if(pref==null||!pref.contains(PREF_KEY_LAST_LANG))
         {
         	String lang = Locale.getDefault().getLanguage();
-        	Lang l = langForName(lang);
+        	Keybrd l = kbdForName(lang);
         	if(l!=null)
         		return l.resId;
-        	return defLang().resId;
+        	return defKbd().resId;
         }
-        int kbd = pref.getInt(PREF_KEY_LAST_LANG, defLang().resId);
-        Lang l = langForCode(kbd);
-        if(l!=null)
-        	return l.resId;
-    	return defLang().resId;
+        int lang = pref.getInt(PREF_KEY_LAST_LANG, defKbd().lang.lang);
+        String ln = arLangs[lang].name;
+        int idLang = pref.getInt(PREF_KEY_LANG_KBD+ln, -1);
+        if(idLang>=0)return arKbd[idLang].resId;
+        for(Keybrd k:arKbd)
+        {
+        	if(k.lang.lang==lang)
+        		return k.resId;
+        }
+        return defKbd().resId;
     }
 /** Возвращает текущую клавиатуру или null*/    
     public static JbKbd curKbd()
@@ -259,11 +211,11 @@ public class st
     {
     	String ret = "";
     	String lang = Locale.getDefault().getLanguage();
-    	if(langForName(lang)!=null)
+    	if(kbdForName(lang)!=null)
     	{
     		ret+=lang+',';
     	}
-    	ret+=defLang().name;
+    	ret+=defKbd().lang.name;
     	return ret;
     }
 /** Возвращает массив языков для переключения */    
@@ -361,10 +313,14 @@ public class st
     		return BitmapFactory.decodeResource(st.c().getResources(), bid);
     	return null;
     }
+    static final SharedPreferences pref()
+    {
+    	return PreferenceManager.getDefaultSharedPreferences(c());
+    }
 /** Ключ, boolean, хранящий значение "включить/отключить просмотр клавиш" */    
     public static final String PREF_KEY_PREVIEW = "ch_preview";
 /** Ключ, int ,хранящий код последней используемой клавиатуры */    
-    public static final String PREF_KEY_LAST_LANG = "lc";
+    public static final String PREF_KEY_LAST_LANG = "lastLang";
 /** Ключ, int, хранящий высоту клавиш в портретном режиме */    
     public static final String PREF_KEY_HEIGHT_PORTRAIT = "kh";
 /** Ключ, int, хранящий высоту клавиш в ландшафтном режиме */    
@@ -377,10 +333,15 @@ public class st
     public static final String PREF_KEY_VIBRO_SHORT_KEY = "vs";
 /** Ключ, boolean, хранящий настройку вибро при коротком нажатии */    
     public static final String PREF_KEY_VIBRO_LONG_KEY = "vl";
+/** Ключ, int, хранящий ресурс клавиатуры для выбраного языка. Полный ключ выглядит как PREF_KEY_LANG_KBD+"en"*/    
+    public static final String PREF_KEY_LANG_KBD = "lkbd_";
 
  /** Значение для запуска {@link SetKbdActivity}. С этим ключом передаётся параметр типа int<br>
  *  Параметр int - одно из значений SET_*/    
     public static final String SET_INTENT_ACTION = "sa";
+ /**  Параметр String - название языка, для которого производится выбор клавиатуры */    
+    public static final String SET_INTENT_LANG_NAME = "sl";
+    
 /** Значение для запуска {@link SetKbdActivity} - настройка высоты клавиш в портретном режиме */    
     public static final int SET_KEY_HEIGHT_PORTRAIT = 1;
 /** Значение для запуска {@link SetKbdActivity} - настройка высоты клавиш в ландшафтном режиме */    
@@ -389,6 +350,7 @@ public class st
     public static final int SET_LANGUAGES_SELECTION =3;
 /** Вызывает настройку клавиш*/    
     public static final int SET_KEYS =4;
+    public static final int SET_SELECT_KEYBOARD = 5;
     
 /** Строковый префикс для кнопки, где метка для длинного нажатия является иконкой */
 	public static final String DRW_PREFIX = "d_"; 
