@@ -83,10 +83,12 @@
     <string name="ks_action">Action</string>
     <string name="ks_action_run_app">Run application</string>
     <string name="ks_action_input_text">Input text</string>
+    <string name="ks_action_app_details">Focused app details</string>
     <string-array name="ks_action_variants">
         <item>Default</item>
         <item>@string/ks_action_run_app</item>
         <item>@string/ks_action_input_text</item>
+        <item>@string/ks_action_app_details</item>
     </string-array>
     <string name="ks_select_app">Select app</string>
     <string name="ks_app_for_launch">App for launch</string>

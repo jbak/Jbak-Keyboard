@@ -479,7 +479,6 @@ public class ServiceJbKbd extends InputMethodService
 
     private void handleClose() {
         commitTyped(getCurrentInputConnection());
-        requestHideSelf(0);
         JbKbdView.inst.closing();
         forceHide();
     }
@@ -629,12 +628,12 @@ public class ServiceJbKbd extends InputMethodService
     }
     void forceHide()
     {
+		hideWindow();
     	if(m_bForceShow)
     	{
     		m_bForceShow = false;
-    		hideWindow();
     	}
-    	requestHideSelf(0);
+//    	requestHideSelf(0);
     }
     void handleHome(boolean bSel)
     {

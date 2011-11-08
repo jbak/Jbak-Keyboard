@@ -1,7 +1,10 @@
 package com.jbak.JbakKeyboard;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.view.KeyEvent;
 
 public class KeySet
@@ -42,20 +45,24 @@ public class KeySet
 	}
 	void run()
 	{
-		if(action==ACT_RUN_APP)
+		switch(action)
 		{
-			Intent in = (Intent)extra.getParcelableExtra(KEY_APP);
-			if(in==null)
-				return;
-			try{
-				st.c().startActivity(in);
-			}
-			catch (Throwable e) {
-			}
-		}
-		else if(action==ACT_TEXT)
-		{
-			ServiceJbKbd.inst.onText(getText());
+			case ACT_RUN_APP:
+				Intent in = (Intent)extra.getParcelableExtra(KEY_APP);
+				if(in==null)
+					return;
+				try{
+					st.c().startActivity(in);
+				}
+				catch (Throwable e) {
+				}
+				break;
+				case ACT_TEXT:
+					ServiceJbKbd.inst.onText(getText());
+					break;
+				case ACT_APP_DETAILS:
+					showInstalledAppDetails(st.c(), ServiceJbKbd.inst.getCurrentInputEditorInfo().packageName);
+					break;
 		}
 	}
 	boolean checkEdit(boolean bEditor)
@@ -93,6 +100,7 @@ public class KeySet
 	static public final int ACT_DEFAULT =0;
 	static public final int ACT_RUN_APP =1;
 	static public final int ACT_TEXT 	=2;
+	static public final int ACT_APP_DETAILS =3;
 	
 	static public int FLAG_LONG_PRESS = 0x0000001;
 	static public int FLAG_TEXT_FIELDS = 0x0000002;
@@ -100,6 +108,32 @@ public class KeySet
 	
 	static public final String KEY_APP = "ka";
 	static public final String KEY_TEXT = "kt";
+	/** Константа для {@link #showInstalledAppDetails} */
+    private static final String APP_PKG_NAME_21 = "com.android.settings.ApplicationPkgName";
+/** Константа для {@link #showInstalledAppDetails} */
+    private static final String APP_PKG_NAME_22 = "pkg";
+/** Константа для {@link #showInstalledAppDetails} */
+    private static final String APP_DETAILS_PACKAGE_NAME = "com.android.settings";
+/** Константа для {@link #showInstalledAppDetails} */
+    private static final String APP_DETAILS_CLASS_NAME = "com.android.settings.InstalledAppDetails";
+    public static void showInstalledAppDetails(Context c,String packageName) {
+        Intent intent = new Intent();
+        final int apiLevel = Build.VERSION.SDK_INT;
+        if (apiLevel >= 9) { // above 2.3
+            intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+            Uri uri = Uri.fromParts("package", packageName, null);
+            intent.setData(uri);
+        } else { // below 2.3
+            final String appPkgName = (apiLevel == 8 ? APP_PKG_NAME_22
+                    : APP_PKG_NAME_21);
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setClassName(APP_DETAILS_PACKAGE_NAME,
+                    APP_DETAILS_CLASS_NAME);
+            intent.putExtra(appPkgName, packageName);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        c.startActivity(intent);
+    }
 	
 }
 

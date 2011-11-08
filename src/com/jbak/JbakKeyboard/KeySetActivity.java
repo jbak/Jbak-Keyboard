@@ -285,12 +285,11 @@ public class KeySetActivity extends Activity
 	void setAction(int action)
 	{
 		m_ksAW.removeAllViews();
-		ViewGroup.LayoutParams lp = m_ksAW.getLayoutParams();
-		lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+		
 		m_key.action = action;
-
 		if(action==KeySet.ACT_RUN_APP)
 		{
+			m_ksAW.setVisibility(View.VISIBLE);
 			View v  = getLayoutInflater().inflate(R.layout.app_list_entry, m_ksAW);
 			v.setClickable(true);
 			m_ksActionLabel.setText(R.string.ks_app_for_launch);
@@ -318,6 +317,7 @@ public class KeySetActivity extends Activity
 		}
 		else if(action==KeySet.ACT_TEXT)
 		{
+			m_ksAW.setVisibility(View.VISIBLE);
 			getLayoutInflater().inflate(R.layout.aw_input_text, m_ksAW);
 			m_ksActionLabel.setText(R.string.ks_text_for_input);
 			String s = m_key.getText();
@@ -327,9 +327,8 @@ public class KeySetActivity extends Activity
 		}
 		else
 		{
-			lp.height = 0;
+			m_ksAW.setVisibility(View.INVISIBLE);
 		}
-		m_ksAW.setLayoutParams(lp);
 		m_ksAW.forceLayout();
 	}
 /** Адаптер для вывода списка кнопок */	

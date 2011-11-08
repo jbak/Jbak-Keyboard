@@ -83,11 +83,8 @@
     <string name="ks_action">Действие</string>
     <string name="ks_action_run_app">Запуск программы</string>
     <string name="ks_action_input_text">Ввод текста</string>
-    <string-array name="ks_action_variants">
-        <item>По умолчанию</item>
-        <item>@string/ks_action_run_app</item>
-        <item>@string/ks_action_input_text</item>
-    </string-array>
+    <string name="ks_action_app_details">Свойства программы</string>
+
     <string name="ks_select_app">Выбор программы</string>
     <string name="ks_app_for_launch">Программа для запуска</string>
     <string name="ks_text_for_input">Текст для ввода</string>

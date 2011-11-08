@@ -140,7 +140,7 @@ public class KeyPressProcessor
 			{
 				try
 				{
-					Thread.currentThread().join(30);
+					Thread.currentThread().join(100);
 				} catch (Throwable e)
 				{
 					st.logEx(e);
@@ -161,35 +161,10 @@ public class KeyPressProcessor
 /** Отправляет нажатие клавиши системе */	
 	void sendKeyEvent(KeyEvent evt)
 	{
+		
+//		ServiceJbKbd.inst.sendDownUpKeyEvents(evt.getKeyCode());
 		addNullView(evt);
-/*		final int keyEventCode = evt.getKeyCode();
-		final int keyEventScanCode = evt.getScanCode();
-		st.SyncAsycOper op = new st.SyncAsycOper(null)
-		{
-			@Override
-			void makeOper(UniObserver obs)
-			{
-		        InputConnection ic = ServiceJbKbd.inst.getCurrentInputConnection();
-		        if (ic == null) return;
-		        long eventTime = SystemClock.uptimeMillis();
-		        boolean bSendDown = ic.sendKeyEvent(new KeyEvent(eventTime, eventTime,
-		                KeyEvent.ACTION_DOWN, keyEventCode, 0, 0, 0, keyEventScanCode,
-		                KeyEvent.FLAG_VIRTUAL_HARD_KEY|KeyEvent.FLAG_KEEP_TOUCH_MODE));
-		        boolean bSendUp = ic.sendKeyEvent(new KeyEvent(SystemClock.uptimeMillis()+1, eventTime,
-		                KeyEvent.ACTION_UP, keyEventCode, 0, 0, 0, keyEventScanCode,
-		                KeyEvent.FLAG_VIRTUAL_HARD_KEY|KeyEvent.FLAG_KEEP_TOUCH_MODE));
-		        if(!bSendDown)
-		        {
-		        	st.log("no down");
-		        }
-		        if(!bSendUp)
-		        {
-		        	st.log("no down");
-		        }
-			}
-		};
-		op.startAsync();
-*/	}
+	}
 	
 /** Обработчик удержания клавиши */	
 /*	
