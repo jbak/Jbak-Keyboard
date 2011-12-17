@@ -9,14 +9,14 @@ import android.widget.ListAdapter;
 
 import com.jbak.JbakKeyboard.st.UniObserver;
 
-/** Класс предоставляет функции для вывода различных диалогов */
+/** РљР»Р°СЃСЃ РїСЂРµРґРѕСЃС‚Р°РІР»СЏРµС‚ С„СѓРЅРєС†РёРё РґР»СЏ РІС‹РІРѕРґР° СЂР°Р·Р»РёС‡РЅС‹С… РґРёР°Р»РѕРіРѕРІ */
 public class Dlg
 {
-	/** Обработчик нажатия кнопок в диалоге  */ 
+    /** РћР±СЂР°Р±РѕС‚С‡РёРє РЅР°Р¶Р°С‚РёСЏ РєРЅРѕРїРѕРє РІ РґРёР°Р»РѕРіРµ  */ 
     static class OnButtonListener implements DialogInterface.OnClickListener
     {
-/** Конструктор. Получает обработчик нажатия 
- * @param call Обработчик, вызываемый при нажатии кнопки в диалоге. Первый параметр - код нажатой кнопки в виде Integer*/       
+/** РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ. РџРѕР»СѓС‡Р°РµС‚ РѕР±СЂР°Р±РѕС‚С‡РёРє РЅР°Р¶Р°С‚РёСЏ 
+ * @param call РћР±СЂР°Р±РѕС‚С‡РёРє, РІС‹Р·С‹РІР°РµРјС‹Р№ РїСЂРё РЅР°Р¶Р°С‚РёРё РєРЅРѕРїРєРё РІ РґРёР°Р»РѕРіРµ. РџРµСЂРІС‹Р№ РїР°СЂР°РјРµС‚СЂ - РєРѕРґ РЅР°Р¶Р°С‚РѕР№ РєРЅРѕРїРєРё РІ РІРёРґРµ Integer*/       
         public OnButtonListener(UniObserver call)
         {
             callback = call;
@@ -29,28 +29,28 @@ public class Dlg
         }
         UniObserver callback;
     }
-	/** Пользовательский диалог, содержащий заданное пользователем окно<br>
-	 * По окончании вызова - вызовет callback.OnObserver(Integer buttonCode, callback.m_param2)
-	 * @param c Контекст
-	 * @param customView Пользовательское окно 
-	 * @param but1 Текст кнопки BUTTON_POSITIVE или null, если кнопка не нужна
-	 * @param but2 Текст кнопки BUTTON_NEGATIVE или null, если кнопка не нужна 
-	 * @param but3 Текст кнопки BUTTON_NEUTRAL или null, если кнопка не нужна
-	 * @param callback Обработчик нажатия кнопок. Конструкция вызова - callback.OnObserver(Integer buttonCode, callback.m_param2)
-	 * @return Возвращает созданный диалог*/
-	    public static AlertDialog CustomDialog(Context c,View customView,String but1,String but2,String but3,UniObserver callback)
-	    {
-	        AlertDialog.Builder bd = new AlertDialog.Builder(c);
-	        AlertDialog dlg = bd.create();
-	        OnButtonListener cl = new OnButtonListener(callback);
-	        dlg.setView(customView);
-	        if(but1!=null) dlg.setButton(AlertDialog.BUTTON_POSITIVE, but1,cl);
-	        if(but2!=null) dlg.setButton(AlertDialog.BUTTON_NEGATIVE, but2,cl);
-	        if(but3!=null) dlg.setButton(AlertDialog.BUTTON_NEUTRAL, but3,cl);
-	        dlg.show();
-	        return dlg;
-	    }
-//// 	    
+    /** РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёР№ РґРёР°Р»РѕРі, СЃРѕРґРµСЂР¶Р°С‰РёР№ Р·Р°РґР°РЅРЅРѕРµ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј РѕРєРЅРѕ<br>
+     * РџРѕ РѕРєРѕРЅС‡Р°РЅРёРё РІС‹Р·РѕРІР° - РІС‹Р·РѕРІРµС‚ callback.OnObserver(Integer buttonCode, callback.m_param2)
+     * @param c РљРѕРЅС‚РµРєСЃС‚
+     * @param customView РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРѕРµ РѕРєРЅРѕ 
+     * @param but1 РўРµРєСЃС‚ РєРЅРѕРїРєРё BUTTON_POSITIVE РёР»Рё null, РµСЃР»Рё РєРЅРѕРїРєР° РЅРµ РЅСѓР¶РЅР°
+     * @param but2 РўРµРєСЃС‚ РєРЅРѕРїРєРё BUTTON_NEGATIVE РёР»Рё null, РµСЃР»Рё РєРЅРѕРїРєР° РЅРµ РЅСѓР¶РЅР° 
+     * @param but3 РўРµРєСЃС‚ РєРЅРѕРїРєРё BUTTON_NEUTRAL РёР»Рё null, РµСЃР»Рё РєРЅРѕРїРєР° РЅРµ РЅСѓР¶РЅР°
+     * @param callback РћР±СЂР°Р±РѕС‚С‡РёРє РЅР°Р¶Р°С‚РёСЏ РєРЅРѕРїРѕРє. РљРѕРЅСЃС‚СЂСѓРєС†РёСЏ РІС‹Р·РѕРІР° - callback.OnObserver(Integer buttonCode, callback.m_param2)
+     * @return Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃРѕР·РґР°РЅРЅС‹Р№ РґРёР°Р»РѕРі*/
+        public static AlertDialog CustomDialog(Context c,View customView,String but1,String but2,String but3,UniObserver callback)
+        {
+            AlertDialog.Builder bd = new AlertDialog.Builder(c);
+            AlertDialog dlg = bd.create();
+            OnButtonListener cl = new OnButtonListener(callback);
+            dlg.setView(customView);
+            if(but1!=null) dlg.setButton(AlertDialog.BUTTON_POSITIVE, but1,cl);
+            if(but2!=null) dlg.setButton(AlertDialog.BUTTON_NEGATIVE, but2,cl);
+            if(but3!=null) dlg.setButton(AlertDialog.BUTTON_NEUTRAL, but3,cl);
+            dlg.show();
+            return dlg;
+        }
+////        
         public static AlertDialog CustomMenu(Context c,ListAdapter adapter,String title,UniObserver callback)
         {
             AlertDialog.Builder bd = new AlertDialog.Builder(c);
@@ -71,37 +71,37 @@ public class Dlg
             return dlg;
             
         }
-/** */	    
-	    public static AlertDialog yesNoDialog(Context c,String query,UniObserver callback)
-	    {
-	        AlertDialog.Builder bd = new AlertDialog.Builder(c);
-	        OnButtonListener cl = new OnButtonListener(callback);
-	        bd.setPositiveButton(R.string.yes, cl);
-	        bd.setNegativeButton(R.string.no, cl);
-	        bd.setMessage(query);
-	        AlertDialog dlg = bd.create();
-	        dlg.show();
-	        return dlg;
-	    }
-	    public static abstract class RunOnYes
-	    {
-	    	public RunOnYes(Context c,String query)
-			{
-				Dlg.yesNoDialog(c, query, mkObserver());
-			}
-	    	st.UniObserver mkObserver()
-	    	{
-	    		return new UniObserver()
-				{
-					@Override
-					int OnObserver(Object param1, Object param2)
-					{
-						if(((Integer)param1).intValue()==AlertDialog.BUTTON_POSITIVE)
-							run();
-						return 0;
-					}
-				};
-	    	}
-	    	public abstract void run();
-	    }
+/** */      
+        public static AlertDialog yesNoDialog(Context c,String query,UniObserver callback)
+        {
+            AlertDialog.Builder bd = new AlertDialog.Builder(c);
+            OnButtonListener cl = new OnButtonListener(callback);
+            bd.setPositiveButton(R.string.yes, cl);
+            bd.setNegativeButton(R.string.no, cl);
+            bd.setMessage(query);
+            AlertDialog dlg = bd.create();
+            dlg.show();
+            return dlg;
+        }
+        public static abstract class RunOnYes
+        {
+            public RunOnYes(Context c,String query)
+            {
+                Dlg.yesNoDialog(c, query, mkObserver());
+            }
+            st.UniObserver mkObserver()
+            {
+                return new UniObserver()
+                {
+                    @Override
+                    int OnObserver(Object param1, Object param2)
+                    {
+                        if(((Integer)param1).intValue()==AlertDialog.BUTTON_POSITIVE)
+                            run();
+                        return 0;
+                    }
+                };
+            }
+            public abstract void run();
+        }
 }

@@ -27,16 +27,16 @@
 
     <Row>
         <Key android:codes="-305" android:keyLabel="Home"/>
-        <Key android:codes="-301" android:horizontalGap="20%p" android:isRepeatable="true" android:keyLabel="↑"/>
+        <Key android:codes="19" android:horizontalGap="20%p" android:isRepeatable="true" android:keyLabel="↑"/>
         <Key android:codes="-306" android:horizontalGap="20%p" android:keyLabel="End"/>
     </Row>
     <Row>
-        <Key android:codes="-302" android:horizontalGap="20%p" android:isRepeatable="true" android:keyLabel="←"/>
-        <Key android:codes="-303" android:horizontalGap="20%p" android:isRepeatable="true" android:keyLabel="→"/>
+        <Key android:codes="21" android:horizontalGap="20%p" android:isRepeatable="true" android:keyLabel="←"/>
+        <Key android:codes="22" android:horizontalGap="20%p" android:isRepeatable="true" android:keyLabel="→"/>
     </Row>
     <Row>
         <Key android:codes="-310" android:keyLabel="Select" android:isSticky="true"/>
-        <Key android:codes="-304" android:horizontalGap="20%p" android:isRepeatable="true" android:keyLabel="↓"/>
+        <Key android:codes="20" android:horizontalGap="20%p" android:isRepeatable="true" android:keyLabel="↓"/>
         <Key android:codes="-5" android:keyIcon="@drawable/sym_keyboard_delete" 
                 android:horizontalGap="20%p"
                 android:isRepeatable="true"/>

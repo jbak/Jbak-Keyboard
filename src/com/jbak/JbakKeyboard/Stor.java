@@ -13,18 +13,18 @@ import android.os.Parcel;
 
 public class Stor extends SQLiteOpenHelper
 {
-	static Stor inst;
+    static Stor inst;
     public static final int DATABASE_VERSION = 2;
-	// Òàáëèöû    
-/** Òàáëèöà áóôåðà îáììåíà*/	
+    // Ð¢Ð°Ð±Ð»Ð¸Ñ†Ñ‹    
+/** Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð° Ð±ÑƒÑ„ÐµÑ€Ð° Ð¾Ð±Ð¼Ð¼ÐµÐ½Ð°*/    
     public static final String TABLE_CLIPBOARD = "tClipbrd";
     public static final String TABLE_KEYS = "tKeys";
-// Ñòîëáöû òàáëèöû áóôåðà îáìåíà     
-    public static final String C_TEXT 	= "txt";
+// Ð¡Ñ‚Ð¾Ð»Ð±Ñ†Ñ‹ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹ Ð±ÑƒÑ„ÐµÑ€Ð° Ð¾Ð±Ð¼ÐµÐ½Ð°     
+    public static final String C_TEXT   = "txt";
     public static final String C_LENGTH = "len";
     public static final String C_DATE = "dat";
 
-// Ñòîëáöû    
+// Ð¡Ñ‚Ð¾Ð»Ð±Ñ†Ñ‹    
     public static final String C_ID = "_id";
     public static final String C_KEYCODE = "kc";
     public static final String C_CHAR = "chr";
@@ -35,14 +35,14 @@ public class Stor extends SQLiteOpenHelper
     public static final int CLIPBOARD_LIMIT = 20;
     public static final String DB_FILENAME="kbstor";
     private static final String KEYS_TABLE_CREATE = 
-	    "CREATE TABLE IF NOT EXISTS " + TABLE_KEYS + " (" +
-	    C_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-	    C_KEYCODE + " INTEGER, " +
-	    C_CHAR + " INTEGER, " +
-	    C_FLAGS + " INTEGER, " +
-	    C_ACTION + " INTEGER, " +
-	    C_TEXT + " TEXT, " +
-	    C_BINARY + " BLOB);";
+        "CREATE TABLE IF NOT EXISTS " + TABLE_KEYS + " (" +
+        C_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        C_KEYCODE + " INTEGER, " +
+        C_CHAR + " INTEGER, " +
+        C_FLAGS + " INTEGER, " +
+        C_ACTION + " INTEGER, " +
+        C_TEXT + " TEXT, " +
+        C_BINARY + " BLOB);";
     private static final String CLIPBOARD_TABLE_CREATE = 
         "CREATE TABLE IF NOT EXISTS " + TABLE_CLIPBOARD + " (" +
         C_TEXT + " TEXT, " +
@@ -51,175 +51,175 @@ public class Stor extends SQLiteOpenHelper
 
     Stor(Context context) 
     {
-    	super(context, DB_FILENAME, null, DATABASE_VERSION);
+        super(context, DB_FILENAME, null, DATABASE_VERSION);
         inst = this;
         m_db = getWritableDatabase();
         try{m_db.execSQL(CLIPBOARD_TABLE_CREATE);}catch (Exception e){st.logEx(e);}
         try{m_db.execSQL(KEYS_TABLE_CREATE);}catch (Exception e){st.logEx(e);}
     }
-	@Override
-	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2){}
-	@Override
-	public void onCreate(SQLiteDatabase db){}
-	void saveClipboardString(String s)
-	{
-		long date = System.currentTimeMillis();
-		try{
-			SQLiteStatement stat = m_db.compileStatement("INSERT INTO "+TABLE_CLIPBOARD+" VALUES(?,?,?)");
-			m_db.beginTransaction();
-			stat.bindString(1, s);
-			stat.bindLong(2, s.length());
-			stat.bindLong(3, date);
-			stat.executeInsert();
+    @Override
+    public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2){}
+    @Override
+    public void onCreate(SQLiteDatabase db){}
+    void saveClipboardString(String s)
+    {
+        long date = System.currentTimeMillis();
+        try{
+            SQLiteStatement stat = m_db.compileStatement("INSERT INTO "+TABLE_CLIPBOARD+" VALUES(?,?,?)");
+            m_db.beginTransaction();
+            stat.bindString(1, s);
+            stat.bindLong(2, s.length());
+            stat.bindLong(3, date);
+            stat.executeInsert();
             m_db.setTransactionSuccessful();
             m_db.endTransaction();
-		}
-		catch (Throwable e) {
-			st.logEx(e);
-		}
-	}
-/** Çàïóñêàåò çàïðîñ sql íà âûïîëíåíèå, â ñëó÷àå îøèáêè âîçâðàùàåò false è ïèøåò â ëîã */	
-	boolean runSql(String sql)
-	{
-		try{
-			m_db.execSQL(sql);
-		}
-		catch(Throwable e)
-		{
-			st.logEx(e);
-			return false;
-		}
-		return true;
-	}
+        }
+        catch (Throwable e) {
+            st.logEx(e);
+        }
+    }
+/** Ð—Ð°Ð¿ÑƒÑÐºÐ°ÐµÑ‚ Ð·Ð°Ð¿Ñ€Ð¾Ñ sql Ð½Ð° Ð²Ñ‹Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ðµ, Ð² ÑÐ»ÑƒÑ‡Ð°Ðµ Ð¾ÑˆÐ¸Ð±ÐºÐ¸ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ false Ð¸ Ð¿Ð¸ÑˆÐµÑ‚ Ð² Ð»Ð¾Ð³ */   
+    boolean runSql(String sql)
+    {
+        try{
+            m_db.execSQL(sql);
+        }
+        catch(Throwable e)
+        {
+            st.logEx(e);
+            return false;
+        }
+        return true;
+    }
 /** */
-	static KeySet readKey(Cursor c)
-	{
-		try
-		{
-			KeySet ks = new KeySet();
-			ks.keycode = c.getInt(1);
-			ks.keychar = (char) c.getInt(2);
-			ks.flags = 	 c.getInt(3);
-			ks.action =  c.getInt(4);
-			ks.sext = c.getString(5);
-			ks.extra = getIntentFromBytes(c.getBlob(6));
-			return ks;
-		}
-		catch (Throwable e) {
-			st.logEx(e);
-		}
-		return null;
-	}
+    static KeySet readKey(Cursor c)
+    {
+        try
+        {
+            KeySet ks = new KeySet();
+            ks.keycode = c.getInt(1);
+            ks.keychar = (char) c.getInt(2);
+            ks.flags =   c.getInt(3);
+            ks.action =  c.getInt(4);
+            ks.sext = c.getString(5);
+            ks.extra = getIntentFromBytes(c.getBlob(6));
+            return ks;
+        }
+        catch (Throwable e) {
+            st.logEx(e);
+        }
+        return null;
+    }
 /** */
-	Cursor getKeysCursor()
-	{
-		try
-		{
-			Cursor cursor = m_db.query(TABLE_KEYS, null, null, null, null, null, null);
-			if(cursor.moveToFirst())
-				return cursor;
-			cursor.close();
-		}
-		catch (Throwable e) {
-			st.logEx(e);
-		}
-		return null;
-	}
-	Cursor getClipboardCursor()
-	{
-		try
-		{
-			Cursor cursor = m_db.query(TABLE_CLIPBOARD, null, null, null, null, null, null);
-			if(cursor.moveToLast())
-				return cursor;
-			cursor.close();
-		}
-		catch (Throwable e) {
-			st.logEx(e);
-		}
-		return null;
-	}
-/** Óäàëÿåò âõîæäåíèÿ áóôåðà îáìåíà ïî äàòàì. Åñëè date2==0 - óäàëÿåò òîëüêî ïî date*/	
-	void removeClipboardByDate(long date,long date2)
-	{
-		String sql = "DELETE FROM "+TABLE_CLIPBOARD+" WHERE "+C_DATE+"="+date;
-		if(date2>0)
-		{
-			sql+=" OR "+C_DATE+"="+date2;
-		}
-		runSql(sql);
-	}
-/** Ñîõðàíÿåò â ÁÄ íàñòðîéêó êëàâèøè ks*/	
-	void saveKey(KeySet ks)
-	{
-		try{
-			runSql("DELETE FROM "+TABLE_KEYS+
-					" WHERE "+C_KEYCODE+"="+ks.keycode+
-							" AND "+C_CHAR+"="+((int)ks.keychar)+
-							" AND "+C_FLAGS+"="+ks.flags);
-			if(ks.action==KeySet.ACT_DEFAULT)
-				return;
-			m_db.beginTransaction();
-			ContentValues val = new ContentValues();
-			val.put(C_KEYCODE, ks.keycode);
-			val.put(C_CHAR, (int)ks.keychar);
-			val.put(C_FLAGS, ks.flags);
-			val.put(C_ACTION, ks.action);
-			val.put(C_TEXT, ks.sext);
-			val.put(C_BINARY, getBytesFromIntent(ks.extra));
-			m_db.insert(TABLE_KEYS, null, val);
+    Cursor getKeysCursor()
+    {
+        try
+        {
+            Cursor cursor = m_db.query(TABLE_KEYS, null, null, null, null, null, null);
+            if(cursor.moveToFirst())
+                return cursor;
+            cursor.close();
+        }
+        catch (Throwable e) {
+            st.logEx(e);
+        }
+        return null;
+    }
+    Cursor getClipboardCursor()
+    {
+        try
+        {
+            Cursor cursor = m_db.query(TABLE_CLIPBOARD, null, null, null, null, null, null);
+            if(cursor.moveToLast())
+                return cursor;
+            cursor.close();
+        }
+        catch (Throwable e) {
+            st.logEx(e);
+        }
+        return null;
+    }
+/** Ð£Ð´Ð°Ð»ÑÐµÑ‚ Ð²Ñ…Ð¾Ð¶Ð´ÐµÐ½Ð¸Ñ Ð±ÑƒÑ„ÐµÑ€Ð° Ð¾Ð±Ð¼ÐµÐ½Ð° Ð¿Ð¾ Ð´Ð°Ñ‚Ð°Ð¼. Ð•ÑÐ»Ð¸ date2==0 - ÑƒÐ´Ð°Ð»ÑÐµÑ‚ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð¿Ð¾ date*/  
+    void removeClipboardByDate(long date,long date2)
+    {
+        String sql = "DELETE FROM "+TABLE_CLIPBOARD+" WHERE "+C_DATE+"="+date;
+        if(date2>0)
+        {
+            sql+=" OR "+C_DATE+"="+date2;
+        }
+        runSql(sql);
+    }
+/** Ð¡Ð¾Ñ…Ñ€Ð°Ð½ÑÐµÑ‚ Ð² Ð‘Ð” Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÑƒ ÐºÐ»Ð°Ð²Ð¸ÑˆÐ¸ ks*/   
+    void saveKey(KeySet ks)
+    {
+        try{
+            runSql("DELETE FROM "+TABLE_KEYS+
+                    " WHERE "+C_KEYCODE+"="+ks.keycode+
+                            " AND "+C_CHAR+"="+((int)ks.keychar)+
+                            " AND "+C_FLAGS+"="+ks.flags);
+            if(ks.action==KeySet.ACT_DEFAULT)
+                return;
+            m_db.beginTransaction();
+            ContentValues val = new ContentValues();
+            val.put(C_KEYCODE, ks.keycode);
+            val.put(C_CHAR, (int)ks.keychar);
+            val.put(C_FLAGS, ks.flags);
+            val.put(C_ACTION, ks.action);
+            val.put(C_TEXT, ks.sext);
+            val.put(C_BINARY, getBytesFromIntent(ks.extra));
+            m_db.insert(TABLE_KEYS, null, val);
             m_db.setTransactionSuccessful();
             m_db.endTransaction();
-		}
-		catch (Throwable e) {
-			st.logEx(e);
-		}
-	}
-/** Óäàëÿåò ñòðîêè, ñîâïàäàþùèå ñ txt, ïðîâåðÿåò */	
-	boolean checkClipboardString(String txt )
-	{
-		long date = 0;
-		long date2=0;
-		try
-		{
-			Cursor cursor = m_db.query(TABLE_CLIPBOARD, null, null, null, null, null, null);
-			if(cursor==null)
-				return false;
-			if(!cursor.moveToLast())
-			{
-				cursor.close();
-				saveClipboardString(txt);
-				return true;
-			}
-			int count = 1;
-			do
-			{
-				long len = cursor.getLong(1); // C_LENGTH
-				if(len==txt.length())
-				{
-					String s = cursor.getString(0);
-					if(txt.equals(s))
-					{
-						date = cursor.getLong(2);// Íàøëè îäèíàêîâóþ ñòðîêó, óäàëÿåì
-						--count;
-					}
-					if(count==CLIPBOARD_LIMIT-1)
-					{
-						date2 = cursor.getLong(2);
-					}
-				}
-				++count;
-			}while(cursor.moveToPrevious());
-			cursor.close();
-			if(date>0)
-				removeClipboardByDate(date, date2);
-			saveClipboardString(txt);
-		}
-		catch (Throwable e) {
-			st.logEx(e);
-		}
-		return true;
-	}
+        }
+        catch (Throwable e) {
+            st.logEx(e);
+        }
+    }
+/** Ð£Ð´Ð°Ð»ÑÐµÑ‚ ÑÑ‚Ñ€Ð¾ÐºÐ¸, ÑÐ¾Ð²Ð¿Ð°Ð´Ð°ÑŽÑ‰Ð¸Ðµ Ñ txt, Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÑ‚ */ 
+    boolean checkClipboardString(String txt )
+    {
+        long date = 0;
+        long date2=0;
+        try
+        {
+            Cursor cursor = m_db.query(TABLE_CLIPBOARD, null, null, null, null, null, null);
+            if(cursor==null)
+                return false;
+            if(!cursor.moveToLast())
+            {
+                cursor.close();
+                saveClipboardString(txt);
+                return true;
+            }
+            int count = 1;
+            do
+            {
+                long len = cursor.getLong(1); // C_LENGTH
+                if(len==txt.length())
+                {
+                    String s = cursor.getString(0);
+                    if(txt.equals(s))
+                    {
+                        date = cursor.getLong(2);// ÐÐ°ÑˆÐ»Ð¸ Ð¾Ð´Ð¸Ð½Ð°ÐºÐ¾Ð²ÑƒÑŽ ÑÑ‚Ñ€Ð¾ÐºÑƒ, ÑƒÐ´Ð°Ð»ÑÐµÐ¼
+                        --count;
+                    }
+                    if(count==CLIPBOARD_LIMIT-1)
+                    {
+                        date2 = cursor.getLong(2);
+                    }
+                }
+                ++count;
+            }while(cursor.moveToPrevious());
+            cursor.close();
+            if(date>0)
+                removeClipboardByDate(date, date2);
+            saveClipboardString(txt);
+        }
+        catch (Throwable e) {
+            st.logEx(e);
+        }
+        return true;
+    }
     static byte[] getBytesFromIntent(Intent in)
     {
         if(in==null)
@@ -239,5 +239,5 @@ public class Stor extends SQLiteOpenHelper
         in.readFromParcel(parc);
         return in;
     }
-	SQLiteDatabase m_db;
+    SQLiteDatabase m_db;
 }

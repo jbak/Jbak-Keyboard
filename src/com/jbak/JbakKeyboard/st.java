@@ -1,5 +1,6 @@
 package com.jbak.JbakKeyboard;
 
+import java.io.IOException;
 import java.util.Locale;
 
 import android.content.ComponentName;
@@ -11,44 +12,55 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
-/** Класс содержит полезные статические переменные */
-public class st extends IKeyboard
+import android.widget.Toast;
+/** РљР»Р°СЃСЃ СЃРѕРґРµСЂР¶РёС‚ РїРѕР»РµР·РЅС‹Рµ СЃС‚Р°С‚РёС‡РµСЃРєРёРµ РїРµСЂРµРјРµРЅРЅС‹Рµ */
+public class st extends IKeyboard implements IKbdSettings
 {
 //--------------------------------------------------------------------------
-    /** Универсальный обсервер. Содержит 2 параметра m_param1 и m_param2, которые вызываются и меняются в зависимости от контекста*/
+    /** РЈРЅРёРІРµСЂСЃР°Р»СЊРЅС‹Р№ РѕР±СЃРµСЂРІРµСЂ. РЎРѕРґРµСЂР¶РёС‚ 2 РїР°СЂР°РјРµС‚СЂР° m_param1 Рё m_param2, РєРѕС‚РѕСЂС‹Рµ РІС‹Р·С‹РІР°СЋС‚СЃСЏ Рё РјРµРЅСЏСЋС‚СЃСЏ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РєРѕРЅС‚РµРєСЃС‚Р°*/
     public static abstract class UniObserver
     {
-    /** Конструктор с двумя параметрами */
+    /** РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РґРІСѓРјСЏ РїР°СЂР°РјРµС‚СЂР°РјРё */
         public UniObserver(Object param1,Object param2)
         {
             m_param1 = param1;
             m_param2 = param2;
         }
-    /** Пустой конструктор. Оба параметра - null*/
+    /** РџСѓСЃС‚РѕР№ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ. РћР±Р° РїР°СЂР°РјРµС‚СЂР° - null*/
         public UniObserver()
         {
         }
-    /** Вызов функции {@link #OnObserver(Object, Object)} с текущими параметрами*/
+    /** Р’С‹Р·РѕРІ С„СѓРЅРєС†РёРё {@link #OnObserver(Object, Object)} СЃ С‚РµРєСѓС‰РёРјРё РїР°СЂР°РјРµС‚СЂР°РјРё*/
         public int Observ(){return OnObserver(m_param1, m_param2);}
-    /** Основная функция обработчика */ 
+    /** РћСЃРЅРѕРІРЅР°СЏ С„СѓРЅРєС†РёСЏ РѕР±СЂР°Р±РѕС‚С‡РёРєР° */ 
         abstract int OnObserver(Object param1,Object param2);
-    /** Пользовательский параметр 1 */  
+    /** РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёР№ РїР°СЂР°РјРµС‚СЂ 1 */  
         Object m_param1;
-    /** Пользовательский параметр 2 */  
+    /** РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёР№ РїР°СЂР°РјРµС‚СЂ 2 */  
         Object m_param2;
     }
     
-	/** Эквивалент вызова (val&flag)>0*/        
+    /** Р­РєРІРёРІР°Р»РµРЅС‚ РІС‹Р·РѕРІР° (val&flag)>0*/        
     public static final boolean has(int val,int flag)
     {
         return (val&flag)>0;
     }
-/** Убирает бит flag из значения val, если бит выставлен*/      
+/** РЈР±РёСЂР°РµС‚ Р±РёС‚ flag РёР· Р·РЅР°С‡РµРЅРёСЏ val, РµСЃР»Рё Р±РёС‚ РІС‹СЃС‚Р°РІР»РµРЅ*/      
     public static final int rem(int val,int flag)
     {
         if(has(val,flag))
             return val^flag;
         return val;
+    }
+    public static final int min(int val1,int val2)
+    {
+    	if(val1<val2)return val1;
+    	return val2;
+    }
+    public static final int max(int val1,int val2)
+    {
+    	if(val1>val2)return val1;
+    	return val2;
     }
     public static final void logEx(Throwable e)
     {
@@ -56,83 +68,83 @@ public class st extends IKeyboard
             Log.e(TAG, e.getMessage());
         Log.e(TAG, Log.getStackTraceString(e));
     }
-/** Возвращает клавиатуру для языка с именем langName */    
+/** Р’РѕР·РІСЂР°С‰Р°РµС‚ РєР»Р°РІРёР°С‚СѓСЂСѓ РґР»СЏ СЏР·С‹РєР° СЃ РёРјРµРЅРµРј langName */    
     public static Keybrd kbdForName(String langName)
     {
-    	int index = pref().getInt(st.PREF_KEY_LANG_KBD+langName, -1);
-    	if(index>=0)
-    		return arKbd[index];
-    	for(int i=0;i<arKbd.length;i++)
-    	{
-    		Keybrd l = arKbd[i];
-    		if(langName.equals(l.lang.name))
-    			return l;
-    	}
-    	return null;
+        int index = pref().getInt(st.PREF_KEY_LANG_KBD+langName, -1);
+        if(index>=0)
+            return arKbd[index];
+        for(int i=0;i<arKbd.length;i++)
+        {
+            Keybrd l = arKbd[i];
+            if(langName.equals(l.lang.name))
+                return l;
+        }
+        return null;
     }
     static void log(String txt)
     {
-    	Log.w(TAG, txt);
+        Log.w(TAG, txt);
     }
-/** Сохраняет текущий ресурс qwerty-клавиатуры, если редактирование происходит в qwerty */    
+/** РЎРѕС…СЂР°РЅСЏРµС‚ С‚РµРєСѓС‰РёР№ СЂРµСЃСѓСЂСЃ qwerty-РєР»Р°РІРёР°С‚СѓСЂС‹, РµСЃР»Рё СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РїСЂРѕРёСЃС…РѕРґРёС‚ РІ qwerty */    
     public static void saveCurLang()
     {
-    	JbKbd kb = curKbd();
-    	if(kb==null)
-    		return;
-    	Keybrd l = kbdForId(kb.resId);
-    	if(l==null)
-    		return;
+        JbKbd kb = curKbd();
+        if(kb==null)
+            return;
+        Keybrd l = kbdForId(kb.resId);
+        if(l==null)
+            return;
         pref().edit().putString(st.PREF_KEY_LAST_LANG, l.lang.name).commit();
     }
-/** Возвращает текущий ресурс для qwerty-клавиатуры */    
+/** Р’РѕР·РІСЂР°С‰Р°РµС‚ С‚РµРєСѓС‰РёР№ СЂРµСЃСѓСЂСЃ РґР»СЏ qwerty-РєР»Р°РІРёР°С‚СѓСЂС‹ */    
     public static int getCurQwertyRes()
     {
         SharedPreferences pref =pref();
         if(pref==null||!pref.contains(PREF_KEY_LAST_LANG))
         {
-        	String lang = Locale.getDefault().getLanguage();
-        	Keybrd l = kbdForName(lang);
-        	if(l!=null)
-        		return l.resId;
-        	return defKbd().resId;
+            String lang = Locale.getDefault().getLanguage();
+            Keybrd l = kbdForName(lang);
+            if(l!=null)
+                return l.resId;
+            return defKbd().resId;
         }
         return kbdForName(pref.getString(PREF_KEY_LAST_LANG, defKbd().lang.name)).resId;
     }
-/** Возвращает текущую клавиатуру или null*/    
+/** Р’РѕР·РІСЂР°С‰Р°РµС‚ С‚РµРєСѓС‰СѓСЋ РєР»Р°РІРёР°С‚СѓСЂСѓ РёР»Рё null*/    
     public static JbKbd curKbd()
     {
-    	if(JbKbdView.inst==null) return null;
-    	return (JbKbd)JbKbdView.inst.getCurKeyboard();
+        if(JbKbdView.inst==null) return null;
+        return (JbKbd)JbKbdView.inst.getCurKeyboard();
     }
-/** Возвращает активный контекст. Если запущено {@link SetKbdActivity} - то возвращает его, иначе - {@link ServiceJbKbd}*/    
+/** Р’РѕР·РІСЂР°С‰Р°РµС‚ Р°РєС‚РёРІРЅС‹Р№ РєРѕРЅС‚РµРєСЃС‚. Р•СЃР»Рё Р·Р°РїСѓС‰РµРЅРѕ {@link SetKbdActivity} - С‚Рѕ РІРѕР·РІСЂР°С‰Р°РµС‚ РµРіРѕ, РёРЅР°С‡Рµ - {@link ServiceJbKbd}*/    
     public static Context c()
     {
-    	if(KeySetActivity.inst!=null)
-    		return KeySetActivity.inst;
-    	if(SetKbdActivity.inst!=null)
-    		return SetKbdActivity.inst;
-    	if(ServiceJbKbd.inst!=null)
-    		return ServiceJbKbd.inst;
-    	return ClipbrdService.inst;
+        if(KeySetActivity.inst!=null)
+            return KeySetActivity.inst;
+        if(SetKbdActivity.inst!=null)
+            return SetKbdActivity.inst;
+        if(ServiceJbKbd.inst!=null)
+            return ServiceJbKbd.inst;
+        return ClipbrdService.inst;
     }
   //********************************************************************
-    /** Класс для запуска пользовательского кода синхронно или асинхронно
-     * Создаётся без параметров. По окончании выполнения запускается обработчик */
+    /** РљР»Р°СЃСЃ РґР»СЏ Р·Р°РїСѓСЃРєР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРѕРіРѕ РєРѕРґР° СЃРёРЅС…СЂРѕРЅРЅРѕ РёР»Рё Р°СЃРёРЅС…СЂРѕРЅРЅРѕ
+     * РЎРѕР·РґР°С‘С‚СЃСЏ Р±РµР· РїР°СЂР°РјРµС‚СЂРѕРІ. РџРѕ РѕРєРѕРЅС‡Р°РЅРёРё РІС‹РїРѕР»РЅРµРЅРёСЏ Р·Р°РїСѓСЃРєР°РµС‚СЃСЏ РѕР±СЂР°Р±РѕС‚С‡РёРє */
     public static abstract class SyncAsycOper extends AsyncTask<Void,Void,Void>
     {
-    /** Конструктор
-     * @param obs Обработчик, который запустится по выполнении */
+    /** РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
+     * @param obs РћР±СЂР°Р±РѕС‚С‡РёРє, РєРѕС‚РѕСЂС‹Р№ Р·Р°РїСѓСЃС‚РёС‚СЃСЏ РїРѕ РІС‹РїРѕР»РЅРµРЅРёРё */
         public SyncAsycOper(UniObserver obs)
         {
             m_obs = obs;
         }
-    /** Синхронно стартует операцию {@link #makeOper(UniObserver)}*/
+    /** РЎРёРЅС…СЂРѕРЅРЅРѕ СЃС‚Р°СЂС‚СѓРµС‚ РѕРїРµСЂР°С†РёСЋ {@link #makeOper(UniObserver)}*/
         void startSync()
         {
             makeOper(m_obs);
         }
-    /** Асинхронно стартует операцию {@link #makeOper(UniObserver)}*/
+    /** РђСЃРёРЅС…СЂРѕРЅРЅРѕ СЃС‚Р°СЂС‚СѓРµС‚ РѕРїРµСЂР°С†РёСЋ {@link #makeOper(UniObserver)}*/
         void startAsync()
         {
             execute();
@@ -141,8 +153,8 @@ public class st extends IKeyboard
         @Override
         protected void onProgressUpdate(Void... values)
         {
-        	if(m_obs!=null)
-        		m_obs.Observ();
+            if(m_obs!=null)
+                m_obs.Observ();
         }
     /** @hide */
         @Override
@@ -156,210 +168,183 @@ public class st extends IKeyboard
             }
             return null;
         }
-    /** Выполняемая операция  */
+    /** Р’С‹РїРѕР»РЅСЏРµРјР°СЏ РѕРїРµСЂР°С†РёСЏ  */
         abstract void makeOper(UniObserver obs);
-    /** Обработчик операции */  
+    /** РћР±СЂР°Р±РѕС‚С‡РёРє РѕРїРµСЂР°С†РёРё */  
         UniObserver m_obs;
     }
-/** Установка клавиатуры редактирования текста */
+/** РЈСЃС‚Р°РЅРѕРІРєР° РєР»Р°РІРёР°С‚СѓСЂС‹ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ С‚РµРєСЃС‚Р° */
     public static void setTextEditKeyboard()
     {
-    	JbKbdView.inst.setKeyboard(new JbKbd(st.c(),R.xml.edittext));
+        JbKbdView.inst.setKeyboard(new JbKbd(st.c(),R.xml.edittext));
     }
-/** Установка клавиатуры смайликов */
+/** РЈСЃС‚Р°РЅРѕРІРєР° РєР»Р°РІРёР°С‚СѓСЂС‹ СЃРјР°Р№Р»РёРєРѕРІ */
     public static void setSmilesKeyboard()
     {
-    	JbKbdView.inst.setKeyboard(new JbKbd(st.c(),R.xml.smileys));
+        JbKbdView.inst.setKeyboard(new JbKbd(st.c(),R.xml.smileys));
     }
-/** Установка символьной клавиатуры 
-*@param bShift true - для установки symbol_shift, false - для symbol */
+/** РЈСЃС‚Р°РЅРѕРІРєР° СЃРёРјРІРѕР»СЊРЅРѕР№ РєР»Р°РІРёР°С‚СѓСЂС‹ 
+*@param bShift true - РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё symbol_shift, false - РґР»СЏ symbol */
     public static void setSymbolKeyboard(boolean bShift)
     {
-    	JbKbdView.inst.setKeyboard(new JbKbd(st.c(),bShift?R.xml.symbols_shift:R.xml.symbols));
+        JbKbdView.inst.setKeyboard(new JbKbd(st.c(),bShift?R.xml.symbols_shift:R.xml.symbols));
     }
-/** Установка qwerty-клавиатуры с учётом последнего использования */    
+/** РЈСЃС‚Р°РЅРѕРІРєР° qwerty-РєР»Р°РІРёР°С‚СѓСЂС‹ СЃ СѓС‡С‘С‚РѕРј РїРѕСЃР»РµРґРЅРµРіРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ */    
     public static void setQwertyKeyboard()
     {
-    	setQwertyKeyboard(false);
+        setQwertyKeyboard(false);
     }
-/** Установка qwerty-клавиатуры с учётом последнего использования */    
+/** РЈСЃС‚Р°РЅРѕРІРєР° qwerty-РєР»Р°РІРёР°С‚СѓСЂС‹ СЃ СѓС‡С‘С‚РѕРј РїРѕСЃР»РµРґРЅРµРіРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ */    
     public static void setQwertyKeyboard(boolean bForce)
     {
-    	JbKbd kb = curKbd();
-    	if(kb!=null&&!bForce&&getCurQwertyRes()==kb.resId)
-    		return;
-    	JbKbdView.inst.setKeyboard(new JbKbd(st.c(),getCurQwertyRes()));
-    	saveCurLang();
+        JbKbd kb = curKbd();
+        if(kb!=null&&!bForce&&getCurQwertyRes()==kb.resId)
+            return;
+        JbKbdView.inst.setKeyboard(new JbKbd(st.c(),getCurQwertyRes()));
+        saveCurLang();
     }
     public static String getCurLang()
     {
-    	return pref().getString(PREF_KEY_LAST_LANG, defKbd().lang.name);
+        return pref().getString(PREF_KEY_LAST_LANG, defKbd().lang.name);
     }
-/** Возвращает текущий запущеный {@link JbKbdView}*/    
+/** Р’РѕР·РІСЂР°С‰Р°РµС‚ С‚РµРєСѓС‰РёР№ Р·Р°РїСѓС‰РµРЅС‹Р№ {@link JbKbdView}*/    
     public static JbKbdView kv()
     {
-    	return JbKbdView.inst;
+        return JbKbdView.inst;
     }
-/** Возвращает строку по умолчанию для переключения языков <br>
- * По умолчанию - язык текущей локали+английский, если нет языка текущей локали - то только английский
+/** Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃС‚СЂРѕРєСѓ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РґР»СЏ РїРµСЂРµРєР»СЋС‡РµРЅРёСЏ СЏР·С‹РєРѕРІ <br>
+ * РџРѕ СѓРјРѕР»С‡Р°РЅРёСЋ - СЏР·С‹Рє С‚РµРєСѓС‰РµР№ Р»РѕРєР°Р»Рё+Р°РЅРіР»РёР№СЃРєРёР№, РµСЃР»Рё РЅРµС‚ СЏР·С‹РєР° С‚РµРєСѓС‰РµР№ Р»РѕРєР°Р»Рё - С‚Рѕ С‚РѕР»СЊРєРѕ Р°РЅРіР»РёР№СЃРєРёР№
  */
     public static String getDefaultLangString()
     {
-    	String ret = "";
-    	String lang = Locale.getDefault().getLanguage();
-    	if(kbdForName(lang)!=null)
-    	{
-    		ret+=lang+',';
-    	}
-    	ret+=defKbd().lang.name;
-    	return ret;
+        String ret = "";
+        String lang = Locale.getDefault().getLanguage();
+        if(kbdForName(lang)!=null)
+        {
+            ret+=lang+',';
+        }
+        ret+=defKbd().lang.name;
+        return ret;
     }
-/** Возвращает массив языков для переключения */    
+/** Р’РѕР·РІСЂР°С‰Р°РµС‚ РјР°СЃСЃРёРІ СЏР·С‹РєРѕРІ РґР»СЏ РїРµСЂРµРєР»СЋС‡РµРЅРёСЏ */    
     public static String[] getLangsArray(Context c)
     {
-    	String langs = pref().getString(st.PREF_KEY_LANGS, st.getDefaultLangString());
-    	return langs.split(",");
+        String langs = pref().getString(st.PREF_KEY_LANGS, st.getDefaultLangString());
+        return langs.split(",");
     }
-/** Возвращает позицию строки search в массиве ar, или -1, если не найдено*/    
+/** Р’РѕР·РІСЂР°С‰Р°РµС‚ РїРѕР·РёС†РёСЋ СЃС‚СЂРѕРєРё search РІ РјР°СЃСЃРёРІРµ ar, РёР»Рё -1, РµСЃР»Рё РЅРµ РЅР°Р№РґРµРЅРѕ*/    
     public static int searchStr(String search,String ar[])
     {
-    	if(ar==null||search==null)
-    		return -1;
-    	for(int i=0;i<ar.length;i++)
-    	{
-    		if(ar[i].equals(search))
-    			return i;
-    	}
-    	return -1;
+        if(ar==null||search==null)
+            return -1;
+        for(int i=0;i<ar.length;i++)
+        {
+            if(ar[i].equals(search))
+                return i;
+        }
+        return -1;
     }
-/** Возвращает коннект к БД или создаёт новый */    
+/** Р’РѕР·РІСЂР°С‰Р°РµС‚ РєРѕРЅРЅРµРєС‚ Рє Р‘Р” РёР»Рё СЃРѕР·РґР°С‘С‚ РЅРѕРІС‹Р№ */    
     static Stor stor()
     {
-    	if(Stor.inst!=null)
-    		return Stor.inst;
-    	if(st.c()==null)
-    		return null;
-    	return new Stor(st.c());
+        if(Stor.inst!=null)
+            return Stor.inst;
+        if(st.c()==null)
+            return null;
+        return new Stor(st.c());
     }
 /** */ 
     static boolean runAct(Class<?>cls)
     {
-    	return runAct(cls,c());
+        return runAct(cls,c());
     }
     static boolean runAct(Class<?>cls,Context c)
     {
-		try{
-			
-			c.startActivity(
-					new Intent(Intent.ACTION_VIEW)
-						.setComponent(new ComponentName(st.c(),cls))
-						.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP)
-			);
-		}
-		catch(Throwable e)
-		{
-			st.logEx(e);
-			return false;
-		}
-		return true;
+        try{
+            
+            c.startActivity(
+                    new Intent(Intent.ACTION_VIEW)
+                        .setComponent(new ComponentName(st.c(),cls))
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            );
+        }
+        catch(Throwable e)
+        {
+            st.logEx(e);
+            return false;
+        }
+        return true;
     }
-/** Заменяет спецсимволы в строке fn на _ , возвращает модифицированную строку */   
+/** Р—Р°РјРµРЅСЏРµС‚ СЃРїРµС†СЃРёРјРІРѕР»С‹ РІ СЃС‚СЂРѕРєРµ fn РЅР° _ , РІРѕР·РІСЂР°С‰Р°РµС‚ РјРѕРґРёС„РёС†РёСЂРѕРІР°РЅРЅСѓСЋ СЃС‚СЂРѕРєСѓ */   
     public static final String normalizeFileName(String fn)
     {
         return fn.replaceAll("[\\\"\\/:?!\\\'\\\\]", "_");
     }
-/** Выполняет клавиатурную команду с кодом cmd*/    
+/** Р’С‹РїРѕР»РЅСЏРµС‚ РєР»Р°РІРёР°С‚СѓСЂРЅСѓСЋ РєРѕРјР°РЅРґСѓ СЃ РєРѕРґРѕРј cmd*/    
     static boolean kbdCommand(int action)
     {
-    	switch(action)
-    	{
-	    	case CMD_VOICE_RECOGNIZER: new VRTest().startVoice(); return true;//return runAct(VRActivity.class);
-	    	case CMD_TPL_EDITOR: return runAct(TplEditorActivity.class);
-	    	case CMD_TPL_NEW_FOLDER: 
-	    		if(Templates.inst==null)
-	    			return false;
-	    		Templates.inst.setEditFolder(true);
-	    		return runAct(TplEditorActivity.class);
-	    	case CMD_TPL: new Templates().makeCommonMenu(); return true;
-	    	case CMD_PREFERENCES: return runAct(JbKbdPreference.class);
-	    	case CMD_CLIPBOARD: return ComMenu.showClipboard();
-    	}
-    	return false;
+        switch(action)
+        {
+          case 100:
+            try {
+                Process proc = Runtime.getRuntime().exec("fbtool -d /sdcard/jbkbd.bmp");
+                int av = proc.getInputStream().available();
+                int ave = proc.getErrorStream().available();
+                String in=null,err = null;
+                if(av>0)
+                {
+                  byte b[] = new byte[av];
+                  proc.getInputStream().read(b);
+                  in = new String(b);
+                }
+                if(ave>0)
+                {
+                  byte b[] = new byte[ave];
+                  proc.getErrorStream().read(b);
+                  err = new String(b);
+                }
+                Toast.makeText(c(), err==null?in:err, 1500).show();
+            } catch (Throwable e) {
+                st.logEx(e);
+            }
+              break;
+            case CMD_VOICE_RECOGNIZER: new VRTest().startVoice(); return true;//return runAct(VRActivity.class);
+            case CMD_TPL_EDITOR: return runAct(TplEditorActivity.class);
+            case CMD_TPL_NEW_FOLDER: 
+                if(Templates.inst==null)
+                    return false;
+                Templates.inst.setEditFolder(true);
+                return runAct(TplEditorActivity.class);
+            case CMD_TPL: new Templates().makeCommonMenu(); return true;
+            case CMD_PREFERENCES: return runAct(JbKbdPreference.class);
+            case CMD_CLIPBOARD: return ComMenu.showClipboard();
+        }
+        return false;
     }
-/** Возвращает команду по текстовой метке */    
+/** Р’РѕР·РІСЂР°С‰Р°РµС‚ РєРѕРјР°РЅРґСѓ РїРѕ С‚РµРєСЃС‚РѕРІРѕР№ РјРµС‚РєРµ */    
     static int getCmdByLabel(String label)
     {
-    	if(!label.startsWith(DRW_PREFIX))
-    		return 0;
-    	String l = label.substring(DRW_PREFIX.length());
-    	if(l.equals("vr"))
-    		return CMD_VOICE_RECOGNIZER;
-    	return 0;
+        if(!label.startsWith(DRW_PREFIX))
+            return 0;
+        String l = label.substring(DRW_PREFIX.length());
+        if(l.equals("vr"))
+            return CMD_VOICE_RECOGNIZER;
+        return 0;
     }
-/** Возвращает id иконки по команде*/    
+/** Р’РѕР·РІСЂР°С‰Р°РµС‚ id РёРєРѕРЅРєРё РїРѕ РєРѕРјР°РЅРґРµ*/    
     static Bitmap getBitmapByCmd(int cmd)
     {
-    	int bid = 0;
-    	switch (cmd)
-		{
-			case CMD_VOICE_RECOGNIZER: bid = R.drawable.vr_small_white;
-		}
-    	if(bid!=0)
-    		return BitmapFactory.decodeResource(st.c().getResources(), bid);
-    	return null;
+        int bid = 0;
+        switch (cmd)
+        {
+            case CMD_VOICE_RECOGNIZER: bid = R.drawable.vr_small_white;
+        }
+        if(bid!=0)
+            return BitmapFactory.decodeResource(st.c().getResources(), bid);
+        return null;
     }
     static final SharedPreferences pref()
     {
-    	return PreferenceManager.getDefaultSharedPreferences(c());
+        return PreferenceManager.getDefaultSharedPreferences(c());
     }
-/** Ключ, boolean, хранящий значение "включить/отключить просмотр клавиш" */    
-    public static final String PREF_KEY_PREVIEW = "ch_preview";
-/** Ключ, int ,хранящий код последней используемой клавиатуры */    
-    public static final String PREF_KEY_LAST_LANG = "lastLng";
-/** Ключ, int, хранящий высоту клавиш в портретном режиме */    
-    public static final String PREF_KEY_HEIGHT_PORTRAIT = "kh";
-/** Ключ, int, хранящий высоту клавиш в ландшафтном режиме */    
-    public static final String PREF_KEY_HEIGHT_LANDSCAPE = "khl";
-/** Ключ, int, хранящий высоту клавиш по умолчанию, на всякий случай */    
-    public static final String PREF_KEY_DEF_HEIGHT = "dh";
-/** Ключ, String, хранящий порядок переключения языков */    
-    public static final String PREF_KEY_LANGS = "langs";
-/** Ключ, boolean, хранящий настройку вибро при коротком нажатии */    
-    public static final String PREF_KEY_VIBRO_SHORT_KEY = "vs";
-/** Ключ, boolean, хранящий настройку вибро при коротком нажатии */    
-    public static final String PREF_KEY_VIBRO_LONG_KEY = "vl";
-/** Ключ, int, хранящий ресурс клавиатуры для выбраного языка. Полный ключ выглядит как PREF_KEY_LANG_KBD+"en"*/    
-    public static final String PREF_KEY_LANG_KBD = "lkbd_";
-
- /** Значение для запуска {@link SetKbdActivity}. С этим ключом передаётся параметр типа int<br>
- *  Параметр int - одно из значений SET_*/    
-    public static final String SET_INTENT_ACTION = "sa";
- /**  Параметр String - название языка, для которого производится выбор клавиатуры */    
-    public static final String SET_INTENT_LANG_NAME = "sl";
-    
-/** Значение для запуска {@link SetKbdActivity} - настройка высоты клавиш в портретном режиме */    
-    public static final int SET_KEY_HEIGHT_PORTRAIT = 1;
-/** Значение для запуска {@link SetKbdActivity} - настройка высоты клавиш в ландшафтном режиме */    
-    public static final int SET_KEY_HEIGHT_LANDSCAPE =2;
-/** Вызывает настройку переключения языков */    
-    public static final int SET_LANGUAGES_SELECTION =3;
-/** Вызывает настройку клавиш*/    
-    public static final int SET_KEYS =4;
-    public static final int SET_SELECT_KEYBOARD = 5;
-    
-/** Строковый префикс для кнопки, где метка для длинного нажатия является иконкой */
-	public static final String DRW_PREFIX = "d_"; 
-/** Внутреняя команда - голосовой ввод */	
-	public static final int CMD_VOICE_RECOGNIZER = -1;
-/** Внутреняя команда - запуск редактора шаблонов */	
-	public static final int CMD_TPL_EDITOR = -2;
-/** Внутреняя команда - показ шаблонов на клавиатуре */	
-	public static final int CMD_TPL = -3;
-/** Внутреняя команда - запуск настроек */	
-	public static final int CMD_PREFERENCES = -4;
-/** Внутреняя команда - запуск мультибуфера обмена */	
-	public static final int CMD_CLIPBOARD = -5;
-/** Внутреняя команда - создание папки шаблонов */	
-	public static final int CMD_TPL_NEW_FOLDER = -6;
-	public static final String TAG = "JBK";
 }

@@ -1,30 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
   xmlns:android="http://schemas.android.com/apk/res/android">
-  
-         <CheckBoxPreference
-         	android:key="ch_preview"
-         	android:title="@string/set_ch_keys_preview"
-         	android:summary="@string/set_ch_keys_preview_desc"
-         	android:defaultValue="true"
-         />       
-         <Preference 
-         	android:title="@string/set_key_height_portrait"
-         	android:summary="@string/set_key_height_portrait_desc"
-         	/>
-         <Preference 
-         	android:title="@string/set_key_height_landscape"
-         	android:summary="@string/set_key_height_landscape_desc"
-         	/>
-         <Preference 
-         	android:title="@string/set_languages"
-         	android:summary="@string/set_languages_desc"
-         	/>
-         <PreferenceScreen
-         	android:title="@string/set_key_voice" 
-         	android:summary="@string/set_key_voice_desc"
-         >
-         <CheckBoxPreference
+  <!-- 0 - предпросмотр -->
+        <CheckBoxPreference
+        	android:key="ch_preview"
+        	android:title="@string/set_ch_keys_preview"
+        	android:summary="@string/set_ch_keys_preview_desc"
+        	android:defaultValue="true"
+        />       
+  <!-- 1 - высота клавиш, портрет -->
+        <Preference 
+       	android:title="@string/set_key_height_portrait"
+       	android:summary="@string/set_key_height_portrait_desc"
+       	/>
+  <!-- 2 - высота клавиш, ландшафт -->
+        <Preference 
+       	android:title="@string/set_key_height_landscape"
+       	android:summary="@string/set_key_height_landscape_desc"
+       	/>
+  <!-- 3 - языки -->
+        <Preference 
+       	android:title="@string/set_languages"
+       	android:summary="@string/set_languages_desc"
+       	/>
+  <!-- 4 - вибра -->
+        <PreferenceScreen
+       	android:title="@string/set_key_voice" 
+       	android:summary="@string/set_key_voice_desc"
+       >
+	         <CheckBoxPreference
+	         	android:key="sound"
+	         	android:title="@string/set_key_sounds"
+	         	android:summary="@string/set_key_sounds_desc"
+	         	android:defaultValue="false"
+	         />       
+            <CheckBoxPreference
          	android:key="vs"
          	android:title="@string/set_key_short_vibro"
          	android:summary="@string/set_key_short_vibro_desc"
@@ -37,8 +47,14 @@
          	android:defaultValue="false"
          />       
          </PreferenceScreen>	
-         <Preference
-         	android:title="@string/set_keys" 
-         	android:summary="@string/set_keys_desc"
-         />	
+     <!-- 5 - настройки скинов -->
+        <Preference
+	     	android:title="@string/set_key_skins" 
+	     	android:summary="@string/set_key_skins_desc"
+        />	
+     <!-- 6 - настройки клавиш -->
+        <Preference
+	     	android:title="@string/set_keys" 
+	     	android:summary="@string/set_keys_desc"
+        />	
 </PreferenceScreen>

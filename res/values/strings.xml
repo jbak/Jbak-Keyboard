@@ -23,13 +23,18 @@
     <string name="set_languages">Select languages</string>
     <string name="set_languages_desc">Here you can select languages for switching</string>
     <string name="set_key_voice">Voice and vibro</string>
-    <string name="set_key_voice_desc">Here you can change settings for tactile feedback </string>
+    <string name="set_key_voice_desc">Here you can change settings for voice and tactile feedback </string>
     <string name="set_key_short_vibro">Vibro on short press</string>
     <string name="set_key_short_vibro_desc">If enabled - screen vibrates on key press</string>
     <string name="set_key_long_vibro">Vibro on long press</string>
     <string name="set_key_long_vibro_desc">If enabled - screen vibrates on key long press</string>
-    <string name="set_select_keyboard">Select keyboard</string>
+    <string name="set_key_sounds">Enable sounds</string>
+    <string name="set_key_sounds_desc">If enabled - keys sounds after each press</string>
     
+    <string name="set_select_keyboard">Select keyboard</string>
+    <string name="set_key_skins">Skins</string>
+    <string name="set_key_skins_desc">Various skins for keyboard</string>
+        
     <string name="mm_templates">Templates</string>
     <string name="mm_multiclipboard">Clipboard</string>
     <string name="mm_settings">Settings</string>
@@ -104,6 +109,11 @@
 	<string name="kbd_name_qwerty">Qwerty keyboard</string>    
 	<string name="kbd_name_qwerty_tablet">Qwerty for tablet</string>
 	    
+ <!-- Names for keyboards designs -->
+	<string name="kbd_design_standard">Standard</string>    
+	<string name="kbd_design_iphone">iPhone</string>
+ 
+ 
 <!-- Names for some keys -->    
     <string name="k_search">Search</string>
     <string name="k_back">Back</string>

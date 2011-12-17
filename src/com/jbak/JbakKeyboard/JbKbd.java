@@ -27,6 +27,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
@@ -36,7 +37,7 @@ import android.view.inputmethod.EditorInfo;
 
 public class JbKbd extends Keyboard {
 
-    private Key mEnterKey;
+    private LatinKey mEnterKey;
     
     public JbKbd(Context context, int xmlLayoutResId) {
         super(context, xmlLayoutResId);
@@ -51,36 +52,33 @@ public class JbKbd extends Keyboard {
     }
     void init()
     {
-    	SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(st.c());
-    	if(!sp.contains(st.PREF_KEY_DEF_HEIGHT))
-    	{
-    		sp.edit().putInt(st.PREF_KEY_DEF_HEIGHT, getHeightKey()).commit();
-    	}
-    	KeyDrw.dm.finish();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(st.c());
+        if(!sp.contains(st.PREF_KEY_DEF_HEIGHT))
+        {
+            sp.edit().putInt(st.PREF_KEY_DEF_HEIGHT, getHeightKey()).commit();
+        }
     }
     public int getHeightKey()
     {
-    	return super.getKeyHeight();
+        return super.getKeyHeight();
     }
     void setHeightKey(int height)
     {
-    	super.setKeyHeight(height);
+        super.setKeyHeight(height);
     }
     int resId;
     @Override
     protected Key createKeyFromXml(Resources res, Row parent, int x, int y, 
             XmlResourceParser parser) {
-    	if(getKeys().size()==0)
-    		KeyDrw.dm = new KeyDrw.DrawMetrics();
-        Key key = new LatinKey(res, parent, x, y, parser);
+        LatinKey key = new LatinKey(res, parent, x, y, parser);
         if (key.codes[0] == 10) {
             mEnterKey = key;
         }
         return key;
     }
-/** Выставляет на клавишу Enter строку из ресурсов для текущего типа 
-*@param res Ресурсы программы
-*@param options Тип редактирования, {@link EditorInfo#imeOptions}
+/** Р’С‹СЃС‚Р°РІР»СЏРµС‚ РЅР° РєР»Р°РІРёС€Сѓ Enter СЃС‚СЂРѕРєСѓ РёР· СЂРµСЃСѓСЂСЃРѕРІ РґР»СЏ С‚РµРєСѓС‰РµРіРѕ С‚РёРїР° 
+*@param res Р РµСЃСѓСЂСЃС‹ РїСЂРѕРіСЂР°РјРјС‹
+*@param options РўРёРї СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ, {@link EditorInfo#imeOptions}
  */
     void setImeOptions(Resources res, int options) {
         if (mEnterKey == null) {
@@ -109,25 +107,27 @@ public class JbKbd extends Keyboard {
                 mEnterKey.label = res.getText(R.string.label_send_key);
                 break;
             default:
-                mEnterKey.icon = res.getDrawable(
-                        R.drawable.sym_keyboard_return);
+                mEnterKey.icon = res.getDrawable(R.drawable.sym_keyboard_return);
+                mEnterKey.icon = mEnterKey.createLabel(mEnterKey.width, mEnterKey.height);
+                
+                        //R.drawable.sym_keyboard_return);
                 mEnterKey.label = null;
                 break;
         }
     }
     LatinKey getKeyByCode(int code)
     {
-    	List<Key> ar = getKeys();
-    	for(Iterator<Key>it = ar.iterator();it.hasNext();)
-    	{
-    		Key k = it.next();
-    		if(k.codes!=null&&k.codes.length>0&&k.codes[0]==code)
-    			return (LatinKey)k;
-    	}
-    	return null;
+        List<Key> ar = getKeys();
+        for(Iterator<Key>it = ar.iterator();it.hasNext();)
+        {
+            Key k = it.next();
+            if(k.codes!=null&&k.codes.length>0&&k.codes[0]==code)
+                return (LatinKey)k;
+        }
+        return null;
     }
-/** Собственный класс клавиш. Отнаследован от системного. <br>
- * При создании клавиши, если метка содержит разделитель \n - рисуется собственная картинка через {@link KeyDrw} 
+/** РЎРѕР±СЃС‚РІРµРЅРЅС‹Р№ РєР»Р°СЃСЃ РєР»Р°РІРёС€. РћС‚РЅР°СЃР»РµРґРѕРІР°РЅ РѕС‚ СЃРёСЃС‚РµРјРЅРѕРіРѕ. <br>
+ * РџСЂРё СЃРѕР·РґР°РЅРёРё РєР»Р°РІРёС€Рё, РµСЃР»Рё РјРµС‚РєР° СЃРѕРґРµСЂР¶РёС‚ СЂР°Р·РґРµР»РёС‚РµР»СЊ \n - СЂРёСЃСѓРµС‚СЃСЏ СЃРѕР±СЃС‚РІРµРЅРЅР°СЏ РєР°СЂС‚РёРЅРєР° С‡РµСЂРµР· {@link KeyDrw} 
  */
     static class LatinKey extends Keyboard.Key {
         
@@ -135,42 +135,54 @@ public class JbKbd extends Keyboard {
             super(res, parent, x, y, parser);
             if(JbKbdView.inst.m_KeyHeight>0)
             {
-            	parent.defaultHeight = JbKbdView.inst.m_KeyHeight; 
-            	height = JbKbdView.inst.m_KeyHeight;
+                parent.defaultHeight = JbKbdView.inst.m_KeyHeight; 
+                height = JbKbdView.inst.m_KeyHeight;
             }
-            if(icon==null)
+            Drawable ic =createLabel(width, parent.defaultHeight);
+            if(ic!=null)
             {
-            	icon = createLabel(width, parent.defaultHeight);
-            	if(icon!=null)
-            	{
-            		iconPreview = createPreviewLabel();
-            		label = null;
-            	}
+                if(icon==null)
+                {
+                  iconPreview = createPreviewLabel();
+                }
+                icon = ic;
+                label = null;
             }
             
         }
         Drawable createPreviewLabel()
         {
-        	int w = JbKbdView.inst.m_PreviewHeight;
-        	KeyDrw d = new KeyDrw(label,w,w,true);
-        	ShapeDrawable drw = new ShapeDrawable(d);
-        	drw.setBounds(0, 0, w, w);
-        	return drw;
+            int w = JbKbdView.inst.m_PreviewHeight;
+            KeyDrw d = new KeyDrw(label,w,w,true);
+            ShapeDrawable drw = new ShapeDrawable(d);
+            drw.setBounds(0, 0, w, w);
+            return drw;
         }
         Drawable createLabel(int width,int height)
         {
-        	int f = label.toString().indexOf('\n');
-        	if(f<0)
-        	{
-        		return null;
-        	}
-        	m_kd = new KeyDrw(label,width,height,false);
-        	ShapeDrawable drw = new ShapeDrawable(m_kd);
-        	drw.setBounds(0, 0, width, height);
-        	return drw;
+            if(icon!=null)
+            {
+                if(icon instanceof BitmapDrawable)
+                {
+                  BitmapDrawable bd = (BitmapDrawable)icon;
+                  m_kd = new KeyDrw(bd.getBitmap(), width, height, false);
+                }
+            }
+            else
+            {
+              int f = label.toString().indexOf('\n');
+              if(f<0)
+              {
+                  return null;
+              }
+              m_kd = new KeyDrw(label,width,height,false);
+            }
+            ShapeDrawable drw = new ShapeDrawable(m_kd);
+            drw.setBounds(0, 0, width, height);
+            return drw;
         }
-    	KeyDrw m_kd;
-    	
+        KeyDrw m_kd;
+        
     }    
         /**
          * Overriding this method so that we can reduce the target area for the key that

@@ -22,14 +22,18 @@
     <string name="set_keys_desc">Пользовательская настройка клавиш (кроме Home и Power)</string>
     <string name="set_languages">Выбор языков</string>
     <string name="set_languages_desc">Выбор языков для переключения и раскладок клавиатур</string>
-    <string name="set_key_voice">Вибрация</string>
-    <string name="set_key_voice_desc">Настройка вибрации при нажатии клавиш</string>
+    <string name="set_key_voice">Вибрация и звук</string>
+    <string name="set_key_voice_desc">Для корректной работы должны быть включены системные настройки звука и вибрации</string>
     <string name="set_key_short_vibro">Вибрация при нажатии</string>
     <string name="set_key_short_vibro_desc">Если включено - экран вибрирует при нажатии</string>
     <string name="set_key_long_vibro">Вибрация при удержании</string>
     <string name="set_key_long_vibro_desc">Если включено - экран вибрирует при долгом нажатии клавиши</string>
+    <string name="set_key_sounds">Звуковое сопровождение</string>
+    <string name="set_key_sounds_desc">Проигрывать системные звуки при нажатии на клавиши</string>
     <string name="set_select_keyboard">Выбор клавиатуры</string>
-    
+    <string name="set_key_skins">Оформление</string>
+    <string name="set_key_skins_desc">Различные варианты оформления для клавиатуры</string>
+        
     <string name="mm_templates">Шаблоны</string>
     <string name="mm_multiclipboard">Буфер обмена</string>
     <string name="mm_settings">Настройки Jbak Keyboard</string>
