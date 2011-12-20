@@ -25,7 +25,7 @@
         <item name="android:background">@android:drawable/toast_frame</item>
         <item name="android:textColor">#ffffсс00</item>
     </style>
-    <style name="label_desc" parent="@android:style/TextAppearance.Small">
+    <style name="label_desc" parent="@android:style/TextAppearance.Medium">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@android:drawable/toast_frame</item>
@@ -44,5 +44,10 @@
       <item name="android:layout_width">64dp</item>
       <item name="android:layout_height">wrap_content</item>
     </style>
-    
+    <style name="about_item" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">#ff000088</item>
+    </style>
+        
 </resources>

@@ -28,7 +28,13 @@ public interface IKbdSettings
     public static final String PREF_KEY_LANG_KBD = "lkbd_";
 /** Ключ, int, хранящий индекс текущего скина*/    
     public static final String PREF_KEY_KBD_SKIN = "kbd_skin";
-
+/** Ключ, boolean - предложения с большой буквы */    
+    public static final String PREF_KEY_SENTENCE_UPPERCASE = "up_sentence";
+/** Ключ, String, список символов для перехода в верхний регистр */    
+    public static final String PREF_KEY_SENTENCE_ENDS = "sentence_ends";
+/** Ключ, boolean - добавление пробела после конца предложения */    
+    public static final String PREF_KEY_SENTENCE_SPACE = "space_sentence";
+    
 	//-------------------------------------------------------------------    
 	/// Константы для запуска настроечных активностей
 	//-------------------------------------------------------------------    

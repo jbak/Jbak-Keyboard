@@ -4,9 +4,6 @@
     <string name="ime_name">Jbak Keyboard</string>
     <string name="ime_settings">Настройки Jbak Keyboard</string>
 
-    <!-- Symbols that are commonly considered word separators in this language -->
-    <string name="word_separators">\u0020.,;:!?\n()[]*&amp;@{}/&lt;&gt;_+=|&quot;</string>
-    
     <!-- Labels on soft keys -->
     <string name="label_go_key">Go</string>
     <string name="label_next_key">След</string>
@@ -33,6 +30,14 @@
     <string name="set_select_keyboard">Выбор клавиатуры</string>
     <string name="set_key_skins">Оформление</string>
     <string name="set_key_skins_desc">Различные варианты оформления для клавиатуры</string>
+    <string name="set_key_other">Дополнительно</string>
+    <string name="set_key_other_desc">.. и еще кое-что </string>
+    <string name="set_key_sentence_upper">Предложения с большой буквы</string>
+    <string name="set_key_sentence_upper_desc">После некоторых символов клавиатура переходит в верхний регистр. См. следующую настройку</string>
+    <string name="set_key_sentence_ends">Концы предложений</string>
+    <string name="set_key_sentence_ends_desc">Здесь можно отредактировать символы, которые являются концами предложения</string>
+    <string name="set_key_space_sentence_end">Пробел после конца предложения</string>
+    <string name="set_key_space_sentence_end_desc">Если включено - после конца предложения добавляется пробел</string>
         
     <string name="mm_templates">Шаблоны</string>
     <string name="mm_multiclipboard">Буфер обмена</string>
@@ -70,7 +75,17 @@
 
     <string name="ks_add_key">Новая клавиша</string>
     <string name="ks_press_key">Нажмите клавишу...</string>
-    <string name="ks_type">Выполняетс</string>
+    <string name="ks_type">Выполняется</string>
+    <!-- Strings for about dialog -->
+	<string name="about">О программе</string>
+	<string name="about_app">Программа:</string>
+	<string name="about_version">Версия:</string>
+	<string name="about_market">Маркет:</string>
+	<string name="about_author">Автор:</string>
+	<string name="about_author_desc">Юрий \"Jbak\" Бакунин \njbak1979@gmail.com</string>
+	<string name="about_other">Прочее:</string>
+	<string name="about_other_desc">В программе использованы иконки из бесплатного набора "Primo"\nСайт дизайнера: http://www.webdesignerdepot.com</string>
+        
     <string-array name="ks_type_variants">
         <item>Всегда</item>
         <item>В полях ввода</item>
@@ -102,6 +117,14 @@
 <!-- Names for various keyboards -->
     <string name="kbd_name_qwerty">Клавиатура Qwerty</string>    
     <string name="kbd_name_qwerty_tablet">Qwerty для планшетов</string>
+
+<!-- Names for keyboards designs -->
+	<string name="kbd_design_standard">Стандартный</string>    
+	<string name="kbd_design_iphone">iPhone</string>
+	<string name="kbd_design_ukraine">Зроблено в Україні</string>
+	<string name="kbd_design_chokolate">Шоколад</string>
+	<string name="kbd_design_rgb">RGB</string>
+	<string name="kbd_design_ussr">Рождённый в СССР</string>
         
 <!-- Names for some keys -->    
     <string name="k_search">Поиск</string>

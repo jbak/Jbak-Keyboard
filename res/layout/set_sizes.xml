@@ -45,12 +45,20 @@
 	  android:gravity="center"
 	  style="@android:style/TextAppearance.Medium"
 />
-</RelativeLayout>	  
+</RelativeLayout>
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+	android:layout_alignParentBottom="true"
+	android:layout_below="@id/key_height"
+	android:gravity="bottom"
+    >	  
 <com.jbak.JbakKeyboard.JbKbdView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/keyboard"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
 		android:clickable="false"
-	  	android:layout_alignParentBottom="true"
+	  	android:gravity="bottom"
 	/>
+</LinearLayout>
 </RelativeLayout>

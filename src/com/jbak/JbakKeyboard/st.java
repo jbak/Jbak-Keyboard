@@ -3,12 +3,17 @@ package com.jbak.JbakKeyboard;
 import java.io.IOException;
 import java.util.Locale;
 
+import com.jbak.CustomGraphics.ColorsGradientBack;
+import com.jbak.CustomGraphics.GradBack;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -39,7 +44,10 @@ public class st extends IKeyboard implements IKbdSettings
     /** Пользовательский параметр 2 */  
         Object m_param2;
     }
-    
+    public static Drawable getBack()
+    {
+        return new GradBack(0xff000088, Color.CYAN).setCorners(0, 0).setGap(0).getButtonDrawable();
+    }
     /** Эквивалент вызова (val&flag)>0*/        
     public static final boolean has(int val,int flag)
     {
@@ -126,6 +134,8 @@ public class st extends IKeyboard implements IKbdSettings
             return SetKbdActivity.inst;
         if(ServiceJbKbd.inst!=null)
             return ServiceJbKbd.inst;
+        if(LangSetActivity.inst!=null)
+            return LangSetActivity.inst;
         return ClipbrdService.inst;
     }
   //********************************************************************

@@ -1,5 +1,7 @@
 package com.jbak.JbakKeyboard;
 
+import com.jbak.CustomGraphics.GradBack;
+
 import android.graphics.Color;
 
 
@@ -37,35 +39,87 @@ public class IKeyboard
         new Keybrd(KBD_QWERTY_RU_HALF,  arLangs[LANG_RU],       R.xml.qwerty_ru_tablet, R.string.kbd_name_qwerty_tablet),
         new Keybrd(KBD_QWERTY_EN_HALF,  arLangs[LANG_EN],       R.xml.qwerty_en_tablet, R.string.kbd_name_qwerty_tablet),
     };
+// Флаги дизайна (Design Flags)
+/** Жирный шрифт */    
+    public static final int DF_BOLD = 0x0001;
+/** Большой отступ, {@link KeyDrw#BIG_GAP} */    
+    public static final int DF_BIG_GAP = 0x0002;
+
     public static final int DEF_COLOR = 123;
     public static final int KBD_DESIGN_STANDARD = 0;
     public static final int KBD_DESIGN_IPHONE = 1;
     public static KbdDesign[] arDesign=
     {
+        // Стандартный дизайн 
         new KbdDesign(R.string.kbd_design_standard, 
                       0, 
                       DEF_COLOR,
                       0,
                       0),
+        // iPhone
         new KbdDesign(R.string.kbd_design_iphone, 
                       R.drawable.iphone_btn_keyboard_key, 
                       Color.BLACK,
                       R.drawable.iphone_background,
-                      KbdDesign.DF_BOLD|KbdDesign.DF_BIG_GAP),
+                      DF_BOLD|DF_BIG_GAP),
+        // Украина
+      new KbdDesign(R.string.kbd_design_ukraine, 
+              		0, 
+              		Color.YELLOW,
+              		0,
+              		DF_BOLD)
+        	.setKeysBackground(new GradBack(0xff060a6c, 0xff1199af).setGradType(GradBack.GRADIENT_TYPE_SWEEP))
+        	.setKbdBackground(new GradBack(Color.CYAN, Color.YELLOW).setGap(0).setCorners(0, 0))
+            	,
+        // Шоколад
+        new KbdDesign(R.string.kbd_design_chokolate, 
+                      0, 
+                      0xffffffc0,
+                      0,
+                      DF_BOLD)
+              .setKeysBackground(new GradBack(0xff75412b, 0xffc16643).setGradType(GradBack.GRADIENT_TYPE_SWEEP))
+              .setKbdBackground(new GradBack(0xff400000, GradBack.DEFAULT_COLOR).setGap(0).setCorners(0, 0))
+                  ,
+      // RGB
+      new KbdDesign(R.string.kbd_design_rgb, 
+                    0, 
+                    Color.RED,
+                    0,
+                    DF_BOLD)
+            .setKeysBackground(new GradBack(0xff00ff00, 0xff008800).setGradType(GradBack.GRADIENT_TYPE_SWEEP))
+            .setKbdBackground(new GradBack(0xff000088, 0xff0000ff).setGap(0).setCorners(0, 0))
+                ,
+        // Рожденный в СССР    	
+      new KbdDesign(R.string.kbd_design_ussr, 
+                0, 
+                Color.YELLOW,
+                0,
+                0)
+        .setKeysBackground(new GradBack(0xff800000, 0xffc00000).setGradType(GradBack.GRADIENT_TYPE_SWEEP))
+        .setKbdBackground(new GradBack(0xffff0000,0xfff31c0d).setCorners(0, 0).setGap(0))
+        ,
     };
 //*****************************************************************    
     /** Класс для хранения оформлений клавиатур */
     public static class KbdDesign
     {
-        public static final int DF_BOLD = 0x0001;
-        public static final int DF_BIG_GAP = 0x0002;
         public KbdDesign(int name,int drawable,int textColor,int backDrawable,int flags)
         {
             nameResId = name; 
             drawResId=drawable;
             this.textColor = textColor;
-            this.backDrawable = backDrawable;
+            this.backDrawableRes = backDrawable;
             this.flags = flags;
+        }
+        KbdDesign setKeysBackground(GradBack bg)
+        {
+        	m_keyBackground = bg;
+        	return this;
+        }
+        KbdDesign setKbdBackground(GradBack bg)
+        {
+        	m_kbdBackground = bg;
+        	return this;
         }
 /** Id drawable-ресурса для рисования кнопок */     
         public int drawResId;
@@ -74,10 +128,13 @@ public class IKeyboard
 /** Цвет текста */      
         public int textColor;
 /** drawable-ресурс для рисования фона клавиатуры*/        
-        public int backDrawable;
+        public int backDrawableRes;
 /** Флаги*/        
         public int flags=0;
+        GradBack m_keyBackground=null;
+        GradBack m_kbdBackground=null;
     }
+    
 //*****************************************************************    
 /** Класс для хранения сведений о языке */    
     public static class Lang

@@ -30,7 +30,16 @@
     <string name="set_key_long_vibro_desc">If enabled - screen vibrates on key long press</string>
     <string name="set_key_sounds">Enable sounds</string>
     <string name="set_key_sounds_desc">If enabled - keys sounds after each press</string>
-    
+    <string name="set_key_other">Other settings</string>
+    <string name="set_key_other_desc">Some another settings</string>
+    <string name="set_key_sentence_upper">Sentence from uppercase</string>
+    <string name="set_key_sentence_upper_desc">After some symbols keyboard go to uppercase. See this symbols in next setting</string>
+    <string name="set_key_sentence_ends">Sentence end symbols</string>
+    <string name="set_key_sentence_ends_desc">Here you can edit symbols, which is ends of sentence</string>
+    <string name="set_key_space_sentence_end">Space after sentence end</string>
+    <string name="set_key_space_sentence_end_desc">If enabled - symbol \'space\' inserts after sentence end</string>
+        
+        
     <string name="set_select_keyboard">Select keyboard</string>
     <string name="set_key_skins">Skins</string>
     <string name="set_key_skins_desc">Various skins for keyboard</string>
@@ -98,8 +107,16 @@
     <string name="ks_select_app">Select app</string>
     <string name="ks_app_for_launch">App for launch</string>
     <string name="ks_text_for_input">Text for input</string>
-
-    
+<!-- Strings for about dialog -->
+	<string name="about">About</string>
+	<string name="about_app">Application:</string>
+	<string name="about_version">Version: </string>
+	<string name="about_market">Market:</string>
+	<string name="about_author">Author:</string>
+	<string name="about_author_desc">Juriy Bakunin aka Jbak\njbak1979@gmail.com</string>
+	<string name="about_other">Other:</string>
+	<string name="about_other_desc">In application used icons from free "Primo" icon pack.\nDesigner web-site is http://www.webdesignerdepot.com</string>
+	    	    	    	    
 <!-- Known key name format. If key is letter or one of other known key (see below) -->    
     <string name="ks_char_label">Key \"%s\"</string>
 <!-- Unknown key name format. %d replaced with keycode integer -->    
@@ -112,7 +129,11 @@
  <!-- Names for keyboards designs -->
 	<string name="kbd_design_standard">Standard</string>    
 	<string name="kbd_design_iphone">iPhone</string>
- 
+	<string name="kbd_design_ukraine">Ukraine</string>
+	<string name="kbd_design_chokolate">Chokolate</string>
+	<string name="kbd_design_rgb">RGB</string>
+	<string name="kbd_design_ussr">Born in USSR</string>
+	    	    
  
 <!-- Names for some keys -->    
     <string name="k_search">Search</string>

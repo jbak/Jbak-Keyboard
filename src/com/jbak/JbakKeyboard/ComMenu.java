@@ -1,15 +1,11 @@
 package com.jbak.JbakKeyboard;
-
+import com.google.ads.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import android.database.Cursor;
-import android.graphics.Rect;
-import android.graphics.drawable.StateListDrawable;
-import android.location.Address;
+import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -18,9 +14,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.google.ads.AdSize;
+import com.google.ads.AdView;
+
 /** Универсальное меню. Используется как для выпадающего, так и для контекстного меню */
 public class ComMenu
 {
+    /** Элемент-разделитель. Не нажимается, имеет оформление, отличное от основного списка*/
+    public static final int ID_DELIMETER            =-2;
+/** Окно меню */    
+    View m_MainView;
+    ArrayList<MenuEntry> m_arItems = new ArrayList<MenuEntry>();
+    int m_state = 0;
+    public static final int STAT_TEMPLATES = 0x000001;
+    public static final int STAT_ADMOB = 0x000002;
     static ComMenu inst; 
 /** Класс, хранящий информацию об элементе меню */  
     public static class MenuEntry
@@ -69,7 +76,9 @@ public class ComMenu
             btn.setLongClickable(true);
             btn.setOnLongClickListener(m_longListener);
         }
+        btn.setMaxLines(1);
         btn.setDuplicateParentStateEnabled(false);
+        btn.setEllipsize(TruncateAt.MARQUEE);
         btn.setTag(ent);
         btn.setText(ent.text);
         btn.setOnClickListener(m_listener);
@@ -169,10 +178,9 @@ public class ComMenu
     {
         m_MenuObserver = observer;
         LinearLayout ll = (LinearLayout)m_MainView.findViewById(R.id.com_menu_container);
-        Iterator<MenuEntry> it = m_arItems.iterator();
-        while(it.hasNext())
+        for(MenuEntry me:m_arItems)
         {
-            ll.addView(newView(it.next()));
+            ll.addView(newView(me));
         }
         m_MainView.setBackgroundDrawable(st.kv().getBackground());
         View bClose = m_MainView.findViewById(R.id.close);
@@ -219,9 +227,8 @@ public class ComMenu
         {
             String s = c.getString(0);
             if(s.length()>50)
-                menu.add(s.substring(0, 50),pos);
-            else
-                menu.add(s,pos);
+                s = s.substring(0, 50);
+            menu.add(s,pos);
             ++pos;
         }while(c.moveToPrevious());
         c.close();
@@ -237,17 +244,12 @@ public class ComMenu
                 c.move(0-pos);
                 String cp = c.getString(0);
                 ServiceJbKbd.inst.onText(cp);
+                if(ClipbrdService.inst!=null)
+                    ClipbrdService.inst.checkString(cp);
                 return 0;
             }
         };
         menu.show(obs);
         return true;
     }
-/** Элемент-разделитель. Не нажимается, имеет оформление, отличное от основного списка*/
-    public static final int ID_DELIMETER            =-2;
-/** Окно меню */    
-    View m_MainView;
-    ArrayList<MenuEntry> m_arItems = new ArrayList<ComMenu.MenuEntry>();
-    int m_state = 0;
-    public static final int STAT_TEMPLATES = 0x000001;
 }

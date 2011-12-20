@@ -60,13 +60,16 @@ public class ClipbrdService extends Service
         {
             return;
         }
-        String s = m_cm.getText().toString();
-        if(s.equals(m_sLastClipStr))
+        checkString(m_cm.getText().toString());
+    }
+    void checkString(String str)
+    {
+        if(str.equals(m_sLastClipStr))
         {
             return;
         }
-        st.stor().checkClipboardString(s);
-        m_sLastClipStr = s;
+        st.stor().checkClipboardString(str);
+        m_sLastClipStr = str;
     }
     BroadcastReceiver m_recv = new BroadcastReceiver()
     {

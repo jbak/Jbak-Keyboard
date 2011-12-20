@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+import com.jbak.CustomGraphics.ColorsGradientBack;
+import com.jbak.CustomGraphics.GradBack;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 /** Класс для настроек различных значений клавиатуры, требующих просмотра qwerty-слоя */
 public class SetKbdActivity extends Activity
@@ -29,6 +32,7 @@ public class SetKbdActivity extends Activity
         inst = this;
         m_curAction = getIntent().getIntExtra(st.SET_INTENT_ACTION, st.SET_KEY_HEIGHT_PORTRAIT);
         m_MainView = getLayoutInflater().inflate(R.layout.set_sizes, null);
+        m_MainView.setBackgroundDrawable(st.getBack());
         SharedPreferences pref = st.pref();
         m_MainView.findViewById(R.id.next).setOnClickListener(m_NextPrevListener);
         m_MainView.findViewById(R.id.prew).setOnClickListener(m_NextPrevListener);

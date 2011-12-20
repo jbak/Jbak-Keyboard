@@ -23,6 +23,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -38,6 +39,7 @@ import android.view.HapticFeedbackConstants;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.jbak.CustomGraphics.CustomButtonDrawable;
 import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
@@ -114,16 +116,20 @@ public class JbKbdView extends KeyboardView {
         String ph = "mPreviewHeight";
         String keyBack = "mKeyBackground";
         String shadowRadius = "mShadowRadius";
-        if(st.has(m_curDesign.flags, KbdDesign.DF_BIG_GAP))
+        if(st.has(m_curDesign.flags, st.DF_BIG_GAP))
           KeyDrw.GAP = KeyDrw.BIG_GAP;
         else
           KeyDrw.GAP = KeyDrw.DEFAULT_GAP;
         if(m_curDesign.drawResId!=0)
             m_KeyBackDrw = (StateListDrawable)getResources().getDrawable(m_curDesign.drawResId);
+        if(m_curDesign.m_keyBackground!=null)
+        	m_KeyBackDrw = m_curDesign.m_keyBackground.getButtonDrawable(); 
         if(m_curDesign.textColor!=st.DEF_COLOR)
             clr = m_curDesign.textColor;
-        if(m_curDesign.backDrawable!=0)
-            setBackgroundResource(m_curDesign.backDrawable);
+        if(m_curDesign.backDrawableRes!=0)
+            setBackgroundResource(m_curDesign.backDrawableRes);
+        if(m_curDesign.m_kbdBackground!=null)
+        	setBackgroundDrawable(m_curDesign.m_kbdBackground.getButtonDrawable());
         for(int i=0;i<af.length;i++)
         {
             Field f = af[i];
@@ -161,12 +167,17 @@ public class JbKbdView extends KeyboardView {
             }
             else if(f.getName().equals(keyBack))
             {
-                try{
-                    f.setAccessible(true);
-                    if(m_curDesign.drawResId==0)
-                        m_KeyBackDrw = ((StateListDrawable)f.get(this));
-                    else
-                        f.set(this, m_KeyBackDrw);
+                	try
+                	{
+	                    f.setAccessible(true);
+	                    if(m_curDesign.drawResId==0&&m_curDesign.m_keyBackground==null)
+	                    {
+	                        m_KeyBackDrw = ((StateListDrawable)f.get(this));
+	                    }
+	                    else
+	                    {
+	                        f.set(this, m_KeyBackDrw);
+	                    }
                     }
                     catch(Throwable e)
                     {
@@ -216,7 +227,7 @@ public class JbKbdView extends KeyboardView {
         m_tpLabel = new TextPaint(m_tpMainKey);
         m_tpLabel.setTextSize(m_LabelTextSize);
         int style = Typeface.NORMAL;
-        if(st.has(m_curDesign.flags,KbdDesign.DF_BOLD))
+        if(st.has(m_curDesign.flags,st.DF_BOLD))
         {
           style = Typeface.BOLD;
         }

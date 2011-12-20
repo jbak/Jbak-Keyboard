@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
   xmlns:android="http://schemas.android.com/apk/res/android">
-  <!-- 0 - предпросмотр -->
+<com.jbak.JbakKeyboard.AdPreference android:layout="@layout/ad_layout"/>
+  <!-- 1 - предпросмотр -->
         <CheckBoxPreference
         	android:key="ch_preview"
         	android:title="@string/set_ch_keys_preview"
         	android:summary="@string/set_ch_keys_preview_desc"
         	android:defaultValue="true"
         />       
-  <!-- 1 - высота клавиш, портрет -->
+  <!-- 2 - высота клавиш, портрет -->
         <Preference 
        	android:title="@string/set_key_height_portrait"
        	android:summary="@string/set_key_height_portrait_desc"
        	/>
-  <!-- 2 - высота клавиш, ландшафт -->
+  <!-- 3 - высота клавиш, ландшафт -->
         <Preference 
        	android:title="@string/set_key_height_landscape"
        	android:summary="@string/set_key_height_landscape_desc"
        	/>
-  <!-- 3 - языки -->
+  <!-- 4 - языки -->
         <Preference 
        	android:title="@string/set_languages"
        	android:summary="@string/set_languages_desc"
        	/>
-  <!-- 4 - вибра -->
+  <!-- 5 - вибра -->
         <PreferenceScreen
        	android:title="@string/set_key_voice" 
        	android:summary="@string/set_key_voice_desc"
@@ -47,14 +48,43 @@
          	android:defaultValue="false"
          />       
          </PreferenceScreen>	
-     <!-- 5 - настройки скинов -->
+     <!-- 6 - настройки скинов -->
         <Preference
 	     	android:title="@string/set_key_skins" 
 	     	android:summary="@string/set_key_skins_desc"
         />	
-     <!-- 6 - настройки клавиш -->
-        <Preference
-	     	android:title="@string/set_keys" 
-	     	android:summary="@string/set_keys_desc"
-        />	
+     <!-- 7 - Дополнительно -->
+        <PreferenceScreen
+	       	android:title="@string/set_key_other" 
+	       	android:summary="@string/set_key_other_desc"
+       	>
+         <CheckBoxPreference
+	       	android:title="@string/set_key_sentence_upper" 
+	       	android:summary="@string/set_key_sentence_upper_desc"
+	       	android:key="up_sentence"
+	       	android:defaultValue="false"
+	       	/>
+         <EditTextPreference
+	       	android:title="@string/set_key_sentence_ends" 
+	       	android:summary="@string/set_key_sentence_ends_desc"
+	       	android:key="sentence_ends"
+	       	android:defaultValue=".!?"
+	       	/>
+         <CheckBoxPreference
+	       	android:title="@string/set_key_space_sentence_end" 
+	       	android:summary="@string/set_key_space_sentence_end_desc"
+	       	android:key="space_sentence"
+	       	android:defaultValue="false"
+	       	/>
+         </PreferenceScreen>
+       <!-- 8 - настройки клавиш -->
+       <Preference
+     	android:title="@string/set_keys" 
+     	android:summary="@string/set_keys_desc"
+       />	
+       <!-- 9 - о программе -->
+       <Preference
+     	android:title="@string/about" 
+     	android:summary="@string/set_keys_desc"
+       />	
 </PreferenceScreen>

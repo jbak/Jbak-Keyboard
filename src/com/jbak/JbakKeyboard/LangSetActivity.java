@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,18 +21,22 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.jbak.CustomGraphics.GradBack;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 import com.jbak.JbakKeyboard.IKeyboard.Lang;
 
 public class LangSetActivity extends ListActivity
 {
+    static LangSetActivity inst;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        inst = this;
         LangAdapter adapt = new LangAdapter(this, R.layout.lang_list_item);
         for(Lang l:st.arLangs)
             adapt.add(l);
         setListAdapter(adapt);
+//        getListView().setBackgroundDrawable(st.getBack());
         super.onCreate(savedInstanceState);
     }
     @Override
@@ -39,6 +44,7 @@ public class LangSetActivity extends ListActivity
     {
         String langs = ((LangAdapter)getListAdapter()).getLangString();
         st.pref().edit().putString(st.PREF_KEY_LANGS, langs).commit();
+        inst = null;
         super.onDestroy();
     }
     View.OnClickListener m_butListener = new View.OnClickListener()

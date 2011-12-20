@@ -3,7 +3,6 @@ package com.jbak.JbakKeyboard;
 import java.util.ArrayList;
 
 import android.app.PendingIntent;
-import android.app.PendingIntent.CanceledException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
