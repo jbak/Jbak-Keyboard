@@ -23,14 +23,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.inputmethodservice.Keyboard;
 import android.preference.PreferenceManager;
 import android.view.inputmethod.EditorInfo;
@@ -38,7 +30,6 @@ import android.view.inputmethod.EditorInfo;
 public class JbKbd extends Keyboard {
 
     private LatinKey mEnterKey;
-    
     public JbKbd(Context context, int xmlLayoutResId) {
         super(context, xmlLayoutResId);
         init();
@@ -108,12 +99,12 @@ public class JbKbd extends Keyboard {
                 break;
             default:
                 mEnterKey.icon = res.getDrawable(R.drawable.sym_keyboard_return);
-                mEnterKey.icon = mEnterKey.createLabel(mEnterKey.width, mEnterKey.height);
-                
-                        //R.drawable.sym_keyboard_return);
                 mEnterKey.label = null;
                 break;
         }
+        mEnterKey.m_kd.set(mEnterKey, false);
+        mEnterKey.icon = mEnterKey.m_kd.getDrawable();
+        mEnterKey.label = null;
     }
     LatinKey getKeyByCode(int code)
     {
@@ -138,59 +129,12 @@ public class JbKbd extends Keyboard {
                 parent.defaultHeight = JbKbdView.inst.m_KeyHeight; 
                 height = JbKbdView.inst.m_KeyHeight;
             }
-            Drawable ic =createLabel(width, parent.defaultHeight);
-            if(ic!=null)
-            {
-                if(icon==null)
-                {
-                  iconPreview = createPreviewLabel();
-                }
-                icon = ic;
-                label = null;
-            }
-            
-        }
-        Drawable createPreviewLabel()
-        {
-            int w = JbKbdView.inst.m_PreviewHeight;
-            KeyDrw d = new KeyDrw(label,w,w,true);
-            ShapeDrawable drw = new ShapeDrawable(d);
-            drw.setBounds(0, 0, w, w);
-            return drw;
-        }
-        Drawable createLabel(int width,int height)
-        {
-            if(icon!=null)
-            {
-                if(icon instanceof BitmapDrawable)
-                {
-                  BitmapDrawable bd = (BitmapDrawable)icon;
-                  m_kd = new KeyDrw(bd.getBitmap(), width, height, false);
-                }
-            }
-            else
-            {
-              int f = label.toString().indexOf('\n');
-              if(f<0)
-              {
-                  return null;
-              }
-              m_kd = new KeyDrw(label,width,height,false);
-            }
-            ShapeDrawable drw = new ShapeDrawable(m_kd);
-            drw.setBounds(0, 0, width, height);
-            return drw;
+            m_kd = new KeyDrw(this);
+            icon = m_kd.getDrawable();
+            label = null;
+            iconPreview = icon;
         }
         KeyDrw m_kd;
         
     }    
-        /**
-         * Overriding this method so that we can reduce the target area for the key that
-         * closes the keyboard. 
-         */
-/*        @Override
-        public boolean isInside(int x, int y) {
-            return super.isInside(x, codes[0] == KEYCODE_CANCEL ? y - 10 : y);
-        }
-*/
 }

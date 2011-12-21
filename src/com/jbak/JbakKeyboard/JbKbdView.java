@@ -47,6 +47,8 @@ import com.jbak.JbakKeyboard.JbKbd.LatinKey;
 public class JbKbdView extends KeyboardView {
 
     static final int KEYCODE_OPTIONS = -100;
+    KeyDrw m_PreviewDrw = new KeyDrw();
+    Drawable m_PreviewDrawable;
     static JbKbdView inst;
     /** Высота клавиш */    
     int m_KeyHeight =0;
@@ -103,9 +105,9 @@ public class JbKbdView extends KeyboardView {
 /** Инициализация. Берутся значения приватных переменных для задания размера шрифта */    
     void init()
     {
+        inst = this;
     	m_curDesign = st.arDesign[st.pref().getInt(st.PREF_KEY_KBD_SKIN, st.KBD_DESIGN_STANDARD)];
         setPreferences();
-        inst = this;
         int clr = 12345;
         Field[] af = KeyboardView.class.getDeclaredFields();
         String txtClr="mKeyTextColor";  

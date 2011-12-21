@@ -26,6 +26,7 @@ public class SetKbdActivity extends Activity
     String m_LangName;
     int m_curKbd=-1;
     View m_MainView;
+    JbKbdView m_kbd;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -34,6 +35,7 @@ public class SetKbdActivity extends Activity
         m_MainView = getLayoutInflater().inflate(R.layout.set_sizes, null);
         m_MainView.setBackgroundDrawable(st.getBack());
         SharedPreferences pref = st.pref();
+        m_kbd = (JbKbdView)m_MainView.findViewById(R.id.keyboard);
         m_MainView.findViewById(R.id.next).setOnClickListener(m_NextPrevListener);
         m_MainView.findViewById(R.id.prew).setOnClickListener(m_NextPrevListener);
         if(m_curAction==st.SET_KEY_HEIGHT_LANDSCAPE)
@@ -54,7 +56,7 @@ public class SetKbdActivity extends Activity
             m_MainView.findViewById(R.id.key_height).setVisibility(View.INVISIBLE);
             m_MainView.findViewById(R.id.select_kbd).setVisibility(View.VISIBLE);
             ((TextView)m_MainView.findViewById(R.id.keyboard_name)).setText(st.arDesign[m_curKbd].nameResId);
-            JbKbdView.inst.setKeyboard(new JbKbd(st.c(),st.getCurQwertyRes()));
+            m_kbd.setKeyboard(new JbKbd(st.c(),st.getCurQwertyRes()));
         }
         else if(m_curAction==st.SET_SELECT_KEYBOARD)
         {
@@ -70,11 +72,11 @@ public class SetKbdActivity extends Activity
         }
         int flags = WindowManager.LayoutParams.FLAG_FULLSCREEN;
         getWindow().addFlags(flags);
-        JbKbdView.inst.setOnKeyboardActionListener(m_kbdListener);
+        m_kbd.setOnKeyboardActionListener(m_kbdListener);
         if(m_curAction==st.SET_KEY_HEIGHT_PORTRAIT||m_curAction==st.SET_KEY_HEIGHT_LANDSCAPE)
         {
             SeekBar sb = (SeekBar)m_MainView.findViewById(R.id.key_height);
-            sb.setProgress(JbKbdView.inst.getCurKeyboard().getHeightKey());
+            sb.setProgress(m_kbd.getCurKeyboard().getHeightKey());
             sb.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
             {
                 @Override
@@ -101,8 +103,8 @@ public class SetKbdActivity extends Activity
     {
         String pname = m_curAction==st.SET_KEY_HEIGHT_PORTRAIT?st.PREF_KEY_HEIGHT_PORTRAIT:st.PREF_KEY_HEIGHT_LANDSCAPE;
         st.pref().edit().putInt(pname, height).commit();
-        JbKbdView.inst.m_KeyHeight = height;
-        st.setQwertyKeyboard(true);
+        m_kbd.m_KeyHeight = height;
+        m_kbd.setKeyboard(new JbKbd(this,st.getCurQwertyRes()));
     }
     @Override
     protected void onDestroy()
@@ -111,7 +113,8 @@ public class SetKbdActivity extends Activity
         {
             st.pref().edit().putInt(st.PREF_KEY_LANG_KBD+m_LangName, m_curKbd).commit();
         }
-        JbKbdView.inst = null;
+        if(JbKbdView.inst!=null)
+            JbKbdView.inst = null;
         inst = null;
         super.onDestroy();
     }
@@ -199,7 +202,7 @@ public class SetKbdActivity extends Activity
 /** Устанавливает клавиатуру kbd текущей в просмотре */ 
     void setKeyboard(Keybrd kbd)
     {
-        JbKbdView.inst.setKeyboard(new JbKbd(st.c(),kbd.resId));
+        m_kbd.setKeyboard(new JbKbd(st.c(),kbd.resId));
         m_curKbd = kbd.kbdCode;
         ((TextView)m_MainView.findViewById(R.id.keyboard_name)).setText(kbd.resName);
     }

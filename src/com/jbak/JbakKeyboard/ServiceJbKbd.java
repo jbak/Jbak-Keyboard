@@ -84,7 +84,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public void onDestroy()
     {
         inst = null;
-        JbKbdView.inst = null;
+//        JbKbdView.inst = null;
         st.pref().unregisterOnSharedPreferenceChangeListener(this);
         super.onDestroy();
     }
@@ -603,6 +603,11 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 
     public void onPress(int primaryCode)
     {
+        if(st.kv().isPreviewEnabled())
+        {
+            st.kv().m_PreviewDrw.set(st.curKbd().getKeyByCode(primaryCode),true);
+            st.curKbd().getKeyByCode(primaryCode).iconPreview = st.kv().m_PreviewDrw.getDrawable();
+        }
     }
 
     public void onRelease(int primaryCode)
@@ -697,10 +702,11 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             case KeyEvent.KEYCODE_DPAD_RIGHT:
             case KeyEvent.KEYCODE_DPAD_UP: // Up
             case KeyEvent.KEYCODE_DPAD_DOWN: // Down
-                if (bSel)
-                    ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT));
+                boolean sel = isSelMode();
+                if(sel)
+                     ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT));
                 keyDownUp(code);
-                if (bSel)
+                if(sel)
                     ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT));
             break;
             case -305: // Home

@@ -39,12 +39,12 @@ public class GradBack extends RectShape
 	int m_cornerX = DEFAULT_CORNER_X;
 /** Радиус скругления прямоугольника в пикселях по Y*/	
 	int m_cornerY = DEFAULT_CORNER_Y;
+	boolean m_bDrawPressedBack = true;
 /** Тип градиента, одна из констант GRADIENT_TYPE */	
 	int m_gradType = GRADIENT_TYPE_LINEAR;
 /** Пустой конструктор*/	
 	public GradBack()
 	{
-		m_ptFill = newPaint();
 		m_ptFillPressed = newColorPaint(0x44ffffff);
 		m_ptFillChecked = newColorPaint(Color.GREEN);
 		m_ptFillCheckable = newColorPaint(Color.DKGRAY);
@@ -82,6 +82,11 @@ public class GradBack extends RectShape
 	{
 		this.m_gradType = gradType;
 		return this;
+	}
+	public GradBack setDrawPressedBackground(boolean bDrawPressed)
+	{
+	    m_bDrawPressedBack = bDrawPressed;
+	    return this;
 	}
 /** Устанавливает радиус скругления углов 
 *@param cx Радиус скругления по оси X
@@ -121,6 +126,8 @@ public class GradBack extends RectShape
 	}
 	protected Paint makeBackground(float width, float height)
 	{
+	    if(m_ptFill!=null&&width==getWidth()&&height==getHeight())
+	        return m_ptFill;
         if(m_clrEnd==DEFAULT_COLOR)
         {
             return newColorPaint(m_clrStart);
@@ -142,8 +149,8 @@ public class GradBack extends RectShape
 	@Override
 	protected void onResize(float width, float height) 
 	{
+        m_ptFill = makeBackground(width, height);
 		super.onResize(width, height);
-		m_ptFill = makeBackground(width, height);
         m_rect.set(m_gap, m_gap, width-m_gap, height-m_gap);
 	};
 /** Отрисовка */	
@@ -151,7 +158,7 @@ public class GradBack extends RectShape
 	public void draw(Canvas canvas, Paint paint)
 	{
 		canvas.drawRoundRect(m_rect, m_cornerX, m_cornerY, m_ptFill);
-		if(hasState(android.R.attr.state_pressed))
+		if(m_bDrawPressedBack&&hasState(android.R.attr.state_pressed))
 			canvas.drawRoundRect(m_rect, m_cornerX, m_cornerY, m_ptFillPressed);
 		
 		boolean bChecked = hasState(android.R.attr.state_checked);

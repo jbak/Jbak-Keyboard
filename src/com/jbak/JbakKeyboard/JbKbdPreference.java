@@ -45,23 +45,30 @@ public class JbKbdPreference extends PreferenceActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.pref_view);
         addPreferencesFromResource(R.xml.preferences);
+//        getListView().setCacheColorHint(0);
 //        getListView().setBackgroundDrawable(st.getBack());
         Preference pref;
-        pref = getPreferenceScreen().getPreference(2);
+        pref = getPreferenceScreen().getPreference(1);
         pref.setOnPreferenceClickListener(new PrefRunSetKbd(st.SET_KEY_HEIGHT_PORTRAIT, this));
-        pref = getPreferenceScreen().getPreference(3);
+        pref = getPreferenceScreen().getPreference(2);
         pref.setOnPreferenceClickListener(new PrefRunSetKbd(st.SET_KEY_HEIGHT_LANDSCAPE, this));
-        pref = getPreferenceScreen().getPreference(4);
+        pref = getPreferenceScreen().getPreference(3);
         pref.setOnPreferenceClickListener(new PrefRunSetKbd(st.SET_LANGUAGES_SELECTION, this));
-        pref = getPreferenceScreen().getPreference(6);
+        pref = getPreferenceScreen().getPreference(5);
         pref.setOnPreferenceClickListener(new PrefRunSetKbd(st.SET_SELECT_SKIN, this));
-        pref = getPreferenceScreen().getPreference(9);
-        pref.setOnPreferenceClickListener(new PrefRunSetKbd(1000, this));
         pref = getPreferenceScreen().getPreference(8);
+        pref.setOnPreferenceClickListener(new PrefRunSetKbd(1000, this));
+        pref = getPreferenceScreen().getPreference(7);
         getPreferenceScreen().removePreference(pref);
 //        pref.setOnPreferenceClickListener(new PrefRunSetKbd(st.SET_KEYS, this));
     }
+    @Override
+    public void onContentChanged() 
+    {
+        super.onContentChanged();
+    };
     void selectLanguages()
     {
         View v = getLayoutInflater().inflate(R.layout.com_menu, null);

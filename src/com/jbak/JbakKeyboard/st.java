@@ -46,7 +46,7 @@ public class st extends IKeyboard implements IKbdSettings
     }
     public static Drawable getBack()
     {
-        return new GradBack(0xff000088, Color.CYAN).setCorners(0, 0).setGap(0).getButtonDrawable();
+        return new GradBack(0xff000088, 0xff008800).setCorners(0, 0).setGap(0).setDrawPressedBackground(false).getButtonDrawable();
     }
     /** Эквивалент вызова (val&flag)>0*/        
     public static final boolean has(int val,int flag)
