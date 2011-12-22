@@ -107,15 +107,20 @@ public class SetKbdActivity extends Activity
         m_kbd.setKeyboard(new JbKbd(this,st.getCurQwertyRes()));
     }
     @Override
+    public void onBackPressed()
+    {
+        if(JbKbdView.inst!=null)
+            JbKbdView.inst = null;
+        inst = null;
+        super.onBackPressed();
+    };
+    @Override
     protected void onDestroy()
     {
         if(m_curAction==st.SET_SELECT_KEYBOARD)
         {
             st.pref().edit().putInt(st.PREF_KEY_LANG_KBD+m_LangName, m_curKbd).commit();
         }
-        if(JbKbdView.inst!=null)
-            JbKbdView.inst = null;
-        inst = null;
         super.onDestroy();
     }
 /** */
@@ -235,6 +240,7 @@ public class SetKbdActivity extends Activity
         @Override
         public void onPress(int primaryCode)
         {
+            st.kv().onKeyPress(primaryCode);
         }
         @Override
         public void onKey(int primaryCode, int[] keyCodes)

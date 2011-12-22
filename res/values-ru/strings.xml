@@ -30,14 +30,21 @@
     <string name="set_select_keyboard">Выбор клавиатуры</string>
     <string name="set_key_skins">Оформление</string>
     <string name="set_key_skins_desc">Различные варианты оформления для клавиатуры</string>
-    <string name="set_key_other">Дополнительно</string>
-    <string name="set_key_other_desc">.. и еще кое-что </string>
-    <string name="set_key_sentence_upper">Предложения с большой буквы</string>
-    <string name="set_key_sentence_upper_desc">После некоторых символов клавиатура переходит в верхний регистр. См. следующую настройку</string>
-    <string name="set_key_sentence_ends">Концы предложений</string>
-    <string name="set_key_sentence_ends_desc">Здесь можно отредактировать символы, которые являются концами предложения</string>
-    <string name="set_key_space_sentence_end">Пробел после конца предложения</string>
-    <string name="set_key_space_sentence_end_desc">Если включено - после конца предложения добавляется пробел</string>
+
+    <string name="set_key_other">Автоввод</string>
+    <string name="set_key_register">Переход в верхний регистр</string>
+    <string name="set_key_spaces">Добавление пробелов</string>
+    <string name="set_key_other_desc">Некоторые настройки автоматического ввода</string>
+    <string name="set_key_empty_uppercase">В пустых полях</string>
+    <string name="set_key_empty_uppercase_desc">Если включено - в пустом текстовом поле включается верхний регистр</string>
+    <string name="set_key_sentence_upper">После ввода символов</string>
+    <string name="set_key_sentence_upper_desc">Включает автоматический переход в верхний регистр после некоторых символов. См. следующую настройку</string>
+    <string name="set_key_sentence_ends">Символы смены регистра</string>
+    <string name="set_key_sentence_ends_desc">После ввода одного из этих символов - переход в верхний регистр. Нажмите для редактирования</string>
+    <string name="set_key_space_sentence_end">После ввода символов</string>
+    <string name="set_key_space_sentence_end_desc">Включает добавление пробелов после некоторых символов, перечисленных в следующей настройке</string>
+    <string name="set_key_space_symbols">Символы добавления пробелов</string>
+    <string name="set_key_space_symbols_desc">После ввода одного из этих символов вставляется пробел. Нажмите для редактирования</string>
         
     <string name="mm_templates">Шаблоны</string>
     <string name="mm_multiclipboard">Буфер обмена</string>

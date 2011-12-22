@@ -30,14 +30,20 @@
     <string name="set_key_long_vibro_desc">If enabled - screen vibrates on key long press</string>
     <string name="set_key_sounds">Enable sounds</string>
     <string name="set_key_sounds_desc">If enabled - keys sounds after each press</string>
-    <string name="set_key_other">Other settings</string>
-    <string name="set_key_other_desc">Some another settings</string>
-    <string name="set_key_sentence_upper">Sentence from uppercase</string>
-    <string name="set_key_sentence_upper_desc">After some symbols keyboard go to uppercase. See this symbols in next setting</string>
-    <string name="set_key_sentence_ends">Sentence end symbols</string>
-    <string name="set_key_sentence_ends_desc">Here you can edit symbols, which is ends of sentence</string>
-    <string name="set_key_space_sentence_end">Space after sentence end</string>
-    <string name="set_key_space_sentence_end_desc">If enabled - symbol \'space\' inserts after sentence end</string>
+    <string name="set_key_other">Autoinput</string>
+    <string name="set_key_other_desc">Some settings for automatic input</string>
+    <string name="set_key_register">Upper case on keyboard</string>
+    <string name="set_key_spaces">Adding spaces</string>
+    <string name="set_key_empty_uppercase">In empty text field</string>
+    <string name="set_key_empty_uppercase_desc">If target text-field is empty - then starts input from uppercase</string>
+    <string name="set_key_sentence_upper">After some symbols</string>
+    <string name="set_key_sentence_upper_desc">Automatic uppercase after some symbols. See next setting</string>
+    <string name="set_key_sentence_ends">Upper case symbols</string>
+    <string name="set_key_sentence_ends_desc">After input one of these symbols keyboard go to uppercase. Click to edit</string>
+    <string name="set_key_space_sentence_end">After some symbols</string>
+    <string name="set_key_space_sentence_end_desc">Automatic space adding after some symbols. See next setting</string>
+    <string name="set_key_space_symbols">Symbols for add space</string>
+    <string name="set_key_space_symbols_desc">After input one of these symbols keyboard will add space. Click to edit</string>
         
         
     <string name="set_select_keyboard">Select keyboard</string>

@@ -102,7 +102,7 @@ public class JbKbd extends Keyboard {
                 mEnterKey.label = null;
                 break;
         }
-        mEnterKey.m_kd.set(mEnterKey, false);
+        mEnterKey.m_kd = new KeyDrw(mEnterKey);
         mEnterKey.icon = mEnterKey.m_kd.getDrawable();
         mEnterKey.label = null;
     }
@@ -134,7 +134,14 @@ public class JbKbd extends Keyboard {
             label = null;
             iconPreview = icon;
         }
+        public final String getMainText()
+        {
+            return m_kd.txtMain;
+        }
+        public final String getUpText()
+        {
+            return m_kd.txtSmall;
+        }
         KeyDrw m_kd;
-        
     }    
 }

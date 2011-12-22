@@ -52,12 +52,21 @@
 	     	android:title="@string/set_key_skins" 
 	     	android:summary="@string/set_key_skins_desc"
         />	
-     <!-- 6 - Дополнительно -->
+     <!-- 6 - Автоввод -->
         <PreferenceScreen
 	       	android:title="@string/set_key_other" 
 	       	android:summary="@string/set_key_other_desc"
        	>
+         <PreferenceCategory 
+             android:title="@string/set_key_register"
+             >
          <CheckBoxPreference
+	       	android:title="@string/set_key_empty_uppercase" 
+	       	android:summary="@string/set_key_empty_uppercase_desc"
+	       	android:key="up_empty"
+	       	android:defaultValue="false"
+	       	/>
+            <CheckBoxPreference
 	       	android:title="@string/set_key_sentence_upper" 
 	       	android:summary="@string/set_key_sentence_upper_desc"
 	       	android:key="up_sentence"
@@ -69,12 +78,23 @@
 	       	android:key="sentence_ends"
 	       	android:defaultValue=".!?"
 	       	/>
-         <CheckBoxPreference
+         </PreferenceCategory>
+         <PreferenceCategory 
+             android:title="@string/set_key_spaces"
+             >
+             <CheckBoxPreference
 	       	android:title="@string/set_key_space_sentence_end" 
 	       	android:summary="@string/set_key_space_sentence_end_desc"
 	       	android:key="space_sentence"
 	       	android:defaultValue="false"
 	       	/>
+         <EditTextPreference
+	       	android:title="@string/set_key_space_symbols" 
+	       	android:summary="@string/set_key_space_symbols_desc"
+	       	android:key="space_symbols"
+	       	android:defaultValue=".,!?"
+	       	/>
+         </PreferenceCategory>
          </PreferenceScreen>
        <!-- 7 - настройки клавиш -->
        <Preference

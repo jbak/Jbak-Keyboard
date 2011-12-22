@@ -34,7 +34,11 @@ public interface IKbdSettings
     public static final String PREF_KEY_SENTENCE_ENDS = "sentence_ends";
 /** Ключ, boolean - добавление пробела после конца предложения */    
     public static final String PREF_KEY_SENTENCE_SPACE = "space_sentence";
-    
+/** Ключ, boolean - переход в верхний регистр в пустом поле */    
+    public static final String PREF_KEY_EMPTY_UPPERCASE = "up_empty";
+    /** Ключ, String - набор символов, после которых вставляется пробел*/    
+    public static final String PREF_KEY_ADD_SPACE_SYMBOLS = "space_symbols";
+        
 	//-------------------------------------------------------------------    
 	/// Константы для запуска настроечных активностей
 	//-------------------------------------------------------------------    

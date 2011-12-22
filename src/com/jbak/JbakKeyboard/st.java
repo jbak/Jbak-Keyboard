@@ -1,9 +1,7 @@
 package com.jbak.JbakKeyboard;
 
-import java.io.IOException;
 import java.util.Locale;
 
-import com.jbak.CustomGraphics.ColorsGradientBack;
 import com.jbak.CustomGraphics.GradBack;
 
 import android.content.ComponentName;
@@ -12,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -21,6 +18,7 @@ import android.widget.Toast;
 /** Класс содержит полезные статические переменные */
 public class st extends IKeyboard implements IKbdSettings
 {
+    public static final boolean DEBUG = false;
 //--------------------------------------------------------------------------
     /** Универсальный обсервер. Содержит 2 параметра m_param1 и m_param2, которые вызываются и меняются в зависимости от контекста*/
     public static abstract class UniObserver
@@ -72,9 +70,12 @@ public class st extends IKeyboard implements IKbdSettings
     }
     public static final void logEx(Throwable e)
     {
+        if(DEBUG)
+        {
         if(e.getMessage()!=null)
             Log.e(TAG, e.getMessage());
         Log.e(TAG, Log.getStackTraceString(e));
+        }
     }
 /** Возвращает клавиатуру для языка с именем langName */    
     public static Keybrd kbdForName(String langName)
@@ -92,7 +93,8 @@ public class st extends IKeyboard implements IKbdSettings
     }
     static void log(String txt)
     {
-        Log.w(TAG, txt);
+        if(DEBUG)
+            Log.w(TAG, txt);
     }
 /** Сохраняет текущий ресурс qwerty-клавиатуры, если редактирование происходит в qwerty */    
     public static void saveCurLang()
@@ -182,6 +184,11 @@ public class st extends IKeyboard implements IKbdSettings
         abstract void makeOper(UniObserver obs);
     /** Обработчик операции */  
         UniObserver m_obs;
+    }
+    public static boolean isQwertyKeyboard()
+    {
+        int r = curKbd().resId;
+        return r!=R.xml.smileys&&r!=R.xml.symbols&&r!=R.xml.edittext&&r!=R.xml.symbols_shift;
     }
 /** Установка клавиатуры редактирования текста */
     public static void setTextEditKeyboard()

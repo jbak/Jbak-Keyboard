@@ -358,6 +358,8 @@ public class JbKbdView extends KeyboardView {
         m_state = st.rem(m_state, STATE_CAPS_LOCK);
         m_state = st.rem(m_state, STATE_TEMP_SHIFT);
         super.setKeyboard(keyboard);
+        if(getOnKeyboardActionListener() instanceof ServiceJbKbd)
+            ServiceJbKbd.inst.onChangeKeyboard();
     }
     public void handleLangChange()
     {
@@ -377,5 +379,15 @@ public class JbKbdView extends KeyboardView {
     	init();
     	setKeyboard(new JbKbd(getContext(),st.getCurQwertyRes()));
     }
-    
+    void onKeyPress(int primaryCode)
+    {
+        if(isPreviewEnabled())
+        {
+           LatinKey key = getCurKeyboard().getKeyByCode(primaryCode);
+           if(key==null)
+               return;
+           m_PreviewDrw.set(key,true);
+           key.iconPreview = m_PreviewDrw.getDrawable();
+        }
+    }
 }

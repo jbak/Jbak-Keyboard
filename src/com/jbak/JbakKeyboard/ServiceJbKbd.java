@@ -33,6 +33,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
@@ -59,6 +60,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     private long             mMetaState;
     static ServiceJbKbd      inst;
     String                   m_SentenceEnds       = "";
+    String                   m_SpaceSymbols       = "";
     KeyPressProcessor        m_kp;
     boolean                  m_bForceShow         = false;
     int                      m_state              = 0;
@@ -66,6 +68,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public static final int  STATE_SENTENCE_UP    = 0x0000001;
 /** Статус - пробел после конца предложения */    
     public static final int  STATE_SENTENCE_SPACE = 0x0000002;
+    /** Статус - верхний регистр в пустом поле */    
+    public static final int  STATE_EMPTY_UP     = 0x0000004;
     @Override
     public void onCreate()
     {
@@ -116,6 +120,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
         m_SelStart = attribute.initialSelStart;
         m_SelEnd = attribute.initialSelEnd;
+        st.log("onStartInputView "+m_SelStart+" "+m_SelEnd);
+//        getCurrentInputConnection().getExtractedText(new ExtractedTextRequest(), STATE_EMPTY_UP)
         if (m_SelStart < 0)
         {
             requestHideSelf(0);
@@ -154,6 +160,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             break;
         }
         st.curKbd().setImeOptions(getResources(), attribute.imeOptions);
+        makeEmptyUppercase();
         openWords();
         super.onStartInputView(attribute, restarting);
     }
@@ -213,21 +220,30 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     int m_SelStart;
     int m_SelEnd;
     int m_CursorPos;
-
+    boolean makeEmptyUppercase()
+    {
+        boolean canMake = m_SelEnd==m_SelStart
+                            &&m_SelStart==0
+                            &&st.has(m_state, STATE_EMPTY_UP)
+                            &&canAutoInput()
+                            &&!st.kv().isUpperCase()
+                            &&getCurrentInputConnection().getTextAfterCursor(1, 0).length()==0;
+        if(canMake)
+            st.kv().handleShift();
+        return canMake;
+    }
     /** Изменение выделения в редакторе */
     @Override
     public void onUpdateSelection(int oldSelStart, int oldSelEnd, int newSelStart, int newSelEnd, int candidatesStart, int candidatesEnd)
     {
         super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd);
+        st.log("onUpdateSelection "+m_SelStart+" "+m_SelEnd);
         m_SelStart = newSelStart;
         m_SelEnd = newSelEnd;
         if (m_SelStart == m_SelEnd)
         {
-            /* String word =
-             * Templates.getCurWordStart(null)+Templates.getCurWordEnd(null);
-             * if(word.length()>0) { ArrayList<String> ar =
-             * m_words.getWords(word); setSuggestions(ar, true, false); } else {
-             * setSuggestions(new ArrayList<String>(), true, false); } */}
+            makeEmptyUppercase();
+        }
         if (mComposing.length() > 0 && (newSelStart != candidatesEnd || newSelEnd != candidatesEnd))
         {
             mComposing.setLength(0);
@@ -384,7 +400,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         if (primaryCode < -200 && primaryCode > -300)
         {
             // Смайлики
-            onText(st.curKbd().getKeyByCode(primaryCode).label);
+            onText(st.curKbd().getKeyByCode(primaryCode).getMainText());
             st.setQwertyKeyboard();
         }
         else if (primaryCode < -300 && primaryCode > -400 || primaryCode >= KeyEvent.KEYCODE_DPAD_UP && primaryCode <= KeyEvent.KEYCODE_DPAD_RIGHT)
@@ -405,6 +421,10 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             handleClose();
             return;
         }
+//        else if(primaryCode==10)
+//        {
+//            getCurrentInputConnection().performEditorAction(getCurrentInputEditorInfo().actionId);
+//        }
         else if (primaryCode == JbKbdView.KEYCODE_OPTIONS)
         {
             onOptions();
@@ -437,7 +457,11 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             handleCharacter(primaryCode, keyCodes);
         }
     }
-
+    final boolean canAutoInput()
+    {
+        EditorInfo ei = getCurrentInputEditorInfo();
+        return ei != null && st.isQwertyKeyboard()&&!st.has(ei.inputType, EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) && !st.has(ei.inputType, EditorInfo.TYPE_TEXT_VARIATION_URI) && !st.has(ei.inputType, EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
+    }
     private final void handleWordSeparator(int primaryCode)
     {
         // Handle separator
@@ -446,13 +470,11 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             commitTyped(getCurrentInputConnection());
         }
         sendKey(primaryCode);
-        EditorInfo ei = getCurrentInputEditorInfo();
-        boolean bProcess = ei != null && !st.has(ei.inputType, EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) && !st.has(ei.inputType, EditorInfo.TYPE_TEXT_VARIATION_URI) && !st.has(ei.inputType, EditorInfo.TYPE_TEXT_VARIATION_PASSWORD) && m_SentenceEnds.indexOf(primaryCode) > -1;
-        if (bProcess)
+        if (canAutoInput())
         {
-            if (st.has(m_state, STATE_SENTENCE_SPACE))
+            if (st.has(m_state, STATE_SENTENCE_SPACE)&&m_SpaceSymbols.indexOf(primaryCode)>-1)
                 sendKeyChar(' ');
-            if (st.has(m_state, STATE_SENTENCE_UP) && !st.kv().isUpperCase())
+            if (st.has(m_state, STATE_SENTENCE_UP) && !st.kv().isUpperCase()&&m_SentenceEnds.indexOf(primaryCode) > -1)
                 st.kv().handleShift();
         }
 
@@ -460,6 +482,17 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 
     public void onText(CharSequence text)
     {
+        if(text==null)
+            return;
+        if(text.length()==1)
+        {
+            int pc = (int)text.charAt(0);
+            if(isWordSeparator(pc))
+            {
+                handleWordSeparator(pc);
+                return;
+            }
+        }
         InputConnection ic = getCurrentInputConnection();
         if (ic == null)
             return;
@@ -603,11 +636,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 
     public void onPress(int primaryCode)
     {
-        if(st.kv().isPreviewEnabled())
-        {
-            st.kv().m_PreviewDrw.set(st.curKbd().getKeyByCode(primaryCode),true);
-            st.curKbd().getKeyByCode(primaryCode).iconPreview = st.kv().m_PreviewDrw.getDrawable();
-        }
+        st.kv().onKeyPress(primaryCode);
     }
 
     public void onRelease(int primaryCode)
@@ -795,6 +824,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
     {
         m_SentenceEnds = sharedPreferences.getString(st.PREF_KEY_SENTENCE_ENDS, "?!.");
+        m_SpaceSymbols = sharedPreferences.getString(st.PREF_KEY_ADD_SPACE_SYMBOLS, ",?!.");
         if (sharedPreferences.getBoolean(st.PREF_KEY_SENTENCE_UPPERCASE, false))
             m_state |= STATE_SENTENCE_UP;
         else
@@ -804,5 +834,14 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             m_state |= STATE_SENTENCE_SPACE;
         else
             m_state = st.rem(m_state, STATE_SENTENCE_SPACE);
+        boolean bEmptyUp = sharedPreferences.getBoolean(st.PREF_KEY_EMPTY_UPPERCASE, false);
+        if (bEmptyUp)
+            m_state |= STATE_EMPTY_UP;
+        else
+            m_state = st.rem(m_state, STATE_EMPTY_UP);
+    }
+    void onChangeKeyboard()
+    {
+        makeEmptyUppercase();
     }
 }

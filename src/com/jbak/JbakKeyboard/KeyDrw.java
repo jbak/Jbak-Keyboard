@@ -64,6 +64,7 @@ class KeyDrw extends RectShape
         }
         else
         {
+            bmp = null;
             CharSequence lab = key.label;
             int f = lab.toString().indexOf('\n');
             if(f>-1)
@@ -112,7 +113,6 @@ class KeyDrw extends RectShape
         if(txtMain==null&&bmp==null||JbKbdView.inst==null)
             return;
 //      Rect rb = canvas.getClipBounds();
-        boolean bPrev = st.kv().isPreviewEnabled();
         Paint p1 = JbKbdView.inst.m_tpMainKey;
         if(txtMain==null&&bmp!=null)
         {
@@ -124,12 +124,19 @@ class KeyDrw extends RectShape
         }
         if(m_bPreview)
         {
-//Рисуем просмотр               
-            p1 = JbKbdView.inst.m_tpPreview;
-            float mw = p1.measureText(txtMain);
-            float y = rb.height()/2+(0-p1.ascent())/2;
-            float x = rb.width()/2-mw/2;
-            canvas.drawText(txtMain, x, y, p1);
+//Рисуем просмотр     
+            if(txtMain!=null)
+            {
+                p1 = JbKbdView.inst.m_tpPreview;
+                float mw = p1.measureText(txtMain);
+                float y = rb.height()/2+(0-p1.ascent())/2;
+                float x = rb.width()/2-mw/2;
+                if(txtMain.length()>1)
+                {
+                    p1.setTextSize(st.kv().m_PreviewTextSize/2);
+                }
+                canvas.drawText(txtMain, x, y, p1);
+            }
             return;
         }
 //Если текст длинее 1 символа - считаем меткой и рисуем с помощью JbKbdView.m_tpLabel 

@@ -39,7 +39,7 @@ public class KeyPressProcessor
     public KeyPressProcessor()
     {
         inst = this;
-        m_console = KbdConsole.getConsole();
+//        m_console = KbdConsole.getConsole();
         m_vibro = (Vibrator)ServiceJbKbd.inst.getSystemService(Service.VIBRATOR_SERVICE);
         loadKeys();
     }
