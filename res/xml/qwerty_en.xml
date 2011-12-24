@@ -47,7 +47,7 @@
         <Key android:codes="104" android:keyLabel="+\nh"/>
         <Key android:codes="106" android:keyLabel="-\nj"/>
         <Key android:codes="107" android:keyLabel="_\nk"/>
-        <Key android:codes="108" android:keyLabel="[\nl" android:keyEdgeFlags="right"/>
+        <Key android:codes="108" android:keyLabel="/\nl" android:keyEdgeFlags="right"/>
     </Row>
     
     <Row>
@@ -60,7 +60,7 @@
         <Key android:codes="118" android:keyLabel=")\nv"/>
         <Key android:codes="98" android:keyLabel=":\nb"/>
         <Key android:codes="110" android:keyLabel=";\nn"/>
-        <Key android:codes="109" android:keyLabel="]\nm"/>
+        <Key android:codes="109" android:keyLabel="\\\nm"/>
         <Key android:codes="-5" android:keyIcon="@drawable/sym_keyboard_delete" 
                 android:keyWidth="15%p" android:keyEdgeFlags="right"
                 android:isRepeatable="true"/>
