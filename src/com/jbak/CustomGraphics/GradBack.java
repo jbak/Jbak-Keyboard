@@ -126,8 +126,6 @@ public class GradBack extends RectShape
 	}
 	protected Paint makeBackground(float width, float height)
 	{
-	    if(m_ptFill!=null&&width==getWidth()&&height==getHeight())
-	        return m_ptFill;
         if(m_clrEnd==DEFAULT_COLOR)
         {
             return newColorPaint(m_clrStart);

@@ -44,11 +44,38 @@
     <string name="set_key_space_sentence_end_desc">Automatic space adding after some symbols. See next setting</string>
     <string name="set_key_space_symbols">Symbols for add space</string>
     <string name="set_key_space_symbols_desc">After input one of these symbols keyboard will add space. Click to edit</string>
-        
-        
+    <string name="set_key_landscape_input">Fullscreen input</string>
+    <string name="set_key_landscape_input_desc">Settings for input in fullscreen</string>
+    <string name="set_key_portrait_input_type">Portrait edit type</string>
+    <string name="set_key_portrait_input_type_desc">Select preffered portrait editor type</string>
+        <string name="set_key_landscape_input_type">Landscape edit type</string>
+    <string name="set_key_landscape_input_type_desc">Select preffered lanscape editor type</string>
+    <string name="set_key_landscape_input_settings">Fullscreen edit settings</string>
+    <string name="set_key_landscape_input_settings_desc">Settings for text editor in fullscreen mode</string>
     <string name="set_select_keyboard">Select keyboard</string>
     <string name="set_key_skins">Skins</string>
     <string name="set_key_skins_desc">Various skins for keyboard</string>
+    
+    <string name="es_title">Fullscreen editor settings</string>
+    <string name="es_sample">Edit sample</string>
+    <string name="es_sample_text">First line\nSecond line\nThird line</string>
+    <string name="es_font">Font</string>
+    <string name="es_font_size">Font</string>
+    <string name="es_font_bold">Bold</string>
+    <string name="es_font_italic">Italic</string>
+    <string name="es_def_font">Default font size</string>
+    <string-array name="array_fonts">
+        <item>Default</item>
+        <item>Droid serif</item>
+        <item>Monospace</item>
+    </string-array>
+        
+    <string-array name="array_input_type">
+        <item>Default</item>
+        <item>Fullscreen</item>
+        <item>Not fullscreen</item>
+    </string-array>
+        
         
     <string name="mm_templates">Templates</string>
     <string name="mm_multiclipboard">Clipboard</string>

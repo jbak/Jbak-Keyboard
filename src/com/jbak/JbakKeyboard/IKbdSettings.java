@@ -38,7 +38,16 @@ public interface IKbdSettings
     public static final String PREF_KEY_EMPTY_UPPERCASE = "up_empty";
     /** Ключ, String - набор символов, после которых вставляется пробел*/    
     public static final String PREF_KEY_ADD_SPACE_SYMBOLS = "space_symbols";
-        
+    /** Ключ, String, тип ландшафтного редактора.  Одна из констант PREF_VAL_EDIT_TYPE_ , в видк строки */
+    public static final String PREF_KEY_LANSCAPE_TYPE = "landscape_type";
+    /** Ключ, String, тип портретного редактора.  Одна из констант PREF_VAL_EDIT_TYPE_ , в видк строки */
+    public static final String PREF_KEY_PORTRAIT_TYPE = "portrait_type";
+    /** Ключ, String, настройки редактора ExtractedText*/
+    public static final String PREF_KEY_EDIT_SETTINGS = "edit_set";
+
+    public static final int PREF_VAL_EDIT_TYPE_DEFAULT = 0;
+    public static final int PREF_VAL_EDIT_TYPE_FULLSCREEN = 1;
+    public static final int PREF_VAL_EDIT_TYPE_NOT_FULLSCREEN = 2;
 	//-------------------------------------------------------------------    
 	/// Константы для запуска настроечных активностей
 	//-------------------------------------------------------------------    

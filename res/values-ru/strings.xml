@@ -45,7 +45,28 @@
     <string name="set_key_space_sentence_end_desc">Включает добавление пробелов после некоторых символов, перечисленных в следующей настройке</string>
     <string name="set_key_space_symbols">Символы добавления пробелов</string>
     <string name="set_key_space_symbols_desc">После ввода одного из этих символов вставляется пробел. Нажмите для редактирования</string>
-        
+    <string name="set_key_landscape_input">Полноэкранный режим</string>
+    <string name="set_key_landscape_input_desc">Настроки для ввода в полноэкранном режиме</string>
+    <string name="set_key_portrait_input_type">В портретном режиме</string>
+    <string name="set_key_portrait_input_type_desc">Настройка позволяет изменить тип редактирования в портретном режиме</string>
+        <string name="set_key_landscape_input_type">В ландшафтном режиме</string>
+    <string name="set_key_landscape_input_type_desc">Настройка позволяет изменить тип редактирования в ландшафтном режиме</string>
+    <string name="set_key_landscape_input_settings">Настройка редактора</string>
+    <string name="set_key_landscape_input_settings_desc">Настройка шрифта для поля ввода в полноэкранном режиме</string>
+        <string-array name="array_input_type">
+        <item>По умолчанию</item>
+        <item>Всегда полноэкранный</item>
+        <item>Всегда не полноэкранный</item>
+    </string-array>
+        <string name="es_title">Настрока полноэкранного редактора</string>
+    <string name="es_sample">Образец</string>
+    <string name="es_sample_text">В каком бы районе ты не поселился, сосед с дрелькой найдет тебя и поселится рядом!</string>
+    <string name="es_font">Шрифт</string>
+    <string name="es_font_size">Размер шрифта</string>
+    <string name="es_font_bold">Жирный</string>
+    <string name="es_font_italic">Курсив</string>
+    <string name="es_def_font">Стандартный размер</string>
+            
     <string name="mm_templates">Шаблоны</string>
     <string name="mm_multiclipboard">Буфер обмена</string>
     <string name="mm_settings">Настройки Jbak Keyboard</string>

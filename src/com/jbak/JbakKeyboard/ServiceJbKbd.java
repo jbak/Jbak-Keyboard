@@ -19,25 +19,29 @@ package com.jbak.JbakKeyboard;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
+import android.view.Display;
 import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
+import android.widget.EditText;
 
-import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
-import com.jbak.JbakKeyboard.IKeyboard.Lang;
+import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
 import com.jbak.JbakKeyboard.Templates.CurInput;
 
@@ -64,12 +68,15 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     KeyPressProcessor        m_kp;
     boolean                  m_bForceShow         = false;
     int                      m_state              = 0;
+    int m_PortraitEditType = st.PREF_VAL_EDIT_TYPE_DEFAULT;
+    int m_LandscapeEditType = st.PREF_VAL_EDIT_TYPE_DEFAULT;
 /** Статус - предложения с большой буквы */    
     public static final int  STATE_SENTENCE_UP    = 0x0000001;
 /** Статус - пробел после конца предложения */    
     public static final int  STATE_SENTENCE_SPACE = 0x0000002;
     /** Статус - верхний регистр в пустом поле */    
     public static final int  STATE_EMPTY_UP     = 0x0000004;
+    EditSet m_es = new EditSet();
     @Override
     public void onCreate()
     {
@@ -77,8 +84,13 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         startService(new Intent(this, ClipbrdService.class));
         inst = this;
         m_kp = new KeyPressProcessor();
+        //setTheme(R.style.fullscreen_input);
         super.onCreate();
-        SharedPreferences pref =st.pref(); 
+        getWindow().getWindow().addFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN|
+                WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR);
+        SharedPreferences pref =st.pref();
+        m_es.load();
         pref.registerOnSharedPreferenceChangeListener(this);
         onSharedPreferenceChanged(pref, null);
     }
@@ -92,7 +104,10 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         st.pref().unregisterOnSharedPreferenceChangeListener(this);
         super.onDestroy();
     }
-
+    boolean isLandscape()
+    {
+        return getResources().getConfiguration().orientation!=Configuration.ORIENTATION_PORTRAIT;
+    }
     /** Стартует ввод */
     @Override
     public View onCreateInputView()
@@ -156,7 +171,11 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             default:
                 mPredictionOn = m_bComplete;
                 mCompletionOn = m_bComplete;
-                st.setQwertyKeyboard();
+                if(st.has(attribute.inputType, EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) 
+                  || st.has(attribute.inputType, EditorInfo.TYPE_TEXT_VARIATION_URI) )
+                    st.setTempEnglishQwerty();
+                else
+                    st.setQwertyKeyboard();
             break;
         }
         st.curKbd().setImeOptions(getResources(), attribute.imeOptions);
@@ -200,7 +219,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public void onFinishInput()
     {
-        st.saveCurLang();
+//        st.saveCurLang();
         super.onFinishInput();
         // Clear current composing text and candidates.
         mComposing.setLength(0);
@@ -823,8 +842,23 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
     {
-        m_SentenceEnds = sharedPreferences.getString(st.PREF_KEY_SENTENCE_ENDS, "?!.");
-        m_SpaceSymbols = sharedPreferences.getString(st.PREF_KEY_ADD_SPACE_SYMBOLS, ",?!.");
+        if(st.PREF_KEY_EDIT_SETTINGS.equals(key))
+        {
+            m_es.load();
+            if(m_extraText!=null)
+            {
+                try{
+                    m_es.setToEditor(m_extraText);
+                }
+                catch(Throwable e){}
+            }
+        }
+        if(st.PREF_KEY_SENTENCE_ENDS.equals(key)||key==null)
+            m_SentenceEnds = sharedPreferences.getString(st.PREF_KEY_SENTENCE_ENDS, "?!.");
+        if(st.PREF_KEY_ADD_SPACE_SYMBOLS.equals(key)||key==null)
+            m_SpaceSymbols = sharedPreferences.getString(st.PREF_KEY_ADD_SPACE_SYMBOLS, ",?!.");
+        m_LandscapeEditType = Integer.valueOf(sharedPreferences.getString(st.PREF_KEY_LANSCAPE_TYPE, "0"));
+        m_PortraitEditType= Integer.valueOf(sharedPreferences.getString(st.PREF_KEY_PORTRAIT_TYPE, "0"));
         if (sharedPreferences.getBoolean(st.PREF_KEY_SENTENCE_UPPERCASE, false))
             m_state |= STATE_SENTENCE_UP;
         else
@@ -843,5 +877,36 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     void onChangeKeyboard()
     {
         makeEmptyUppercase();
+    }
+    EditText m_extraText = null;
+    @Override
+    public View onCreateExtractTextView()
+    {
+        View v = super.onCreateExtractTextView();
+        if(v instanceof ViewGroup)
+        {
+            ViewGroup vg = (ViewGroup)v;
+            if(vg.getChildCount()>0)
+            {
+                View ve = vg.getChildAt(0);
+                if(ve instanceof EditText)
+                {
+                    m_extraText = (EditText)ve;
+                    m_es.setToEditor(m_extraText);
+                }
+            }
+        }
+        return v;
+    }
+    @Override
+    public boolean onEvaluateFullscreenMode()
+    {
+        int set = isLandscape()?m_LandscapeEditType:m_PortraitEditType;
+        boolean b = super.onEvaluateFullscreenMode();
+        if(set==st.PREF_VAL_EDIT_TYPE_FULLSCREEN)
+            b = true;
+        else if(set==st.PREF_VAL_EDIT_TYPE_NOT_FULLSCREEN)
+            b = false;
+        return b;
     }
 }

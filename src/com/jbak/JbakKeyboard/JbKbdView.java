@@ -370,7 +370,7 @@ public class JbKbdView extends KeyboardView {
             newLang = ls[0];
         else if(f<ls.length-1)
             newLang = ls[f+1];
-        Keybrd k = st.kbdForName(newLang);
+        Keybrd k = st.kbdForLangName(newLang);
         setKeyboard(new JbKbd(getContext(), k.resId));
         st.saveCurLang();
     }

@@ -78,7 +78,7 @@ public class st extends IKeyboard implements IKbdSettings
         }
     }
 /** Возвращает клавиатуру для языка с именем langName */    
-    public static Keybrd kbdForName(String langName)
+    public static Keybrd kbdForLangName(String langName)
     {
         int index = pref().getInt(st.PREF_KEY_LANG_KBD+langName, -1);
         if(index>=0)
@@ -114,12 +114,12 @@ public class st extends IKeyboard implements IKbdSettings
         if(pref==null||!pref.contains(PREF_KEY_LAST_LANG))
         {
             String lang = Locale.getDefault().getLanguage();
-            Keybrd l = kbdForName(lang);
+            Keybrd l = kbdForLangName(lang);
             if(l!=null)
                 return l.resId;
             return defKbd().resId;
         }
-        return kbdForName(pref.getString(PREF_KEY_LAST_LANG, defKbd().lang.name)).resId;
+        return kbdForLangName(pref.getString(PREF_KEY_LAST_LANG, defKbd().lang.name)).resId;
     }
 /** Возвращает текущую клавиатуру или null*/    
     public static JbKbd curKbd()
@@ -138,6 +138,8 @@ public class st extends IKeyboard implements IKbdSettings
             return ServiceJbKbd.inst;
         if(LangSetActivity.inst!=null)
             return LangSetActivity.inst;
+        if(EditSetActivity.inst!=null)
+            return EditSetActivity.inst;
         return ClipbrdService.inst;
     }
   //********************************************************************
@@ -220,6 +222,15 @@ public class st extends IKeyboard implements IKbdSettings
         JbKbdView.inst.setKeyboard(new JbKbd(st.c(),getCurQwertyRes()));
         saveCurLang();
     }
+/** Временно устанавливает английскую клавиатуру без запоминания языка */    
+    public static void setTempEnglishQwerty()
+    {
+        JbKbd kb = curKbd();
+        Keybrd k = kbdForLangName(arLangs[LANG_EN].name);
+        if(kb!=null)
+            return;
+        JbKbdView.inst.setKeyboard(new JbKbd(st.c(),k.resId));
+    }
     public static String getCurLang()
     {
         return pref().getString(PREF_KEY_LAST_LANG, defKbd().lang.name);
@@ -236,7 +247,7 @@ public class st extends IKeyboard implements IKbdSettings
     {
         String ret = "";
         String lang = Locale.getDefault().getLanguage();
-        if(kbdForName(lang)!=null)
+        if(kbdForLangName(lang)!=null)
         {
             ret+=lang+',';
         }

@@ -96,14 +96,46 @@
 	       	/>
          </PreferenceCategory>
          </PreferenceScreen>
-       <!-- 7 - настройки клавиш -->
+            <!-- 7 - редактор в ландшафте -->
+       <PreferenceScreen
+     	android:title="@string/set_key_landscape_input" 
+     	android:summary="@string/set_key_landscape_input_desc"
+       >
+         <!-- Тип редактора в портрете -->
+         <ListPreference
+            android:key="portrait_type"
+	     	android:title="@string/set_key_portrait_input_type" 
+	     	android:summary="@string/set_key_portrait_input_type_desc" 
+	     	android:defaultValue="0"
+	        android:entries="@array/array_input_type"
+	        android:entryValues="@array/integer_vals"
+         />
+         <!-- Тип редактора в ландшафте -->
+         <ListPreference
+            android:key="landscape_type"
+	     	android:title="@string/set_key_landscape_input_type"
+	     	android:summary="@string/set_key_landscape_input_type_desc" 
+	     	android:defaultValue="0"
+	        android:entries="@array/array_input_type"
+	        android:entryValues="@array/integer_vals"
+         />
+         <!-- Настройка внешнего вида редактора -->
+         <Preference
+           android:key="fs_editor_set"  
+           android:title="@string/set_key_landscape_input_settings" 
+           android:summary="@string/set_key_landscape_input_settings_desc" 
+           />
+       </PreferenceScreen>
+       <!-- 8 - настройки клавиш -->
        <Preference
+        android:key="custom_key_settings"
      	android:title="@string/set_keys" 
      	android:summary="@string/set_keys_desc"
        />	
-       <!-- 8 - о программе -->
+           	
+       <!-- 9 - о программе -->
        <Preference
+        android:key="about_app"
      	android:title="@string/about" 
-     	android:summary="@string/set_keys_desc"
        />	
 </PreferenceScreen>

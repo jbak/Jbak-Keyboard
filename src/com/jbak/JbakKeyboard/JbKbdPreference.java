@@ -58,9 +58,11 @@ public class JbKbdPreference extends PreferenceActivity
         pref.setOnPreferenceClickListener(new PrefRunSetKbd(st.SET_LANGUAGES_SELECTION, this));
         pref = getPreferenceScreen().getPreference(5);
         pref.setOnPreferenceClickListener(new PrefRunSetKbd(st.SET_SELECT_SKIN, this));
-        pref = getPreferenceScreen().getPreference(8);
+        pref = getPreferenceScreen().findPreference("fs_editor_set");
+        pref.setOnPreferenceClickListener(new PrefRunSetKbd(1001, this));
+        pref = getPreferenceScreen().findPreference("about_app");
         pref.setOnPreferenceClickListener(new PrefRunSetKbd(1000, this));
-        pref = getPreferenceScreen().getPreference(7);
+        pref = getPreferenceScreen().findPreference("custom_key_settings");
         getPreferenceScreen().removePreference(pref);
 //        pref.setOnPreferenceClickListener(new PrefRunSetKbd(st.SET_KEYS, this));
     }
@@ -133,6 +135,9 @@ public class JbKbdPreference extends PreferenceActivity
             {
                 case 1000:
                     m_a.startActivity(new Intent(m_a,AboutActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    break;
+                case 1001:
+                    m_a.startActivity(new Intent(m_a,EditSetActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     break;
                 case st.SET_KEYS: 
                     st.runAct(KeySetActivity.class,m_a);

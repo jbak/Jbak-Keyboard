@@ -49,5 +49,10 @@
         <item name="android:layout_height">wrap_content</item>
 		<item name="android:textColor">#ff000088</item>
     </style>
-        
+       <style name="fullscreen_input" parent="@android:style/Theme.InputMethod"> 
+			<item name="android:windowIsFloating">true</item> 
+           	<item name="android:windowFullscreen">true</item> 
+			 <item name="android:windowNoTitle">true</item>
+			 <item name="android:windowIsTranslucent">true</item>
+		</style>    
 </resources>
