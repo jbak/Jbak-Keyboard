@@ -245,14 +245,13 @@ public class st extends IKeyboard implements IKbdSettings
  */
     public static String getDefaultLangString()
     {
-        String ret = "";
         String lang = Locale.getDefault().getLanguage();
-        if(kbdForLangName(lang)!=null)
+        String defKbdLang = defKbd().lang.name;
+        if(kbdForLangName(lang)!=null&&!lang.equals(defKbdLang))
         {
-            ret+=lang+',';
+            return lang+','+defKbdLang;
         }
-        ret+=defKbd().lang.name;
-        return ret;
+        return defKbdLang;
     }
 /** Возвращает массив языков для переключения */    
     public static String[] getLangsArray(Context c)

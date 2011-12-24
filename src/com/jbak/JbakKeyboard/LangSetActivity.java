@@ -113,7 +113,19 @@ public class LangSetActivity extends ListActivity
             rId = textViewResourceId;
             m_arLangs = new Vector<String>();
             for(String l:st.getLangsArray(context))
-                m_arLangs.add(l);
+            {
+                boolean canAdd = true;
+                for(String lng:m_arLangs)
+                {
+                    if(lng.equals(l))
+                    {
+                        canAdd = false;
+                        break;
+                    }
+                }
+                if(canAdd)
+                    m_arLangs.add(l);
+            }
         }
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
@@ -129,6 +141,7 @@ public class LangSetActivity extends ListActivity
                 if(s.equals(l.name))
                 {
                     cb.setChecked(true);
+                    break;
                 }
             }
             cb.setOnCheckedChangeListener(m_chkListener);
