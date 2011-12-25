@@ -12,6 +12,8 @@
 	    android:layout_height="wrap_content"
 	    android:lines="3"
 	    android:inputType="none"
+	    android:focusable="false"
+	    android:focusableInTouchMode="false"
 	    android:text="@string/es_sample_text"
 	    android:id="@+id/es_edit"
 	    />    
