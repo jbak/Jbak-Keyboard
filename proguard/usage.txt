@@ -1,0 +1,229 @@
+com.google.ads.Ad:
+    public abstract boolean isReady()
+    public abstract void loadAd(com.google.ads.AdRequest)
+    public abstract void setAdListener(com.google.ads.AdListener)
+    public abstract void stopLoading()
+com.google.ads.AdActivity:
+    public static final java.lang.String BASE_URL_PARAM
+    public static final java.lang.String HTML_PARAM
+    public static final java.lang.String URL_PARAM
+    public static final java.lang.String INTENT_ACTION_PARAM
+    public static final java.lang.String TYPE_PARAM
+    public static final java.lang.String ORIENTATION_PARAM
+com.google.ads.AdRequest:
+    public static final java.lang.String VERSION
+    public static final java.lang.String LOGTAG
+    173:174:public void setGender(com.google.ads.AdRequest$Gender)
+    184:185:public void setBirthday(java.lang.String)
+    196:197:public void setPlusOneOptOut(boolean)
+    208:209:public void setKeywords(java.util.Set)
+    238:239:public void setExtras(java.util.Map)
+    267:268:public void setLocation(android.location.Location)
+    281:282:public void setTesting(boolean)
+    385:386:public void setTestDevices(java.util.Set)
+com.google.ads.AdSize:
+    38:39:public AdSize(int,int)
+com.google.ads.AdView:
+    78:87:public AdView(android.app.Activity,com.google.ads.AdSize,java.lang.String)
+    237:238:public void destroy()
+    478:482:public boolean isReady()
+    523:524:public void setAdListener(com.google.ads.AdListener)
+    535:536:public void stopLoading()
+com.google.ads.InterstitialAd:
+    private com.google.ads.d a
+    73:74:public InterstitialAd(android.app.Activity,java.lang.String)
+    88:91:public InterstitialAd(android.app.Activity,java.lang.String,boolean)
+    100:100:public boolean isReady()
+    112:113:public void loadAd(com.google.ads.AdRequest)
+    122:135:public void show()
+    146:147:public void setAdListener(com.google.ads.AdListener)
+    156:157:public void stopLoading()
+com.google.ads.R
+com.google.ads.R$attr
+com.google.ads.R$id
+com.google.ads.R$layout
+com.google.ads.c:
+    371:387:final void a()
+com.google.ads.d:
+    276:279:public final synchronized void b()
+    464:464:public final synchronized boolean o()
+    748:749:public final synchronized void a(com.google.ads.AdListener)
+    777:778:public final synchronized void y()
+    809:816:public final synchronized void z()
+com.google.ads.searchads.SearchAdRequest:
+    88:89:public void setQuery(java.lang.String)
+    98:104:public void setBackgroundColor(int)
+    116:122:public void setBackgroundGradient(int,int)
+    132:133:public void setHeaderTextColor(int)
+    143:144:public void setDescriptionTextColor(int)
+    154:155:public void setAnchorTextColor(int)
+    163:164:public void setFontFace(java.lang.String)
+    173:174:public void setHeaderTextSize(int)
+    184:185:public void setBorderColor(int)
+    192:193:public void setBorderType(com.google.ads.searchads.SearchAdRequest$BorderType)
+    202:203:public void setBorderThickness(int)
+com.jbak.CustomGraphics.ColorsGradientBack:
+    25:27:public com.jbak.CustomGraphics.ColorsGradientBack set(int[])
+    31:32:public void refresh()
+com.jbak.CustomGraphics.ColorsGradientBack$RotatedColorsBackground
+com.jbak.CustomGraphics.ColorsGradientBack$RotatedColorsBackground$1
+com.jbak.CustomGraphics.ColorsGradientBack$RotatedColorsBackground$1$1
+com.jbak.CustomGraphics.CustomButtonDrawable:
+    25:26:public com.jbak.CustomGraphics.CustomButtonDrawable setCorners(int,int)
+com.jbak.CustomGraphics.GradBack:
+    public static final int DEFAULT_CORNER_X
+    public static final int DEFAULT_CORNER_Y
+    public static final int DEFAULT_GAP
+    public static final int DEFAULT_COLOR
+    public static final int GRADIENT_TYPE_LINEAR
+    public static final int GRADIENT_TYPE_SWEEP
+com.jbak.JbakKeyboard.AdPreference
+com.jbak.JbakKeyboard.CandidateView:
+    private static final int OUT_OF_BOUNDS
+    private static final int MAX_SUGGESTIONS
+    private static final int SCROLL_PIXELS
+    private static final int X_GAP
+    128:129:public void setService(com.jbak.JbakKeyboard.ServiceJbKbd)
+    308:315:public void takeSuggestionAt(float)
+com.jbak.JbakKeyboard.ClipbrdService:
+    public static final int CLIPBRD_INTERVAL
+com.jbak.JbakKeyboard.ComMenu:
+    public static final int ID_DELIMETER
+    public static final int STAT_TEMPLATES
+    public static final int STAT_ADMOB
+com.jbak.JbakKeyboard.EditSetActivity$EditSet:
+    137:137:final boolean isDefault()
+com.jbak.JbakKeyboard.IKbdSettings
+com.jbak.JbakKeyboard.IKeyboard:
+    public static final int LANG_EN
+    public static final int LANG_RU
+    public static final int LANG_UK
+    public static final int LANG_BE
+    public static final int KBD_QWERTY_EN
+    public static final int KBD_QWERTY_RU
+    public static final int KBD_QWERTY_BE
+    public static final int KBD_QWERTY_UA
+    public static final int KBD_QWERTY_RU_HALF
+    public static final int KBD_QWERTY_EN_HALF
+    public static final int DF_BOLD
+    public static final int DF_BIG_GAP
+    public static final int DEF_COLOR
+    public static final int KBD_DESIGN_STANDARD
+    public static final int KBD_DESIGN_IPHONE
+    public static final int KEYCODE_LANG_CHANGE
+    191:197:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
+com.jbak.JbakKeyboard.JbCandView
+com.jbak.JbakKeyboard.JbKbd:
+    58:59:void setHeightKey(int)
+com.jbak.JbakKeyboard.JbKbd$LatinKey:
+    143:143:public final java.lang.String getUpText()
+com.jbak.JbakKeyboard.JbKbdPreference:
+    76:121:void selectLanguages()
+com.jbak.JbakKeyboard.JbKbdPreference$1
+com.jbak.JbakKeyboard.JbKbdReceiver:
+    22:24:static android.content.Intent getClipbrdServiceIntent(android.content.Context)
+com.jbak.JbakKeyboard.JbKbdView:
+    static final int KEYCODE_OPTIONS
+    android.graphics.drawable.Drawable m_PreviewDrawable
+    public static final int STATE_TEMP_SHIFT
+    public static final int STATE_CAPS_LOCK
+    public static final int STATE_VIBRO_SHORT
+    public static final int STATE_VIBRO_LONG
+    public static final int STATE_SOUNDS
+    379:381:void reload()
+com.jbak.JbakKeyboard.KbdConsole:
+    public static final java.lang.String CMD_INPUT
+    public static final java.lang.String ARG_KEYCODE
+    java.lang.Process m_proc
+    13:25:public static com.jbak.JbakKeyboard.KbdConsole getConsole()
+    31:42:boolean check()
+com.jbak.JbakKeyboard.KeyDrw:
+    public static final java.lang.String DRW_PREFIX
+    public static final int DELIM
+    public static final int DEFAULT_GAP
+    public static final int BIG_GAP
+com.jbak.JbakKeyboard.KeyPressProcessor:
+    49:51:void destroy()
+    160:190:void addNullView(android.view.KeyEvent)
+com.jbak.JbakKeyboard.KeyPressProcessor$1
+com.jbak.JbakKeyboard.KeyPressProcessor$2
+com.jbak.JbakKeyboard.KeySet:
+    public static final int ACT_DEFAULT
+    public static final int ACT_RUN_APP
+    public static final int ACT_TEXT
+    public static final int ACT_APP_DETAILS
+    public static final java.lang.String KEY_APP
+    public static final java.lang.String KEY_TEXT
+    private static final java.lang.String APP_PKG_NAME_21
+    private static final java.lang.String APP_PKG_NAME_22
+    private static final java.lang.String APP_DETAILS_PACKAGE_NAME
+    private static final java.lang.String APP_DETAILS_CLASS_NAME
+com.jbak.JbakKeyboard.KeySetActivity:
+    public static final int STAT_WAIT_KEY
+com.jbak.JbakKeyboard.R
+com.jbak.JbakKeyboard.R$array
+com.jbak.JbakKeyboard.R$attr
+com.jbak.JbakKeyboard.R$color
+com.jbak.JbakKeyboard.R$dimen
+com.jbak.JbakKeyboard.R$drawable
+com.jbak.JbakKeyboard.R$id
+com.jbak.JbakKeyboard.R$layout
+com.jbak.JbakKeyboard.R$string
+com.jbak.JbakKeyboard.R$style
+com.jbak.JbakKeyboard.R$xml
+com.jbak.JbakKeyboard.ServiceJbKbd:
+    static final boolean PROCESS_HARD_KEYS
+    public static final java.lang.String PID
+    public static final int STATE_SENTENCE_UP
+    public static final int STATE_SENTENCE_SPACE
+    public static final int STATE_EMPTY_UP
+    int m_CursorPos
+    android.inputmethodservice.AbstractInputMethodService$AbstractInputMethodSessionImpl m_is
+com.jbak.JbakKeyboard.Stor:
+    public static final int DATABASE_VERSION
+    public static final java.lang.String TABLE_CLIPBOARD
+    public static final java.lang.String TABLE_KEYS
+    public static final java.lang.String C_TEXT
+    public static final java.lang.String C_LENGTH
+    public static final java.lang.String C_DATE
+    public static final java.lang.String C_ID
+    public static final java.lang.String C_KEYCODE
+    public static final java.lang.String C_CHAR
+    public static final java.lang.String C_FLAGS
+    public static final java.lang.String C_ACTION
+    public static final java.lang.String C_BINARY
+    public static final int CLIPBOARD_LIMIT
+    public static final java.lang.String DB_FILENAME
+    private static final java.lang.String KEYS_TABLE_CREATE
+    private static final java.lang.String CLIPBOARD_TABLE_CREATE
+com.jbak.JbakKeyboard.Templates:
+    java.io.File m_cd
+    public static final java.lang.String TEMPLATE_PATH
+    public static final int STAT_EDIT_FOLDER
+    public static final int IB_SEL
+    public static final int IB_WORD
+    public static final int IB_LINE
+    public static final char TPL_SPEC_CHAR
+    19:21:static void destroy()
+com.jbak.JbakKeyboard.Words:
+    public static final java.lang.String DEF_PATH
+    public static final java.lang.String DEF_EXT
+    public static final java.lang.String TABLE_WORDS
+    public static final java.lang.String C_WORD
+    public static final java.lang.String S_LETTERS
+    public static final java.lang.String ST_SEL_LEN
+    android.database.sqlite.SQLiteStatement m_stAllWords
+    android.database.sqlite.SQLiteCursor m_cCompletions
+    android.database.sqlite.SQLiteDatabase m_db
+    14:36:boolean open(java.lang.String)
+    40:46:void close()
+    49:49:final boolean canGiveWords()
+    53:72:java.util.ArrayList getWords(java.lang.String)
+com.jbak.JbakKeyboard.st:
+    public static final boolean DEBUG
+    63:64:public static final int min(int,int)
+    68:69:public static final int max(int,int)
+com.jbak.JbakKeyboard.st$SyncAsycOper:
+    159:160:void startSync()
+com.jbak.JbakKeyboard.st$UniObserver:
+    27:31:public st$UniObserver(java.lang.Object,java.lang.Object)

@@ -1,0 +1,1068 @@
+com.google.ads.Ad -> com.google.ads.a:
+com.google.ads.AdActivity -> com.google.ads.AdActivity:
+    java.lang.Object a -> a
+    com.google.ads.AdActivity b -> b
+    com.google.ads.d c -> c
+    com.google.ads.AdActivity d -> d
+    com.google.ads.AdActivity e -> e
+    com.google.ads.h f -> f
+    boolean g -> g
+    long h -> h
+    android.widget.RelativeLayout i -> i
+    com.google.ads.AdActivity j -> j
+    boolean k -> k
+    com.google.ads.g l -> l
+    161:163:void a(java.lang.String) -> a
+    174:176:void a(java.lang.String,java.lang.Throwable) -> a
+    183:183:com.google.ads.g getAdVideoView() -> a
+    193:215:com.google.ads.h getOpeningAdWebView() -> b
+    222:224:boolean isShowing() -> c
+    235:261:void launchAdActivity(com.google.ads.d,com.google.ads.e) -> a
+    349:362:void a(com.google.ads.d) -> a
+    370:374:void moveAdVideoView(int,int,int,int) -> a
+    381:400:void newAdVideoView(int,int,int,int) -> b
+    407:413:android.widget.RelativeLayout$LayoutParams a(int,int,int,int) -> c
+    424:425:void onClick(android.view.View) -> onClick
+    436:560:void onCreate(android.os.Bundle) -> onCreate
+    579:620:void a(com.google.ads.h,boolean,int) -> a
+    632:647:void onDestroy() -> onDestroy
+    657:662:void onPause() -> onPause
+    670:727:void a() -> d
+    737:746:void onWindowFocusChanged(boolean) -> onWindowFocusChanged
+    757:781:void onActivityResult(int,int,android.content.Intent) -> onActivityResult
+com.google.ads.AdListener -> com.google.ads.b:
+com.google.ads.AdRequest -> com.google.ads.c:
+    com.google.ads.AdRequest$Gender a -> b
+    java.lang.String b -> c
+    java.util.Set c -> d
+    boolean d -> e
+    java.util.Map e -> f
+    android.location.Location f -> g
+    boolean g -> h
+    boolean h -> i
+    java.lang.String TEST_EMULATOR -> a
+    java.util.Set i -> j
+    221:226:void addKeyword(java.lang.String) -> a
+    252:257:void addExtra(java.lang.String,java.lang.Object) -> a
+    292:347:java.util.Map getRequestMap(android.content.Context) -> a
+    368:373:void addTestDevice(java.lang.String) -> b
+com.google.ads.AdRequest$ErrorCode -> com.google.ads.d:
+    com.google.ads.AdRequest$ErrorCode INVALID_REQUEST -> a
+    com.google.ads.AdRequest$ErrorCode NO_FILL -> b
+    com.google.ads.AdRequest$ErrorCode NETWORK_ERROR -> c
+    com.google.ads.AdRequest$ErrorCode INTERNAL_ERROR -> d
+    java.lang.String a -> e
+    com.google.ads.AdRequest$ErrorCode[] b -> f
+    36:36:com.google.ads.AdRequest$ErrorCode[] values() -> values
+    36:36:com.google.ads.AdRequest$ErrorCode valueOf(java.lang.String) -> valueOf
+    79:79:java.lang.String toString() -> toString
+com.google.ads.AdRequest$Gender -> com.google.ads.e:
+    com.google.ads.AdRequest$Gender UNKNOWN -> a
+    com.google.ads.AdRequest$Gender MALE -> b
+    com.google.ads.AdRequest$Gender FEMALE -> c
+    com.google.ads.AdRequest$Gender[] a -> d
+    86:86:com.google.ads.AdRequest$Gender[] values() -> values
+    86:86:com.google.ads.AdRequest$Gender valueOf(java.lang.String) -> valueOf
+com.google.ads.AdSize -> com.google.ads.f:
+    com.google.ads.AdSize BANNER -> a
+    com.google.ads.AdSize IAB_MRECT -> b
+    com.google.ads.AdSize IAB_BANNER -> c
+    com.google.ads.AdSize IAB_LEADERBOARD -> d
+    int a -> e
+    int b -> f
+    java.lang.String c -> g
+    60:60:int getWidth() -> a
+    69:69:int getHeight() -> b
+    79:79:java.lang.String toString() -> toString
+com.google.ads.AdView -> com.google.ads.AdView:
+    com.google.ads.d a -> a
+    138:171:void a(android.content.Context,java.lang.String,int,com.google.ads.AdSize,android.util.AttributeSet) -> a
+    257:273:void a(android.content.Context,java.lang.String,com.google.ads.AdSize,android.util.AttributeSet) -> a
+    286:440:void a(android.content.Context,android.util.AttributeSet) -> a
+    451:467:void a(android.app.Activity,com.google.ads.AdSize,java.lang.String) -> a
+com.google.ads.InterstitialAd -> com.google.ads.g:
+com.google.ads.a -> com.google.ads.h:
+    java.util.Map a -> a
+    java.util.Map b -> b
+    138:160:void a(com.google.ads.d,java.util.Map,android.net.Uri,android.webkit.WebView) -> a
+    171:175:boolean a(android.net.Uri) -> a
+    187:198:boolean b(android.net.Uri) -> b
+    210:215:boolean c(android.net.Uri) -> c
+    226:232:void a(android.webkit.WebView,java.lang.String,java.lang.String) -> a
+    241:243:void a(android.webkit.WebView,java.lang.String) -> a
+    253:255:void a(android.webkit.WebView,java.util.Map) -> a
+    263:266:void a(android.webkit.WebView) -> a
+    274:275:void b(android.webkit.WebView) -> b
+com.google.ads.aa -> com.google.ads.i:
+    24:27:boolean a(android.content.Context) -> a
+    37:40:boolean a(android.content.Intent,android.content.Context) -> a
+com.google.ads.ab -> com.google.ads.j:
+    98:158:void a(com.google.ads.d,java.util.HashMap,android.webkit.WebView) -> a
+com.google.ads.ab$a -> com.google.ads.k:
+    86:86:void onClick(android.content.DialogInterface,int) -> onClick
+com.google.ads.ab$b -> com.google.ads.l:
+    com.google.ads.ab$b a -> a
+    com.google.ads.ab$b b -> b
+    java.lang.String c -> c
+    com.google.ads.ab$b[] d -> d
+    34:34:com.google.ads.ab$b[] values() -> values
+    34:34:com.google.ads.ab$b valueOf(java.lang.String) -> valueOf
+com.google.ads.ab$c -> com.google.ads.m:
+    com.google.ads.d a -> a
+    68:71:void onClick(android.content.DialogInterface,int) -> onClick
+com.google.ads.b -> com.google.ads.n:
+    com.google.ads.c a -> a
+    com.google.ads.d b -> b
+    boolean c -> c
+    boolean d -> d
+    java.lang.String e -> e
+    85:86:void a() -> a
+    95:101:void a(java.net.HttpURLConnection) -> a
+    145:153:void b(java.net.HttpURLConnection) -> b
+    228:229:void a(boolean) -> a
+    237:240:void a(java.lang.String) -> a
+    250:353:void run() -> run
+com.google.ads.c -> com.google.ads.o:
+    java.lang.String a -> a
+    java.lang.String b -> b
+    com.google.ads.b c -> c
+    com.google.ads.d d -> d
+    com.google.ads.AdRequest e -> e
+    android.webkit.WebView f -> f
+    java.lang.String g -> g
+    java.util.LinkedList h -> h
+    boolean i -> i
+    com.google.ads.AdRequest$ErrorCode j -> j
+    boolean k -> k
+    int l -> l
+    java.lang.Thread m -> m
+    boolean n -> n
+    364:365:void a(java.lang.String) -> a
+    395:399:void a(com.google.ads.AdRequest) -> a
+    407:552:void run() -> run
+    583:751:java.lang.String a(com.google.ads.AdRequest,android.app.Activity) -> a
+    766:772:void a(com.google.ads.AdRequest$ErrorCode,boolean) -> a
+    815:818:void a(java.lang.String,java.lang.String) -> a
+    831:833:void b(java.lang.String) -> b
+    845:847:void a(com.google.ads.AdRequest$ErrorCode) -> a
+    858:860:void b() -> a
+    869:870:void a(int) -> a
+    879:880:void a(boolean) -> a
+com.google.ads.c$a -> com.google.ads.p:
+    com.google.ads.d b -> b
+    android.webkit.WebView c -> c
+    com.google.ads.b d -> d
+    com.google.ads.AdRequest$ErrorCode e -> e
+    boolean f -> f
+    com.google.ads.c a -> a
+    103:122:void run() -> run
+com.google.ads.c$b -> com.google.ads.q:
+    com.google.ads.c a -> a
+com.google.ads.c$c -> com.google.ads.r:
+    java.lang.String b -> b
+    java.lang.String c -> c
+    android.webkit.WebView d -> d
+    com.google.ads.c a -> a
+    141:147:void run() -> run
+com.google.ads.c$d -> com.google.ads.s:
+    com.google.ads.c a -> a
+com.google.ads.c$e -> com.google.ads.t:
+    com.google.ads.d b -> b
+    java.util.LinkedList c -> c
+    int d -> d
+    com.google.ads.c a -> a
+    168:171:void run() -> run
+com.google.ads.d -> com.google.ads.u:
+    java.lang.Object a -> a
+    java.lang.ref.WeakReference b -> b
+    com.google.ads.Ad c -> c
+    com.google.ads.AdListener d -> d
+    com.google.ads.c e -> e
+    com.google.ads.AdRequest f -> f
+    com.google.ads.AdSize g -> g
+    com.google.ads.f h -> h
+    java.lang.String i -> i
+    com.google.ads.h j -> j
+    com.google.ads.i k -> k
+    android.os.Handler l -> l
+    long m -> m
+    boolean n -> n
+    boolean o -> o
+    android.content.SharedPreferences p -> p
+    long q -> q
+    com.google.ads.x r -> r
+    boolean s -> s
+    java.util.LinkedList t -> t
+    java.util.LinkedList u -> u
+    int v -> v
+    220:222:void a(java.lang.String) -> a
+    233:237:void a(java.util.LinkedList) -> a
+    246:266:void a() -> a
+    288:296:void c() -> b
+    305:318:void d() -> c
+    328:328:android.app.Activity e() -> d
+    339:339:com.google.ads.Ad f() -> e
+    352:352:com.google.ads.c g() -> f
+    363:363:java.lang.String h() -> g
+    374:374:com.google.ads.h i() -> h
+    385:385:com.google.ads.i j() -> i
+    396:396:com.google.ads.AdSize k() -> j
+    407:407:com.google.ads.f l() -> k
+    418:419:void a(int) -> a
+    429:429:int m() -> l
+    440:440:long n() -> m
+    451:451:boolean A() -> v
+    475:475:boolean p() -> n
+    487:532:void a(com.google.ads.AdRequest) -> a
+    544:563:void a(com.google.ads.AdRequest$ErrorCode) -> a
+    573:595:void q() -> o
+    605:613:void r() -> p
+    622:628:void s() -> q
+    637:643:void t() -> r
+    649:651:void u() -> s
+    658:670:void v() -> w
+    679:679:boolean w() -> t
+    687:699:void B() -> x
+    707:708:void a(java.lang.Runnable) -> a
+    715:738:void x() -> u
+    760:768:void a(long) -> a
+    788:789:void a(float) -> a
+    798:801:void b(long) -> b
+com.google.ads.e -> com.google.ads.v:
+    java.lang.String a -> a
+    java.util.HashMap b -> b
+    114:118:android.os.Bundle a() -> a
+    129:129:java.lang.String b() -> b
+    140:140:java.util.HashMap c() -> c
+com.google.ads.f -> com.google.ads.w:
+    java.util.LinkedList b -> b
+    long c -> c
+    long d -> d
+    java.util.LinkedList e -> e
+    long f -> f
+    java.lang.String g -> g
+    boolean h -> h
+    boolean i -> i
+    java.lang.String a -> a
+    103:110:void a() -> a
+    118:120:void b() -> b
+    128:130:void c() -> c
+    138:141:void d() -> d
+    151:154:long e() -> e
+    169:183:java.lang.String f() -> f
+    197:210:java.lang.String g() -> g
+    223:223:long h() -> h
+    227:227:long i() -> i
+    231:231:java.lang.String j() -> j
+    235:237:void a(java.lang.String) -> a
+    240:240:boolean k() -> k
+    244:246:void l() -> l
+    249:249:boolean m() -> m
+    253:255:void n() -> n
+    261:263:void o() -> o
+    266:266:java.lang.String p() -> p
+    270:272:void b(java.lang.String) -> b
+com.google.ads.g -> com.google.ads.x:
+    java.lang.ref.WeakReference b -> b
+    com.google.ads.h c -> c
+    android.widget.MediaController a -> a
+    long d -> d
+    android.widget.VideoView e -> e
+    java.lang.String f -> f
+    123:129:void a() -> a
+    135:152:void a(boolean) -> a
+    158:159:void a(java.lang.String) -> a
+    166:167:void onCompletion(android.media.MediaPlayer) -> onCompletion
+    174:177:boolean onError(android.media.MediaPlayer,int,int) -> onError
+    185:189:void onPrepared(android.media.MediaPlayer) -> onPrepared
+    195:196:void b() -> b
+    202:203:void c() -> c
+    210:211:void a(int) -> a
+    217:218:void a(android.view.MotionEvent) -> a
+    224:225:void d() -> d
+    231:239:void e() -> e
+com.google.ads.g$a -> com.google.ads.y:
+    java.lang.ref.WeakReference a -> a
+    android.os.Handler b -> b
+    51:58:void run() -> run
+    61:62:void a() -> a
+com.google.ads.h -> com.google.ads.z:
+    java.lang.ref.WeakReference a -> a
+    com.google.ads.AdSize b -> b
+    88:92:void a() -> a
+    102:102:com.google.ads.AdActivity b() -> b
+    113:114:void a(com.google.ads.AdActivity) -> a
+    128:132:void loadDataWithBaseURL(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String) -> loadDataWithBaseURL
+    141:145:void loadUrl(java.lang.String) -> loadUrl
+    154:158:void stopLoading() -> stopLoading
+    168:172:void destroy() -> destroy
+    182:226:void onMeasure(int,int) -> onMeasure
+com.google.ads.i -> com.google.ads.aa:
+    com.google.ads.d a -> a
+    java.util.Map b -> b
+    boolean c -> c
+    boolean d -> d
+    boolean e -> e
+    boolean f -> f
+    84:141:boolean shouldOverrideUrlLoading(android.webkit.WebView,java.lang.String) -> shouldOverrideUrlLoading
+    153:170:void onPageFinished(android.webkit.WebView,java.lang.String) -> onPageFinished
+    177:178:void a() -> a
+    188:189:void b() -> b
+    199:200:void c() -> c
+com.google.ads.j -> com.google.ads.ab:
+    void a(com.google.ads.d,java.util.HashMap,android.webkit.WebView) -> a
+com.google.ads.k -> com.google.ads.ac:
+    31:59:void a(com.google.ads.d,java.util.HashMap,android.webkit.WebView) -> a
+com.google.ads.l -> com.google.ads.ad:
+    30:63:void a(com.google.ads.d,java.util.HashMap,android.webkit.WebView) -> a
+com.google.ads.m -> com.google.ads.ae:
+    28:34:void a(com.google.ads.d,java.util.HashMap,android.webkit.WebView) -> a
+com.google.ads.n -> com.google.ads.af:
+    29:59:void a(com.google.ads.d,java.util.HashMap,android.webkit.WebView) -> a
+com.google.ads.o -> com.google.ads.ag:
+    27:38:void a(com.google.ads.d,java.util.HashMap,android.webkit.WebView) -> a
+com.google.ads.p -> com.google.ads.ah:
+    30:41:void a(com.google.ads.d,java.util.HashMap,android.webkit.WebView) -> a
+com.google.ads.q -> com.google.ads.ai:
+    28:43:void a(com.google.ads.d,java.util.HashMap,android.webkit.WebView) -> a
+com.google.ads.s -> com.google.ads.aj:
+    27:32:void a(com.google.ads.d,java.util.HashMap,android.webkit.WebView) -> a
+com.google.ads.searchads.SearchAdRequest -> com.google.ads.a.a:
+    java.lang.String a -> b
+    int b -> c
+    android.util.Pair c -> d
+    int d -> e
+    int e -> f
+    int f -> g
+    java.lang.String g -> h
+    int h -> i
+    int i -> j
+    com.google.ads.searchads.SearchAdRequest$BorderType j -> k
+    int k -> l
+    207:250:java.util.Map getRequestMap(android.content.Context) -> a
+    260:260:java.lang.String a(int) -> a
+com.google.ads.searchads.SearchAdRequest$BorderType -> com.google.ads.a.b:
+    com.google.ads.searchads.SearchAdRequest$BorderType NONE -> a
+    com.google.ads.searchads.SearchAdRequest$BorderType DASHED -> b
+    com.google.ads.searchads.SearchAdRequest$BorderType DOTTED -> c
+    com.google.ads.searchads.SearchAdRequest$BorderType SOLID -> d
+    java.lang.String a -> e
+    com.google.ads.searchads.SearchAdRequest$BorderType[] b -> f
+    21:21:com.google.ads.searchads.SearchAdRequest$BorderType[] values() -> values
+    21:21:com.google.ads.searchads.SearchAdRequest$BorderType valueOf(java.lang.String) -> valueOf
+    51:51:java.lang.String toString() -> toString
+com.google.ads.t -> com.google.ads.ak:
+    35:51:void a(com.google.ads.d,java.util.HashMap,android.webkit.WebView) -> a
+com.google.ads.u -> com.google.ads.al:
+    30:30:void a(com.google.ads.d,java.util.HashMap,android.webkit.WebView) -> a
+com.google.ads.util.AdUtil -> com.google.ads.util.AdUtil:
+    int a -> a
+    java.lang.Boolean b -> b
+    java.lang.String c -> c
+    java.lang.String d -> d
+    java.lang.String e -> e
+    android.media.AudioManager f -> f
+    boolean g -> g
+    boolean h -> h
+    java.lang.String i -> i
+    166:184:java.lang.String a(android.content.Context) -> a
+    195:198:int a() -> a
+    210:213:int b() -> b
+    226:229:int a(android.content.Context,android.util.DisplayMetrics) -> a
+    242:245:int b(android.content.Context,android.util.DisplayMetrics) -> b
+    258:270:boolean b(android.content.Context) -> b
+    284:290:boolean a(int,int,java.lang.String) -> a
+    304:371:boolean c(android.content.Context) -> c
+    382:382:boolean c() -> c
+    397:398:boolean a(android.net.Uri) -> a
+    412:424:java.lang.String a(java.lang.String) -> a
+    438:458:java.lang.String d(android.content.Context) -> d
+    472:507:java.lang.String e(android.content.Context) -> e
+    518:547:java.lang.String f(android.content.Context) -> f
+    559:584:com.google.ads.util.AdUtil$a g(android.content.Context) -> g
+    594:597:android.util.DisplayMetrics a(android.app.Activity) -> a
+    605:611:java.lang.String a(android.location.Location) -> a
+    624:635:java.lang.String b(java.lang.String) -> b
+    648:682:java.util.HashMap b(android.net.Uri) -> b
+    689:689:boolean d() -> d
+    696:697:void a(boolean) -> a
+    701:713:void h(android.content.Context) -> h
+    747:784:java.lang.String i(android.content.Context) -> i
+    792:795:void a(android.webkit.WebView) -> a
+    803:804:void a(java.net.HttpURLConnection,android.content.Context) -> a
+    807:816:java.lang.String a(java.util.Map) -> a
+    821:854:org.json.JSONObject b(java.util.Map) -> b
+    859:891:org.json.JSONArray a(java.util.Set) -> a
+com.google.ads.util.AdUtil$UserActivityReceiver -> com.google.ads.util.AdUtil$UserActivityReceiver:
+    718:723:void onReceive(android.content.Context,android.content.Intent) -> onReceive
+com.google.ads.util.AdUtil$a -> com.google.ads.util.a:
+    com.google.ads.util.AdUtil$a a -> a
+    com.google.ads.util.AdUtil$a b -> b
+    com.google.ads.util.AdUtil$a c -> c
+    com.google.ads.util.AdUtil$a d -> d
+    com.google.ads.util.AdUtil$a e -> e
+    com.google.ads.util.AdUtil$a f -> f
+    com.google.ads.util.AdUtil$a[] g -> g
+    127:127:com.google.ads.util.AdUtil$a[] values() -> values
+    127:127:com.google.ads.util.AdUtil$a valueOf(java.lang.String) -> valueOf
+com.google.ads.util.a -> com.google.ads.util.b:
+    31:34:void a(java.lang.String) -> a
+    58:61:void b(java.lang.String) -> b
+    72:75:void a(java.lang.String,java.lang.Throwable) -> a
+    85:88:void c(java.lang.String) -> c
+    113:116:void d(java.lang.String) -> d
+    140:143:void e(java.lang.String) -> e
+    153:156:void a(java.lang.Throwable) -> a
+    167:170:void b(java.lang.String,java.lang.Throwable) -> b
+    184:184:boolean a(java.lang.String,int) -> a
+com.google.ads.util.b -> com.google.ads.util.c:
+    boolean a -> a
+    471:475:java.lang.String a(byte[]) -> a
+com.google.ads.util.b$a -> com.google.ads.util.d:
+    byte[] a -> a
+    int b -> b
+com.google.ads.util.b$b -> com.google.ads.util.e:
+    byte[] h -> h
+    byte[] i -> i
+    byte[] j -> j
+    int c -> c
+    int k -> k
+    boolean d -> d
+    boolean e -> e
+    boolean f -> f
+    byte[] l -> l
+    boolean g -> g
+    636:779:boolean a(byte[],int) -> a
+com.google.ads.util.c -> com.google.ads.util.f:
+    41:41:int a(android.content.Context,android.util.DisplayMetrics) -> a
+    55:55:int b(android.content.Context,android.util.DisplayMetrics) -> b
+    69:73:int a(android.content.Context,float,int) -> a
+com.google.ads.v -> com.google.ads.am:
+    44:55:int a(java.util.HashMap,java.lang.String,int,android.util.DisplayMetrics) -> a
+    66:164:void a(com.google.ads.d,java.util.HashMap,android.webkit.WebView) -> a
+com.google.ads.w -> com.google.ads.an:
+    android.content.Context a -> a
+    java.lang.String b -> b
+    46:69:void run() -> run
+com.google.ads.x -> com.google.ads.ao:
+    java.lang.ref.WeakReference a -> a
+    44:50:void run() -> run
+com.google.ads.y -> com.google.ads.ap:
+    android.net.Uri a -> a
+    android.net.Uri b -> b
+    java.lang.String[] c -> c
+    java.lang.String[] d -> d
+com.google.ads.z -> com.google.ads.aq:
+    178:180:void a(android.webkit.WebView,boolean) -> a
+com.google.ads.z$a -> com.google.ads.ar:
+    java.lang.ref.WeakReference a -> a
+    52:90:void run() -> run
+com.google.ads.z$b -> com.google.ads.as:
+    java.lang.ref.WeakReference a -> a
+    android.webkit.WebView b -> b
+    java.lang.String c -> c
+    110:132:void run() -> run
+com.google.ads.z$c -> com.google.ads.at:
+    boolean a -> a
+    android.webkit.WebView b -> b
+    149:150:void run() -> run
+com.jbak.CustomGraphics.ColorsGradientBack -> com.jbak.a.a:
+    int[] colors -> a
+    36:42:android.graphics.Paint makeBackground(float,float) -> a
+com.jbak.CustomGraphics.CustomButtonDrawable -> com.jbak.a.b:
+    com.jbak.CustomGraphics.GradBack m_grad -> a
+    android.graphics.drawable.Drawable m_drw -> b
+    33:35:boolean onStateChange(int[]) -> onStateChange
+    40:40:android.graphics.drawable.Drawable getCurrent() -> getCurrent
+com.jbak.CustomGraphics.GradBack -> com.jbak.a.c:
+    android.graphics.RectF m_rect -> b
+    android.graphics.Paint m_ptFill -> c
+    android.graphics.Paint m_ptFillPressed -> d
+    android.graphics.Paint m_ptFillCheckable -> e
+    android.graphics.Paint m_ptFillChecked -> f
+    int m_clrStart -> g
+    int m_clrEnd -> h
+    int m_gap -> i
+    int[] m_states -> j
+    int m_cornerX -> k
+    int m_cornerY -> l
+    boolean m_bDrawPressedBack -> m
+    int m_gradType -> n
+    75:76:com.jbak.CustomGraphics.GradBack setGap$425331ae() -> a
+    83:84:com.jbak.CustomGraphics.GradBack setGradType$425331ae() -> b
+    88:89:com.jbak.CustomGraphics.GradBack setDrawPressedBackground$57a1003() -> c
+    97:99:com.jbak.CustomGraphics.GradBack setCorners$2211d9() -> d
+    104:107:android.graphics.Paint newPaint() -> e
+    112:115:android.graphics.Paint newColorPaint(int) -> a
+    120:120:android.graphics.drawable.Drawable getDrawable() -> f
+    125:125:com.jbak.CustomGraphics.CustomButtonDrawable getButtonDrawable() -> g
+    129:144:android.graphics.Paint makeBackground(float,float) -> a
+    150:153:void onResize(float,float) -> onResize
+    158:166:void draw(android.graphics.Canvas,android.graphics.Paint) -> draw
+    180:181:void changeState(int[]) -> a
+    187:192:boolean hasState(int) -> b
+com.jbak.JbakKeyboard.AboutActivity -> com.jbak.JbakKeyboard.AboutActivity:
+    25:37:void onCreate(android.os.Bundle) -> onCreate
+com.jbak.JbakKeyboard.AppsList -> com.jbak.JbakKeyboard.a:
+    com.jbak.JbakKeyboard.st$SyncAsycOper m_getApps -> a
+    android.widget.ListView m_MainView -> b
+    android.widget.BaseAdapter m_adapter -> c
+    java.util.ArrayList m_arItems -> d
+    android.app.Activity m_act -> e
+    102:111:com.jbak.JbakKeyboard.AppsList$MenuEntry getMenuEntryForComponent(android.content.ComponentName,android.content.pm.PackageManager) -> a
+com.jbak.JbakKeyboard.AppsList$1 -> com.jbak.JbakKeyboard.b:
+    com.jbak.JbakKeyboard.AppsList this$0 -> a
+    73:96:void makeOper$241643fa() -> a
+com.jbak.JbakKeyboard.AppsList$2 -> com.jbak.JbakKeyboard.c:
+    com.jbak.JbakKeyboard.AppsList this$0 -> a
+    40:48:android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
+    53:53:long getItemId(int) -> getItemId
+    58:58:java.lang.Object getItem(int) -> getItem
+    63:63:int getCount() -> getCount
+com.jbak.JbakKeyboard.AppsList$3 -> com.jbak.JbakKeyboard.d:
+    com.jbak.JbakKeyboard.AppsList this$0 -> a
+    android.app.AlertDialog val$ad -> b
+    com.jbak.JbakKeyboard.st$UniObserver val$obs -> c
+    126:129:void onItemClick(android.widget.AdapterView,android.view.View,int,long) -> onItemClick
+com.jbak.JbakKeyboard.AppsList$MenuEntry -> com.jbak.JbakKeyboard.e:
+    java.lang.String text -> a
+    android.content.ComponentName cn -> b
+    android.graphics.drawable.Drawable icon -> c
+com.jbak.JbakKeyboard.CandidateView -> com.jbak.JbakKeyboard.f:
+    com.jbak.JbakKeyboard.ServiceJbKbd mService -> a
+    java.util.List mSuggestions -> b
+    int mSelectedIndex -> c
+    int mTouchX -> d
+    android.graphics.drawable.Drawable mSelectionHighlight -> e
+    boolean mTypedWordValid -> f
+    android.graphics.Rect mBgPadding -> g
+    int[] mWordWidth -> h
+    int[] mWordX -> i
+    java.util.List EMPTY_LIST -> j
+    int mColorNormal -> k
+    int mColorRecommended -> l
+    int mColorOther -> m
+    int mVerticalPadding -> n
+    android.graphics.Paint mPaint -> o
+    boolean mScrolled -> p
+    int mTargetScrollX -> q
+    int mTotalWidth -> r
+    android.view.GestureDetector mGestureDetector -> s
+    133:133:int computeHorizontalScrollRange() -> computeHorizontalScrollRange
+    138:150:void onMeasure(int,int) -> onMeasure
+    158:218:void onDraw(android.graphics.Canvas) -> onDraw
+    241:252:void setSuggestions$2e5c089a(java.util.List,boolean) -> a
+    264:299:boolean onTouchEvent(android.view.MotionEvent) -> onTouchEvent
+com.jbak.JbakKeyboard.ClipbrdService -> com.jbak.JbakKeyboard.ClipbrdService:
+    com.jbak.JbakKeyboard.ClipbrdService inst -> a
+    android.content.BroadcastReceiver m_recv -> b
+    java.lang.String m_sLastClipStr -> c
+    android.text.ClipboardManager m_cm -> d
+    java.util.Timer m_timer -> e
+    20:20:android.os.IBinder onBind(android.content.Intent) -> onBind
+    25:33:void onCreate() -> onCreate
+    37:39:void onDestroy() -> onDestroy
+    42:52:void startTimer() -> a
+    55:56:void stopTimer() -> b
+    59:64:void checkClipboardString() -> c
+    67:73:void checkString(java.lang.String) -> a
+com.jbak.JbakKeyboard.ClipbrdService$1 -> com.jbak.JbakKeyboard.g:
+    com.jbak.JbakKeyboard.ClipbrdService this$0 -> a
+    79:88:void onReceive(android.content.Context,android.content.Intent) -> onReceive
+com.jbak.JbakKeyboard.ClipbrdService$2 -> com.jbak.JbakKeyboard.h:
+    com.jbak.JbakKeyboard.ClipbrdService this$0 -> a
+    48:49:void run() -> run
+com.jbak.JbakKeyboard.ComMenu -> com.jbak.JbakKeyboard.i:
+    android.view.View m_MainView -> a
+    java.util.ArrayList m_arItems -> b
+    int m_state -> c
+    com.jbak.JbakKeyboard.ComMenu inst -> d
+    com.jbak.JbakKeyboard.st$UniObserver m_lvObserver -> e
+    android.view.View$OnLongClickListener m_longListener -> f
+    android.view.View$OnTouchListener m_btnListener -> g
+    com.jbak.JbakKeyboard.st$UniObserver m_MenuObserver -> h
+    android.view.View$OnClickListener m_listener -> i
+    138:139:void add(java.lang.String,int) -> a
+    143:144:void add(int,int) -> a
+    147:153:void close() -> a
+    179:217:void show(com.jbak.JbakKeyboard.st$UniObserver) -> a
+    221:253:boolean showClipboard() -> b
+com.jbak.JbakKeyboard.ComMenu$1 -> com.jbak.JbakKeyboard.j:
+    com.jbak.JbakKeyboard.ComMenu this$0 -> a
+    93:96:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.ComMenu$2 -> com.jbak.JbakKeyboard.k:
+    com.jbak.JbakKeyboard.ComMenu this$0 -> a
+    105:112:boolean onLongClick(android.view.View) -> onLongClick
+com.jbak.JbakKeyboard.ComMenu$3 -> com.jbak.JbakKeyboard.l:
+    com.jbak.JbakKeyboard.ComMenu this$0 -> a
+    121:130:boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
+com.jbak.JbakKeyboard.ComMenu$4 -> com.jbak.JbakKeyboard.m:
+    com.jbak.JbakKeyboard.ComMenu this$0 -> a
+    161:173:void onClick(android.view.View) -> onClick
+com.jbak.JbakKeyboard.ComMenu$5 -> com.jbak.JbakKeyboard.n:
+    240:249:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.ComMenu$MenuEntry -> com.jbak.JbakKeyboard.o:
+    java.lang.String text -> a
+    int id -> b
+com.jbak.JbakKeyboard.Dlg -> com.jbak.JbakKeyboard.p:
+com.jbak.JbakKeyboard.Dlg$1 -> com.jbak.JbakKeyboard.q:
+    com.jbak.JbakKeyboard.st$UniObserver val$obs -> a
+    63:64:void onClick(android.content.DialogInterface,int) -> onClick
+com.jbak.JbakKeyboard.Dlg$OnButtonListener -> com.jbak.JbakKeyboard.r:
+    com.jbak.JbakKeyboard.st$UniObserver callback -> a
+    27:29:void onClick(android.content.DialogInterface,int) -> onClick
+com.jbak.JbakKeyboard.Dlg$RunOnYes -> com.jbak.JbakKeyboard.s:
+    void run() -> a
+com.jbak.JbakKeyboard.Dlg$RunOnYes$1 -> com.jbak.JbakKeyboard.t:
+    com.jbak.JbakKeyboard.Dlg$RunOnYes this$1 -> a
+    99:101:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.EditSetActivity -> com.jbak.JbakKeyboard.EditSetActivity:
+    com.jbak.JbakKeyboard.EditSetActivity inst -> a
+    android.widget.EditText m_edit -> b
+    com.jbak.JbakKeyboard.EditSetActivity$EditSet m_es -> c
+    float m_defaultFontSize -> d
+    android.widget.CompoundButton$OnCheckedChangeListener m_onCheckChange -> e
+    android.widget.AdapterView$OnItemSelectedListener m_OnSpinnerChange -> f
+    85:120:void onCreate(android.os.Bundle) -> onCreate
+    124:127:void onDestroy() -> onDestroy
+com.jbak.JbakKeyboard.EditSetActivity$1 -> com.jbak.JbakKeyboard.u:
+    com.jbak.JbakKeyboard.EditSetActivity this$0 -> a
+    27:44:void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
+com.jbak.JbakKeyboard.EditSetActivity$2 -> com.jbak.JbakKeyboard.v:
+    com.jbak.JbakKeyboard.EditSetActivity this$0 -> a
+    52:74:void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
+    79:79:void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
+com.jbak.JbakKeyboard.EditSetActivity$EditSet -> com.jbak.JbakKeyboard.w:
+    android.graphics.Typeface typeface -> a
+    int style -> b
+    int fontSize -> c
+    141:145:int typefaceToInt(android.graphics.Typeface) -> a
+    149:153:android.graphics.Typeface intToTypeface(int) -> a
+    157:160:void setToEditor(android.widget.EditText) -> a
+    163:164:void load() -> a
+    183:183:java.lang.String toString() -> toString
+com.jbak.JbakKeyboard.IKeyboard -> com.jbak.JbakKeyboard.x:
+    com.jbak.JbakKeyboard.IKeyboard$Lang[] arLangs -> a
+    com.jbak.JbakKeyboard.IKeyboard$Keybrd[] arKbd -> b
+    com.jbak.JbakKeyboard.IKeyboard$KbdDesign[] arDesign -> c
+    185:185:com.jbak.JbakKeyboard.IKeyboard$Keybrd defKbd() -> a
+    203:209:com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForId(int) -> a
+com.jbak.JbakKeyboard.IKeyboard$KbdDesign -> com.jbak.JbakKeyboard.y:
+    int drawResId -> a
+    int nameResId -> b
+    int textColor -> c
+    int backDrawableRes -> d
+    int flags -> e
+    com.jbak.CustomGraphics.GradBack m_keyBackground -> f
+    com.jbak.CustomGraphics.GradBack m_kbdBackground -> g
+com.jbak.JbakKeyboard.IKeyboard$Keybrd -> com.jbak.JbakKeyboard.z:
+    com.jbak.JbakKeyboard.IKeyboard$Lang lang -> a
+    int resId -> b
+    int kbdCode -> c
+    int resName -> d
+com.jbak.JbakKeyboard.IKeyboard$Lang -> com.jbak.JbakKeyboard.aa:
+    int lang -> a
+    java.lang.String name -> b
+    int strId -> c
+com.jbak.JbakKeyboard.JbKbd -> com.jbak.JbakKeyboard.ab:
+    com.jbak.JbakKeyboard.JbKbd$LatinKey mEnterKey -> b
+    int resId -> a
+    54:54:int getHeightKey() -> a
+    64:68:android.inputmethodservice.Keyboard$Key createKeyFromXml(android.content.res.Resources,android.inputmethodservice.Keyboard$Row,int,int,android.content.res.XmlResourceParser) -> createKeyFromXml
+    75:108:void setImeOptions(android.content.res.Resources,int) -> a
+    111:118:com.jbak.JbakKeyboard.JbKbd$LatinKey getKeyByCode(int) -> a
+com.jbak.JbakKeyboard.JbKbd$LatinKey -> com.jbak.JbakKeyboard.ac:
+    com.jbak.JbakKeyboard.KeyDrw m_kd -> a
+    139:139:java.lang.String getMainText() -> a
+com.jbak.JbakKeyboard.JbKbdPreference -> com.jbak.JbakKeyboard.JbKbdPreference:
+    25:28:void onDestroy() -> onDestroy
+    32:43:void runSetKbd(int) -> a
+    47:68:void onCreate(android.os.Bundle) -> onCreate
+    72:73:void onContentChanged() -> onContentChanged
+com.jbak.JbakKeyboard.JbKbdPreference$PrefRunSetKbd -> com.jbak.JbakKeyboard.ad:
+    int m_act -> a
+    com.jbak.JbakKeyboard.JbKbdPreference m_a -> b
+    134:152:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.jbak.JbakKeyboard.JbKbdReceiver -> com.jbak.JbakKeyboard.JbKbdReceiver:
+    15:19:void onReceive(android.content.Context,android.content.Intent) -> onReceive
+com.jbak.JbakKeyboard.JbKbdView -> com.jbak.JbakKeyboard.JbKbdView:
+    com.jbak.JbakKeyboard.KeyDrw m_PreviewDrw -> a
+    com.jbak.JbakKeyboard.JbKbdView inst -> b
+    int m_KeyHeight -> c
+    android.graphics.Paint m_tpMainKey -> d
+    android.graphics.Paint m_tpSmallKey -> e
+    android.graphics.Paint m_tpLabel -> f
+    android.graphics.drawable.StateListDrawable m_KeyBackDrw -> g
+    android.graphics.drawable.Drawable m_drwKeyBack -> h
+    android.graphics.drawable.Drawable m_drwKeyPress -> i
+    android.text.TextPaint m_tpPreview -> j
+    int m_KeyTextSz -> k
+    int m_LabelTextSize -> l
+    int m_PreviewTextSize -> m
+    int m_state -> n
+    int m_PreviewHeight -> o
+    com.jbak.JbakKeyboard.IKeyboard$KbdDesign m_curDesign -> p
+    90:90:com.jbak.JbakKeyboard.JbKbd getCurKeyboard() -> a
+    96:103:int getFieldInt(java.lang.reflect.Field,java.lang.Object,int) -> a
+    108:244:void init() -> f
+    248:282:boolean onLongPress(android.inputmethodservice.Keyboard$Key) -> onLongPress
+    287:310:void handleShift() -> b
+    313:317:boolean isUpperCase() -> c
+    322:354:void setPreferences() -> d
+    358:363:void setKeyboard(android.inputmethodservice.Keyboard) -> setKeyboard
+    366:376:void handleLangChange() -> e
+    384:392:void onKeyPress(int) -> a
+com.jbak.JbakKeyboard.KbdConsole -> com.jbak.JbakKeyboard.ae:
+    java.io.OutputStream os -> a
+    46:56:boolean runKeyCode(int) -> a
+com.jbak.JbakKeyboard.KeyDrw -> com.jbak.JbakKeyboard.af:
+    android.graphics.Bitmap bmp -> a
+    java.lang.String txtMain -> b
+    java.lang.String txtSmall -> c
+    boolean m_bPreview -> d
+    android.graphics.Rect rb -> e
+    int GAP -> f
+    44:46:android.graphics.drawable.Drawable getDrawable() -> a
+    50:87:void set(android.inputmethodservice.Keyboard$Key,boolean) -> a
+    101:109:void drawSingleBitmap(android.graphics.Canvas,float,float,android.graphics.Paint) -> a
+    113:211:void draw(android.graphics.Canvas,android.graphics.Paint) -> draw
+com.jbak.JbakKeyboard.KeyPressProcessor -> com.jbak.JbakKeyboard.ag:
+    com.jbak.JbakKeyboard.KeyPressProcessor inst -> a
+    java.util.ArrayList m_arKeys -> b
+    com.jbak.JbakKeyboard.KeySet m_ksShort -> c
+    com.jbak.JbakKeyboard.KeySet m_ksLong -> d
+    boolean m_bLongProcessed -> e
+    int mBlockedKey -> f
+    com.jbak.JbakKeyboard.KbdConsole m_console -> g
+    android.os.Vibrator m_vibro -> h
+    int m_RunKey -> i
+    91:102:boolean onLongPress() -> a
+    247:247:boolean isEditor(android.view.inputmethod.EditorInfo) -> a
+    256:269:com.jbak.JbakKeyboard.KeySet getKey(android.view.KeyEvent,boolean,boolean) -> a
+    274:285:void loadKeys() -> b
+com.jbak.JbakKeyboard.KeySet -> com.jbak.JbakKeyboard.ah:
+    int keycode -> a
+    char keychar -> b
+    int flags -> c
+    int action -> d
+    android.content.Intent extra -> e
+    java.lang.String sext -> f
+    int FLAG_LONG_PRESS -> g
+    int FLAG_TEXT_FIELDS -> h
+    int FLAG_NOT_IN_TEXT_FIELDS -> i
+    20:32:void setApp(android.content.ComponentName) -> a
+    35:36:void setText(java.lang.String) -> a
+    39:44:android.content.ComponentName getApp() -> a
+    48:67:void run() -> b
+    70:73:boolean checkEdit(boolean) -> a
+    77:77:boolean isLong() -> c
+    81:83:java.lang.String getText() -> d
+    87:98:java.lang.String getKeyName(int) -> a
+com.jbak.JbakKeyboard.KeySetActivity -> com.jbak.JbakKeyboard.KeySetActivity:
+    com.jbak.JbakKeyboard.KeySetActivity inst -> a
+    android.widget.AdapterView$OnItemSelectedListener m_spinnerListener -> b
+    java.util.ArrayList m_BackStack -> c
+    int m_state -> d
+    android.widget.TextView m_ksKey -> e
+    android.widget.TextView m_ksActionLabel -> f
+    android.widget.ScrollView m_ksKeySet -> g
+    android.widget.LinearLayout m_ksAW -> h
+    com.jbak.JbakKeyboard.KeySet m_key -> i
+    com.jbak.JbakKeyboard.AppsList m_appList -> j
+    android.widget.ListView m_ListView -> k
+    android.widget.Spinner m_spinAction -> l
+    android.widget.Spinner m_spinKeyPressType -> m
+    android.widget.Spinner m_spinType -> n
+    android.view.View m_MainView -> o
+    34:74:void onCreate(android.os.Bundle) -> onCreate
+    77:90:void onListChanged() -> c
+    94:105:void onBackPressed() -> onBackPressed
+    109:111:void onDestroy() -> onDestroy
+    115:117:void setView(com.jbak.JbakKeyboard.KeySetActivity$BackEntry) -> a
+    121:137:void saveKey() -> a
+    143:179:void runKeySet() -> b
+    183:200:java.lang.String getKeyString(int,char) -> a
+    205:209:void editKey() -> d
+    213:228:boolean onHardwareKey(android.view.KeyEvent) -> a
+    271:278:void setApp(android.content.ComponentName) -> a
+    282:283:void onConfigurationChanged(android.content.res.Configuration) -> onConfigurationChanged
+    287:333:void setAction(int) -> a
+com.jbak.JbakKeyboard.KeySetActivity$1 -> com.jbak.JbakKeyboard.ai:
+    com.jbak.JbakKeyboard.KeySetActivity this$0 -> a
+    372:397:void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
+    399:399:void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
+com.jbak.JbakKeyboard.KeySetActivity$2 -> com.jbak.JbakKeyboard.aj:
+    com.jbak.JbakKeyboard.KeySetActivity this$0 -> a
+    42:44:void onClick(android.view.View) -> onClick
+com.jbak.JbakKeyboard.KeySetActivity$3 -> com.jbak.JbakKeyboard.ak:
+    com.jbak.JbakKeyboard.KeySetActivity this$0 -> a
+    59:61:void onItemClick(android.widget.AdapterView,android.view.View,int,long) -> onItemClick
+com.jbak.JbakKeyboard.KeySetActivity$4 -> com.jbak.JbakKeyboard.al:
+    com.jbak.JbakKeyboard.KeySetActivity this$0 -> a
+    68:69:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.KeySetActivity$5 -> com.jbak.JbakKeyboard.am:
+    com.jbak.JbakKeyboard.KeySetActivity this$0 -> a
+    157:158:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.KeySetActivity$6 -> com.jbak.JbakKeyboard.an:
+    com.jbak.JbakKeyboard.KeySetActivity this$0 -> a
+    303:315:void onClick(android.view.View) -> onClick
+    297:297:com.jbak.JbakKeyboard.KeySetActivity access$0(com.jbak.JbakKeyboard.KeySetActivity$6) -> a
+com.jbak.JbakKeyboard.KeySetActivity$6$1 -> com.jbak.JbakKeyboard.ao:
+    com.jbak.JbakKeyboard.KeySetActivity$6 this$1 -> a
+    309:312:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.KeySetActivity$BackEntry -> com.jbak.JbakKeyboard.ap:
+    android.view.View view -> a
+    com.jbak.JbakKeyboard.st$UniObserver onClose -> b
+    246:255:void setView(android.app.Activity) -> a
+com.jbak.JbakKeyboard.KeySetActivity$KeysAdapter -> com.jbak.JbakKeyboard.aq:
+    com.jbak.JbakKeyboard.KeySetActivity m_a -> a
+    345:356:void bindView(android.view.View,android.content.Context,android.database.Cursor) -> bindView
+    360:360:android.view.View newView(android.content.Context,android.database.Cursor,android.view.ViewGroup) -> newView
+com.jbak.JbakKeyboard.LangSetActivity -> com.jbak.JbakKeyboard.LangSetActivity:
+    com.jbak.JbakKeyboard.LangSetActivity inst -> a
+    android.view.View$OnClickListener m_butListener -> b
+    34:42:void onCreate(android.os.Bundle) -> onCreate
+    46:50:void onDestroy() -> onDestroy
+com.jbak.JbakKeyboard.LangSetActivity$1 -> com.jbak.JbakKeyboard.ar:
+    com.jbak.JbakKeyboard.LangSetActivity this$0 -> a
+    56:71:void onClick(android.view.View) -> onClick
+com.jbak.JbakKeyboard.LangSetActivity$LangAdapter -> com.jbak.JbakKeyboard.as:
+    android.widget.CompoundButton$OnCheckedChangeListener m_chkListener -> a
+    int rId -> b
+    java.util.Vector m_arLangs -> c
+    com.jbak.JbakKeyboard.LangSetActivity this$0 -> d
+    77:84:java.lang.String getLangString() -> a
+    133:167:android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
+com.jbak.JbakKeyboard.LangSetActivity$LangAdapter$1 -> com.jbak.JbakKeyboard.at:
+    com.jbak.JbakKeyboard.LangSetActivity$LangAdapter this$1 -> a
+    91:108:void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
+com.jbak.JbakKeyboard.ServiceJbKbd -> com.jbak.JbakKeyboard.ServiceJbKbd:
+    com.jbak.JbakKeyboard.Words m_words -> a
+    boolean m_bComplete -> b
+    com.jbak.JbakKeyboard.CandidateView mCandidateView -> o
+    android.view.inputmethod.CompletionInfo[] mCompletions -> p
+    java.lang.StringBuilder mComposing -> q
+    boolean mPredictionOn -> r
+    boolean mCompletionOn -> s
+    long mMetaState -> t
+    com.jbak.JbakKeyboard.ServiceJbKbd inst -> c
+    java.lang.String m_SentenceEnds -> d
+    java.lang.String m_SpaceSymbols -> e
+    com.jbak.JbakKeyboard.KeyPressProcessor m_kp -> f
+    boolean m_bForceShow -> g
+    int m_state -> h
+    int m_PortraitEditType -> i
+    int m_LandscapeEditType -> j
+    com.jbak.JbakKeyboard.EditSetActivity$EditSet m_es -> k
+    int m_SelStart -> l
+    int m_SelEnd -> m
+    android.widget.EditText m_extraText -> n
+    83:96:void onCreate() -> onCreate
+    102:106:void onDestroy() -> onDestroy
+    115:118:android.view.View onCreateInputView() -> onCreateInputView
+    130:130:android.view.View onCreateCandidatesView() -> onCreateCandidatesView
+    136:180:void onStartInputView(android.view.inputmethod.EditorInfo,boolean) -> onStartInputView
+    194:202:void onStartInput(android.view.inputmethod.EditorInfo,boolean) -> onStartInput
+    207:208:void onFinishInputView(boolean) -> onFinishInputView
+    213:215:void onBindInput() -> onBindInput
+    222:236:void onFinishInput() -> onFinishInput
+    243:251:boolean makeEmptyUppercase() -> d
+    257:275:void onUpdateSelection(int,int,int,int,int,int) -> onUpdateSelection
+    283:283:void onDisplayCompletions(android.view.inputmethod.CompletionInfo[]) -> onDisplayCompletions
+    305:315:boolean handleBackPress() -> e
+    324:330:boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
+    338:342:boolean onKeyUp(int,android.view.KeyEvent) -> onKeyUp
+    351:357:void commitTyped(android.view.inputmethod.InputConnection) -> a
+    375:377:void keyDownUp(int) -> a
+    403:478:void onKey(int,int[]) -> onKey
+    481:482:boolean canAutoInput() -> f
+    487:500:void handleWordSeparator(int) -> b
+    504:525:void onText(java.lang.CharSequence) -> onText
+    531:544:void updateCandidates() -> g
+    548:560:void setSuggestions$2e5c089a(java.util.List,boolean) -> a
+    623:623:boolean isWordSeparator(int) -> c
+    628:636:void SetWord(java.lang.String) -> a
+    640:640:void swipeRight() -> swipeRight
+    645:645:void swipeLeft() -> swipeLeft
+    650:650:void swipeDown() -> swipeDown
+    654:654:void swipeUp() -> swipeUp
+    658:659:void onPress(int) -> onPress
+    663:663:void onRelease(int) -> onRelease
+    667:682:void onOptions() -> a
+    686:711:void onVoiceRecognition(java.util.ArrayList) -> a
+    717:719:void forceShow() -> h
+    725:730:boolean isSelMode() -> i
+    784:790:void forceHide() -> b
+    814:815:void onAppPrivateCommand(java.lang.String,android.os.Bundle) -> onAppPrivateCommand
+    820:820:boolean onExtractTextContextMenuItem(int) -> onExtractTextContextMenuItem
+    845:876:void onSharedPreferenceChanged(android.content.SharedPreferences,java.lang.String) -> onSharedPreferenceChanged
+    879:880:void onChangeKeyboard() -> c
+    885:899:android.view.View onCreateExtractTextView() -> onCreateExtractTextView
+    904:910:boolean onEvaluateFullscreenMode() -> onEvaluateFullscreenMode
+com.jbak.JbakKeyboard.ServiceJbKbd$1 -> com.jbak.JbakKeyboard.au:
+    com.jbak.JbakKeyboard.ServiceJbKbd this$0 -> a
+    672:673:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.ServiceJbKbd$2 -> com.jbak.JbakKeyboard.av:
+    com.jbak.JbakKeyboard.ServiceJbKbd this$0 -> a
+    java.util.ArrayList val$ar -> d
+    701:703:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.SetKbdActivity -> com.jbak.JbakKeyboard.SetKbdActivity:
+    com.jbak.JbakKeyboard.SetKbdActivity inst -> a
+    int m_curAction -> b
+    java.lang.String m_LangName -> c
+    int m_curKbd -> d
+    android.view.View m_MainView -> e
+    com.jbak.JbakKeyboard.JbKbdView m_kbd -> f
+    android.inputmethodservice.KeyboardView$OnKeyboardActionListener m_kbdListener -> g
+    android.view.View$OnClickListener m_NextPrevListener -> h
+    33:101:void onCreate(android.os.Bundle) -> onCreate
+    104:108:void changeKeyHeight(int) -> a
+    112:116:void onBackPressed() -> onBackPressed
+    120:125:void onDestroy() -> onDestroy
+    129:149:void changeSkin(boolean) -> a
+    159:180:void nextKbd() -> a
+    184:206:void prevKbd() -> b
+    210:213:void setKeyboard(com.jbak.JbakKeyboard.IKeyboard$Keybrd) -> a
+com.jbak.JbakKeyboard.SetKbdActivity$1 -> com.jbak.JbakKeyboard.aw:
+    com.jbak.JbakKeyboard.SetKbdActivity this$0 -> a
+    219:219:void swipeUp() -> swipeUp
+    223:223:void swipeRight() -> swipeRight
+    227:227:void swipeLeft() -> swipeLeft
+    231:231:void swipeDown() -> swipeDown
+    235:235:void onText(java.lang.CharSequence) -> onText
+    239:239:void onRelease(int) -> onRelease
+    243:244:void onPress(int) -> onPress
+    248:258:void onKey(int,int[]) -> onKey
+com.jbak.JbakKeyboard.SetKbdActivity$2 -> com.jbak.JbakKeyboard.ax:
+    com.jbak.JbakKeyboard.SetKbdActivity this$0 -> a
+    266:279:void onClick(android.view.View) -> onClick
+com.jbak.JbakKeyboard.SetKbdActivity$3 -> com.jbak.JbakKeyboard.ay:
+    com.jbak.JbakKeyboard.SetKbdActivity this$0 -> a
+    85:85:void onStopTrackingTouch(android.widget.SeekBar) -> onStopTrackingTouch
+    89:89:void onStartTrackingTouch(android.widget.SeekBar) -> onStartTrackingTouch
+    94:96:void onProgressChanged(android.widget.SeekBar,int,boolean) -> onProgressChanged
+com.jbak.JbakKeyboard.Stor -> com.jbak.JbakKeyboard.az:
+    com.jbak.JbakKeyboard.Stor inst -> a
+    android.database.sqlite.SQLiteDatabase m_db -> b
+    61:61:void onUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> onUpgrade
+    63:63:void onCreate(android.database.sqlite.SQLiteDatabase) -> onCreate
+    66:80:void saveClipboardString(java.lang.String) -> b
+    85:92:boolean runSql(java.lang.String) -> c
+    99:111:com.jbak.JbakKeyboard.KeySet readKey(android.database.Cursor) -> a
+    118:126:android.database.Cursor getKeysCursor() -> a
+    132:140:android.database.Cursor getClipboardCursor() -> b
+    156:177:void saveKey(com.jbak.JbakKeyboard.KeySet) -> a
+    181:221:boolean checkClipboardString(java.lang.String) -> a
+com.jbak.JbakKeyboard.Templates -> com.jbak.JbakKeyboard.ba:
+    com.jbak.JbakKeyboard.Templates inst -> a
+    java.io.File m_rootDir -> b
+    java.io.File m_curDir -> c
+    java.io.File m_editFile -> d
+    int m_state -> e
+    java.lang.String[] Instructions -> f
+    java.util.ArrayList m_arFiles -> g
+    46:54:void setEditFolder(boolean) -> a
+    57:59:boolean openFolder(java.io.File) -> b
+    63:63:boolean isEditFolder() -> a
+    68:72:void onCloseEditor() -> b
+    75:80:void onDelete() -> c
+    85:95:void saveFolder(java.lang.String) -> a
+    99:118:void saveTemplate(java.lang.String,java.lang.String) -> a
+    142:155:java.util.ArrayList getSortedFiles() -> e
+    164:179:java.lang.String getFileString(java.io.File) -> a
+    256:289:void processTemplateClick(int,boolean) -> a
+    293:329:void makeCommonMenu() -> d
+    338:362:int chkPos(int,int,boolean,int) -> a
+    470:483:java.lang.String getCurWordStart(java.lang.CharSequence,boolean) -> a
+    491:505:java.lang.String getCurWordEnd(java.lang.CharSequence,boolean) -> b
+    509:527:boolean deleteDir(java.io.File) -> c
+com.jbak.JbakKeyboard.Templates$1 -> com.jbak.JbakKeyboard.bb:
+    com.jbak.JbakKeyboard.Templates this$0 -> a
+    322:325:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.Templates$CurInput -> com.jbak.JbakKeyboard.bc:
+    java.lang.String wordStart -> a
+    java.lang.String wordEnd -> b
+    java.lang.String lineStart -> c
+    java.lang.String lineEnd -> d
+    java.lang.String sel -> e
+    boolean bInited -> f
+    391:394:boolean replaceCurWord(android.view.inputmethod.InputConnection,java.lang.String) -> a
+    422:462:boolean init(android.view.inputmethod.InputConnection) -> a
+com.jbak.JbakKeyboard.Templates$FilesComp -> com.jbak.JbakKeyboard.bd:
+    1:1:int compare(java.lang.Object,java.lang.Object) -> compare
+com.jbak.JbakKeyboard.TplEditorActivity -> com.jbak.JbakKeyboard.TplEditorActivity:
+    android.view.View$OnClickListener m_clkListener -> a
+    android.widget.EditText m_edName -> b
+    android.widget.EditText m_edText -> c
+    20:64:void onCreate(android.os.Bundle) -> onCreate
+    68:71:void onDestroy() -> onDestroy
+    74:100:void onSave() -> a
+    103:112:void delete() -> b
+    116:117:void onBackPressed() -> onBackPressed
+    120:145:void onSpecOptions() -> c
+com.jbak.JbakKeyboard.TplEditorActivity$1 -> com.jbak.JbakKeyboard.be:
+    com.jbak.JbakKeyboard.TplEditorActivity this$0 -> a
+    151:158:void onClick(android.view.View) -> onClick
+com.jbak.JbakKeyboard.TplEditorActivity$2 -> com.jbak.JbakKeyboard.bf:
+    com.jbak.JbakKeyboard.TplEditorActivity this$0 -> a
+    54:59:void onFocusChange(android.view.View,boolean) -> onFocusChange
+com.jbak.JbakKeyboard.TplEditorActivity$3 -> com.jbak.JbakKeyboard.bg:
+    com.jbak.JbakKeyboard.TplEditorActivity this$0 -> a
+    108:110:void run() -> a
+com.jbak.JbakKeyboard.TplEditorActivity$4 -> com.jbak.JbakKeyboard.bh:
+    com.jbak.JbakKeyboard.TplEditorActivity this$0 -> a
+    android.widget.ArrayAdapter val$ar -> d
+    130:141:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.VRTest -> com.jbak.JbakKeyboard.bi:
+    android.content.BroadcastReceiver m_recv -> a
+    java.lang.String bcastAction -> b
+    android.app.PendingIntent$OnFinished m_fin -> c
+com.jbak.JbakKeyboard.VRTest$1 -> com.jbak.JbakKeyboard.bj:
+    com.jbak.JbakKeyboard.VRTest this$0 -> a
+    20:26:void onReceive(android.content.Context,android.content.Intent) -> onReceive
+com.jbak.JbakKeyboard.VRTest$2 -> com.jbak.JbakKeyboard.bk:
+    com.jbak.JbakKeyboard.VRTest this$0 -> a
+    60:60:void onSendFinished(android.app.PendingIntent,android.content.Intent,int,java.lang.String,android.os.Bundle) -> onSendFinished
+com.jbak.JbakKeyboard.Words -> com.jbak.JbakKeyboard.bl:
+    java.lang.String[] m_cArrayCompletions -> a
+com.jbak.JbakKeyboard.st -> com.jbak.JbakKeyboard.bm:
+    47:47:android.graphics.drawable.Drawable getBack() -> b
+    52:52:boolean has(int,int) -> a
+    57:59:int rem(int,int) -> b
+    79:79:void logEx$786b7c60() -> c
+    83:92:com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForLangName(java.lang.String) -> a
+    98:98:void log$552c4e01() -> d
+    102:109:void saveCurLang() -> e
+    113:122:int getCurQwertyRes() -> f
+    127:128:com.jbak.JbakKeyboard.JbKbd curKbd() -> g
+    133:143:android.content.Context c() -> h
+    192:193:boolean isQwertyKeyboard() -> i
+    198:199:void setTextEditKeyboard() -> j
+    203:204:void setSmilesKeyboard() -> k
+    209:210:void setSymbolKeyboard(boolean) -> a
+    214:215:void setQwertyKeyboard() -> l
+    219:224:void setQwertyKeyboard(boolean) -> b
+    228:233:void setTempEnglishQwerty() -> m
+    236:236:java.lang.String getCurLang() -> n
+    241:241:com.jbak.JbakKeyboard.JbKbdView kv() -> o
+    259:260:java.lang.String[] getLangsArray$33c6ab02() -> p
+    265:272:int searchStr(java.lang.String,java.lang.String[]) -> a
+    277:281:com.jbak.JbakKeyboard.Stor stor() -> q
+    292:303:boolean runAct(java.lang.Class,android.content.Context) -> a
+    308:308:java.lang.String normalizeFileName(java.lang.String) -> b
+    313:349:boolean kbdCommand(int) -> b
+    354:359:int getCmdByLabel(java.lang.String) -> c
+    364:371:android.graphics.Bitmap getBitmapByCmd(int) -> c
+    375:375:android.content.SharedPreferences pref() -> r
+com.jbak.JbakKeyboard.st$SyncAsycOper -> com.jbak.JbakKeyboard.bn:
+    com.jbak.JbakKeyboard.st$UniObserver m_obs -> b
+    164:165:void startAsync() -> b
+    178:183:java.lang.Void doInBackground$10299ca() -> c
+    void makeOper$241643fa() -> a
+    1:1:java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
+    1:1:void onProgressUpdate(java.lang.Object[]) -> onProgressUpdate
+com.jbak.JbakKeyboard.st$UniObserver -> com.jbak.JbakKeyboard.bo:
+    java.lang.Object m_param1 -> b
+    java.lang.Object m_param2 -> c
+    37:37:int Observ() -> a
+    int OnObserver(java.lang.Object,java.lang.Object) -> a

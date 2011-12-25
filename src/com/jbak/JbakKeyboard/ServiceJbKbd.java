@@ -137,11 +137,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         m_SelEnd = attribute.initialSelEnd;
         st.log("onStartInputView "+m_SelStart+" "+m_SelEnd);
 //        getCurrentInputConnection().getExtractedText(new ExtractedTextRequest(), STATE_EMPTY_UP)
-        if (m_SelStart < 0)
-        {
-            requestHideSelf(0);
-            return;
-        }
 
         setCandidatesViewShown(false);
         if (JbKbdView.inst == null)
@@ -199,6 +194,10 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         st.log("onStartInput " + attribute.packageName);
         if (m_kp != null)
             m_kp.onStartInput();
+        if (attribute.initialSelStart < 0&&attribute.initialSelEnd<0)
+        {
+            requestHideSelf(0);
+        }
         super.onStartInput(attribute, restarting);
     }
 
@@ -281,21 +280,22 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public void onDisplayCompletions(CompletionInfo[] completions)
     {
         // if (mCompletionOn) {
-        mCompletions = completions;
-        if (completions == null)
-        {
-            setSuggestions(null, false, false);
-            return;
-        }
-
-        List<String> stringList = new ArrayList<String>();
-        for (int i = 0; i < (completions != null ? completions.length : 0); i++)
-        {
-            CompletionInfo ci = completions[i];
-            if (ci != null)
-                stringList.add(ci.getText().toString());
-        }
-        setSuggestions(stringList, true, true);
+        return;
+//        mCompletions = completions;
+//        if (completions == null)
+//        {
+//            setSuggestions(null, false, false);
+//            return;
+//        }
+//
+//        List<String> stringList = new ArrayList<String>();
+//        for (int i = 0; i < (completions != null ? completions.length : 0); i++)
+//        {
+//            CompletionInfo ci = completions[i];
+//            if (ci != null)
+//                stringList.add(ci.getText().toString());
+//        }
+//        setSuggestions(stringList, true, true);
         // }
     }
 
