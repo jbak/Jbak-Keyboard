@@ -137,7 +137,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         m_SelEnd = attribute.initialSelEnd;
         st.log("onStartInputView "+m_SelStart+" "+m_SelEnd);
 //        getCurrentInputConnection().getExtractedText(new ExtractedTextRequest(), STATE_EMPTY_UP)
-
         setCandidatesViewShown(false);
         if (JbKbdView.inst == null)
         {
