@@ -10,7 +10,7 @@
                          ads:adSize="BANNER"
                          ads:testDevices="TEST_DEVICE_ID"
                          ads:loadAdOnCreate="true"
-                         android:layout_alignParentTop="true"
+                         android:layout_alignParentBottom="true"
 				        android:layout_alignParentLeft="true"
 				        android:layout_alignParentRight="true"
                          
@@ -20,8 +20,8 @@
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/adView"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/adView"
         />
     
 

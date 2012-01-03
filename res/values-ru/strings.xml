@@ -28,7 +28,7 @@
     <string name="set_key_sounds">Звуковое сопровождение</string>
     <string name="set_key_sounds_desc">Проигрывать системные звуки при нажатии на клавиши</string>
     <string name="set_select_keyboard">Выбор клавиатуры</string>
-    <string name="set_key_skins">Оформление</string>
+    <string name="set_key_skins">Скины</string>
     <string name="set_key_skins_desc">Различные варианты оформления для клавиатуры</string>
 
     <string name="set_key_other">Автоввод</string>
@@ -58,7 +58,26 @@
         <item>Всегда полноэкранный</item>
         <item>Всегда не полноэкранный</item>
     </string-array>
-        <string name="es_title">Настрока полноэкранного редактора</string>
+    <string name="set_key_fonts">Шрифты</string>
+    <string name="set_key_fonts_desc">Настройка шрифтов для клавиш на клавиатуре</string>
+    <string name="set_key_font_first">Основной шрифт</string>
+    <string name="set_key_font_first_desc">Шрифт для букв</string>
+    <string name="set_key_font_second">Шрифт символов</string>
+    <string name="set_key_font_second_desc">Шрифт для дополнительных символов</string>
+    <string name="set_key_font_label">Шрифт для прочего</string>
+    <string name="set_key_font_label_desc">Шрифт для текстов на кнопках (язык,Select,Copy и др.)</string>
+    <string name="set_key_misc">Прочие настройки</string>
+    <string name="set_key_misc_desc">..и ещё несколько настроек</string>
+    <string name="set_key_shift">Клавиша Shift</string>
+    <string name="set_key_appearance">Внешний вид</string>
+    <string name="set_key_appearance_desc">Настройки внешнего вида клавиатуры и полноэкранного редактора</string>
+        
+    <string-array name="array_shift_vars">
+        <item>3 позиции (normal,shift,capslock)</item>
+        <item>2 позиции (normal,shift)</item>
+        <item>2 позиции (normal,capslock)</item>
+    </string-array>
+            <string name="es_title">Настрока полноэкранного редактора</string>
     <string name="es_sample">Образец</string>
     <string name="es_sample_text">В каком бы районе ты не поселился, сосед с дрелькой найдет тебя и поселится рядом!</string>
     <string name="es_font">Шрифт</string>
@@ -112,7 +131,7 @@
 	<string name="about_author">Автор:</string>
 	<string name="about_author_desc">Юрий \"Jbak\" Бакунин \njbak1979@gmail.com</string>
 	<string name="about_other">Прочее:</string>
-	<string name="about_other_desc">В программе использованы иконки из бесплатного набора "Primo"\nСайт дизайнера: http://www.webdesignerdepot.com</string>
+	<string name="about_other_desc">Автор иконок: Али Гамидов (ali.gamidov@mail.ru)</string>
         
     <string-array name="ks_type_variants">
         <item>Всегда</item>
@@ -148,12 +167,12 @@
 
 <!-- Names for keyboards designs -->
 	<string name="kbd_design_standard">Стандартный</string>    
-	<string name="kbd_design_iphone">iPhone</string>
+	<string name="kbd_design_iphone">Псевдо iPhone</string>
 	<string name="kbd_design_ukraine">Зроблено в Україні</string>
 	<string name="kbd_design_chokolate">Шоколад</string>
-	<string name="kbd_design_rgb">RGB</string>
 	<string name="kbd_design_ussr">Рождённый в СССР</string>
-        
+	<string name="kbd_design_htc">Псевдо HTC</string>
+	    
 <!-- Names for some keys -->    
     <string name="k_search">Поиск</string>
     <string name="k_back">Назад</string>

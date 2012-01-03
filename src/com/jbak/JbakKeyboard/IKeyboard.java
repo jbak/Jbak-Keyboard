@@ -45,9 +45,8 @@ public class IKeyboard
 /** Большой отступ, {@link KeyDrw#BIG_GAP} */    
     public static final int DF_BIG_GAP = 0x0002;
 
-    public static final int DEF_COLOR = 123;
+    public static final int DEF_COLOR = GradBack.DEFAULT_COLOR;
     public static final int KBD_DESIGN_STANDARD = 0;
-    public static final int KBD_DESIGN_IPHONE = 1;
     public static KbdDesign[] arDesign=
     {
         // Стандартный дизайн 
@@ -58,10 +57,13 @@ public class IKeyboard
                       0),
         // iPhone
         new KbdDesign(R.string.kbd_design_iphone, 
-                      R.drawable.iphone_btn_keyboard_key, 
+                      0, 
                       Color.BLACK,
-                      R.drawable.iphone_background,
-                      DF_BOLD|DF_BIG_GAP),
+                      0,
+                      DF_BOLD|DF_BIG_GAP)
+                    .setKeysBackground(newIPhoneKey())
+                    .setKbdBackground(new GradBack(0xff9199a3,0xff444e5c).setCorners(0, 0).setGap(0))
+                    ,
         // Украина
       new KbdDesign(R.string.kbd_design_ukraine, 
               		0, 
@@ -80,15 +82,7 @@ public class IKeyboard
               .setKeysBackground(new GradBack(0xff75412b, 0xffc16643).setGradType(GradBack.GRADIENT_TYPE_SWEEP))
               .setKbdBackground(new GradBack(0xff400000, GradBack.DEFAULT_COLOR).setGap(0).setCorners(0, 0))
                   ,
-      // RGB
-      new KbdDesign(R.string.kbd_design_rgb, 
-                    0, 
-                    Color.RED,
-                    0,
-                    DF_BOLD)
-            .setKeysBackground(new GradBack(0xff00ff00, 0xff008800).setGradType(GradBack.GRADIENT_TYPE_SWEEP))
-            .setKbdBackground(new GradBack(0xff000088, 0xff0000ff).setGap(0).setCorners(0, 0))
-                ,
+      newHTCDesign(),
         // Рожденный в СССР    	
       new KbdDesign(R.string.kbd_design_ussr, 
                 0, 
@@ -121,6 +115,11 @@ public class IKeyboard
         	m_kbdBackground = bg;
         	return this;
         }
+        KbdDesign setFuncKeysDesign(KbdDesign fc)
+        {
+            m_kbdFuncKeys = fc;
+            return this;
+        }
 /** Id drawable-ресурса для рисования кнопок */     
         public int drawResId;
 /** Id ресурса названия клавиатуры*/        
@@ -131,8 +130,30 @@ public class IKeyboard
         public int backDrawableRes;
 /** Флаги*/        
         public int flags=0;
+        String name = null;
         GradBack m_keyBackground=null;
         GradBack m_kbdBackground=null;
+        KbdDesign m_kbdFuncKeys =null;
+    }
+    static GradBack newIPhoneKey()
+    {
+        //new GradBack(Color.WHITE, 0xffE1E1E1).setGap(6).setShadowColor(GradBack.DEFAULT_COLOR).setAbrisColor(0xff848a95)
+        GradBack stroke = new GradBack(0xff8c929a,0xff2c2f32).setGap(4);
+        return new GradBack(Color.WHITE, 0xffC1C1C1)
+            .setGap(6).setShadowColor(GradBack.DEFAULT_COLOR)
+            .setStroke(stroke);
+    }
+    static KbdDesign newHTCDesign()
+    {
+        return new KbdDesign(R.string.kbd_design_htc, 0, 0xff000000, 0, 0)
+                    .setKeysBackground(new GradBack(0xfff8f8f8, 0xffd8d4d8).setGap(3)
+                        .setStroke(new GradBack(0xff605960,0xff101418).setGap(2)))
+                    .setKbdBackground(new GradBack(0xffbdbebd, 0xff706e70).setCorners(0, 0).setGap(0))
+                    .setFuncKeysDesign(new KbdDesign(0, 0, Color.WHITE, 0, 0)
+                        .setKeysBackground(
+                                new GradBack(0xff686868,0xff404040).setGap(3)
+                                .setStroke(new GradBack(0xff605960,0xff101418).setGap(2))
+                                ));
     }
     
 //*****************************************************************    

@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.graphics.Shader;
@@ -42,6 +44,12 @@ public class GradBack extends RectShape
 	boolean m_bDrawPressedBack = true;
 /** Тип градиента, одна из констант GRADIENT_TYPE */	
 	int m_gradType = GRADIENT_TYPE_LINEAR;
+    int shadowColor = Color.RED;
+/** Фон обводки. Если не null - рисуется под основным фоном, и в этом случае будет рисоваться его тень*/    
+    GradBack m_stroke=null;
+/** Толщина обводки*/    
+    int m_strokeSize=1;
+    int abrisColor = DEFAULT_COLOR;
 /** Пустой конструктор*/	
 	public GradBack()
 	{
@@ -120,7 +128,7 @@ public class GradBack extends RectShape
 		return new ShapeDrawable(this);
 	}
 /** Возвращает объект {@link CustomButtonDrawable}, который содержит текущий объект*/   
-	public CustomButtonDrawable getButtonDrawable()
+	public CustomButtonDrawable getStateDrawable()
 	{
 		return new CustomButtonDrawable(this);
 	}
@@ -140,7 +148,8 @@ public class GradBack extends RectShape
             pt.setShader(new LinearGradient(0, 0, 0, height, m_clrStart, m_clrEnd, TileMode.CLAMP));
         }
         pt.setStyle(Style.FILL);
-        pt.setShadowLayer(2, 2, 2, Color.RED);
+        if(shadowColor!=DEFAULT_COLOR&&m_stroke==null)
+            pt.setShadowLayer(2, 2, 2, shadowColor);
         return pt;
 	}
 /** Действия по установке размеров текущего объекта */	
@@ -148,6 +157,8 @@ public class GradBack extends RectShape
 	protected void onResize(float width, float height) 
 	{
         m_ptFill = makeBackground(width, height);
+        if(m_stroke!=null)
+            m_stroke.onResize(width, height);
 		super.onResize(width, height);
         m_rect.set(m_gap, m_gap, width-m_gap, height-m_gap);
 	};
@@ -155,9 +166,13 @@ public class GradBack extends RectShape
 	@Override
 	public void draw(Canvas canvas, Paint paint)
 	{
+	    if(m_stroke!=null)
+	    {
+	        m_stroke.draw(canvas, paint);
+	    }
 		canvas.drawRoundRect(m_rect, m_cornerX, m_cornerY, m_ptFill);
-		if(m_bDrawPressedBack&&hasState(android.R.attr.state_pressed))
-			canvas.drawRoundRect(m_rect, m_cornerX, m_cornerY, m_ptFillPressed);
+//		if(m_bDrawPressedBack&&hasState(android.R.attr.state_pressed))
+//			canvas.drawRoundRect(m_rect, m_cornerX, m_cornerY, m_ptFillPressed);
 		
 		boolean bChecked = hasState(android.R.attr.state_checked);
 		boolean bCheckable = hasState(android.R.attr.state_checkable);
@@ -177,13 +192,45 @@ public class GradBack extends RectShape
 /** Обработчик изменения состояния */	
 	public void changeState(int []states)
 	{
-		m_states = states;
+	    boolean bPress = hasState(android.R.attr.state_pressed);
+		m_states = new int[states.length];
+		System.arraycopy(states, 0, m_states, 0, states.length);
+		if(m_ptFill!=null)
+		{
+		    if(hasState(android.R.attr.state_pressed))
+		        m_ptFill.setColorFilter(new PorterDuffColorFilter(0xff888888, PorterDuff.Mode.MULTIPLY));
+		    else if(bPress)
+		        m_ptFill.setColorFilter(null);
+		}
+		    
 	}
+    public GradBack setShadowColor(int shadow)
+    {
+        shadowColor = shadow;
+        return this;
+    }
+    public GradBack setAbrisColor(int color)
+    {
+        abrisColor = color;
+        return this;
+    }
+/** Устанавливает обводку stroke, в виде еще одного объекта {@link GradBack}
+ * Необходимо правильно задать отступ (gap) для нового объекта, с учетом того, что сверху будет нарисован текущий объект
+*@param stroke Объект для рисования обводки 
+*@return Текущий объект
+ */
+    public GradBack setStroke(GradBack stroke)
+    {
+        m_stroke = stroke;
+        return this;
+    }
 /** Проверяет наличие статуса s в массиве текущих статусов 
 *@param s Проверяемый статус, одна из констант <b>android.R.attr.state_</b>
 *@return true - статус есть, false - нет */
 	public boolean hasState(int s)
 	{
+	    if(m_states==null)
+	        return false;
 		for(int stat:m_states)
 		{
 			if(stat==s)

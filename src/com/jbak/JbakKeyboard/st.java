@@ -18,7 +18,7 @@ import android.widget.Toast;
 /** Класс содержит полезные статические переменные */
 public class st extends IKeyboard implements IKbdSettings
 {
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 //--------------------------------------------------------------------------
     /** Универсальный обсервер. Содержит 2 параметра m_param1 и m_param2, которые вызываются и меняются в зависимости от контекста*/
     public static abstract class UniObserver
@@ -44,7 +44,7 @@ public class st extends IKeyboard implements IKbdSettings
     }
     public static Drawable getBack()
     {
-        return new GradBack(0xff000088, 0xff008800).setCorners(0, 0).setGap(0).setDrawPressedBackground(false).getButtonDrawable();
+        return new GradBack(0xff000088, 0xff008800).setCorners(0, 0).setGap(0).setDrawPressedBackground(false).getStateDrawable();
     }
     /** Эквивалент вызова (val&flag)>0*/        
     public static final boolean has(int val,int flag)
@@ -227,7 +227,7 @@ public class st extends IKeyboard implements IKbdSettings
     {
         JbKbd kb = curKbd();
         Keybrd k = kbdForLangName(arLangs[LANG_EN].name);
-        if(kb!=null)
+        if(kb!=null&&kb.resId==k.resId)
             return;
         JbKbdView.inst.setKeyboard(new JbKbd(st.c(),k.resId));
     }
@@ -291,7 +291,7 @@ public class st extends IKeyboard implements IKbdSettings
             
             c.startActivity(
                     new Intent(Intent.ACTION_VIEW)
-                        .setComponent(new ComponentName(st.c(),cls))
+                        .setComponent(new ComponentName(c,cls))
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP)
             );
         }
@@ -372,6 +372,16 @@ public class st extends IKeyboard implements IKbdSettings
     }
     static final SharedPreferences pref()
     {
-        return PreferenceManager.getDefaultSharedPreferences(c());
+        return pref(c());
+    }
+    static final SharedPreferences pref(Context c)
+    {
+        return PreferenceManager.getDefaultSharedPreferences(c);
+    }
+    static final KeyboardPaints paint()
+    {
+        if(KeyboardPaints.inst==null)
+            return new KeyboardPaints();
+        return KeyboardPaints.inst;
     }
 }

@@ -25,7 +25,7 @@
 />  
 <Button
   style="@style/img_button"
-  android:drawableTop="@drawable/add"
+  android:drawableTop="@drawable/tpl_add"
   android:id="@+id/but_new_template"	
   android:text="@string/tpl_new_template"
 />

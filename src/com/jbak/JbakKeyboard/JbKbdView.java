@@ -19,13 +19,9 @@ package com.jbak.JbakKeyboard;
 import java.lang.reflect.Field;
 
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.inputmethodservice.Keyboard;
@@ -34,12 +30,11 @@ import android.inputmethodservice.KeyboardView;
 import android.preference.PreferenceManager;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.HapticFeedbackConstants;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.jbak.CustomGraphics.CustomButtonDrawable;
+import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
@@ -52,10 +47,8 @@ public class JbKbdView extends KeyboardView {
     static JbKbdView inst;
     /** Высота клавиш */    
     int m_KeyHeight =0;
-    Paint m_tpMainKey;
-    Paint m_tpSmallKey;
-    Paint m_tpLabel;
     StateListDrawable m_KeyBackDrw;
+    StateListDrawable m_KeyBackSecondDrw;
     Drawable m_drwKeyBack;
     Drawable m_drwKeyPress;
     TextPaint m_tpPreview;
@@ -106,9 +99,16 @@ public class JbKbdView extends KeyboardView {
     void init()
     {
         inst = this;
-    	m_curDesign = st.arDesign[st.pref().getInt(st.PREF_KEY_KBD_SKIN, st.KBD_DESIGN_STANDARD)];
+        int index = st.pref().getInt(st.PREF_KEY_KBD_SKIN, st.KBD_DESIGN_STANDARD);
+        if(index<0||index>=st.arDesign.length||st.arDesign[index]==null)
+        {
+            index = 0;
+            st.pref().edit().putInt(st.PREF_KEY_KBD_SKIN, 0).commit();
+        }
+    	m_curDesign = st.arDesign[index];
+    	
         setPreferences();
-        int clr = 12345;
+        int clr = Color.WHITE;
         Field[] af = KeyboardView.class.getDeclaredFields();
         String txtClr="mKeyTextColor";  
         String txtSz = "mKeyTextSize";  
@@ -125,13 +125,19 @@ public class JbKbdView extends KeyboardView {
         if(m_curDesign.drawResId!=0)
             m_KeyBackDrw = (StateListDrawable)getResources().getDrawable(m_curDesign.drawResId);
         if(m_curDesign.m_keyBackground!=null)
-        	m_KeyBackDrw = m_curDesign.m_keyBackground.getButtonDrawable(); 
-        if(m_curDesign.textColor!=st.DEF_COLOR)
-            clr = m_curDesign.textColor;
+        	m_KeyBackDrw = m_curDesign.m_keyBackground.getStateDrawable(); 
+        if(m_curDesign.m_kbdFuncKeys!=null&&m_curDesign.m_kbdFuncKeys.m_keyBackground!=null)
+        {
+            m_KeyBackSecondDrw = m_curDesign.m_kbdFuncKeys.m_keyBackground.getStateDrawable();
+            if(m_KeyBackDrw instanceof CustomButtonDrawable)
+            {
+                ((CustomButtonDrawable)m_KeyBackDrw).setDependentDrawable(m_KeyBackSecondDrw);
+            }
+        }
         if(m_curDesign.backDrawableRes!=0)
             setBackgroundResource(m_curDesign.backDrawableRes);
         if(m_curDesign.m_kbdBackground!=null)
-        	setBackgroundDrawable(m_curDesign.m_kbdBackground.getButtonDrawable());
+        	setBackgroundDrawable(m_curDesign.m_kbdBackground.getStateDrawable());
         for(int i=0;i<af.length;i++)
         {
             Field f = af[i];
@@ -148,11 +154,6 @@ public class JbKbdView extends KeyboardView {
               try{
                   f.setAccessible(true);
                   clr = f.getInt(this);
-                  if(m_curDesign.textColor!=st.DEF_COLOR)
-                  {
-                    f.setInt(this, m_curDesign.textColor);
-                    clr = m_curDesign.textColor;
-                  }
                 }
                 catch(Throwable e)
                 {
@@ -217,36 +218,19 @@ public class JbKbdView extends KeyboardView {
             // Возвращаем всё на место
             m_KeyBackDrw.setState(stat);
         }
-        
-        m_tpMainKey = new TextPaint();
-        m_tpMainKey.setAntiAlias(true);
-        m_tpMainKey.setDither(true);
-        m_tpMainKey.setColor(clr);
-//      m_tpMainKey.setTextAlign(Align.LEFT);
-        m_tpMainKey.setTextSize(m_KeyTextSz); //sz=22
-        m_tpSmallKey = new TextPaint(m_tpMainKey);
-        m_tpSmallKey.setTextSize(m_KeyTextSz/2);
-        m_tpLabel = new TextPaint(m_tpMainKey);
-        m_tpLabel.setTextSize(m_LabelTextSize);
-        int style = Typeface.NORMAL;
-        if(st.has(m_curDesign.flags,st.DF_BOLD))
-        {
-          style = Typeface.BOLD;
-        }
-        m_tpLabel.setTypeface(Typeface.create(m_tpMainKey.getTypeface(), style));
-        m_tpMainKey.setTypeface(Typeface.create(m_tpMainKey.getTypeface(), style));
-        
+        st.paint().setDefault(m_KeyTextSz, m_LabelTextSize, m_curDesign, clr);
+        st.paint().createFromSettings();
         if(m_tpPreview==null)
         {
-            m_tpPreview = new TextPaint(m_tpMainKey);
+            m_tpPreview = new TextPaint(st.paint().main);
         }
         m_tpPreview.setTextSize(m_PreviewTextSize);
     }
 
     @Override
     protected boolean onLongPress(Key key) {
-        if(st.has(m_state, STATE_VIBRO_LONG))
-            performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+        if(ServiceJbKbd.inst!=null)
+            ServiceJbKbd.inst.onLongPress(key);
         if(key.codes[0] == Keyboard.KEYCODE_MODE_CHANGE)
         {
             ServiceJbKbd.inst.onOptions();
@@ -287,21 +271,40 @@ public class JbKbdView extends KeyboardView {
         int rid = getCurKeyboard().resId;
         if(st.kbdForId(rid)!=null)
         {
-            if(st.has(m_state, STATE_TEMP_SHIFT))
+            String s = st.pref().getString(st.PREF_KEY_SHIFT_STATE, "0");
+            int v = Integer.decode(s);
+            if(v>0)
             {
-                m_state = st.rem(m_state, STATE_TEMP_SHIFT);
-                m_state|=STATE_CAPS_LOCK;
-            }
-            else if(st.has(m_state, STATE_CAPS_LOCK))
-            {
-                m_state = st.rem(m_state, STATE_CAPS_LOCK);
+                if(isUpperCase())
+                {
+                    m_state = st.rem(m_state, STATE_CAPS_LOCK);
+                    m_state = st.rem(m_state, STATE_TEMP_SHIFT);
+                }
+                else
+                {
+                    m_state|=v==1?STATE_TEMP_SHIFT:STATE_CAPS_LOCK;
+                }
+                if(v==1)invalidateAllKeys();
             }
             else
             {
-                JbKbdView.inst.m_state|=JbKbdView.STATE_TEMP_SHIFT;
+                if(st.has(m_state, STATE_TEMP_SHIFT))
+                {
+                    m_state = st.rem(m_state, STATE_TEMP_SHIFT);
+                    m_state|=STATE_CAPS_LOCK;
+                }
+                else if(st.has(m_state, STATE_CAPS_LOCK))
+                {
+                    m_state = st.rem(m_state, STATE_CAPS_LOCK);
+                }
+                else
+                {
+                    JbKbdView.inst.m_state|=JbKbdView.STATE_TEMP_SHIFT;
+                    invalidateAllKeys();
+                }
             }
             setShifted(st.has(m_state,STATE_CAPS_LOCK));
-            invalidateAllKeys();
+//            invalidateAllKeys();
         }
         else
         {
@@ -316,6 +319,9 @@ public class JbKbdView extends KeyboardView {
             return false;
         return bCaps||bts;
     }
+    EditSet m_esMainFont;
+    EditSet m_esSecondFont;
+    EditSet m_esLabelFont;
 /** Выставляет настройки клавиатуры из {@link SharedPreferences}*/  
     void setPreferences()
     {

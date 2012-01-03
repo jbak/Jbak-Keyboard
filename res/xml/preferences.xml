@@ -1,141 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
-  <!-- 0 - предпросмотр -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- 0 - предпросмотр -->
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="ch_preview"
+        android:summary="@string/set_ch_keys_preview_desc"
+        android:title="@string/set_ch_keys_preview" />
+    <!-- 1 - высота клавиш, портрет -->
+
+    <Preference
+        android:key="pref_port_key_height"
+        android:summary="@string/set_key_height_portrait_desc"
+        android:title="@string/set_key_height_portrait" />
+    <!-- 2 - высота клавиш, ландшафт -->
+
+    <Preference
+        android:key="pref_land_key_height"
+        android:summary="@string/set_key_height_landscape_desc"
+        android:title="@string/set_key_height_landscape" />
+    <!-- 3 - языки -->
+
+    <Preference
+        android:key="pref_languages"
+        android:summary="@string/set_languages_desc"
+        android:title="@string/set_languages" />
+    <!-- 4 - вибра -->
+
+    <PreferenceScreen
+        android:summary="@string/set_key_voice_desc"
+        android:title="@string/set_key_voice" >
+
         <CheckBoxPreference
-        	android:key="ch_preview"
-        	android:title="@string/set_ch_keys_preview"
-        	android:summary="@string/set_ch_keys_preview_desc"
-        	android:defaultValue="true"
-        />       
-  <!-- 1 - высота клавиш, портрет -->
-        <Preference 
-       	android:title="@string/set_key_height_portrait"
-       	android:summary="@string/set_key_height_portrait_desc"
-       	/>
-  <!-- 2 - высота клавиш, ландшафт -->
-        <Preference 
-       	android:title="@string/set_key_height_landscape"
-       	android:summary="@string/set_key_height_landscape_desc"
-       	/>
-  <!-- 3 - языки -->
-        <Preference 
-       	android:title="@string/set_languages"
-       	android:summary="@string/set_languages_desc"
-       	/>
-  <!-- 4 - вибра -->
-        <PreferenceScreen
-       	android:title="@string/set_key_voice" 
-       	android:summary="@string/set_key_voice_desc"
-       >
-	         <CheckBoxPreference
-	         	android:key="sound"
-	         	android:title="@string/set_key_sounds"
-	         	android:summary="@string/set_key_sounds_desc"
-	         	android:defaultValue="false"
-	         />       
+            android:defaultValue="false"
+            android:key="sound"
+            android:summary="@string/set_key_sounds_desc"
+            android:title="@string/set_key_sounds" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="vs"
+            android:summary="@string/set_key_short_vibro_desc"
+            android:title="@string/set_key_short_vibro" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="vl"
+            android:summary="@string/set_key_long_vibro_desc"
+            android:title="@string/set_key_long_vibro" />
+    </PreferenceScreen>
+    <!-- 6 - Автоввод -->
+
+    <PreferenceScreen
+        android:summary="@string/set_key_other_desc"
+        android:title="@string/set_key_other" >
+
+        <PreferenceCategory android:title="@string/set_key_register" >
+
             <CheckBoxPreference
-         	android:key="vs"
-         	android:title="@string/set_key_short_vibro"
-         	android:summary="@string/set_key_short_vibro_desc"
-         	android:defaultValue="false"
-         />       
-         <CheckBoxPreference
-         	android:key="vl"
-         	android:title="@string/set_key_long_vibro"
-         	android:summary="@string/set_key_long_vibro_desc"
-         	android:defaultValue="false"
-         />       
-         </PreferenceScreen>	
-     <!-- 5 - настройки скинов -->
+                android:defaultValue="false"
+                android:key="up_empty"
+                android:summary="@string/set_key_empty_uppercase_desc"
+                android:title="@string/set_key_empty_uppercase" />
+
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="up_sentence"
+                android:summary="@string/set_key_sentence_upper_desc"
+                android:title="@string/set_key_sentence_upper" />
+
+            <EditTextPreference
+                android:defaultValue=".!?"
+                android:key="sentence_ends"
+                android:summary="@string/set_key_sentence_ends_desc"
+                android:title="@string/set_key_sentence_ends" />
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="@string/set_key_spaces" >
+
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="space_sentence"
+                android:summary="@string/set_key_space_sentence_end_desc"
+                android:title="@string/set_key_space_sentence_end" />
+
+            <EditTextPreference
+                android:defaultValue=".,!?"
+                android:key="space_symbols"
+                android:summary="@string/set_key_space_symbols_desc"
+                android:title="@string/set_key_space_symbols" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="@string/set_key_appearance" 
+        android:summary="@string/set_key_appearance_desc" 
+        >
+
+        <!-- настройки скинов -->
         <Preference
-	     	android:title="@string/set_key_skins" 
-	     	android:summary="@string/set_key_skins_desc"
-        />	
-     <!-- 6 - Автоввод -->
+            android:key="set_skins"
+            android:summary="@string/set_key_skins_desc"
+            android:title="@string/set_key_skins" />
+
+        <!-- Шрифты -->
         <PreferenceScreen
-	       	android:title="@string/set_key_other" 
-	       	android:summary="@string/set_key_other_desc"
-       	>
-         <PreferenceCategory 
-             android:title="@string/set_key_register"
-             >
-         <CheckBoxPreference
-	       	android:title="@string/set_key_empty_uppercase" 
-	       	android:summary="@string/set_key_empty_uppercase_desc"
-	       	android:key="up_empty"
-	       	android:defaultValue="false"
-	       	/>
-            <CheckBoxPreference
-	       	android:title="@string/set_key_sentence_upper" 
-	       	android:summary="@string/set_key_sentence_upper_desc"
-	       	android:key="up_sentence"
-	       	android:defaultValue="false"
-	       	/>
-         <EditTextPreference
-	       	android:title="@string/set_key_sentence_ends" 
-	       	android:summary="@string/set_key_sentence_ends_desc"
-	       	android:key="sentence_ends"
-	       	android:defaultValue=".!?"
-	       	/>
-         </PreferenceCategory>
-         <PreferenceCategory 
-             android:title="@string/set_key_spaces"
-             >
-             <CheckBoxPreference
-	       	android:title="@string/set_key_space_sentence_end" 
-	       	android:summary="@string/set_key_space_sentence_end_desc"
-	       	android:key="space_sentence"
-	       	android:defaultValue="false"
-	       	/>
-         <EditTextPreference
-	       	android:title="@string/set_key_space_symbols" 
-	       	android:summary="@string/set_key_space_symbols_desc"
-	       	android:key="space_symbols"
-	       	android:defaultValue=".,!?"
-	       	/>
-         </PreferenceCategory>
-         </PreferenceScreen>
-            <!-- 7 - редактор в ландшафте -->
-       <PreferenceScreen
-     	android:title="@string/set_key_landscape_input" 
-     	android:summary="@string/set_key_landscape_input_desc"
-       >
-         <!-- Тип редактора в портрете -->
-         <ListPreference
-            android:key="portrait_type"
-	     	android:title="@string/set_key_portrait_input_type" 
-	     	android:summary="@string/set_key_portrait_input_type_desc" 
-	     	android:defaultValue="0"
-	        android:entries="@array/array_input_type"
-	        android:entryValues="@array/integer_vals"
-         />
-         <!-- Тип редактора в ландшафте -->
-         <ListPreference
-            android:key="landscape_type"
-	     	android:title="@string/set_key_landscape_input_type"
-	     	android:summary="@string/set_key_landscape_input_type_desc" 
-	     	android:defaultValue="0"
-	        android:entries="@array/array_input_type"
-	        android:entryValues="@array/integer_vals"
-         />
-         <!-- Настройка внешнего вида редактора -->
-         <Preference
-           android:key="fs_editor_set"  
-           android:title="@string/set_key_landscape_input_settings" 
-           android:summary="@string/set_key_landscape_input_settings_desc" 
-           />
-       </PreferenceScreen>
-       <!-- 8 - настройки клавиш -->
-       <Preference
+            android:summary="@string/set_key_fonts_desc"
+            android:title="@string/set_key_fonts" >
+
+            <Preference
+                android:key="set_key_main_font"
+                android:summary="@string/set_key_font_first_desc"
+                android:title="@string/set_key_font_first" />
+
+            <Preference
+                android:key="set_key_second_font"
+                android:summary="@string/set_key_font_second_desc"
+                android:title="@string/set_key_font_second" />
+
+            <Preference
+                android:key="set_key_label_font"
+                android:summary="@string/set_key_font_label_desc"
+                android:title="@string/set_key_font_label" />
+        </PreferenceScreen>
+        <!-- 7 - полноэкранный редактор -->
+
+        <PreferenceScreen
+            android:summary="@string/set_key_landscape_input_desc"
+            android:title="@string/set_key_landscape_input" >
+
+            <!-- Тип редактора в портрете -->
+
+            <ListPreference
+                android:defaultValue="0"
+                android:entries="@array/array_input_type"
+                android:entryValues="@array/integer_vals"
+                android:key="portrait_type"
+                android:summary="@string/set_key_portrait_input_type_desc"
+                android:title="@string/set_key_portrait_input_type" />
+            <!-- Тип редактора в ландшафте -->
+
+            <ListPreference
+                android:defaultValue="0"
+                android:entries="@array/array_input_type"
+                android:entryValues="@array/integer_vals"
+                android:key="landscape_type"
+                android:summary="@string/set_key_landscape_input_type_desc"
+                android:title="@string/set_key_landscape_input_type" />
+            <!-- Настройка внешнего вида редактора -->
+
+            <Preference
+                android:key="fs_editor_set"
+                android:summary="@string/set_key_landscape_input_settings_desc"
+                android:title="@string/set_key_landscape_input_settings" />
+        </PreferenceScreen>
+    </PreferenceScreen>
+    <!-- настройки клавиш -->
+
+    <Preference
         android:key="custom_key_settings"
-     	android:title="@string/set_keys" 
-     	android:summary="@string/set_keys_desc"
-       />	
-           	
-       <!-- 9 - о программе -->
-       <Preference
+        android:summary="@string/set_keys_desc"
+        android:title="@string/set_keys" />
+    <!-- прочие настройки -->
+
+    <PreferenceScreen
+        android:summary="@string/set_key_misc_desc"
+        android:title="@string/set_key_misc" >
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/array_shift_vars"
+            android:entryValues="@array/integer_vals"
+            android:key="shift_state"
+            android:title="@string/set_key_shift" />
+    </PreferenceScreen>
+
+    <!-- 9 - о программе -->
+
+    <Preference
         android:key="about_app"
-     	android:title="@string/about" 
-       />	
+        android:title="@string/about" />
+
 </PreferenceScreen>

@@ -55,7 +55,10 @@ public class SetKbdActivity extends Activity
         	m_curKbd= st.pref().getInt(st.PREF_KEY_KBD_SKIN, 0);
             m_MainView.findViewById(R.id.key_height).setVisibility(View.INVISIBLE);
             m_MainView.findViewById(R.id.select_kbd).setVisibility(View.VISIBLE);
-            ((TextView)m_MainView.findViewById(R.id.keyboard_name)).setText(st.arDesign[m_curKbd].nameResId);
+            String name = st.arDesign[m_curKbd].name;
+            if(name==null)
+                name = getString(st.arDesign[m_curKbd].nameResId);
+            ((TextView)m_MainView.findViewById(R.id.keyboard_name)).setText(name);
             m_kbd.setKeyboard(new JbKbd(st.c(),st.getCurQwertyRes()));
         }
         else if(m_curAction==st.SET_SELECT_KEYBOARD)

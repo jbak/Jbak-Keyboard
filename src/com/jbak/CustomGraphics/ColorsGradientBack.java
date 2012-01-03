@@ -53,7 +53,7 @@ public class ColorsGradientBack extends GradBack
             m_refresh = new Handler();
             m_view = v;
             m_back = back;
-            m_drw = back.getButtonDrawable();
+            m_drw = back.getStateDrawable();
             m_view.setBackgroundDrawable(m_drw);
             tm = new Timer();
             tm.schedule(new TimerTask()

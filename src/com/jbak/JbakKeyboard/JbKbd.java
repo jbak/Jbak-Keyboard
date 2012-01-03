@@ -103,6 +103,10 @@ public class JbKbd extends Keyboard {
                 break;
         }
         mEnterKey.m_kd = new KeyDrw(mEnterKey);
+        if(st.kv().m_curDesign.m_kbdFuncKeys!=null)
+        {
+            mEnterKey.m_kd.setFuncKey(st.kv().m_KeyBackSecondDrw);
+        }
         mEnterKey.icon = mEnterKey.m_kd.getDrawable();
         mEnterKey.label = null;
     }
@@ -130,6 +134,10 @@ public class JbKbd extends Keyboard {
                 height = JbKbdView.inst.m_KeyHeight;
             }
             m_kd = new KeyDrw(this);
+            if(isFuncKey()&&st.kv().m_curDesign.m_kbdFuncKeys!=null)
+            {
+                m_kd.setFuncKey(st.kv().m_KeyBackSecondDrw);
+            }
             icon = m_kd.getDrawable();
             label = null;
             iconPreview = icon;
@@ -141,6 +149,12 @@ public class JbKbd extends Keyboard {
         public final String getUpText()
         {
             return m_kd.txtSmall;
+        }
+        boolean isFuncKey()
+        {
+            if(codes==null)return false;
+            int c = codes[0];
+            return c<0||c==10;
         }
         KeyDrw m_kd;
     }    

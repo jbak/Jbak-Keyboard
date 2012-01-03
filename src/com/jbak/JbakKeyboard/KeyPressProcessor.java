@@ -91,8 +91,8 @@ public class KeyPressProcessor
         if(m_ksLong!=null)
         {
             try{
-            m_vibro.vibrate(25);
-            m_ksLong.run();
+                m_vibro.vibrate(25);
+                m_ksLong.run();
             }catch (Throwable e) {
                 st.logEx(e);
             }

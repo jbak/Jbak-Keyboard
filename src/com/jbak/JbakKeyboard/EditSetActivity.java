@@ -1,23 +1,29 @@
 package com.jbak.JbakKeyboard;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.text.TextPaint;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Spinner;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.SpinnerAdapter;
+import android.widget.Spinner;
 
 public class EditSetActivity extends Activity
 {
     public static EditSetActivity inst;
+    public static final String EXTRA_PREF_KEY = "pref_key";
+    public static final String EXTRA_DEFAULT_EDIT_SET = "def_edit_set";
     EditText m_edit;
     EditSet m_es = new EditSet();
+    String m_prefKey;
+    String m_defaultEditSet;
     float m_defaultFontSize;
     OnCheckedChangeListener m_onCheckChange = new OnCheckedChangeListener()
     {
@@ -84,8 +90,13 @@ public class EditSetActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         inst = this;
+        m_prefKey = getIntent().getStringExtra(EXTRA_PREF_KEY);
+        if(m_prefKey==null)
+            m_prefKey = st.PREF_KEY_EDIT_SETTINGS;
         View v = getLayoutInflater().inflate(R.layout.edit_settings, null);
-        m_es.load();
+        m_defaultEditSet = getIntent().getStringExtra(EXTRA_DEFAULT_EDIT_SET);
+        if(!m_es.load(m_prefKey)&&m_defaultEditSet!=null)
+            m_es.fromString(m_defaultEditSet);
         m_edit = (EditText) v.findViewById(R.id.es_edit);
         m_defaultFontSize = m_edit.getTextSize();
         m_es.setToEditor(m_edit);
@@ -121,8 +132,12 @@ public class EditSetActivity extends Activity
     @Override
     protected void onDestroy() 
     {
-        m_es.save();
+        String s = m_es.toString();
+        SharedPreferences p = st.pref();
+        if(p.getString(m_prefKey, null)!=null||m_defaultEditSet!=null&&!s.equals(m_defaultEditSet))
+            m_es.save(p,m_prefKey);
         inst = null;
+        JbKbdView.inst = null;
         super.onDestroy();
     };
     public static class EditSet
@@ -154,21 +169,44 @@ public class EditSetActivity extends Activity
         }
         void setToEditor(EditText et)
         {
+            float dens = et.getPaint().density;
+            float df = et.getTextSize()/dens;
             et.setTypeface(typeface, style);
-            if(fontSize!=0)
-                et.setTextSize(fontSize);
+            et.setTextSize(fontSize!=0?fontSize/dens:df);
         }
-        void load()
+        TextPaint getTextPaint(boolean bOwnBoldAndItalic)
         {
-            fromString(st.pref().getString(st.PREF_KEY_EDIT_SETTINGS, ""));
+            TextPaint tp = new TextPaint();
+            tp.density = (float) 1.0;
+            tp.setDither(true);
+            tp.setAntiAlias(true);
+            if(bOwnBoldAndItalic)
+            {
+                if(st.has(style, Typeface.BOLD))
+                    tp.setFakeBoldText(true);
+                if(st.has(style, Typeface.ITALIC))
+                    tp.setTextSkewX((float) -0.25);
+            }
+            tp.setTypeface(Typeface.create(typeface, style));
+            if(fontSize!=0)
+                tp.setTextSize(fontSize);
+            return tp;
         }
-        void fromString(String s)
+        TextPaint getTextPaint()
+        {
+            return getTextPaint(false);
+        }
+        boolean load(String prefKey)
+        {
+            return fromString(st.pref().getString(prefKey, ""));
+        }
+        boolean fromString(String s)
         {
             if(s==null||s.indexOf(';')<0)
-                return;
+                return false;
             String ar[] = s.split(";");
             if(ar.length<3)
-                return;
+                return false;
             try
             {
                 typeface = intToTypeface(Integer.valueOf(ar[0]));
@@ -176,7 +214,10 @@ public class EditSetActivity extends Activity
                 fontSize = Integer.valueOf(ar[2]);
             }
             catch (Throwable e)
-            {}
+            {
+                return false;
+            }
+            return true;
         }
         public String toString()
         {
@@ -184,9 +225,9 @@ public class EditSetActivity extends Activity
                                        .append(style).append(';')
                                        .append(fontSize).toString();
         }
-        void save()
+        void save(SharedPreferences pref,String prefKey)
         {
-            st.pref().edit().putString(st.PREF_KEY_EDIT_SETTINGS,toString()) .commit();
+            pref.edit().putString(prefKey,toString()) .commit();
         }
     }
 }

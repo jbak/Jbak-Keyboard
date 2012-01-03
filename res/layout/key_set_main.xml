@@ -5,7 +5,7 @@
   android:layout_height="fill_parent">
 <Button
 	style="@style/img_button"	
-  android:drawableTop="@drawable/add"
+  android:drawableTop="@drawable/tpl_add"
   android:id="@+id/ks_add_key"	
   android:text="@string/tpl_new_template"
   android:layout_alignParentTop="true"

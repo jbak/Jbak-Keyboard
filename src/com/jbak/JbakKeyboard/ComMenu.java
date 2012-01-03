@@ -67,8 +67,9 @@ public class ComMenu
     View newView(MenuEntry ent)
     {
         Button btn = new Button(st.c());
-        setButtonKeyboardBackground(btn);
-        btn.setTextColor(st.kv().m_tpMainKey.getColor());
+        btn.setBackgroundDrawable(st.kv().m_KeyBackDrw);
+//        setButtonKeyboardBackground(btn);
+        btn.setTextColor(st.paint().mainColor);
         if(st.has(m_state, STAT_TEMPLATES))
         {
             btn.setLongClickable(true);
@@ -147,7 +148,7 @@ public class ComMenu
         inst = null;
         if(ServiceJbKbd.inst!=null)
         {
-            st.setQwertyKeyboard();
+            st.setQwertyKeyboard(true);
             ServiceJbKbd.inst.setInputView(st.kv());
         }
     }

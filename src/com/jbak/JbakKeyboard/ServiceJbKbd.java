@@ -27,7 +27,9 @@ import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
+import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
+import android.os.Vibrator;
 import android.view.Display;
 import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
@@ -52,45 +54,49 @@ import com.jbak.JbakKeyboard.Templates.CurInput;
  * out as appropriate. */
 public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnKeyboardActionListener, OnSharedPreferenceChangeListener
 {
-    Words                    m_words;
-    static final boolean     PROCESS_HARD_KEYS    = true;
-    public boolean           m_bComplete          = false;
-    public static final String PID = "a14ef033de91702";
-    private CandidateView    mCandidateView;
-    private CompletionInfo[] mCompletions;
-    private StringBuilder    mComposing           = new StringBuilder();
-    private boolean          mPredictionOn;
-    private boolean          mCompletionOn;
-    private long             mMetaState;
-    static ServiceJbKbd      inst;
-    String                   m_SentenceEnds       = "";
-    String                   m_SpaceSymbols       = "";
-    KeyPressProcessor        m_kp;
-    boolean                  m_bForceShow         = false;
-    int                      m_state              = 0;
-    int m_PortraitEditType = st.PREF_VAL_EDIT_TYPE_DEFAULT;
-    int m_LandscapeEditType = st.PREF_VAL_EDIT_TYPE_DEFAULT;
-/** Статус - предложения с большой буквы */    
-    public static final int  STATE_SENTENCE_UP    = 0x0000001;
-/** Статус - пробел после конца предложения */    
-    public static final int  STATE_SENTENCE_SPACE = 0x0000002;
-    /** Статус - верхний регистр в пустом поле */    
-    public static final int  STATE_EMPTY_UP     = 0x0000004;
-    EditSet m_es = new EditSet();
+    Words                      m_words;
+    static final boolean       PROCESS_HARD_KEYS    = true;
+    public boolean             m_bComplete          = false;
+    public static final String PID                  = "a14ef033de91702";
+    private CandidateView      mCandidateView;
+    private CompletionInfo[]   mCompletions;
+    private StringBuilder      mComposing           = new StringBuilder();
+    private boolean            mPredictionOn;
+    private boolean            mCompletionOn;
+    private long               mMetaState;
+    static ServiceJbKbd        inst;
+    String                     m_SentenceEnds       = "";
+    String                     m_SpaceSymbols       = "";
+    KeyPressProcessor          m_kp;
+    boolean                    m_bForceShow         = false;
+    int                        m_state              = 0;
+    int                        m_PortraitEditType   = st.PREF_VAL_EDIT_TYPE_DEFAULT;
+    int                        m_LandscapeEditType  = st.PREF_VAL_EDIT_TYPE_DEFAULT;
+    /** Вибратор для тактильной отдачи при нажатии и удержании клавиш */
+    VibroThread                m_vibro;
+    /** Статус - предложения с большой буквы */
+    public static final int    STATE_SENTENCE_UP    = 0x0000001;
+    /** Статус - пробел после конца предложения */
+    public static final int    STATE_SENTENCE_SPACE = 0x0000002;
+    /** Статус - верхний регистр в пустом поле */
+    public static final int    STATE_EMPTY_UP       = 0x0000004;
+    EditSet                    m_es                 = new EditSet();
+
     @Override
     public void onCreate()
     {
+        CustomKbdDesign.loadCustomSkins();
+        m_vibro = new VibroThread(this);
         m_words = new Words();
         startService(new Intent(this, ClipbrdService.class));
         inst = this;
         m_kp = new KeyPressProcessor();
-        //setTheme(R.style.fullscreen_input);
+        // setTheme(R.style.fullscreen_input);
         super.onCreate();
-        getWindow().getWindow().addFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN|
-                WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR);
-        SharedPreferences pref =st.pref();
-        m_es.load();
+
+        getWindow().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR);
+        SharedPreferences pref = st.pref();
+        m_es.load(st.PREF_KEY_EDIT_SETTINGS);
         pref.registerOnSharedPreferenceChangeListener(this);
         onSharedPreferenceChanged(pref, null);
     }
@@ -99,15 +105,17 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public void onDestroy()
     {
-        inst = null;
 //        JbKbdView.inst = null;
         st.pref().unregisterOnSharedPreferenceChangeListener(this);
+        inst = null;
         super.onDestroy();
     }
+
     boolean isLandscape()
     {
-        return getResources().getConfiguration().orientation!=Configuration.ORIENTATION_PORTRAIT;
+        return getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT;
     }
+
     /** Стартует ввод */
     @Override
     public View onCreateInputView()
@@ -135,7 +143,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
         m_SelStart = attribute.initialSelStart;
         m_SelEnd = attribute.initialSelEnd;
-        st.log("onStartInputView "+m_SelStart+" "+m_SelEnd);
+        st.log("onStartInputView " + m_SelStart + " " + m_SelEnd);
 //        getCurrentInputConnection().getExtractedText(new ExtractedTextRequest(), STATE_EMPTY_UP)
         setCandidatesViewShown(false);
         if (JbKbdView.inst == null)
@@ -165,8 +173,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             default:
                 mPredictionOn = m_bComplete;
                 mCompletionOn = m_bComplete;
-                if(st.has(attribute.inputType, EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) 
-                  || st.has(attribute.inputType, EditorInfo.TYPE_TEXT_VARIATION_URI) )
+                if ((attribute.inputType & EditorInfo.TYPE_MASK_VARIATION) == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS || (attribute.inputType & EditorInfo.TYPE_MASK_VARIATION) == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
                     st.setTempEnglishQwerty();
                 else
                     st.setQwertyKeyboard();
@@ -193,7 +200,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         st.log("onStartInput " + attribute.packageName);
         if (m_kp != null)
             m_kp.onStartInput();
-        if (attribute.initialSelStart < 0&&attribute.initialSelEnd<0)
+        if (attribute.initialSelStart < 0 && attribute.initialSelEnd < 0)
         {
             requestHideSelf(0);
         }
@@ -237,24 +244,24 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     int m_SelStart;
     int m_SelEnd;
     int m_CursorPos;
+
     boolean makeEmptyUppercase()
     {
-        boolean canMake = m_SelEnd==m_SelStart
-                            &&m_SelStart==0
-                            &&st.has(m_state, STATE_EMPTY_UP)
-                            &&canAutoInput()
-                            &&!st.kv().isUpperCase()
-                            &&getCurrentInputConnection().getTextAfterCursor(1, 0).length()==0;
-        if(canMake)
+        InputConnection ic = getCurrentInputConnection();
+        if (ic == null || st.kv() == null)
+            return false;
+        boolean canMake = m_SelEnd == m_SelStart && m_SelStart == 0 && st.has(m_state, STATE_EMPTY_UP) && canAutoInput() && !st.kv().isUpperCase() && ic.getTextAfterCursor(1, 0).length() == 0;
+        if (canMake)
             st.kv().handleShift();
         return canMake;
     }
+
     /** Изменение выделения в редакторе */
     @Override
     public void onUpdateSelection(int oldSelStart, int oldSelEnd, int newSelStart, int newSelEnd, int candidatesStart, int candidatesEnd)
     {
         super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd);
-        st.log("onUpdateSelection "+m_SelStart+" "+m_SelEnd);
+        st.log("onUpdateSelection " + m_SelStart + " " + m_SelEnd);
         m_SelStart = newSelStart;
         m_SelEnd = newSelEnd;
         if (m_SelStart == m_SelEnd)
@@ -395,12 +402,11 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             break;
         }
     }
-
-    // Implementation of KeyboardViewListener
-    public void onKey(int primaryCode, int[] keyCodes)
+    public final void onKey(int primaryCode)
     {
-        if (st.has(st.kv().m_state, JbKbdView.STATE_VIBRO_LONG))
-            st.kv().performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        if (st.has(st.kv().m_state, JbKbdView.STATE_VIBRO_SHORT))
+            m_vibro.vibro(false);
+        // st.kv().performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
         if (st.has(st.kv().m_state, JbKbdView.STATE_SOUNDS))
         {
             int sound = SoundEffectConstants.CLICK;
@@ -472,13 +478,18 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         }
         else
         {
-            handleCharacter(primaryCode, keyCodes);
+            handleCharacter(primaryCode);
         }
+    }
+    public void onKey(int primaryCode, int[] keyCodes)
+    {
+        onKey(primaryCode);
     }
     final boolean canAutoInput()
     {
         EditorInfo ei = getCurrentInputEditorInfo();
-        return ei != null && st.isQwertyKeyboard()&&!st.has(ei.inputType, EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) && !st.has(ei.inputType, EditorInfo.TYPE_TEXT_VARIATION_URI) && !st.has(ei.inputType, EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
+        int var = ei.inputType & EditorInfo.TYPE_MASK_VARIATION;
+        return ei != null && st.isQwertyKeyboard() && var != EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS && var != EditorInfo.TYPE_TEXT_VARIATION_URI && var != EditorInfo.TYPE_TEXT_VARIATION_PASSWORD && var != EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
     }
     private final void handleWordSeparator(int primaryCode)
     {
@@ -490,22 +501,21 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         sendKey(primaryCode);
         if (canAutoInput())
         {
-            if (st.has(m_state, STATE_SENTENCE_SPACE)&&m_SpaceSymbols.indexOf(primaryCode)>-1)
+            if (st.has(m_state, STATE_SENTENCE_SPACE) && m_SpaceSymbols.indexOf(primaryCode) > -1)
                 sendKeyChar(' ');
-            if (st.has(m_state, STATE_SENTENCE_UP) && !st.kv().isUpperCase()&&m_SentenceEnds.indexOf(primaryCode) > -1)
+            if (st.has(m_state, STATE_SENTENCE_UP) && !st.kv().isUpperCase() && m_SentenceEnds.indexOf(primaryCode) > -1)
                 st.kv().handleShift();
         }
-
     }
 
     public void onText(CharSequence text)
     {
-        if(text==null)
+        if (text == null)
             return;
-        if(text.length()==1)
+        if (text.length() == 1)
         {
-            int pc = (int)text.charAt(0);
-            if(isWordSeparator(pc))
+            int pc = (int) text.charAt(0);
+            if (isWordSeparator(pc))
             {
                 handleWordSeparator(pc);
                 return;
@@ -579,7 +589,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         }
     }
 
-    private void handleCharacter(int primaryCode, int[] keyCodes)
+    private void handleCharacter(int primaryCode)
     {
         InputConnection ic = getCurrentInputConnection();
         if (isInputViewShown())
@@ -592,7 +602,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         if (isAlphabet(primaryCode) && mPredictionOn)
         {
             mComposing.append((char) primaryCode);
-            getCurrentInputConnection().setComposingText(mComposing, 1);
+            ic.setComposingText(mComposing, 1);
             updateCandidates();
         }
         else
@@ -663,6 +673,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 
     public void onOptions()
     {
+        CustomKbdDesign.loadCustomSkins();
         ComMenu menu = new ComMenu();
         st.UniObserver onMenu = new st.UniObserver()
         {
@@ -672,7 +683,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
                 return 0;
             }
         };
-        
+
         menu.add(R.string.mm_templates, st.CMD_TPL);
         menu.add(R.string.mm_multiclipboard, st.CMD_CLIPBOARD);
         menu.add(R.string.mm_settings, st.CMD_PREFERENCES);
@@ -750,10 +761,10 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             case KeyEvent.KEYCODE_DPAD_UP: // Up
             case KeyEvent.KEYCODE_DPAD_DOWN: // Down
                 boolean sel = isSelMode();
-                if(sel)
-                     ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT));
+                if (sel)
+                    ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT));
                 keyDownUp(code);
-                if(sel)
+                if (sel)
                     ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT));
             break;
             case -305: // Home
@@ -841,23 +852,26 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
     {
-        if(st.PREF_KEY_EDIT_SETTINGS.equals(key))
+        if (st.PREF_KEY_EDIT_SETTINGS.equals(key))
         {
-            m_es.load();
-            if(m_extraText!=null)
+            m_es.load(st.PREF_KEY_EDIT_SETTINGS);
+            if (m_extraText != null)
             {
-                try{
+                try
+                {
                     m_es.setToEditor(m_extraText);
                 }
-                catch(Throwable e){}
+                catch (Throwable e)
+                {
+                }
             }
         }
-        if(st.PREF_KEY_SENTENCE_ENDS.equals(key)||key==null)
+        if (st.PREF_KEY_SENTENCE_ENDS.equals(key) || key == null)
             m_SentenceEnds = sharedPreferences.getString(st.PREF_KEY_SENTENCE_ENDS, "?!.");
-        if(st.PREF_KEY_ADD_SPACE_SYMBOLS.equals(key)||key==null)
+        if (st.PREF_KEY_ADD_SPACE_SYMBOLS.equals(key) || key == null)
             m_SpaceSymbols = sharedPreferences.getString(st.PREF_KEY_ADD_SPACE_SYMBOLS, ",?!.");
         m_LandscapeEditType = Integer.valueOf(sharedPreferences.getString(st.PREF_KEY_LANSCAPE_TYPE, "0"));
-        m_PortraitEditType= Integer.valueOf(sharedPreferences.getString(st.PREF_KEY_PORTRAIT_TYPE, "0"));
+        m_PortraitEditType = Integer.valueOf(sharedPreferences.getString(st.PREF_KEY_PORTRAIT_TYPE, "0"));
         if (sharedPreferences.getBoolean(st.PREF_KEY_SENTENCE_UPPERCASE, false))
             m_state |= STATE_SENTENCE_UP;
         else
@@ -873,39 +887,55 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         else
             m_state = st.rem(m_state, STATE_EMPTY_UP);
     }
+
     void onChangeKeyboard()
     {
         makeEmptyUppercase();
     }
+
     EditText m_extraText = null;
+
     @Override
     public View onCreateExtractTextView()
     {
         View v = super.onCreateExtractTextView();
-        if(v instanceof ViewGroup)
+        if (v instanceof ViewGroup)
         {
-            ViewGroup vg = (ViewGroup)v;
-            if(vg.getChildCount()>0)
+            ViewGroup vg = (ViewGroup) v;
+            if (vg.getChildCount() > 0)
             {
                 View ve = vg.getChildAt(0);
-                if(ve instanceof EditText)
+                if (ve instanceof EditText)
                 {
-                    m_extraText = (EditText)ve;
+                    m_extraText = (EditText) ve;
                     m_es.setToEditor(m_extraText);
                 }
             }
         }
         return v;
     }
+
     @Override
     public boolean onEvaluateFullscreenMode()
     {
-        int set = isLandscape()?m_LandscapeEditType:m_PortraitEditType;
+        int set = isLandscape() ? m_LandscapeEditType : m_PortraitEditType;
         boolean b = super.onEvaluateFullscreenMode();
-        if(set==st.PREF_VAL_EDIT_TYPE_FULLSCREEN)
+        if (set == st.PREF_VAL_EDIT_TYPE_FULLSCREEN)
             b = true;
-        else if(set==st.PREF_VAL_EDIT_TYPE_NOT_FULLSCREEN)
+        else if (set == st.PREF_VAL_EDIT_TYPE_NOT_FULLSCREEN)
             b = false;
         return b;
+    }
+
+    public void onLongPress(Key key)
+    {
+        try
+        {
+            if (st.has(st.kv().m_state, JbKbdView.STATE_VIBRO_LONG))
+                m_vibro.vibro(false);
+        }
+        catch (Throwable e)
+        {
+        }
     }
 }

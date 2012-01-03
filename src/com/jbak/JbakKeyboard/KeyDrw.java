@@ -12,6 +12,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.Keyboard.Key;
@@ -25,6 +26,8 @@ class KeyDrw extends RectShape
     String txtSmall;
     boolean m_bPreview = false;
     Rect rb;
+    int textColor;
+    StateListDrawable m_backDrawable;
     public static int GAP = 5;
     public static final int DELIM = 2;
     public static final int DEFAULT_GAP = 5;
@@ -45,8 +48,23 @@ class KeyDrw extends RectShape
         drw.setBounds(rb);
         return drw;
     }
+    public void setFuncKey(StateListDrawable back)
+    {
+        m_backDrawable = back;
+        if(m_backDrawable!=null)
+        {
+            textColor = st.kv().m_curDesign.m_kbdFuncKeys.textColor;
+            m_backDrawable.setBounds(rb);
+        }
+    }
+    final void useTextColor(Paint pt)
+    {
+        if(textColor!=st.DEF_COLOR)
+            pt.setColor(textColor);
+    }
     void set(Keyboard.Key key, boolean bPreview)
     {
+        textColor = st.paint().mainColor;
         m_bPreview = bPreview;
         if(key.icon!=null)
         {
@@ -85,27 +103,16 @@ class KeyDrw extends RectShape
             rb = new Rect(0,0,key.width,key.height);
 
     }
-//    public KeyDrw(CharSequence lab,int w,int h,boolean bPreview)
-//    {
-//        m_bPreview = bPreview;
-//        rb = new Rect(0,0,w,h);
-//    }
-//    public KeyDrw(Bitmap bmp,int w,int h,boolean bPreview)
-//    {
-//        m_bPreview = bPreview;
-//        this.bmp = bmp;
-//        rb = new Rect(0,0,w,h);
-//    }
     final void drawSingleBitmap(Canvas canvas,float x,float y,Paint paint)
     {
-      int color = st.kv().m_curDesign.textColor;
       if(m_bPreview)
       {
           paint.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP));
       }
-      else if(color!=st.DEF_COLOR)
-    	  paint.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
+      else if(textColor!=st.DEF_COLOR)
+    	  paint.setColorFilter(new PorterDuffColorFilter(textColor, PorterDuff.Mode.SRC_ATOP));
       canvas.drawBitmap(bmp, x,y, paint);
+      paint.setColorFilter(null);
     }
     @Override
     public void draw(Canvas canvas, Paint paint)
@@ -113,12 +120,14 @@ class KeyDrw extends RectShape
         if(txtMain==null&&bmp==null||JbKbdView.inst==null)
             return;
 //      Rect rb = canvas.getClipBounds();
-        Paint p1 = JbKbdView.inst.m_tpMainKey;
+        Paint p1 = st.paint().main;
         if(txtMain==null&&bmp!=null)
         {
 // Рисуем просто картинку, без текста (по центру)
             if(!m_bPreview)
                 canvas.translate(0-rb.width()/2, 0-rb.height()/2);
+            if(m_backDrawable!=null)
+                m_backDrawable.draw(canvas);
             drawSingleBitmap(canvas,rb.width()/2-bmp.getWidth()/2,rb.height()/2-bmp.getHeight()/2, paint);
             return;
         }
@@ -142,11 +151,15 @@ class KeyDrw extends RectShape
 //Если текст длинее 1 символа - считаем меткой и рисуем с помощью JbKbdView.m_tpLabel 
         if(txtMain.length()>1)
         {
-            p1 = st.kv().m_tpLabel;
+            p1 = st.paint().label;
         }
+        useTextColor(p1);
 //canvas сдвинут к середине, вернём его в позицию 0,0           
         canvas.translate(0-rb.width()/2, 0-rb.height()/2);
-        Paint p2 = JbKbdView.inst.m_tpSmallKey;
+        if(m_backDrawable!=null)
+            m_backDrawable.draw(canvas);
+        Paint p2 = st.paint().second;
+        useTextColor(p2);
         if(txtMain.length()==1)
         {
             if(JbKbdView.inst.isUpperCase())
@@ -189,10 +202,13 @@ class KeyDrw extends RectShape
             {
                 canvas.drawText(txtSmall, x2, GAP+a2, p2);
             }
-            int x = rb.width()/2-w1/2;
-            while(x+w1>x2-DELIM&&x>GAP)
-                --x;
-            canvas.drawText(txtMain, x, rb.height()-GAP-d1, p1);
+            if(txtMain!=null)
+            {
+                int x = rb.width()/2-w1/2;
+                while(x+w1>x2-DELIM&&x>GAP)
+                    --x;
+                canvas.drawText(txtMain, x, rb.height()-GAP-d1-1, p1);
+            }
         }
         else
         {

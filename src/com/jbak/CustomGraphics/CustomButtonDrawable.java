@@ -2,11 +2,16 @@ package com.jbak.CustomGraphics;
 
 import android.R;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 
 public class CustomButtonDrawable extends StateListDrawable
 {
+    GradBack m_grad;
+    Drawable m_drw;
+/** Объект, зависящий от текущего, получает уведомления при изменении размеров и статусов */    
+    StateListDrawable m_dependedDrawable;
 	public CustomButtonDrawable()
 	{
 		m_grad = new GradBack();
@@ -25,11 +30,11 @@ public class CustomButtonDrawable extends StateListDrawable
 		m_grad.setCorners(radiusX, radiusY);
 		return this;
 	}
-	GradBack m_grad;
-	Drawable m_drw;
 	@Override
 	protected boolean onStateChange(int[] stateSet)
 	{
+        if(m_dependedDrawable!=null)
+            m_dependedDrawable.setState(stateSet);
 		if(m_grad!=null)
 			m_grad.changeState(stateSet);
 		return super.onStateChange(stateSet);
@@ -39,4 +44,15 @@ public class CustomButtonDrawable extends StateListDrawable
 	{
 		return m_drw;
 	}
+	@Override
+	protected void onBoundsChange(Rect bounds)
+	{
+	    if(m_dependedDrawable!=null)
+	        m_dependedDrawable.setBounds(bounds);
+	    super.onBoundsChange(bounds);
+	}
+	public void setDependentDrawable(StateListDrawable depDrawable)
+    {
+        m_dependedDrawable = depDrawable;
+    }
 }

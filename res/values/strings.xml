@@ -55,7 +55,26 @@
     <string name="set_select_keyboard">Select keyboard</string>
     <string name="set_key_skins">Skins</string>
     <string name="set_key_skins_desc">Various skins for keyboard</string>
-    
+    <string name="set_key_fonts">Fonts</string>
+    <string name="set_key_fonts_desc">Font settings for keyboard keys</string>
+    <string name="set_key_font_first">Primary font</string>
+    <string name="set_key_font_first_desc">Font for main letters</string>
+    <string name="set_key_font_second">Symbol font</string>
+    <string name="set_key_font_second_desc">Font for additional symbols</string>
+    <string name="set_key_font_label">Label font</string>
+    <string name="set_key_font_label_desc">Font for text labels (language,Select,Copy and other keys)</string>
+    <string name="set_key_misc">Other settings</string>
+    <string name="set_key_misc_desc">Some other settings </string>
+    <string name="set_key_shift">Shift key</string>
+    <string name="set_key_appearance">Appearance</string>
+    <string name="set_key_appearance_desc">Settings for look and feel</string>
+        
+    <string-array name="array_shift_vars">
+        <item>3-state (normal,shift,capslock)</item>
+        <item>2-state (normal,shift)</item>
+        <item>2-state (normal,capslock)</item>
+    </string-array>
+        
     <string name="es_title">Fullscreen editor settings</string>
     <string name="es_sample">Edit sample</string>
     <string name="es_sample_text">First line\nSecond line\nThird line</string>
@@ -148,7 +167,7 @@
 	<string name="about_author">Author:</string>
 	<string name="about_author_desc">Juriy Bakunin aka Jbak\njbak1979@gmail.com</string>
 	<string name="about_other">Other:</string>
-	<string name="about_other_desc">In application used icons from free "Primo" icon pack.\nDesigner web-site is http://www.webdesignerdepot.com</string>
+	<string name="about_other_desc">Icons by Ali Gamidov (ali.gamidov@mail.ru)</string>
 	    	    	    	    
 <!-- Known key name format. If key is letter or one of other known key (see below) -->    
     <string name="ks_char_label">Key \"%s\"</string>
@@ -161,12 +180,12 @@
 	    
  <!-- Names for keyboards designs -->
 	<string name="kbd_design_standard">Standard</string>    
-	<string name="kbd_design_iphone">iPhone</string>
+	<string name="kbd_design_iphone">Pseudo iPhone</string>
 	<string name="kbd_design_ukraine">Ukraine</string>
 	<string name="kbd_design_chokolate">Chokolate</string>
-	<string name="kbd_design_rgb">RGB</string>
 	<string name="kbd_design_ussr">Born in USSR</string>
-	    	    
+	<string name="kbd_design_htc">Pseudo HTC</string>
+	    	    	    
  
 <!-- Names for some keys -->    
     <string name="k_search">Search</string>
@@ -178,6 +197,6 @@
  <!-- Names for languages -->
  	<string name="lang_en">English</string>   
  	<string name="lang_ru">Русский</string>   
- 	<string name="lang_ua">Украинська</string>   
+ 	<string name="lang_ua">Українська</string>   
  	<string name="lang_be">Белорусский</string>   
 </resources>

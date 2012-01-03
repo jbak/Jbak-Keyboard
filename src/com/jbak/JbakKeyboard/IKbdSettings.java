@@ -44,6 +44,15 @@ public interface IKbdSettings
     public static final String PREF_KEY_PORTRAIT_TYPE = "portrait_type";
     /** Ключ, String, настройки редактора ExtractedText*/
     public static final String PREF_KEY_EDIT_SETTINGS = "edit_set";
+    /** Ключ, String, настройка основного шрифта */
+    public static final String PREF_KEY_MAIN_FONT = "pMainFont";
+    /** Ключ, String, настройка шрифта дополнительных символов */
+    public static final String PREF_KEY_SECOND_FONT = "pSecondFont";
+    /** Ключ, String, настройка шрифта меток */
+    public static final String PREF_KEY_LABEL_FONT = "pLabelFont";
+    /** Ключ, String, варианты клавиши Shift, строка со значениями:0 - 3-позиц., 1 - normal/shift, 2 - normal/capslock */
+    public static final String PREF_KEY_SHIFT_STATE = "shift_state";
+    
 
     public static final int PREF_VAL_EDIT_TYPE_DEFAULT = 0;
     public static final int PREF_VAL_EDIT_TYPE_FULLSCREEN = 1;

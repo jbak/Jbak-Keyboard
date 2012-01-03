@@ -24,7 +24,7 @@ public class AboutActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         View v = getLayoutInflater().inflate(R.layout.about, null);
-        v.setBackgroundDrawable(new ColorsGradientBack().setCorners(0, 0).setGap(0).getButtonDrawable());
+        v.setBackgroundDrawable(new ColorsGradientBack().setCorners(0, 0).setGap(0).getStateDrawable());
         try{
             String vers = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             String app = getString(R.string.about_version)+" "+vers+"\n"
