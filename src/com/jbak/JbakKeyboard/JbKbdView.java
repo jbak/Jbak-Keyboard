@@ -30,6 +30,7 @@ import android.inputmethodservice.KeyboardView;
 import android.preference.PreferenceManager;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -226,9 +227,8 @@ public class JbKbdView extends KeyboardView {
         }
         m_tpPreview.setTextSize(m_PreviewTextSize);
     }
-
-    @Override
-    protected boolean onLongPress(Key key) {
+    boolean processLongPress(Key key)
+    {
         if(ServiceJbKbd.inst!=null)
             ServiceJbKbd.inst.onLongPress(key);
         if(key.codes[0] == Keyboard.KEYCODE_MODE_CHANGE)
@@ -263,8 +263,16 @@ public class JbKbdView extends KeyboardView {
                     getOnKeyboardActionListener().onText(lk.m_kd.txtSmall);
                 return true;
             }
-            return super.onLongPress(key);
         }
+        return false;
+    }
+    @Override
+    protected boolean onLongPress(Key key) {
+        if(ServiceJbKbd.inst==null||ServiceJbKbd.inst.m_repeat>0)
+            return false;
+        if(processLongPress(key))
+            return true;
+        return super.onLongPress(key);
     }
     void handleShift()
     {
@@ -367,6 +375,11 @@ public class JbKbdView extends KeyboardView {
         if(getOnKeyboardActionListener() instanceof ServiceJbKbd)
             ServiceJbKbd.inst.onChangeKeyboard();
     }
+    @Override
+    public void invalidateAllKeys() 
+    {
+        super.invalidateAllKeys();
+    };
     public void handleLangChange()
     {
         String ls[]=st.getLangsArray(st.c());
@@ -379,6 +392,7 @@ public class JbKbdView extends KeyboardView {
         Keybrd k = st.kbdForLangName(newLang);
         setKeyboard(new JbKbd(getContext(), k.resId));
         st.saveCurLang();
+        invalidateAllKeys();
     }
     void reload()
     {

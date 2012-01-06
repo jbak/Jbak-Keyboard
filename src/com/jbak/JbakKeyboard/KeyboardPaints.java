@@ -2,6 +2,7 @@ package com.jbak.JbakKeyboard;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 
 import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
@@ -20,7 +21,7 @@ public class KeyboardPaints
     public int mainColor = Color.WHITE;
 /** Дополнительный цвет*/    
     public int secondColor = st.DEF_COLOR;
-    
+    public PorterDuffColorFilter bmpColorFilter = null;
     int m_defaultFontSize = 32;
     int m_defaultLabelSize = 21;
     boolean m_bMainBold = false;

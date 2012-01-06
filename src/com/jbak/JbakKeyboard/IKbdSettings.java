@@ -52,6 +52,8 @@ public interface IKbdSettings
     public static final String PREF_KEY_LABEL_FONT = "pLabelFont";
     /** Ключ, String, варианты клавиши Shift, строка со значениями:0 - 3-позиц., 1 - normal/shift, 2 - normal/capslock */
     public static final String PREF_KEY_SHIFT_STATE = "shift_state";
+    /** Ключ, String, задержка нажатий клавиш в ms (хранится в виде строки, по умолчанию - 0)*/
+    public static final String PREF_KEY_REPEAT_DELAY = "key_repeat";
     
 
     public static final int PREF_VAL_EDIT_TYPE_DEFAULT = 0;

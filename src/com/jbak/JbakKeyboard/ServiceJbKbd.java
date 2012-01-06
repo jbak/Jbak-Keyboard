@@ -19,29 +19,26 @@ package com.jbak.JbakKeyboard;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
-import android.os.Vibrator;
-import android.view.Display;
-import android.view.HapticFeedbackConstants;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
@@ -74,6 +71,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     int                        m_LandscapeEditType  = st.PREF_VAL_EDIT_TYPE_DEFAULT;
     /** Вибратор для тактильной отдачи при нажатии и удержании клавиш */
     VibroThread                m_vibro;
+    KeyCustomRepeat m_cutomRepeat;
     /** Статус - предложения с большой буквы */
     public static final int    STATE_SENTENCE_UP    = 0x0000001;
     /** Статус - пробел после конца предложения */
@@ -81,20 +79,20 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     /** Статус - верхний регистр в пустом поле */
     public static final int    STATE_EMPTY_UP       = 0x0000004;
     EditSet                    m_es                 = new EditSet();
-
+    int m_repeat = 0;
     @Override
     public void onCreate()
     {
+        inst = this;
         CustomKbdDesign.loadCustomSkins();
+        m_cutomRepeat = new KeyCustomRepeat();
+        m_cutomRepeat.setRepeat(m_repeat);
         m_vibro = new VibroThread(this);
         m_words = new Words();
         startService(new Intent(this, ClipbrdService.class));
-        inst = this;
         m_kp = new KeyPressProcessor();
         // setTheme(R.style.fullscreen_input);
         super.onCreate();
-
-        getWindow().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR);
         SharedPreferences pref = st.pref();
         m_es.load(st.PREF_KEY_EDIT_SETTINGS);
         pref.registerOnSharedPreferenceChangeListener(this);
@@ -115,8 +113,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
         return getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT;
     }
-
-    /** Стартует ввод */
+/** Стартует ввод */
     @Override
     public View onCreateInputView()
     {
@@ -126,7 +123,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         return JbKbdView.inst;
     }
 
-    /** Должен вернуть просмотр кандидатов или null */
+/** Должен вернуть просмотр кандидатов или null */
     @Override
     public View onCreateCandidatesView()
     {
@@ -243,8 +240,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 
     int m_SelStart;
     int m_SelEnd;
-    int m_CursorPos;
-
     boolean makeEmptyUppercase()
     {
         InputConnection ic = getCurrentInputConnection();
@@ -402,7 +397,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             break;
         }
     }
-    public final void onKey(int primaryCode)
+    public final void processKey(int primaryCode)
     {
         if (st.has(st.kv().m_state, JbKbdView.STATE_VIBRO_SHORT))
             m_vibro.vibro(false);
@@ -483,7 +478,9 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     }
     public void onKey(int primaryCode, int[] keyCodes)
     {
-        onKey(primaryCode);
+        if(m_cutomRepeat.onKey(primaryCode))
+            return;
+        processKey(primaryCode);
     }
     final boolean canAutoInput()
     {
@@ -664,22 +661,36 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 
     public void onPress(int primaryCode)
     {
+        if(m_repeat>0)
+        {
+            m_cutomRepeat.onPress(primaryCode);
+        }
         st.kv().onKeyPress(primaryCode);
     }
 
     public void onRelease(int primaryCode)
     {
+        if(m_repeat>0)
+        {
+            m_cutomRepeat.onRelease(primaryCode);
+        }
     }
-
     public void onOptions()
     {
-        CustomKbdDesign.loadCustomSkins();
         ComMenu menu = new ComMenu();
         st.UniObserver onMenu = new st.UniObserver()
         {
             int OnObserver(Object param1, Object param2)
             {
-                st.kbdCommand(((Integer) param1).intValue());
+                int id = ((Integer) param1).intValue();
+                if(id==-10)
+                {
+                    reloadCurrentCustomSkin();
+                }
+                else
+                {
+                    st.kbdCommand(id);
+                }
                 return 0;
             }
         };
@@ -687,7 +698,9 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         menu.add(R.string.mm_templates, st.CMD_TPL);
         menu.add(R.string.mm_multiclipboard, st.CMD_CLIPBOARD);
         menu.add(R.string.mm_settings, st.CMD_PREFERENCES);
-        menu.add(R.string.mm_close, 0);
+        if(st.kv().m_curDesign.path!=null)
+            menu.add(R.string.mm_reload_skin, -10);
+        
         menu.show(onMenu);
     }
 
@@ -866,6 +879,15 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
                 }
             }
         }
+//        if(st.PREF_KEY_REPEAT_DELAY.equals(key)||key==null)
+//        {
+//            try{
+//                m_repeat = Integer.decode(sharedPreferences.getString(st.PREF_KEY_REPEAT_DELAY, "0"));
+//            }
+//            catch (Throwable e) {
+//                m_repeat = 0;
+//            }
+//        }
         if (st.PREF_KEY_SENTENCE_ENDS.equals(key) || key == null)
             m_SentenceEnds = sharedPreferences.getString(st.PREF_KEY_SENTENCE_ENDS, "?!.");
         if (st.PREF_KEY_ADD_SPACE_SYMBOLS.equals(key) || key == null)
@@ -937,5 +959,21 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         catch (Throwable e)
         {
         }
+    }
+    public void reloadCurrentCustomSkin()
+    {
+        int si = st.pref().getInt(st.PREF_KEY_KBD_SKIN, -1);
+        String path = st.kv().m_curDesign.path;
+        if(si<0||path==null)
+            return;
+        CustomKbdDesign cd = new CustomKbdDesign();
+        if(!cd.load(path))
+        {
+            Toast.makeText(this, cd.getErrString(), 800);
+            return;
+        }
+        st.arDesign[si] = cd.getDesign();
+        st.kv().init();
+        st.setQwertyKeyboard(true);
     }
 }

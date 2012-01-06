@@ -11,6 +11,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
+import android.widget.Toast;
 
 
 public class JbKbdPreference extends PreferenceActivity implements OnSharedPreferenceChangeListener
@@ -56,6 +57,11 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         Context c = preference.getContext();
         if("set_skins".equals(k))
         {
+            String err = CustomKbdDesign.loadCustomSkins();
+            if(err.length()>0)
+            {
+               Toast.makeText(this, err, 1000).show();
+            }
             runSetKbd(st.SET_SELECT_SKIN);
             return true;
         }

@@ -24,6 +24,12 @@ public class CustomKbdDesign
     public static final int P_KeyboardBackgroundStartColor   = 8;
     public static final int P_KeyboardBackgroundEndColor     = 9;
     public static final int P_KeyboardBackgroundGradientType = 10;
+    public static final int P_SpecKeyBackStartColor         =11;
+    public static final int P_SpecKeyBackEndColor =12;
+    public static final int P_SpecKeyStrokeStartColor = 13;
+    public static final int P_SpecKeyStrokeEndColor = 14;
+    public static final int P_SpecKeyTextColor = 15;
+    int errorLine = 0;
     String arNames[] = new String[]{
           "KeyBackStartColor",
           "KeyBackEndColor",
@@ -36,15 +42,19 @@ public class CustomKbdDesign
           "KeyboardBackgroundStartColor",
           "KeyboardBackgroundEndColor",
           "KeyboardBackgroundGradientType",
+          "SpecKeyBackStartColor",
+          "SpecKeyBackEndColor",
+          "SpecKeyStrokeStartColor",
+          "SpecKeyStrokeEndColor",
+          "SpecKeyTextColor"
     };
-    String skinName = "defSkin";
+    String skinPath = "";
     Vector<IntEntry> arValues = new Vector<IntEntry>();
     boolean load(String path)
     {
-        String name = null;
+        skinPath = path;
         BufferedReader reader = null;
         try{
-            name = new File(path).getName();
             reader = new BufferedReader(new FileReader(path));
         }catch (Throwable e) {
             st.logEx(e);
@@ -53,15 +63,13 @@ public class CustomKbdDesign
         {
             return false;
         }
-        return load(reader,name);
+        return load(reader);
     }
-    boolean load(BufferedReader r,String name)
+    boolean load(BufferedReader r)
     {
-        if(name!=null)
-            skinName = name;
+        int line = 1;
         try{
             String s;
-            String val = new String();
             while((s = r.readLine())!=null)
             {
                 int index = parseParam(s);
@@ -71,9 +79,11 @@ public class CustomKbdDesign
                     dec = processStringInt(m_val);
                     arValues.add(new IntEntry(index,dec));
                 }
+                ++line;
             }
         }
         catch (Throwable e) {
+            errorLine = line;
             return false;
         }
         return true;
@@ -90,7 +100,7 @@ public class CustomKbdDesign
     KbdDesign getDesign()
     {
         KbdDesign ret = new KbdDesign(0, 0, st.DEF_COLOR, 0, 0);
-        ret.name = skinName;
+        ret.path = skinPath;
         int startColor,endColor,gradType;
         startColor = getIntValue(P_KeyBackStartColor, st.DEF_COLOR);
         endColor = getIntValue(P_KeyBackEndColor, st.DEF_COLOR);
@@ -126,6 +136,20 @@ public class CustomKbdDesign
         ret.textColor = getIntValue(P_KeyTextColor, st.DEF_COLOR);
         if(getIntValue(P_KeyTextBold, 0)==1)
             ret.flags|=st.DF_BOLD;
+        startColor = getIntValue(P_SpecKeyBackStartColor, st.DEF_COLOR);
+        endColor = getIntValue(P_SpecKeyBackEndColor, st.DEF_COLOR);
+        if(startColor!=st.DEF_COLOR)
+        {
+            int textColor = getIntValue(P_SpecKeyTextColor, st.DEF_COLOR);
+            GradBack gb = new GradBack(startColor, endColor).
+            setGradType(ret.m_kbdBackground.m_gradType)
+            .setGap(gap);
+            startColor = getIntValue(P_SpecKeyStrokeStartColor, st.DEF_COLOR);
+            endColor = getIntValue(P_SpecKeyStrokeEndColor, st.DEF_COLOR);
+            if(startColor!=st.DEF_COLOR)
+                gb.setStroke(new GradBack(startColor, endColor));
+            ret.setFuncKeysDesign(new KbdDesign(0, 0, textColor, 0, 0).setKeysBackground(gb));
+        }
         return ret;
     }
     int parseParam(String s)
@@ -175,14 +199,23 @@ public class CustomKbdDesign
         }
         return Integer.valueOf(s);
     }
-    static boolean loadCustomSkins()
+    String getErrString()
     {
+        if(errorLine>0)
+            return "Parse err: "+new File(skinPath).getName()+", line: "+errorLine+"\n";
+        else
+            return "Can't read: "+new File(skinPath).getName();
+
+    }
+    static String loadCustomSkins()
+    {
+        String err = "";
         try{
             String path = Environment.getExternalStorageDirectory().getAbsolutePath()
                           +"/jbakKeyboard/skins";  
             File dir = new File(path);
             if(!dir.exists()||!dir.isDirectory())
-                return false;
+                return err;
             File skins[] = dir.listFiles(new FilenameFilter()
             {
                 @Override
@@ -201,11 +234,15 @@ public class CustomKbdDesign
                 {
                     ar.add(skin.getDesign());
                 }
+                else
+                {
+                   err+=skin.getErrString();
+                }
             }
             int pos = 0;
             for(KbdDesign kd:st.arDesign)
             {   
-                if(kd.name!=null)
+                if(kd.path!=null)
                 {
                     break;
                 }
@@ -221,9 +258,9 @@ public class CustomKbdDesign
             st.arDesign = des;
         }
         catch (Throwable e) {
-            return false;
+            return "System error";
         }
-        return true;
+        return err;
     }
     private static int parseInt(String string,int radix) {
         int result = 0;

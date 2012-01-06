@@ -38,13 +38,13 @@ public class GradBack extends RectShape
 /** Текущее состояние фона */	
 	int m_states[];
 /** Радиус скругления прямоугольника в пикселях по X*/	
-	int m_cornerX = DEFAULT_CORNER_X;
+	public int m_cornerX = DEFAULT_CORNER_X;
 /** Радиус скругления прямоугольника в пикселях по Y*/	
-	int m_cornerY = DEFAULT_CORNER_Y;
+	public int m_cornerY = DEFAULT_CORNER_Y;
 	boolean m_bDrawPressedBack = true;
 /** Тип градиента, одна из констант GRADIENT_TYPE */	
-	int m_gradType = GRADIENT_TYPE_LINEAR;
-    int shadowColor = Color.RED;
+	public int m_gradType = GRADIENT_TYPE_LINEAR;
+    public int shadowColor = Color.RED;
 /** Фон обводки. Если не null - рисуется под основным фоном, и в этом случае будет рисоваться его тень*/    
     GradBack m_stroke=null;
 /** Толщина обводки*/    
@@ -156,6 +156,8 @@ public class GradBack extends RectShape
 	@Override
 	protected void onResize(float width, float height) 
 	{
+	    if(m_ptFill!=null&&width==m_rect.width()+m_gap*2&&height==m_rect.height()+m_gap*2)
+	        return;
         m_ptFill = makeBackground(width, height);
         if(m_stroke!=null)
             m_stroke.onResize(width, height);

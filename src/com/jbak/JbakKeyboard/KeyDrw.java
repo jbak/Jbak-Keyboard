@@ -26,6 +26,10 @@ class KeyDrw extends RectShape
     String txtSmall;
     boolean m_bPreview = false;
     Rect rb;
+    float m_x1 = 0;
+    float m_y1 = 0;
+    float m_x2 = 0;
+    float m_y2 = 0;
     int textColor;
     StateListDrawable m_backDrawable;
     public static int GAP = 5;
@@ -192,7 +196,7 @@ class KeyDrw extends RectShape
         int fh = GAP*2+h1+h2+DELIM; // Полная высота
         if(fh>rb.height())
         {
-            // Всё изображение не уместится
+            // Изображение основного текста и доп. символов не умещается в высоту
             int x2 = rb.width()-GAP-w2;
             if(bmp!=null)
             {
@@ -221,7 +225,9 @@ class KeyDrw extends RectShape
             {
                 canvas.drawText(txtSmall, rb.width()/2-w2/2, GAP+a2, p2);
             }
-            canvas.drawText(txtMain, rb.width()/2-w1/2, rb.height()-GAP-d1, p1);
+            int y = h2+GAP+a1;
+            int dy = (rb.height()-GAP-y)/2;
+            canvas.drawText(txtMain, rb.width()/2-w1/2, y+dy, p1);
             
         }
     }

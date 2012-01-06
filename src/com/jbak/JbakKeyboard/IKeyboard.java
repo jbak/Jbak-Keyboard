@@ -1,8 +1,11 @@
 package com.jbak.JbakKeyboard;
 
-import com.jbak.CustomGraphics.GradBack;
+import java.io.File;
 
+import android.content.Context;
 import android.graphics.Color;
+
+import com.jbak.CustomGraphics.GradBack;
 
 
 public class IKeyboard
@@ -97,29 +100,6 @@ public class IKeyboard
     /** Класс для хранения оформлений клавиатур */
     public static class KbdDesign
     {
-        public KbdDesign(int name,int drawable,int textColor,int backDrawable,int flags)
-        {
-            nameResId = name; 
-            drawResId=drawable;
-            this.textColor = textColor;
-            this.backDrawableRes = backDrawable;
-            this.flags = flags;
-        }
-        KbdDesign setKeysBackground(GradBack bg)
-        {
-        	m_keyBackground = bg;
-        	return this;
-        }
-        KbdDesign setKbdBackground(GradBack bg)
-        {
-        	m_kbdBackground = bg;
-        	return this;
-        }
-        KbdDesign setFuncKeysDesign(KbdDesign fc)
-        {
-            m_kbdFuncKeys = fc;
-            return this;
-        }
 /** Id drawable-ресурса для рисования кнопок */     
         public int drawResId;
 /** Id ресурса названия клавиатуры*/        
@@ -130,10 +110,48 @@ public class IKeyboard
         public int backDrawableRes;
 /** Флаги*/        
         public int flags=0;
-        String name = null;
+/** Путь к файлу скина, если скин не встроенный*/        
+        String path = null;
+/** Фон клавиш*/        
         GradBack m_keyBackground=null;
+/** Фон клавиатуры*/        
         GradBack m_kbdBackground=null;
+/** Отдельное оформление для функциональных клавиш (цвет текста, фон, обводка) */        
         KbdDesign m_kbdFuncKeys =null;
+        public KbdDesign(int name,int drawable,int textColor,int backDrawable,int flags)
+        {
+            nameResId = name; 
+            drawResId=drawable;
+            this.textColor = textColor;
+            this.backDrawableRes = backDrawable;
+            this.flags = flags;
+        }
+        KbdDesign setKeysBackground(GradBack bg)
+        {
+            m_keyBackground = bg;
+            return this;
+        }
+        KbdDesign setKbdBackground(GradBack bg)
+        {
+            m_kbdBackground = bg;
+            return this;
+        }
+        KbdDesign setFuncKeysDesign(KbdDesign fc)
+        {
+            m_kbdFuncKeys = fc;
+            return this;
+        }
+        String getName(Context c)
+        {
+            try{
+                if(nameResId!=0)
+                return c.getString(nameResId);
+                else if(path!=null)
+                    return new File(path).getName();
+            }catch (Throwable e) {
+            }
+            return "<bad name>";
+        }
     }
     static GradBack newIPhoneKey()
     {
