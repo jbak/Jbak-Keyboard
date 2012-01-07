@@ -91,40 +91,6 @@ public class Stor extends SQLiteOpenHelper
         }
         return true;
     }
-/** */
-    static KeySet readKey(Cursor c)
-    {
-        try
-        {
-            KeySet ks = new KeySet();
-            ks.keycode = c.getInt(1);
-            ks.keychar = (char) c.getInt(2);
-            ks.flags =   c.getInt(3);
-            ks.action =  c.getInt(4);
-            ks.sext = c.getString(5);
-            ks.extra = getIntentFromBytes(c.getBlob(6));
-            return ks;
-        }
-        catch (Throwable e) {
-            st.logEx(e);
-        }
-        return null;
-    }
-/** */
-    Cursor getKeysCursor()
-    {
-        try
-        {
-            Cursor cursor = m_db.query(TABLE_KEYS, null, null, null, null, null, null);
-            if(cursor.moveToFirst())
-                return cursor;
-            cursor.close();
-        }
-        catch (Throwable e) {
-            st.logEx(e);
-        }
-        return null;
-    }
     Cursor getClipboardCursor()
     {
         try
@@ -148,32 +114,6 @@ public class Stor extends SQLiteOpenHelper
             sql+=" OR "+C_DATE+"="+date2;
         }
         runSql(sql);
-    }
-/** Сохраняет в БД настройку клавиши ks*/   
-    void saveKey(KeySet ks)
-    {
-        try{
-            runSql("DELETE FROM "+TABLE_KEYS+
-                    " WHERE "+C_KEYCODE+"="+ks.keycode+
-                            " AND "+C_CHAR+"="+((int)ks.keychar)+
-                            " AND "+C_FLAGS+"="+ks.flags);
-            if(ks.action==KeySet.ACT_DEFAULT)
-                return;
-            m_db.beginTransaction();
-            ContentValues val = new ContentValues();
-            val.put(C_KEYCODE, ks.keycode);
-            val.put(C_CHAR, (int)ks.keychar);
-            val.put(C_FLAGS, ks.flags);
-            val.put(C_ACTION, ks.action);
-            val.put(C_TEXT, ks.sext);
-            val.put(C_BINARY, getBytesFromIntent(ks.extra));
-            m_db.insert(TABLE_KEYS, null, val);
-            m_db.setTransactionSuccessful();
-            m_db.endTransaction();
-        }
-        catch (Throwable e) {
-            st.logEx(e);
-        }
     }
 /** Удаляет строки, совпадающие с txt, проверяет */ 
     boolean checkClipboardString(String txt )

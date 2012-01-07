@@ -22,8 +22,6 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pref_view);
         addPreferencesFromResource(R.xml.preferences);
-        PreferenceScreen ps = getPreferenceScreen();
-        ps.removePreference(ps.findPreference("custom_key_settings"));
         setShiftState();
         st.pref(this).registerOnSharedPreferenceChangeListener(this);
     }
@@ -108,11 +106,6 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         if("pref_languages".equals(k))
         {
             st.runAct(LangSetActivity.class,c);
-            return true;
-        }
-        if("custom_key_settings".equals(k))
-        {
-            st.runAct(KeySetActivity.class,c);
             return true;
         }
         if("fs_editor_set".equals(k))

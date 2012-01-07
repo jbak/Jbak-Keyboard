@@ -64,14 +64,12 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     static ServiceJbKbd        inst;
     String                     m_SentenceEnds       = "";
     String                     m_SpaceSymbols       = "";
-    KeyPressProcessor          m_kp;
     boolean                    m_bForceShow         = false;
     int                        m_state              = 0;
     int                        m_PortraitEditType   = st.PREF_VAL_EDIT_TYPE_DEFAULT;
     int                        m_LandscapeEditType  = st.PREF_VAL_EDIT_TYPE_DEFAULT;
     /** Вибратор для тактильной отдачи при нажатии и удержании клавиш */
     VibroThread                m_vibro;
-    KeyCustomRepeat m_cutomRepeat;
     /** Статус - предложения с большой буквы */
     public static final int    STATE_SENTENCE_UP    = 0x0000001;
     /** Статус - пробел после конца предложения */
@@ -79,18 +77,14 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     /** Статус - верхний регистр в пустом поле */
     public static final int    STATE_EMPTY_UP       = 0x0000004;
     EditSet                    m_es                 = new EditSet();
-    int m_repeat = 0;
     @Override
     public void onCreate()
     {
         inst = this;
         CustomKbdDesign.loadCustomSkins();
-        m_cutomRepeat = new KeyCustomRepeat();
-        m_cutomRepeat.setRepeat(m_repeat);
         m_vibro = new VibroThread(this);
         m_words = new Words();
         startService(new Intent(this, ClipbrdService.class));
-        m_kp = new KeyPressProcessor();
         // setTheme(R.style.fullscreen_input);
         super.onCreate();
         SharedPreferences pref = st.pref();
@@ -195,8 +189,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public void onStartInput(EditorInfo attribute, boolean restarting)
     {
         st.log("onStartInput " + attribute.packageName);
-        if (m_kp != null)
-            m_kp.onStartInput();
         if (attribute.initialSelStart < 0 && attribute.initialSelEnd < 0)
         {
             requestHideSelf(0);
@@ -322,10 +314,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
-        if (KeySetActivity.inst != null && KeySetActivity.inst.onHardwareKey(event))
-            return true;
-        if (m_kp != null && m_kp.onKeyDown(event, getCurrentInputEditorInfo()))
-            return true;
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0 && handleBackPress())
             return true;
         return false;// super.onKeyDown(keyCode, event);
@@ -335,12 +323,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event)
     {
-
-        if (KeySetActivity.inst != null && KeySetActivity.inst.onHardwareKey(event))
-            return true;
-        if (m_kp != null && m_kp.onKeyUp(event, getCurrentInputEditorInfo()))
-            return true;
-        return false;// super.onKeyUp(keyCode, event);
+        return super.onKeyUp(keyCode, event);
     }
 
     /* @Override public boolean onKeyLongPress(int keyCode, KeyEvent event) {
@@ -478,8 +461,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     }
     public void onKey(int primaryCode, int[] keyCodes)
     {
-        if(m_cutomRepeat.onKey(primaryCode))
-            return;
         processKey(primaryCode);
     }
     final boolean canAutoInput()
@@ -661,19 +642,11 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 
     public void onPress(int primaryCode)
     {
-        if(m_repeat>0)
-        {
-            m_cutomRepeat.onPress(primaryCode);
-        }
         st.kv().onKeyPress(primaryCode);
     }
 
     public void onRelease(int primaryCode)
     {
-        if(m_repeat>0)
-        {
-            m_cutomRepeat.onRelease(primaryCode);
-        }
     }
     public void onOptions()
     {

@@ -26,7 +26,6 @@ com.jbak.JbakKeyboard.JbKbdReceiver
 com.jbak.JbakKeyboard.JbKbdView
 com.jbak.JbakKeyboard.JbKbdView: JbKbdView(android.content.Context,android.util.AttributeSet)
 com.jbak.JbakKeyboard.JbKbdView: JbKbdView(android.content.Context,android.util.AttributeSet,int)
-com.jbak.JbakKeyboard.KeySetActivity
 com.jbak.JbakKeyboard.LangSetActivity
 com.jbak.JbakKeyboard.ServiceJbKbd
 com.jbak.JbakKeyboard.SetKbdActivity

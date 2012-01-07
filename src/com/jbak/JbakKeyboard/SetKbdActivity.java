@@ -135,6 +135,7 @@ public class SetKbdActivity extends Activity
     	}
     	else if(bNext)
     	{
+    	    
     		m_curKbd++;
     		if(m_curKbd>=st.arDesign.length)
     			m_curKbd = 0;

@@ -13,8 +13,6 @@
     <string name="label_send_key">Send</string>
     <string name="set_ch_keys_preview">Show keys preview</string>
 
-    <string name="set_keys">Manage keys</string>
-    <string name="set_keys_desc">Here you can manage hardware keys (except Home and Power)</string>
     <string name="set_ch_keys_preview_desc">Disable this, if you don\'t want see popup previews of pressed keys</string>
     <string name="set_key_height_portrait">Key height portrait</string>
     <string name="set_key_height_portrait_desc">Change key height for qwerty-keyboard in portrait mode </string>
@@ -128,38 +126,6 @@
         <item><b>$$</b> - dollar symbol</item>
     </string-array>
 
-<!-- Text, which shown to user when key list is empty -->    
-    <string name="ks_empty_keys">Keys list is empty. You can add new actions for hardware keys, which works when Jbak Keyboard set as default input method</string>
-
-    <string name="ks_add_key">New key</string>
-    <string name="ks_press_key">Press key...</string>
-    <string name="ks_type">Processing </string>
-    <string-array name="ks_type_variants">
-        <item>Always</item>
-        <item>In input fields</item>
-        <item>Not in input fields</item>
-    </string-array>
-    <string name="ks_press_type">Key press type</string>
-    <string name="ks_press_type_short">Short press</string>
-    <string name="ks_press_type_long">Long press</string>
-    
-    <string-array name="ks_press_type_variants">
-        <item>@string/ks_press_type_short</item>
-        <item>@string/ks_press_type_long</item>
-    </string-array>
-    <string name="ks_action">Action</string>
-    <string name="ks_action_run_app">Run application</string>
-    <string name="ks_action_input_text">Input text</string>
-    <string name="ks_action_app_details">Focused app details</string>
-    <string-array name="ks_action_variants">
-        <item>Default</item>
-        <item>@string/ks_action_run_app</item>
-        <item>@string/ks_action_input_text</item>
-        <item>@string/ks_action_app_details</item>
-    </string-array>
-    <string name="ks_select_app">Select app</string>
-    <string name="ks_app_for_launch">App for launch</string>
-    <string name="ks_text_for_input">Text for input</string>
 <!-- Strings for about dialog -->
 	<string name="about">About</string>
 	<string name="about_app">Application:</string>
@@ -170,10 +136,6 @@
 	<string name="about_other">Other:</string>
 	<string name="about_other_desc">Icons by Ali Gamidov (ali.gamidov@mail.ru)</string>
 	    	    	    	    
-<!-- Known key name format. If key is letter or one of other known key (see below) -->    
-    <string name="ks_char_label">Key \"%s\"</string>
-<!-- Unknown key name format. %d replaced with keycode integer -->    
-    <string name="ks_non_char_label">Key with keycode "%d"</string>
 
 <!-- Names for various keyboards -->
 	<string name="kbd_name_qwerty">Qwerty keyboard</string>    
@@ -188,13 +150,6 @@
 	<string name="kbd_design_htc">Pseudo HTC</string>
 	    	    	    
  
-<!-- Names for some keys -->    
-    <string name="k_search">Search</string>
-    <string name="k_back">Back</string>
-    <string name="k_menu">Menu</string>
-    <string name="k_volumeDown">Volume down</string>
-    <string name="k_volumeUp">Volume up</string>
-   
  <!-- Names for languages -->
  	<string name="lang_en">English</string>   
  	<string name="lang_ru">Русский</string>   

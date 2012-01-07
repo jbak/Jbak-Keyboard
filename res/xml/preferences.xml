@@ -26,85 +26,20 @@
         android:key="pref_languages"
         android:summary="@string/set_languages_desc"
         android:title="@string/set_languages" />
-    <!-- 4 - вибра -->
-
+<!-- Внешний вид -->
     <PreferenceScreen
-        android:summary="@string/set_key_voice_desc"
-        android:title="@string/set_key_voice" >
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="sound"
-            android:summary="@string/set_key_sounds_desc"
-            android:title="@string/set_key_sounds" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="vs"
-            android:summary="@string/set_key_short_vibro_desc"
-            android:title="@string/set_key_short_vibro" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="vl"
-            android:summary="@string/set_key_long_vibro_desc"
-            android:title="@string/set_key_long_vibro" />
-    </PreferenceScreen>
-    <!-- 6 - Автоввод -->
-
-    <PreferenceScreen
-        android:summary="@string/set_key_other_desc"
-        android:title="@string/set_key_other" >
-
-        <PreferenceCategory android:title="@string/set_key_register" >
-
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="up_empty"
-                android:summary="@string/set_key_empty_uppercase_desc"
-                android:title="@string/set_key_empty_uppercase" />
-
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="up_sentence"
-                android:summary="@string/set_key_sentence_upper_desc"
-                android:title="@string/set_key_sentence_upper" />
-
-            <EditTextPreference
-                android:defaultValue=".!?"
-                android:key="sentence_ends"
-                android:summary="@string/set_key_sentence_ends_desc"
-                android:title="@string/set_key_sentence_ends" />
-        </PreferenceCategory>
-
-        <PreferenceCategory android:title="@string/set_key_spaces" >
-
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="space_sentence"
-                android:summary="@string/set_key_space_sentence_end_desc"
-                android:title="@string/set_key_space_sentence_end" />
-
-            <EditTextPreference
-                android:defaultValue=".,!?"
-                android:key="space_symbols"
-                android:summary="@string/set_key_space_symbols_desc"
-                android:title="@string/set_key_space_symbols" />
-        </PreferenceCategory>
-    </PreferenceScreen>
-
-    <PreferenceScreen
-        android:title="@string/set_key_appearance" 
-        android:summary="@string/set_key_appearance_desc" 
-        >
+        android:summary="@string/set_key_appearance_desc"
+        android:title="@string/set_key_appearance" >
 
         <!-- настройки скинов -->
+
         <Preference
             android:key="set_skins"
             android:summary="@string/set_key_skins_desc"
             android:title="@string/set_key_skins" />
 
         <!-- Шрифты -->
+
         <PreferenceScreen
             android:summary="@string/set_key_fonts_desc"
             android:title="@string/set_key_fonts" >
@@ -156,12 +91,72 @@
                 android:title="@string/set_key_landscape_input_settings" />
         </PreferenceScreen>
     </PreferenceScreen>
-    <!-- настройки клавиш -->
+    <!-- 4 - вибра -->
 
-    <Preference
-        android:key="custom_key_settings"
-        android:summary="@string/set_keys_desc"
-        android:title="@string/set_keys" />
+    <PreferenceScreen
+        android:summary="@string/set_key_voice_desc"
+        android:title="@string/set_key_voice" >
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="sound"
+            android:summary="@string/set_key_sounds_desc"
+            android:title="@string/set_key_sounds" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="vs"
+            android:summary="@string/set_key_short_vibro_desc"
+            android:title="@string/set_key_short_vibro" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="vl"
+            android:summary="@string/set_key_long_vibro_desc"
+            android:title="@string/set_key_long_vibro" />
+    </PreferenceScreen>
+    <!-- Автоввод -->
+
+    <PreferenceScreen
+        android:summary="@string/set_key_other_desc"
+        android:title="@string/set_key_other" >
+
+        <PreferenceCategory android:title="@string/set_key_register" >
+
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="up_empty"
+                android:summary="@string/set_key_empty_uppercase_desc"
+                android:title="@string/set_key_empty_uppercase" />
+
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="up_sentence"
+                android:summary="@string/set_key_sentence_upper_desc"
+                android:title="@string/set_key_sentence_upper" />
+
+            <EditTextPreference
+                android:defaultValue=".!?"
+                android:key="sentence_ends"
+                android:summary="@string/set_key_sentence_ends_desc"
+                android:title="@string/set_key_sentence_ends" />
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="@string/set_key_spaces" >
+
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="space_sentence"
+                android:summary="@string/set_key_space_sentence_end_desc"
+                android:title="@string/set_key_space_sentence_end" />
+
+            <EditTextPreference
+                android:defaultValue=".,!?"
+                android:key="space_symbols"
+                android:summary="@string/set_key_space_symbols_desc"
+                android:title="@string/set_key_space_symbols" />
+        </PreferenceCategory>
+    </PreferenceScreen>
     <!-- прочие настройки -->
 
     <PreferenceScreen
@@ -176,7 +171,7 @@
             android:title="@string/set_key_shift" />
     </PreferenceScreen>
 
-    <!-- 9 - о программе -->
+    <!-- о программе -->
 
     <Preference
         android:key="about_app"

@@ -18,7 +18,7 @@ import android.widget.Toast;
 /** Класс содержит полезные статические переменные */
 public class st extends IKeyboard implements IKbdSettings
 {
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 //--------------------------------------------------------------------------
     /** Универсальный обсервер. Содержит 2 параметра m_param1 и m_param2, которые вызываются и меняются в зависимости от контекста*/
     public static abstract class UniObserver
@@ -130,8 +130,6 @@ public class st extends IKeyboard implements IKbdSettings
 /** Возвращает активный контекст. Если запущено {@link SetKbdActivity} - то возвращает его, иначе - {@link ServiceJbKbd}*/    
     public static Context c()
     {
-        if(KeySetActivity.inst!=null)
-            return KeySetActivity.inst;
         if(SetKbdActivity.inst!=null)
             return SetKbdActivity.inst;
         if(ServiceJbKbd.inst!=null)

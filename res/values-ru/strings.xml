@@ -15,8 +15,6 @@
     <string name="set_key_height_landscape">Высота клавиш - ландшафт</string>
     <string name="set_key_height_landscape_desc">Изменение высоты клавиш в ландшафтном режиме</string>
 
-    <string name="set_keys">Управление клавишами</string>
-    <string name="set_keys_desc">Пользовательская настройка клавиш (кроме Home и Power)</string>
     <string name="set_languages">Выбор языков</string>
     <string name="set_languages_desc">Выбор языков для переключения и раскладок клавиатур</string>
     <string name="set_key_voice">Вибрация и звук</string>
@@ -117,12 +115,6 @@
         <item><b>$$</b> - символ $ </item>
     </string-array>
 
-<!-- Text, which shown to user when key list is empty -->    
-    <string name="ks_empty_keys">Список клавиш пуст. Вы можете добавить действие для клавиши, которое будет выполняться, пока Jbak Keyboard назначен вводом по умолчанию</string>
-
-    <string name="ks_add_key">Новая клавиша</string>
-    <string name="ks_press_key">Нажмите клавишу...</string>
-    <string name="ks_type">Выполняется</string>
     <!-- Strings for about dialog -->
 	<string name="about">О программе</string>
 	<string name="about_app">Программа:</string>
@@ -133,34 +125,6 @@
 	<string name="about_other">Прочее:</string>
 	<string name="about_other_desc">Автор иконок: Али Гамидов (ali.gamidov@mail.ru)</string>
         
-    <string-array name="ks_type_variants">
-        <item>Всегда</item>
-        <item>В полях ввода</item>
-        <item>Не в текстовых полях</item>
-    </string-array>
-    <string name="ks_press_type">Тип нажатия</string>
-    <string name="ks_press_type_short">Короткое нажатие</string>
-    <string name="ks_press_type_long">Удержание клавиши</string>
-    
-    <string-array name="ks_press_type_variants">
-        <item>@string/ks_press_type_short</item>
-        <item>@string/ks_press_type_long</item>
-    </string-array>
-    <string name="ks_action">Действие</string>
-    <string name="ks_action_run_app">Запуск программы</string>
-    <string name="ks_action_input_text">Ввод текста</string>
-    <string name="ks_action_app_details">Свойства программы</string>
-
-    <string name="ks_select_app">Выбор программы</string>
-    <string name="ks_app_for_launch">Программа для запуска</string>
-    <string name="ks_text_for_input">Текст для ввода</string>
-
-    
-<!-- Known key name format. If key is letter or one of other known key (see below) -->    
-    <string name="ks_char_label">Клавиша \"%s\"</string>
-<!-- Unknown key name format. %d replaced with keycode integer -->    
-    <string name="ks_non_char_label">Клавиша с кодом "%d"</string>
-
 <!-- Names for various keyboards -->
     <string name="kbd_name_qwerty">Клавиатура Qwerty</string>    
     <string name="kbd_name_qwerty_tablet">Qwerty для планшетов</string>
@@ -173,11 +137,4 @@
 	<string name="kbd_design_ussr">Рождённый в СССР</string>
 	<string name="kbd_design_htc">Псевдо HTC</string>
 	    
-<!-- Names for some keys -->    
-    <string name="k_search">Поиск</string>
-    <string name="k_back">Назад</string>
-    <string name="k_menu">Меню</string>
-    <string name="k_volumeDown">Громкость +</string>
-    <string name="k_volumeUp">Громкость -</string>
-
 </resources>

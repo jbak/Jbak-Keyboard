@@ -248,7 +248,7 @@ public class CustomKbdDesign
                 }
                 ++pos;
             }
-            KbdDesign des[] = new KbdDesign[st.arDesign.length+ar.size()];
+            KbdDesign des[] = new KbdDesign[pos+ar.size()];
             System.arraycopy(st.arDesign, 0, des, 0, pos);
             for(KbdDesign kd:ar)
             {

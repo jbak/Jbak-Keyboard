@@ -268,8 +268,6 @@ public class JbKbdView extends KeyboardView {
     }
     @Override
     protected boolean onLongPress(Key key) {
-        if(ServiceJbKbd.inst==null||ServiceJbKbd.inst.m_repeat>0)
-            return false;
         if(processLongPress(key))
             return true;
         return super.onLongPress(key);

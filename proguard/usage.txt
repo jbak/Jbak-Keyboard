@@ -77,7 +77,7 @@ com.jbak.CustomGraphics.GradBack:
     public static final int DEFAULT_COLOR
     public static final int GRADIENT_TYPE_LINEAR
     public static final int GRADIENT_TYPE_SWEEP
-    214:215:public com.jbak.CustomGraphics.GradBack setAbrisColor(int)
+    216:217:public com.jbak.CustomGraphics.GradBack setAbrisColor(int)
 com.jbak.JbakKeyboard.AdPreference
 com.jbak.JbakKeyboard.CandidateView:
     private static final int OUT_OF_BOUNDS
@@ -105,6 +105,13 @@ com.jbak.JbakKeyboard.CustomKbdDesign:
     public static final int P_KeyboardBackgroundStartColor
     public static final int P_KeyboardBackgroundEndColor
     public static final int P_KeyboardBackgroundGradientType
+    public static final int P_SpecKeyBackStartColor
+    public static final int P_SpecKeyBackEndColor
+    public static final int P_SpecKeyStrokeStartColor
+    public static final int P_SpecKeyStrokeEndColor
+    public static final int P_SpecKeyTextColor
+com.jbak.JbakKeyboard.Dlg:
+    43:51:public static android.app.AlertDialog CustomDialog(android.content.Context,android.view.View,java.lang.String,java.lang.String,java.lang.String,com.jbak.JbakKeyboard.st$UniObserver)
 com.jbak.JbakKeyboard.EditSetActivity:
     public static final java.lang.String EXTRA_PREF_KEY
     public static final java.lang.String EXTRA_DEFAULT_EDIT_SET
@@ -125,7 +132,7 @@ com.jbak.JbakKeyboard.IKeyboard:
     public static final int DEF_COLOR
     public static final int KBD_DESIGN_STANDARD
     public static final int KEYCODE_LANG_CHANGE
-    212:218:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
+    230:236:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
 com.jbak.JbakKeyboard.JbCandView
 com.jbak.JbakKeyboard.JbKbd:
     58:59:void setHeightKey(int)
@@ -144,36 +151,12 @@ com.jbak.JbakKeyboard.JbKbdView:
     com.jbak.JbakKeyboard.EditSetActivity$EditSet m_esMainFont
     com.jbak.JbakKeyboard.EditSetActivity$EditSet m_esSecondFont
     com.jbak.JbakKeyboard.EditSetActivity$EditSet m_esLabelFont
-    385:387:void reload()
-com.jbak.JbakKeyboard.KbdConsole:
-    public static final java.lang.String CMD_INPUT
-    public static final java.lang.String ARG_KEYCODE
-    java.lang.Process m_proc
-    13:25:public static com.jbak.JbakKeyboard.KbdConsole getConsole()
-    31:42:boolean check()
+    397:399:void reload()
 com.jbak.JbakKeyboard.KeyDrw:
     public static final java.lang.String DRW_PREFIX
     public static final int DELIM
     public static final int DEFAULT_GAP
     public static final int BIG_GAP
-com.jbak.JbakKeyboard.KeyPressProcessor:
-    49:51:void destroy()
-    160:190:void addNullView(android.view.KeyEvent)
-com.jbak.JbakKeyboard.KeyPressProcessor$1
-com.jbak.JbakKeyboard.KeyPressProcessor$2
-com.jbak.JbakKeyboard.KeySet:
-    public static final int ACT_DEFAULT
-    public static final int ACT_RUN_APP
-    public static final int ACT_TEXT
-    public static final int ACT_APP_DETAILS
-    public static final java.lang.String KEY_APP
-    public static final java.lang.String KEY_TEXT
-    private static final java.lang.String APP_PKG_NAME_21
-    private static final java.lang.String APP_PKG_NAME_22
-    private static final java.lang.String APP_DETAILS_PACKAGE_NAME
-    private static final java.lang.String APP_DETAILS_CLASS_NAME
-com.jbak.JbakKeyboard.KeySetActivity:
-    public static final int STAT_WAIT_KEY
 com.jbak.JbakKeyboard.R
 com.jbak.JbakKeyboard.R$array
 com.jbak.JbakKeyboard.R$attr
@@ -191,7 +174,6 @@ com.jbak.JbakKeyboard.ServiceJbKbd:
     public static final int STATE_SENTENCE_UP
     public static final int STATE_SENTENCE_SPACE
     public static final int STATE_EMPTY_UP
-    int m_CursorPos
     android.inputmethodservice.AbstractInputMethodService$AbstractInputMethodSessionImpl m_is
 com.jbak.JbakKeyboard.Stor:
     public static final int DATABASE_VERSION
@@ -210,6 +192,8 @@ com.jbak.JbakKeyboard.Stor:
     public static final java.lang.String DB_FILENAME
     private static final java.lang.String KEYS_TABLE_CREATE
     private static final java.lang.String CLIPBOARD_TABLE_CREATE
+    165:169:static byte[] getBytesFromIntent(android.content.Intent)
+    173:180:static android.content.Intent getIntentFromBytes(byte[])
 com.jbak.JbakKeyboard.Templates:
     java.io.File m_cd
     public static final java.lang.String TEMPLATE_PATH
@@ -237,7 +221,6 @@ com.jbak.JbakKeyboard.st:
     public static final boolean DEBUG
     63:64:public static final int min(int,int)
     68:69:public static final int max(int,int)
-com.jbak.JbakKeyboard.st$SyncAsycOper:
-    159:160:void startSync()
+com.jbak.JbakKeyboard.st$SyncAsycOper
 com.jbak.JbakKeyboard.st$UniObserver:
     27:31:public st$UniObserver(java.lang.Object,java.lang.Object)
