@@ -1,20 +1,31 @@
 package com.jbak.JbakKeyboard;
 
 import java.io.File;
+import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Environment;
 
 import com.jbak.CustomGraphics.GradBack;
 
 
 public class IKeyboard
 {
+    public static final String LANG_SYM_KBD = "symbol";
+    public static final String LANG_SYM_KBD1 = "symbol2";
+    public static final String LANG_EDITTEXT = "edittext";
+    public static final String LANG_SMILE = "smile";
   //--------------------------------------------------------------------------
     public static final int LANG_EN = 0;
     public static final int LANG_RU = 1;
     public static final int LANG_UK = 2;
     public static final int LANG_BE = 3;
+    public static final int LANG_SYM = 4;
+    public static final int LANG_SYM1 = 5;
+    public static final int LANG_EDIT = 6;
+    public static final int LANG_SMIL = 7;
+    public static final int MAX_LANG = 3;
 //--------------------------------------------------------------------------
     public static Lang[] arLangs = 
     {
@@ -22,6 +33,10 @@ public class IKeyboard
         new Lang(LANG_RU,"ru", R.string.lang_ru),
         new Lang(LANG_UK,"uk", R.string.lang_ua),
         new Lang(LANG_BE,"be", R.string.lang_be),
+        new Lang(LANG_SYM,LANG_SYM_KBD, R.string.lang_symbol),
+        new Lang(LANG_SYM1,LANG_SYM_KBD1, R.string.lang_symbol_shift),
+        new Lang(LANG_EDIT,LANG_EDITTEXT, R.string.lang_edittext),
+        new Lang(LANG_SMIL,LANG_SMILE, R.string.lang_smiles),
     };
 //--------------------------------------------------------------------------
  // Коды клавиатур  
@@ -31,7 +46,17 @@ public class IKeyboard
     public static final int KBD_QWERTY_UA = 3;
     public static final int KBD_QWERTY_RU_HALF=4;
     public static final int KBD_QWERTY_EN_HALF=5;
+    public static final int KBD_SYM=6;
+    public static final int KBD_SYM1=7;
+    public static final int KBD_EDITTEXT=8;
+    public static final int KBD_SMILE=9;
     
+    public static final int KBD_CUSTOM=-1;
+    
+    public static String getSettingsPath()
+    {
+        return Environment.getExternalStorageDirectory().getAbsolutePath()+"/jbakKeyboard/";
+    }
  /** Массив ресурсов для клавиатуры */    
     public static Keybrd[] arKbd = 
     {
@@ -41,6 +66,10 @@ public class IKeyboard
         new Keybrd(KBD_QWERTY_UA,       arLangs[LANG_UK],       R.xml.qwerty_ua,        R.string.kbd_name_qwerty),
         new Keybrd(KBD_QWERTY_RU_HALF,  arLangs[LANG_RU],       R.xml.qwerty_ru_tablet, R.string.kbd_name_qwerty_tablet),
         new Keybrd(KBD_QWERTY_EN_HALF,  arLangs[LANG_EN],       R.xml.qwerty_en_tablet, R.string.kbd_name_qwerty_tablet),
+        new Keybrd(KBD_SYM,             arLangs[LANG_SYM],    R.xml.symbols, R.string.lang_symbol),
+        new Keybrd(KBD_SYM1,            arLangs[LANG_SYM1],    R.xml.symbols_shift, R.string.lang_symbol_shift),
+        new Keybrd(KBD_EDITTEXT,        arLangs[LANG_EDIT],    R.xml.edittext, R.string.lang_edittext),
+        new Keybrd(KBD_SMILE,           arLangs[LANG_SMIL],    R.xml.smileys, R.string.lang_smiles),
     };
 // Флаги дизайна (Design Flags)
 /** Жирный шрифт */    
@@ -190,6 +219,27 @@ public class IKeyboard
         public String name;
         /** Строка с названием языка из ресурсов */
         public int strId;
+        String getName(Context c)
+        {
+            try
+            {
+                if(strId>0)
+                    return c.getString(strId);
+                else
+                {
+                    new Locale(name).getDisplayLanguage();
+                }
+            }
+            catch (Throwable e) 
+            {
+                st.logEx(e);
+            }
+            return name;
+        }
+        final boolean isVirtualLang()
+        {
+            return name.equals(LANG_SYM_KBD)||name.equals(LANG_SYM_KBD1)||name.equals(LANG_EDITTEXT)||name.equals(LANG_SMILE);
+        }
     }
 //*****************************************************************    
 /** Класс для хранения сведений о конкретной клавиатуре */    
@@ -217,6 +267,17 @@ public class IKeyboard
         public int kbdCode;
 /** Строка из ресурсов с названием клавиатуры  */       
         public int resName;
+        public String path = null;
+        String getName(Context c)
+        {
+            if(path!=null)
+            {
+                return new File(path).getName();
+            }
+            if(resName!=0)
+                return c.getString(resName);
+            return "<undef>";
+        }
     }
 //-----------------------------------------------------------------------------    
     public static Keybrd defKbd()

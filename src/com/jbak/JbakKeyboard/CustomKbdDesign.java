@@ -195,7 +195,7 @@ public class CustomKbdDesign
         s = s.trim();
         if(s.indexOf('#')==0||s.startsWith("0x")) // 16-ричное значение
         {
-            return parseInt(s.substring(1),16);
+            return st.parseInt(s.substring(1),16);
         }
         return Integer.valueOf(s);
     }
@@ -211,11 +211,13 @@ public class CustomKbdDesign
     {
         String err = "";
         try{
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath()
-                          +"/jbakKeyboard/skins";  
+            String path = st.getSettingsPath()+"skins";  
             File dir = new File(path);
-            if(!dir.exists()||!dir.isDirectory())
-                return err;
+            if(!dir.exists())
+            {
+                dir.mkdirs();
+               return err;
+            }
             File skins[] = dir.listFiles(new FilenameFilter()
             {
                 @Override
@@ -226,6 +228,8 @@ public class CustomKbdDesign
                     return filename.substring(pos+1).compareTo("skin")==0;
                 }
             });
+            if(skins.length==0)
+                return err;
             Vector<KbdDesign> ar = new Vector<IKeyboard.KbdDesign>();
             for(File fs:skins)
             {
@@ -261,19 +265,5 @@ public class CustomKbdDesign
             return "System error";
         }
         return err;
-    }
-    private static int parseInt(String string,int radix) {
-        int result = 0;
-        int degree = 1;
-        for(int i=string.length()-1;i>=0;i--)
-        {
-            int digit = Character.digit(string.charAt(i), radix);
-            if (digit == -1) {
-                break;
-            }
-            result+=degree*digit;
-            degree*=radix;
-        }
-        return result;
     }
 }

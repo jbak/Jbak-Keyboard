@@ -82,6 +82,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
         inst = this;
         CustomKbdDesign.loadCustomSkins();
+        CustomKeyboard.loadCustomKeyboards();
         m_vibro = new VibroThread(this);
         m_words = new Words();
         startService(new Intent(this, ClipbrdService.class));
@@ -103,10 +104,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         super.onDestroy();
     }
 
-    boolean isLandscape()
-    {
-        return getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT;
-    }
 /** Стартует ввод */
     @Override
     public View onCreateInputView()
@@ -154,6 +151,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         mPredictionOn = false;
         mCompletionOn = false;
         mCompletions = null;
+        int var = attribute.inputType & EditorInfo.TYPE_MASK_VARIATION;
         switch (attribute.inputType & EditorInfo.TYPE_MASK_CLASS)
         {
             case EditorInfo.TYPE_CLASS_NUMBER:
@@ -164,7 +162,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             default:
                 mPredictionOn = m_bComplete;
                 mCompletionOn = m_bComplete;
-                if ((attribute.inputType & EditorInfo.TYPE_MASK_VARIATION) == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS || (attribute.inputType & EditorInfo.TYPE_MASK_VARIATION) == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+                if (var == EditorInfo.TYPE_TEXT_VARIATION_URI 
+                    ||var == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
                     st.setTempEnglishQwerty();
                 else
                     st.setQwertyKeyboard();
@@ -413,6 +412,10 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         {
             handleBackspace();
         }
+        else if (primaryCode<=-500&&primaryCode>=-600)
+        {
+            st.kbdCommand(primaryCode);
+        }
         else if (primaryCode == Keyboard.KEYCODE_SHIFT)
         {
             if (JbKbdView.inst != null)
@@ -439,15 +442,13 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 
         else if (primaryCode == Keyboard.KEYCODE_MODE_CHANGE && JbKbdView.inst != null)
         {
-            JbKbd kb = st.curKbd();
-            int rid = kb.resId;
-            if (st.kbdForId(rid) == null)
+            if (st.isQwertyKeyboard(st.curKbd().kbd))
             {
-                st.setQwertyKeyboard();
+                st.setSymbolKeyboard(false);
             }
             else
             {
-                st.setSymbolKeyboard(false);
+                st.setQwertyKeyboard();
             }
         }
         else if (isWordSeparator(primaryCode))
@@ -467,7 +468,14 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
         EditorInfo ei = getCurrentInputEditorInfo();
         int var = ei.inputType & EditorInfo.TYPE_MASK_VARIATION;
-        return ei != null && st.isQwertyKeyboard() && var != EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS && var != EditorInfo.TYPE_TEXT_VARIATION_URI && var != EditorInfo.TYPE_TEXT_VARIATION_PASSWORD && var != EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+        int type = ei.inputType&EditorInfo.TYPE_MASK_CLASS;
+        return type==EditorInfo.TYPE_CLASS_TEXT
+                &&ei != null && st.isQwertyKeyboard(st.curKbd().kbd) 
+                && var != EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS 
+                && var != EditorInfo.TYPE_TEXT_VARIATION_URI 
+                && var != EditorInfo.TYPE_TEXT_VARIATION_PASSWORD 
+                && var != EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                && var != EditorInfo.TYPE_TEXT_VARIATION_FILTER;
     }
     private final void handleWordSeparator(int primaryCode)
     {
@@ -567,7 +575,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         }
     }
 
-    private void handleCharacter(int primaryCode)
+    public void handleCharacter(int primaryCode)
     {
         InputConnection ic = getCurrentInputConnection();
         if (isInputViewShown())
@@ -913,7 +921,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public boolean onEvaluateFullscreenMode()
     {
-        int set = isLandscape() ? m_LandscapeEditType : m_PortraitEditType;
+        int set = st.isLandscape(this) ? m_LandscapeEditType : m_PortraitEditType;
         boolean b = super.onEvaluateFullscreenMode();
         if (set == st.PREF_VAL_EDIT_TYPE_FULLSCREEN)
             b = true;

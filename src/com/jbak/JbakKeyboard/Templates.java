@@ -23,16 +23,7 @@ public class Templates
     Templates()
     {
         inst = this;
-        File f = Environment.getExternalStorageDirectory();
-        if(f==null||!f.exists()||!f.canWrite())
-        {
-            f = Environment.getDataDirectory();
-        }
-        if(f==null||!f.exists()||!f.canWrite())
-        {
-            return;
-        }
-        String rd = f.getAbsolutePath()+File.separatorChar+TEMPLATE_PATH;
+        String rd = st.getSettingsPath()+TEMPLATE_PATH;
         m_rootDir = new File(rd);
         if(!m_rootDir.exists())
         {
@@ -528,7 +519,7 @@ public class Templates
     }
 /** Текущая папка */    
     File m_cd;
-    public static final String TEMPLATE_PATH = "JbakKeyboard/templates";
+    public static final String TEMPLATE_PATH = "templates";
     File m_rootDir;
     File m_curDir;
     File m_editFile;

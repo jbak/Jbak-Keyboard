@@ -1,9 +1,12 @@
 package com.jbak.CustomGraphics;
 
+import java.util.Vector;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Paint.Style;
@@ -50,6 +53,20 @@ public class GradBack extends RectShape
 /** Толщина обводки*/    
     int m_strokeSize=1;
     int abrisColor = DEFAULT_COLOR;
+    boolean m_bUseCache = false;
+    public static class PaintEntry
+    {
+        public PaintEntry(float width,float height,Paint paint)
+        {
+            w = width;
+            h = height;
+            pt = paint;
+        }
+        float w;
+        float h;
+        Paint pt;
+    }
+    Vector<PaintEntry>m_arCachePaints = new Vector<GradBack.PaintEntry>();
 /** Пустой конструктор*/	
 	public GradBack()
 	{
@@ -156,13 +173,32 @@ public class GradBack extends RectShape
 	@Override
 	protected void onResize(float width, float height) 
 	{
-	    if(m_ptFill!=null&&width==m_rect.width()+m_gap*2&&height==m_rect.height()+m_gap*2)
-	        return;
-        m_ptFill = makeBackground(width, height);
         if(m_stroke!=null)
             m_stroke.onResize(width, height);
-		super.onResize(width, height);
+	    if(m_ptFill!=null&&width==m_rect.width()+m_gap*2&&height==m_rect.height()+m_gap*2)
+	        return;
         m_rect.set(m_gap, m_gap, width-m_gap, height-m_gap);
+        m_ptFill = null;
+	    if(m_bUseCache)
+	    {
+    	    for(PaintEntry pe:m_arCachePaints)
+    	    {
+    	        if(pe.w==width&&pe.h==height)
+    	        {
+    	            m_ptFill = pe.pt;
+    	            break;
+    	        }
+    	    }
+	    }
+	    if(m_ptFill==null)
+	    {
+	        m_ptFill = makeBackground(width, height);
+	        if(m_bUseCache)
+	        {
+	            m_arCachePaints.add(new PaintEntry(width, height, m_ptFill));
+	        }
+	    }
+		super.onResize(width, height);
 	};
 /** Отрисовка */	
 	@Override

@@ -33,6 +33,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jbak.CustomGraphics.CustomButtonDrawable;
 import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
@@ -231,6 +232,9 @@ public class JbKbdView extends KeyboardView {
     {
         if(ServiceJbKbd.inst!=null)
             ServiceJbKbd.inst.onLongPress(key);
+        if(key.popupCharacters!=null)
+            return false;
+        boolean isService = getOnKeyboardActionListener() instanceof ServiceJbKbd;
         if(key.codes[0] == Keyboard.KEYCODE_MODE_CHANGE)
         {
             ServiceJbKbd.inst.onOptions();
@@ -257,10 +261,16 @@ public class JbKbdView extends KeyboardView {
                     st.kbdCommand(cmd);
                 else if(lk.m_kd.txtSmall.equals("tab"))
                 {
-                    getOnKeyboardActionListener().onText("\t");
+                    if(isService)
+                        ServiceJbKbd.inst.handleCharacter(9);
                 }
                 else
-                    getOnKeyboardActionListener().onText(lk.m_kd.txtSmall);
+                {
+                    if(isService&&lk.m_kd.txtSmall.length()==1)
+                        ServiceJbKbd.inst.handleCharacter(lk.m_kd.txtSmall.charAt(0));
+                    else
+                        getOnKeyboardActionListener().onText(lk.m_kd.txtSmall);
+                }
                 return true;
             }
         }
@@ -274,8 +284,8 @@ public class JbKbdView extends KeyboardView {
     }
     void handleShift()
     {
-        int rid = getCurKeyboard().resId;
-        if(st.kbdForId(rid)!=null)
+        Keybrd kbd = getCurKeyboard().kbd;
+        if(st.isQwertyKeyboard(kbd))
         {
             String s = st.pref().getString(st.PREF_KEY_SHIFT_STATE, "0");
             int v = Integer.decode(s);
@@ -314,7 +324,7 @@ public class JbKbdView extends KeyboardView {
         }
         else
         {
-            st.setSymbolKeyboard(rid == R.xml.symbols);
+            st.setSymbolKeyboard(kbd.resId == R.xml.symbols);
         }
     }
     boolean isUpperCase()
@@ -388,14 +398,19 @@ public class JbKbdView extends KeyboardView {
         else if(f<ls.length-1)
             newLang = ls[f+1];
         Keybrd k = st.kbdForLangName(newLang);
-        setKeyboard(new JbKbd(getContext(), k.resId));
+        if(k==null)
+        {
+            Toast.makeText(getContext(), "No keyboards for lang "+newLang, 700);
+            return;
+        }
+        setKeyboard(st.loadKeyboard(k));
         st.saveCurLang();
         invalidateAllKeys();
     }
     void reload()
     {
     	init();
-    	setKeyboard(new JbKbd(getContext(),st.getCurQwertyRes()));
+    	setKeyboard(st.loadKeyboard(st.getCurQwertyKeybrd()));
     }
     void onKeyPress(int primaryCode)
     {
@@ -407,5 +422,9 @@ public class JbKbdView extends KeyboardView {
            m_PreviewDrw.set(key,true);
            key.iconPreview = m_PreviewDrw.getDrawable();
         }
+    }
+    public boolean isUserInput()
+    {
+        return getOnKeyboardActionListener() instanceof ServiceJbKbd;
     }
 }

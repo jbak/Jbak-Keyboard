@@ -2,6 +2,7 @@ package com.jbak.JbakKeyboard;
 import com.google.ads.*;
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
@@ -11,8 +12,11 @@ import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.google.ads.AdSize;
 import com.google.ads.AdView;
@@ -60,7 +64,7 @@ public class ComMenu
         if(st.kv().m_KeyBackDrw!=null)
         {
             btn.setBackgroundDrawable(st.kv().m_drwKeyBack);
-            btn.setOnTouchListener(m_btnListener);
+//            btn.setOnTouchListener(m_btnListener);
         }
     }
 /** Создаёт новую кнопку элемента меню */   
@@ -178,11 +182,13 @@ public class ComMenu
     void show(st.UniObserver observer)
     {
         m_MenuObserver = observer;
-        LinearLayout ll = (LinearLayout)m_MainView.findViewById(R.id.com_menu_container);
-        for(MenuEntry me:m_arItems)
-        {
-            ll.addView(newView(me));
-        }
+        ListView lv = (ListView)m_MainView.findViewById(R.id.com_menu_container);
+        lv.setAdapter(new Adapt(st.c(), this));
+//        LinearLayout ll = (LinearLayout)m_MainView.findViewById(R.id.com_menu_container);
+//        for(MenuEntry me:m_arItems)
+//        {
+//            ll.addView(newView(me));
+//        }
         m_MainView.setBackgroundDrawable(st.kv().getBackground());
         View bClose = m_MainView.findViewById(R.id.close);
         if(bClose!=null)
@@ -252,5 +258,35 @@ public class ComMenu
         };
         menu.show(obs);
         return true;
+    }
+    static class Adapt extends ArrayAdapter<MenuEntry>
+    {
+        ComMenu m_menu; 
+        public Adapt(Context context,ComMenu menu)
+        {
+            super(context,0);
+            m_menu = menu;
+        }
+        @Override
+        public int getCount() 
+        {
+            return m_menu.m_arItems.size();
+        };
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
+            MenuEntry me = m_menu.m_arItems.get(position);
+            if(convertView!=null)
+            {
+                Button b = (Button)convertView;
+                b.setId(me.id);
+                b.setText(me.text);
+            }
+            else
+            {
+                convertView = m_menu.newView(me);
+            }
+            return convertView;
+        }
     }
 }

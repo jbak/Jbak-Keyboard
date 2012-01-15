@@ -72,6 +72,11 @@
         <item>2-state (normal,shift)</item>
         <item>2-state (normal,capslock)</item>
     </string-array>
+    <string-array name="screen_type_vars">
+        <item>Portrait and landscape</item>
+        <item>Only portrait</item>
+        <item>Only landscape</item>
+    </string-array>
         
     <string name="es_title">Fullscreen editor settings</string>
     <string name="es_sample">Edit sample</string>
@@ -155,4 +160,8 @@
  	<string name="lang_ru">Русский</string>   
  	<string name="lang_ua">Українська</string>   
  	<string name="lang_be">Белорусский</string>   
+ 	<string name="lang_symbol">Symbol keyboard</string>   
+ 	<string name="lang_symbol_shift">Symbol shift keyboard</string>   
+ 	<string name="lang_edittext">Edit text keyboard</string>   
+ 	<string name="lang_smiles">Smiles keyboard</string>   
 </resources>

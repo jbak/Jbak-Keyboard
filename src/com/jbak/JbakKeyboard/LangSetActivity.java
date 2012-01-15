@@ -32,6 +32,7 @@ public class LangSetActivity extends ListActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         inst = this;
+        CustomKeyboard.loadCustomKeyboards();
         LangAdapter adapt = new LangAdapter(this, R.layout.lang_list_item);
         for(Lang l:st.arLangs)
             adapt.add(l);
@@ -134,8 +135,12 @@ public class LangSetActivity extends ListActivity
                 convertView = getLayoutInflater().inflate(rId, null);
             Lang l = st.arLangs[position];
             CheckBox cb = (CheckBox)convertView.findViewById(R.id.checkbox);
-            cb.setText(l.strId);
+            cb.setText(l.getName(inst));
             cb.setTag(l);
+            if(l.isVirtualLang())
+            {
+                cb.setEnabled(false);
+            }
             for(String s:m_arLangs)
             {
                 if(s.equals(l.name))

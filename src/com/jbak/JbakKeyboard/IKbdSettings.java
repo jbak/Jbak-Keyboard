@@ -24,8 +24,14 @@ public interface IKbdSettings
     public static final String PREF_KEY_VIBRO_LONG_KEY = "vl";
 /** Ключ, boolean, хранящий настройку проигрывания звуков */    
     public static final String PREF_KEY_SOUND = "sound";
-/** Ключ, int, хранящий ресурс клавиатуры для выбраного языка. Полный ключ выглядит как PREF_KEY_LANG_KBD+"en"*/    
-    public static final String PREF_KEY_LANG_KBD = "lkbd_";
+/** Ключ, int, хранящий клавиатуру для выбраного языка в портрете
+ *  Полный ключ выглядит как PREF_KEY_LANG_KBD+"en".
+ *  Хранит индекс клавиатуры в массиве, который возвращает функция st.getKeybrdArrayByLang() */    
+    public static final String PREF_KEY_LANG_KBD_PORTRAIT = "langkbd_portrait_";
+/** Ключ, int, хранящий клавиатуру для выбраного языка в ландшафте
+ *  Полный ключ выглядит как PREF_KEY_LANG_KBD+"en".
+ *  Хранит индекс клавиатуры в массиве, который возвращает функция st.getKeybrdArrayByLang() */    
+    public static final String PREF_KEY_LANG_KBD_LANDSCAPE = "langkbd_landscape_";
 /** Ключ, int, хранящий индекс текущего скина*/    
     public static final String PREF_KEY_KBD_SKIN = "kbd_skin";
 /** Ключ, boolean - предложения с большой буквы */    
@@ -80,18 +86,20 @@ public interface IKbdSettings
 	/// Список команд 
 	//-------------------------------------------------------------------    
 
+/** Внутреняя команда - открывает главное меню*/   
+    public static final int CMD_MAIN_MENU = -500;
  /** Внутреняя команда - голосовой ввод */   
-    public static final int CMD_VOICE_RECOGNIZER = -1;
-/** Внутреняя команда - запуск редактора шаблонов */    
-    public static final int CMD_TPL_EDITOR = -2;
+    public static final int CMD_VOICE_RECOGNIZER = -501;
 /** Внутреняя команда - показ шаблонов на клавиатуре */ 
-    public static final int CMD_TPL = -3;
+    public static final int CMD_TPL = -502;
 /** Внутреняя команда - запуск настроек */  
-    public static final int CMD_PREFERENCES = -4;
+    public static final int CMD_PREFERENCES = -503;
 /** Внутреняя команда - запуск мультибуфера обмена */   
-    public static final int CMD_CLIPBOARD = -5;
+    public static final int CMD_CLIPBOARD = -504;
 /** Внутреняя команда - создание папки шаблонов */  
-    public static final int CMD_TPL_NEW_FOLDER = -6;
+    public static final int CMD_TPL_NEW_FOLDER = -505;
+    /** Внутреняя команда - запуск редактора шаблонов */    
+    public static final int CMD_TPL_EDITOR = -506;
 
   //-------------------------------------------------------------------    
   /// Прочие строковые значения

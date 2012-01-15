@@ -11,7 +11,7 @@ public class Words
 {
     boolean open(String name)
     {
-        String path = DEF_PATH+name+DEF_EXT;
+        String path = st.getSettingsPath()+DEF_EXT;
         try{
             if(m_db!=null)
             {
@@ -71,7 +71,7 @@ public class Words
         }
         return ret;
     }
-    public static final String DEF_PATH = "/sdcard/JbakKeyboard/vocab/";
+    public static final String DEF_PATH = "vocab/";
     public static final String DEF_EXT = ".cdb";
     
     public static final String TABLE_WORDS = "tWords";

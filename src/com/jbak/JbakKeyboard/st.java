@@ -1,13 +1,16 @@
 package com.jbak.JbakKeyboard;
 
 import java.util.Locale;
+import java.util.Vector;
 
 import com.jbak.CustomGraphics.GradBack;
+import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -80,15 +83,16 @@ public class st extends IKeyboard implements IKbdSettings
 /** Возвращает клавиатуру для языка с именем langName */    
     public static Keybrd kbdForLangName(String langName)
     {
-        int index = pref().getInt(st.PREF_KEY_LANG_KBD+langName, -1);
-        if(index>=0)
-            return arKbd[index];
-        for(int i=0;i<arKbd.length;i++)
+        String pname = isLandscape(c())?st.PREF_KEY_LANG_KBD_LANDSCAPE:st.PREF_KEY_LANG_KBD_PORTRAIT;
+        pname+=langName;
+        int index = pref().getInt(pname, 0);
+        Vector<Keybrd> ar = getKeybrdArrayByLang(langName);
+        if(index<ar.size())
         {
-            Keybrd l = arKbd[i];
-            if(langName.equals(l.lang.name))
-                return l;
+            return ar.elementAt(index);
         }
+        if(ar.size()>0)
+            return ar.elementAt(index);
         return null;
     }
     static void log(String txt)
@@ -100,26 +104,23 @@ public class st extends IKeyboard implements IKbdSettings
     public static void saveCurLang()
     {
         JbKbd kb = curKbd();
-        if(kb==null)
+        if(kb==null||kb.kbd==null)
             return;
-        Keybrd l = kbdForId(kb.resId);
-        if(l==null)
-            return;
-        pref().edit().putString(st.PREF_KEY_LAST_LANG, l.lang.name).commit();
+        pref().edit().putString(st.PREF_KEY_LAST_LANG, kb.kbd.lang.name).commit();
     }
 /** Возвращает текущий ресурс для qwerty-клавиатуры */    
-    public static int getCurQwertyRes()
+    public static Keybrd getCurQwertyKeybrd()
     {
-        SharedPreferences pref =pref();
-        if(pref==null||!pref.contains(PREF_KEY_LAST_LANG))
+        SharedPreferences p =pref();
+        if(p==null||!p.contains(PREF_KEY_LAST_LANG))
         {
             String lang = Locale.getDefault().getLanguage();
             Keybrd l = kbdForLangName(lang);
             if(l!=null)
-                return l.resId;
-            return defKbd().resId;
+                return l;
+            return defKbd();
         }
-        return kbdForLangName(pref.getString(PREF_KEY_LAST_LANG, defKbd().lang.name)).resId;
+        return kbdForLangName(p.getString(PREF_KEY_LAST_LANG, defKbd().lang.name));
     }
 /** Возвращает текущую клавиатуру или null*/    
     public static JbKbd curKbd()
@@ -185,26 +186,37 @@ public class st extends IKeyboard implements IKbdSettings
     /** Обработчик операции */  
         UniObserver m_obs;
     }
-    public static boolean isQwertyKeyboard()
+    public static boolean isQwertyKeyboard(Keybrd k)
     {
-        int r = curKbd().resId;
-        return r!=R.xml.smileys&&r!=R.xml.symbols&&r!=R.xml.edittext&&r!=R.xml.symbols_shift;
+        return !k.lang.isVirtualLang();
     }
+    static Vector <Keybrd> getKeybrdArrayByLang(String lang)
+    {
+        Vector<Keybrd> ret = new Vector<IKeyboard.Keybrd>();
+        for(Keybrd k:st.arKbd)
+        {
+            if(k.lang.name.equals(lang))
+                ret.add(k);
+        }
+        return ret;
+    }
+
 /** Установка клавиатуры редактирования текста */
     public static void setTextEditKeyboard()
     {
-        JbKbdView.inst.setKeyboard(new JbKbd(st.c(),R.xml.edittext));
+        JbKbdView.inst.setKeyboard(loadKeyboard(kbdForLangName(LANG_EDITTEXT)));
     }
 /** Установка клавиатуры смайликов */
     public static void setSmilesKeyboard()
     {
-        JbKbdView.inst.setKeyboard(new JbKbd(st.c(),R.xml.smileys));
+        JbKbdView.inst.setKeyboard(loadKeyboard(kbdForLangName(LANG_SMILE)));
     }
 /** Установка символьной клавиатуры 
 *@param bShift true - для установки symbol_shift, false - для symbol */
     public static void setSymbolKeyboard(boolean bShift)
     {
-        JbKbdView.inst.setKeyboard(new JbKbd(st.c(),bShift?R.xml.symbols_shift:R.xml.symbols));
+        Keybrd k = kbdForLangName(bShift?LANG_SYM_KBD1:LANG_SYM_KBD);
+        JbKbdView.inst.setKeyboard(loadKeyboard(k));
     }
 /** Установка qwerty-клавиатуры с учётом последнего использования */    
     public static void setQwertyKeyboard()
@@ -214,20 +226,44 @@ public class st extends IKeyboard implements IKbdSettings
 /** Установка qwerty-клавиатуры с учётом последнего использования */    
     public static void setQwertyKeyboard(boolean bForce)
     {
+//        CustomKeyboard ck = new CustomKeyboard(JbKbdView.inst.getContext(), "/mnt/sdcard/jbakKeyboard/keyboards/qwerty_ru.xml");
+//        JbKbdView.inst.setKeyboard(ck);
         JbKbd kb = curKbd();
-        if(kb!=null&&!bForce&&getCurQwertyRes()==kb.resId)
-            return;
-        JbKbdView.inst.setKeyboard(new JbKbd(st.c(),getCurQwertyRes()));
+        Keybrd cur = getCurQwertyKeybrd();
+//        if(kb!=null&&!bForce) // Проверить, одинаковы ли клавиатуры
+//            return;
+        JbKbd newKbd = null;
+        JbKbdView.inst.setKeyboard(loadKeyboard(cur));
         saveCurLang();
+    }
+    static JbKbd loadKeyboard(Keybrd k)
+    {
+        if(k.kbdCode==KBD_CUSTOM)
+        {
+            CustomKeyboard jk =  new CustomKeyboard(st.c(), k);
+            if(!jk.m_bBrokenLoad)
+                return jk;
+            for(Keybrd ck:arKbd)
+            {
+                if(ck.lang.name.equals(k.lang.name))
+                    return loadKeyboard(ck);
+            }
+            return null;
+        }
+        else
+        {
+            return new JbKbd(st.c(),k);
+        }
+
     }
 /** Временно устанавливает английскую клавиатуру без запоминания языка */    
     public static void setTempEnglishQwerty()
     {
         JbKbd kb = curKbd();
         Keybrd k = kbdForLangName(arLangs[LANG_EN].name);
-        if(kb!=null&&kb.resId==k.resId)
-            return;
-        JbKbdView.inst.setKeyboard(new JbKbd(st.c(),k.resId));
+//        if(kb!=null&&kb.resId==k.resId)
+//            return;
+        JbKbdView.inst.setKeyboard(loadKeyboard(k));
     }
     public static String getCurLang()
     {
@@ -333,6 +369,11 @@ public class st extends IKeyboard implements IKbdSettings
                 st.logEx(e);
             }
               break;
+            case CMD_MAIN_MENU: 
+                if(st.kv().isUserInput())
+                {
+                    ServiceJbKbd.inst.onOptions();
+                }break;
             case CMD_VOICE_RECOGNIZER: new VRTest().startVoice(); return true;//return runAct(VRActivity.class);
             case CMD_TPL_EDITOR: return runAct(TplEditorActivity.class);
             case CMD_TPL_NEW_FOLDER: 
@@ -368,6 +409,16 @@ public class st extends IKeyboard implements IKbdSettings
             return BitmapFactory.decodeResource(st.c().getResources(), bid);
         return null;
     }
+    static Lang addCustomLang(String name)
+    {
+        Lang lng = new Lang(arLangs.length, name, 0);
+        Lang al[] = new Lang[arLangs.length+1];
+        int pos = arLangs.length;
+        System.arraycopy(arLangs, 0, al, 0, pos);
+        al[pos] = lng;
+        arLangs = al;
+        return lng;
+    }
     static final SharedPreferences pref()
     {
         return pref(c());
@@ -381,5 +432,23 @@ public class st extends IKeyboard implements IKbdSettings
         if(KeyboardPaints.inst==null)
             return new KeyboardPaints();
         return KeyboardPaints.inst;
+    }
+    public static int parseInt(String string,int radix) {
+        int result = 0;
+        int degree = 1;
+        for(int i=string.length()-1;i>=0;i--)
+        {
+            int digit = Character.digit(string.charAt(i), radix);
+            if (digit == -1) {
+                continue;
+            }
+            result+=degree*digit;
+            degree*=radix;
+        }
+        return result;
+    }
+    static final boolean isLandscape(Context c)
+    {
+        return c.getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT;
     }
 }

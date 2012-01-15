@@ -19,6 +19,8 @@ package com.jbak.JbakKeyboard;
 import java.util.Iterator;
 import java.util.List;
 
+import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -30,20 +32,15 @@ import android.view.inputmethod.EditorInfo;
 public class JbKbd extends Keyboard {
 
     private LatinKey mEnterKey;
-    public JbKbd(Context context, int xmlLayoutResId) {
-        super(context, xmlLayoutResId);
+    public Keybrd kbd;
+    public JbKbd(Context context, Keybrd kbd) {
+        super(context, kbd.resId);
+        this.kbd = kbd;
         init();
-        resId = xmlLayoutResId;
-    }
-    public JbKbd(Context context, int layoutTemplateResId, 
-            CharSequence characters, int columns, int horizontalPadding) {
-        super(context, layoutTemplateResId, characters, columns, horizontalPadding);
-        init();
-        resId = layoutTemplateResId;
     }
     void init()
     {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(st.c());
+        SharedPreferences sp = st.pref();
         if(!sp.contains(st.PREF_KEY_DEF_HEIGHT))
         {
             sp.edit().putInt(st.PREF_KEY_DEF_HEIGHT, getHeightKey()).commit();
@@ -57,7 +54,6 @@ public class JbKbd extends Keyboard {
     {
         super.setKeyHeight(height);
     }
-    int resId;
     @Override
     protected Key createKeyFromXml(Resources res, Row parent, int x, int y, 
             XmlResourceParser parser) {
@@ -128,12 +124,22 @@ public class JbKbd extends Keyboard {
         
         public LatinKey(Resources res, Keyboard.Row parent, int x, int y, XmlResourceParser parser) {
             super(res, parent, x, y, parser);
+            init(parent);
+        }
+        public LatinKey(Row row)
+        {
+            super(row);
+        }
+        void init(Row parent)
+        {
             if(JbKbdView.inst.m_KeyHeight>0)
             {
                 parent.defaultHeight = JbKbdView.inst.m_KeyHeight; 
                 height = JbKbdView.inst.m_KeyHeight;
             }
             m_kd = new KeyDrw(this);
+            if(codes==null&&m_kd.txtMain!=null)
+                codes = new int[]{(int)m_kd.txtMain.charAt(0)};
             if(isFuncKey()&&st.kv().m_curDesign.m_kbdFuncKeys!=null)
             {
                 m_kd.setFuncKey(st.kv().m_KeyBackSecondDrw);

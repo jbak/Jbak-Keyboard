@@ -1,21 +1,20 @@
 package com.jbak.JbakKeyboard;
 
+import java.util.Vector;
+
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.jbak.CustomGraphics.ColorsGradientBack;
-import com.jbak.CustomGraphics.GradBack;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 /** Класс для настроек различных значений клавиатуры, требующих просмотра qwerty-слоя */
 public class SetKbdActivity extends Activity
@@ -32,7 +31,7 @@ public class SetKbdActivity extends Activity
     {
         inst = this;
         m_curAction = getIntent().getIntExtra(st.SET_INTENT_ACTION, st.SET_KEY_HEIGHT_PORTRAIT);
-        m_MainView = getLayoutInflater().inflate(R.layout.set_sizes, null);
+        m_MainView = getLayoutInflater().inflate(R.layout.kbd_set, null);
         m_MainView.setBackgroundDrawable(st.getBack());
         SharedPreferences pref = st.pref();
         m_kbd = (JbKbdView)m_MainView.findViewById(R.id.keyboard);
@@ -53,25 +52,23 @@ public class SetKbdActivity extends Activity
         else if(m_curAction==st.SET_SELECT_SKIN)
         {
         	m_curKbd= st.pref().getInt(st.PREF_KEY_KBD_SKIN, 0);
-            m_MainView.findViewById(R.id.key_height).setVisibility(View.INVISIBLE);
+            m_MainView.findViewById(R.id.key_height).setVisibility(View.GONE);
             m_MainView.findViewById(R.id.select_kbd).setVisibility(View.VISIBLE);
+            m_MainView.findViewById(R.id.screen_type).setVisibility(View.GONE);
             String name = st.arDesign[m_curKbd].getName(this);
             if(name==null)
                 name = getString(st.arDesign[m_curKbd].nameResId);
             ((TextView)m_MainView.findViewById(R.id.keyboard_name)).setText(name);
-            m_kbd.setKeyboard(new JbKbd(st.c(),st.getCurQwertyRes()));
+            m_kbd.reload();
         }
         else if(m_curAction==st.SET_SELECT_KEYBOARD)
         {
-            m_MainView.findViewById(R.id.key_height).setVisibility(View.INVISIBLE);
+            m_MainView.findViewById(R.id.key_height).setVisibility(View.GONE);
             m_MainView.findViewById(R.id.select_kbd).setVisibility(View.VISIBLE);
             setTitle(R.string.set_select_keyboard);
             m_LangName = getIntent().getStringExtra(st.SET_INTENT_LANG_NAME);
-            int idLang = pref.getInt(st.PREF_KEY_LANG_KBD+m_LangName, -1);
-            if(idLang>=0)
-                setKeyboard(st.arKbd[idLang]);
-            else
-                nextKbd();
+            m_curKbd = -1;
+            changeKbd(true);
         }
         int flags = WindowManager.LayoutParams.FLAG_FULLSCREEN;
         getWindow().addFlags(flags);
@@ -107,7 +104,7 @@ public class SetKbdActivity extends Activity
         String pname = m_curAction==st.SET_KEY_HEIGHT_PORTRAIT?st.PREF_KEY_HEIGHT_PORTRAIT:st.PREF_KEY_HEIGHT_LANDSCAPE;
         st.pref().edit().putInt(pname, height).commit();
         m_kbd.m_KeyHeight = height;
-        m_kbd.setKeyboard(new JbKbd(this,st.getCurQwertyRes()));
+        m_kbd.reload();
     }
     @Override
     public void onBackPressed()
@@ -122,7 +119,12 @@ public class SetKbdActivity extends Activity
     {
         if(m_curAction==st.SET_SELECT_KEYBOARD)
         {
-            st.pref().edit().putInt(st.PREF_KEY_LANG_KBD+m_LangName, m_curKbd).commit();
+            
+            int pos = ((Spinner)m_MainView.findViewById(R.id.screen_type)).getSelectedItemPosition();
+            if(pos==0||pos==1)
+                st.pref().edit().putInt(st.PREF_KEY_LANG_KBD_PORTRAIT+m_LangName, m_curKbd).commit();
+            if(pos==0||pos==2)
+                st.pref().edit().putInt(st.PREF_KEY_LANG_KBD_LANDSCAPE+m_LangName, m_curKbd).commit();
         }
         super.onDestroy();
     }
@@ -158,62 +160,43 @@ public class SetKbdActivity extends Activity
     	startActivity(getIntent());
     }
 /** Устанавливает в просмотр следующую клавиатуру в массиве {@link IKeyboard#arKbd}*/   
-    void nextKbd()
+    void changeKbd(boolean bNext)
     {
-        int f = -1;
-        int pos = 0;
-        int fpos = -1;
-        for(Keybrd k:st.arKbd)
+        Vector<Keybrd> ar = st.getKeybrdArrayByLang(m_LangName);
+        if(m_curKbd==-1)
         {
-            if(k.lang.name.equals(m_LangName))
-            {
-                if((m_curKbd==-1||f>=0))
-                {
-                    setKeyboard(k);
-                    return;
-                }
-                else if(m_curKbd==k.kbdCode)
-                    f=pos;
-                if(fpos<0)
-                    fpos = pos;
-            }
-            ++pos;
+            boolean bLandscape = st.isLandscape(this);
+            SharedPreferences pref = st.pref();
+            int pv = pref.getInt(st.PREF_KEY_LANG_KBD_PORTRAIT+m_LangName, 0);
+            int lv = pref.getInt(st.PREF_KEY_LANG_KBD_LANDSCAPE+m_LangName, 0);
+            m_curKbd = bLandscape?lv:pv;
+            int sel = 0;
+            if(pv!=lv)
+                sel = bLandscape?2:1;
+            ((Spinner)m_MainView.findViewById(R.id.screen_type)).setSelection(sel);
         }
-        if(fpos>=0)
-            setKeyboard(st.arKbd[fpos]);
-    }
-/** Устанавливает в просмотр предыдущую клавиатуру в массиве {@link IKeyboard#arKbd}*/  
-    void prevKbd()
-    {
-        int f = -1;
-        int pos = 0;
-        int fpos = -1;
-        for(int i=st.arKbd.length-1;i>=0;i--)
+        else
         {
-            Keybrd k = st.arKbd[i];
-            if(k.lang.name.equals(m_LangName))
+            if(bNext)
             {
-                if((m_curKbd==-1||f>=0))
-                {
-                    setKeyboard(k);
-                    return;
-                }
-                else if(m_curKbd==k.kbdCode)
-                    f=pos;
-                if(fpos<0)
-                    fpos = pos;
+            ++m_curKbd;
+            if(m_curKbd>=ar.size())
+                m_curKbd = 0;
             }
-            ++pos;
+            else
+            {
+                if(m_curKbd==0)m_curKbd=ar.size()-1;
+                else --m_curKbd;
+            }
         }
-        if(fpos>=0)
-            setKeyboard(st.arKbd[fpos]);
+        setKeyboard(ar.elementAt(m_curKbd));
+        
     }
 /** Устанавливает клавиатуру kbd текущей в просмотре */ 
     void setKeyboard(Keybrd kbd)
     {
-        m_kbd.setKeyboard(new JbKbd(st.c(),kbd.resId));
-        m_curKbd = kbd.kbdCode;
-        ((TextView)m_MainView.findViewById(R.id.keyboard_name)).setText(kbd.resName);
+        m_kbd.setKeyboard(st.loadKeyboard(kbd));
+        ((TextView)m_MainView.findViewById(R.id.keyboard_name)).setText(kbd.getName(this));
     }
     OnKeyboardActionListener m_kbdListener = new OnKeyboardActionListener()
     {
@@ -270,12 +253,9 @@ public class SetKbdActivity extends Activity
 			boolean bNext = v.getId()==R.id.next;
 			switch(m_curAction)
 			{
-				case st.SET_SELECT_KEYBOARD: 
-					if(bNext) 
-						nextKbd();
-					else 
-						prevKbd();
-					break;
+				case st.SET_SELECT_KEYBOARD:
+				    changeKbd(bNext);
+				    break;
 				case st.SET_SELECT_SKIN:
 					changeSkin(bNext);
 					break;
