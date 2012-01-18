@@ -66,6 +66,8 @@
     <string name="set_key_shift">Shift key</string>
     <string name="set_key_appearance">Appearance</string>
     <string name="set_key_appearance_desc">Settings for look and feel</string>
+    <string name="set_key_clipbrd_size">Clipboard size</string>
+    <string name="set_key_clipbrd_size_desc">Number of max entries in multiclipboard</string>
         
     <string-array name="array_shift_vars">
         <item>3-state (normal,shift,capslock)</item>
@@ -144,6 +146,7 @@
 
 <!-- Names for various keyboards -->
 	<string name="kbd_name_qwerty">Qwerty keyboard</string>    
+	<string name="kbd_name_wide">Wide keys</string>
 	<string name="kbd_name_qwerty_tablet">Qwerty for tablet</string>
 	    
  <!-- Names for keyboards designs -->

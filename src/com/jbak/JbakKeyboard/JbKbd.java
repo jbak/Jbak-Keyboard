@@ -122,6 +122,9 @@ public class JbKbd extends Keyboard {
  */
     static class LatinKey extends Keyboard.Key {
         
+        KeyDrw m_kd;
+        int longCode = 0;
+        int specKey = -1;
         public LatinKey(Resources res, Keyboard.Row parent, int x, int y, XmlResourceParser parser) {
             super(res, parent, x, y, parser);
             init(parent);
@@ -138,8 +141,17 @@ public class JbKbd extends Keyboard {
                 height = JbKbdView.inst.m_KeyHeight;
             }
             m_kd = new KeyDrw(this);
-            if(codes==null&&m_kd.txtMain!=null)
-                codes = new int[]{(int)m_kd.txtMain.charAt(0)};
+            if((codes==null||codes.length>0&&codes[0]==0)&&m_kd.txtMain!=null)
+            {
+                if(m_kd.txtMain.length()==1)
+                    codes = new int[]{(int)m_kd.txtMain.charAt(0)};
+                else
+                    codes = new int[]{st.KeySymbol--};
+            }
+            if(longCode==0&&getUpText()!=null)
+            {
+                longCode = st.getCmdByLabel(getUpText());
+            }
             if(isFuncKey()&&st.kv().m_curDesign.m_kbdFuncKeys!=null)
             {
                 m_kd.setFuncKey(st.kv().m_KeyBackSecondDrw);
@@ -158,10 +170,13 @@ public class JbKbd extends Keyboard {
         }
         boolean isFuncKey()
         {
+            if(specKey==1)
+                return true;
+            else if(specKey==0)
+                return false;
             if(codes==null)return false;
             int c = codes[0];
             return c<0||c==10;
         }
-        KeyDrw m_kd;
     }    
 }

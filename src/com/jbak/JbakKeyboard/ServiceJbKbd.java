@@ -233,13 +233,18 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     int m_SelEnd;
     boolean makeEmptyUppercase()
     {
-        InputConnection ic = getCurrentInputConnection();
-        if (ic == null || st.kv() == null)
-            return false;
-        boolean canMake = m_SelEnd == m_SelStart && m_SelStart == 0 && st.has(m_state, STATE_EMPTY_UP) && canAutoInput() && !st.kv().isUpperCase() && ic.getTextAfterCursor(1, 0).length() == 0;
-        if (canMake)
-            st.kv().handleShift();
-        return canMake;
+        try{
+            InputConnection ic = getCurrentInputConnection();
+            if (ic == null || st.kv() == null)
+                return false;
+            boolean canMake = m_SelEnd == m_SelStart && m_SelStart == 0 && st.has(m_state, STATE_EMPTY_UP) && canAutoInput() && !st.kv().isUpperCase() && ic.getTextAfterCursor(1, 0).length() == 0;
+            if (canMake)
+                st.kv().handleShift();
+            return canMake;
+        }
+        catch (Throwable e) {
+        }
+        return false;
     }
 
     /** Изменение выделения в редакторе */
@@ -450,6 +455,10 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             {
                 st.setQwertyKeyboard();
             }
+        }
+        else if(primaryCode==0)
+        {
+            
         }
         else if (isWordSeparator(primaryCode))
         {
@@ -930,11 +939,11 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         return b;
     }
 
-    public void onLongPress(Key key)
+    public void onLongPress(LatinKey key)
     {
         try
         {
-            if (st.has(st.kv().m_state, JbKbdView.STATE_VIBRO_LONG))
+            if (st.has(st.kv().m_state, JbKbdView.STATE_VIBRO_LONG)&&(key.m_kd.bmp!=null||key.getUpText()!=null))
                 m_vibro.vibro(false);
         }
         catch (Throwable e)

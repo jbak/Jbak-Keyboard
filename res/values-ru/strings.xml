@@ -51,6 +51,8 @@
     <string name="set_key_landscape_input_type_desc">Настройка позволяет изменить тип редактирования в ландшафтном режиме</string>
     <string name="set_key_landscape_input_settings">Настройка редактора</string>
     <string name="set_key_landscape_input_settings_desc">Настройка шрифта для поля ввода в полноэкранном режиме</string>
+    <string name="set_key_clipbrd_size">Размер буфера обмена</string>
+    <string name="set_key_clipbrd_size_desc">Максимальное количество элементов в буфере обмена</string>
         <string-array name="array_input_type">
         <item>По умолчанию</item>
         <item>Всегда полноэкранный</item>
@@ -128,7 +130,8 @@
 <!-- Names for various keyboards -->
     <string name="kbd_name_qwerty">Клавиатура Qwerty</string>    
     <string name="kbd_name_qwerty_tablet">Qwerty для планшетов</string>
-
+	<string name="kbd_name_wide">Широкие клавиши</string>
+        
 <!-- Names for keyboards designs -->
 	<string name="kbd_design_standard">Стандартный</string>    
 	<string name="kbd_design_iphone">Псевдо iPhone</string>

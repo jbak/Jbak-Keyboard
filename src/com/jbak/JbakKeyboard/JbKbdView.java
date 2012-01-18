@@ -228,16 +228,18 @@ public class JbKbdView extends KeyboardView {
         }
         m_tpPreview.setTextSize(m_PreviewTextSize);
     }
-    boolean processLongPress(Key key)
+    boolean processLongPress(LatinKey key)
     {
         if(ServiceJbKbd.inst!=null)
             ServiceJbKbd.inst.onLongPress(key);
         if(key.popupCharacters!=null)
             return false;
         boolean isService = getOnKeyboardActionListener() instanceof ServiceJbKbd;
-        if(key.codes[0] == Keyboard.KEYCODE_MODE_CHANGE)
+        String ut = key.getUpText();
+        if(key.longCode!=0)
         {
-            ServiceJbKbd.inst.onOptions();
+            if(isService)
+                ServiceJbKbd.inst.processKey(key.longCode);
             return true;
         }
         else if(key.codes[0] == 10)
@@ -253,24 +255,12 @@ public class JbKbdView extends KeyboardView {
         }
         else 
         {
-            LatinKey lk = (LatinKey)key;
-            if(lk.m_kd!=null&&lk.m_kd.txtSmall!=null)
+            if(key.m_kd!=null&&key.m_kd.txtSmall!=null)
             {
-                int cmd = st.getCmdByLabel(lk.m_kd.txtSmall);
-                if(cmd!=0)
-                    st.kbdCommand(cmd);
-                else if(lk.m_kd.txtSmall.equals("tab"))
-                {
-                    if(isService)
-                        ServiceJbKbd.inst.handleCharacter(9);
-                }
+                if(isService&&key.m_kd.txtSmall.length()==1)
+                    ServiceJbKbd.inst.processKey(key.m_kd.txtSmall.charAt(0));
                 else
-                {
-                    if(isService&&lk.m_kd.txtSmall.length()==1)
-                        ServiceJbKbd.inst.handleCharacter(lk.m_kd.txtSmall.charAt(0));
-                    else
-                        getOnKeyboardActionListener().onText(lk.m_kd.txtSmall);
-                }
+                    getOnKeyboardActionListener().onText(key.m_kd.txtSmall);
                 return true;
             }
         }
@@ -278,7 +268,7 @@ public class JbKbdView extends KeyboardView {
     }
     @Override
     protected boolean onLongPress(Key key) {
-        if(processLongPress(key))
+        if(processLongPress((LatinKey)key))
             return true;
         return super.onLongPress(key);
     }
@@ -324,7 +314,7 @@ public class JbKbdView extends KeyboardView {
         }
         else
         {
-            st.setSymbolKeyboard(kbd.resId == R.xml.symbols);
+            st.setSymbolKeyboard(st.LANG_SYM_KBD.equals(kbd.lang.name));
         }
     }
     boolean isUpperCase()
@@ -384,12 +374,27 @@ public class JbKbdView extends KeyboardView {
             ServiceJbKbd.inst.onChangeKeyboard();
     }
     @Override
+    public void onDraw(android.graphics.Canvas canvas) 
+    {
+        m_bStopInvalidate = false;
+        super.onDraw(canvas);
+    };
+    @Override
     public void invalidateAllKeys() 
     {
-        super.invalidateAllKeys();
+        if(!m_bStopInvalidate)
+            super.invalidateAllKeys();
     };
+    @Override
+    public void invalidateKey(int keyIndex)
+    {
+        if(!m_bStopInvalidate)
+            super.invalidateKey(keyIndex);
+    }
+    boolean m_bStopInvalidate = false;
     public void handleLangChange()
     {
+        m_bStopInvalidate = true;
         String ls[]=st.getLangsArray(st.c());
         int f = st.searchStr(st.getCurLang(), ls);
         String newLang = st.defKbd().lang.name;
@@ -405,7 +410,6 @@ public class JbKbdView extends KeyboardView {
         }
         setKeyboard(st.loadKeyboard(k));
         st.saveCurLang();
-        invalidateAllKeys();
     }
     void reload()
     {

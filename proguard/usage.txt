@@ -77,7 +77,6 @@ com.jbak.CustomGraphics.GradBack:
     public static final int DEFAULT_COLOR
     public static final int GRADIENT_TYPE_LINEAR
     public static final int GRADIENT_TYPE_SWEEP
-    216:217:public com.jbak.CustomGraphics.GradBack setAbrisColor(int)
 com.jbak.JbakKeyboard.AdPreference
 com.jbak.JbakKeyboard.CandidateView:
     private static final int OUT_OF_BOUNDS
@@ -92,7 +91,7 @@ com.jbak.JbakKeyboard.ComMenu:
     public static final int ID_DELIMETER
     public static final int STAT_TEMPLATES
     public static final int STAT_ADMOB
-    60:65:void setButtonKeyboardBackground(android.view.View)
+    64:69:void setButtonKeyboardBackground(android.view.View)
 com.jbak.JbakKeyboard.CustomKbdDesign:
     public static final int P_KeyBackStartColor
     public static final int P_KeyBackEndColor
@@ -110,6 +109,54 @@ com.jbak.JbakKeyboard.CustomKbdDesign:
     public static final int P_SpecKeyStrokeStartColor
     public static final int P_SpecKeyStrokeEndColor
     public static final int P_SpecKeyTextColor
+com.jbak.JbakKeyboard.CustomKeyboard:
+    public static final java.lang.String KEYBOARD_FOLDER
+    public static final java.lang.String A_ANDROID
+    public static final java.lang.String TAG_KEYBOARD
+    public static final java.lang.String VAL_PERCENT
+    public static final java.lang.String VAL_PIXELS
+    public static final java.lang.String TAG_ROW
+    public static final java.lang.String TAG_KEY
+    public static final java.lang.String DRW_PREFIX
+    public static final java.lang.String A_keyWidth
+    public static final java.lang.String A_keyHeight
+    public static final java.lang.String A_verticalGap
+    public static final java.lang.String A_horizontalGap
+    public static final java.lang.String A_codes
+    public static final java.lang.String A_iconPreview
+    public static final java.lang.String A_isModifier
+    public static final java.lang.String A_isRepeatable
+    public static final java.lang.String A_isSticky
+    public static final java.lang.String A_keyEdgeFlags
+    public static final java.lang.String A_keyIcon
+    public static final java.lang.String A_keyLabel
+    public static final java.lang.String A_keyOutputText
+    public static final java.lang.String A_popupCharacters
+    public static final java.lang.String A_popupKeyboard
+    public static final java.lang.String A_upCode
+    public static final java.lang.String A_specKey
+    public static final byte B_keyWidth
+    public static final byte B_keyHeight
+    public static final byte B_verticalGap
+    public static final byte B_horizontalGap
+    public static final byte B_codes
+    public static final byte B_iconPreview
+    public static final byte B_isModifier
+    public static final byte B_isRepeatable
+    public static final byte B_isSticky
+    public static final byte B_keyEdgeFlags
+    public static final byte B_keyIcon
+    public static final byte B_keyLabel
+    public static final byte B_keyOutputText
+    public static final byte B_popupCharacters
+    public static final byte B_popupKeyboard
+    public static final byte B_upCode
+    public static final byte B_specKey
+    public static final byte BA_KBD
+    public static final byte BA_ROW
+    public static final byte BA_KEY
+    620:623:static boolean compileKeyboard(java.io.File,com.jbak.JbakKeyboard.IKeyboard$Keybrd)
+    629:639:static boolean convertToCompiledFormat(android.content.Context,com.jbak.JbakKeyboard.IKeyboard$Keybrd,java.lang.String)
 com.jbak.JbakKeyboard.Dlg:
     43:51:public static android.app.AlertDialog CustomDialog(android.content.Context,android.view.View,java.lang.String,java.lang.String,java.lang.String,com.jbak.JbakKeyboard.st$UniObserver)
 com.jbak.JbakKeyboard.EditSetActivity:
@@ -117,27 +164,43 @@ com.jbak.JbakKeyboard.EditSetActivity:
     public static final java.lang.String EXTRA_DEFAULT_EDIT_SET
 com.jbak.JbakKeyboard.IKbdSettings
 com.jbak.JbakKeyboard.IKeyboard:
+    public static final java.lang.String LANG_SYM_KBD
+    public static final java.lang.String LANG_SYM_KBD1
+    public static final java.lang.String LANG_EDITTEXT
+    public static final java.lang.String LANG_SMILE
     public static final int LANG_EN
     public static final int LANG_RU
     public static final int LANG_UK
     public static final int LANG_BE
+    public static final int LANG_SYM
+    public static final int LANG_SYM1
+    public static final int LANG_EDIT
+    public static final int LANG_SMIL
+    public static final int MAX_LANG
     public static final int KBD_QWERTY_EN
     public static final int KBD_QWERTY_RU
     public static final int KBD_QWERTY_BE
     public static final int KBD_QWERTY_UA
     public static final int KBD_QWERTY_RU_HALF
     public static final int KBD_QWERTY_EN_HALF
+    public static final int KBD_SYM
+    public static final int KBD_SYM1
+    public static final int KBD_EDITTEXT
+    public static final int KBD_SMILE
+    public static final int KBD_CUSTOM
+    public static final int KBD_COMPILED
     public static final int DF_BOLD
     public static final int DF_BIG_GAP
     public static final int DEF_COLOR
     public static final int KBD_DESIGN_STANDARD
     public static final int KEYCODE_LANG_CHANGE
-    230:236:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
+    315:321:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
+    327:333:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForId(int)
 com.jbak.JbakKeyboard.JbCandView
 com.jbak.JbakKeyboard.JbKbd:
-    58:59:void setHeightKey(int)
-com.jbak.JbakKeyboard.JbKbd$LatinKey:
-    151:151:public final java.lang.String getUpText()
+    55:56:void setHeightKey(int)
+com.jbak.JbakKeyboard.JbKbdPreference:
+    public static final java.lang.String DEF_SIZE_CLIPBRD
 com.jbak.JbakKeyboard.JbKbdReceiver:
     22:24:static android.content.Intent getClipbrdServiceIntent(android.content.Context)
 com.jbak.JbakKeyboard.JbKbdView:
@@ -151,7 +214,6 @@ com.jbak.JbakKeyboard.JbKbdView:
     com.jbak.JbakKeyboard.EditSetActivity$EditSet m_esMainFont
     com.jbak.JbakKeyboard.EditSetActivity$EditSet m_esSecondFont
     com.jbak.JbakKeyboard.EditSetActivity$EditSet m_esLabelFont
-    397:399:void reload()
 com.jbak.JbakKeyboard.KeyDrw:
     public static final java.lang.String DRW_PREFIX
     public static final int DELIM
@@ -188,12 +250,11 @@ com.jbak.JbakKeyboard.Stor:
     public static final java.lang.String C_FLAGS
     public static final java.lang.String C_ACTION
     public static final java.lang.String C_BINARY
-    public static final int CLIPBOARD_LIMIT
     public static final java.lang.String DB_FILENAME
     private static final java.lang.String KEYS_TABLE_CREATE
     private static final java.lang.String CLIPBOARD_TABLE_CREATE
-    165:169:static byte[] getBytesFromIntent(android.content.Intent)
-    173:180:static android.content.Intent getIntentFromBytes(byte[])
+    171:175:static byte[] getBytesFromIntent(android.content.Intent)
+    179:186:static android.content.Intent getIntentFromBytes(byte[])
 com.jbak.JbakKeyboard.Templates:
     java.io.File m_cd
     public static final java.lang.String TEMPLATE_PATH
@@ -219,8 +280,8 @@ com.jbak.JbakKeyboard.Words:
     53:72:java.util.ArrayList getWords(java.lang.String)
 com.jbak.JbakKeyboard.st:
     public static final boolean DEBUG
-    63:64:public static final int min(int,int)
-    68:69:public static final int max(int,int)
+    68:69:public static final int min(int,int)
+    73:74:public static final int max(int,int)
 com.jbak.JbakKeyboard.st$SyncAsycOper
 com.jbak.JbakKeyboard.st$UniObserver:
-    27:31:public st$UniObserver(java.lang.Object,java.lang.Object)
+    32:36:public st$UniObserver(java.lang.Object,java.lang.Object)

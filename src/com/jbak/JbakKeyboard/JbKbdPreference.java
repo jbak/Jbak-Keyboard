@@ -13,9 +13,9 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.widget.Toast;
 
-
 public class JbKbdPreference extends PreferenceActivity implements OnSharedPreferenceChangeListener
 {
+    public static final String DEF_SIZE_CLIPBRD = "20";
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -23,6 +23,8 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         setContentView(R.layout.pref_view);
         addPreferencesFromResource(R.xml.preferences);
         setShiftState();
+        SharedPreferences p = st.pref(this);
+        setSummary(st.PREF_KEY_CLIPBRD_SIZE, R.string.set_key_clipbrd_size_desc, p.getString(st.PREF_KEY_CLIPBRD_SIZE,DEF_SIZE_CLIPBRD ));
         st.pref(this).registerOnSharedPreferenceChangeListener(this);
     }
     @Override
@@ -124,19 +126,64 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
-    void setShiftState()
+    void setSummary(String prefName,int summaryStr,String value)
     {
-        Preference p = getPreferenceScreen().findPreference(st.PREF_KEY_SHIFT_STATE);
+        Preference p = getPreferenceScreen().findPreference(prefName);
         if(p!=null)
         {
-            int v = Integer.decode(st.pref(this).getString(st.PREF_KEY_SHIFT_STATE, "0"));
-            p.setSummary(getResources().getStringArray(R.array.array_shift_vars)[v]);
+            String summary;
+            if(summaryStr==0)
+            {
+                summary = value;
+            }
+            else
+            {
+                summary = value+"\n"+getString(summaryStr);
+            }
+            p.setSummary(summary);
         }
+    }
+    void setShiftState()
+    {
+        int v = Integer.decode(st.pref(this).getString(st.PREF_KEY_SHIFT_STATE, "0"));
+        setSummary(st.PREF_KEY_SHIFT_STATE,0,getResources().getStringArray(R.array.array_shift_vars)[v]);
     }
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
     {
         if(st.PREF_KEY_SHIFT_STATE.equals(key))
             setShiftState();
+        if(st.PREF_KEY_CLIPBRD_SIZE.equals(key))
+        {
+            if(checkIntValue(key,DEF_SIZE_CLIPBRD))
+            {
+                try{
+                    String v = st.pref(this).getString(key, DEF_SIZE_CLIPBRD);
+                    st.stor().CLIPBOARD_LIMIT = Integer.decode(v);
+                    setSummary(key, R.string.set_key_clipbrd_size_desc,v);
+                }
+                catch (Throwable e) {
+                }
+            }
+        }
+    }
+    boolean checkIntValue(String key,String defValue)
+    {
+        String v = st.pref(this).getString(key, "0");
+        boolean bOk = true;
+        for(int i = v.length()-1;i>=0;i--)
+        {
+            if(!Character.isDigit(v.charAt(i)))
+            {
+                bOk = false; 
+                break;
+            }
+        }
+        if(!bOk)
+        {
+            Toast.makeText(this, "Incorrect integer value!", 700).show();
+            st.pref(this).edit().putString(key, defValue).commit();
+        }
+        return bOk;
     }
 }

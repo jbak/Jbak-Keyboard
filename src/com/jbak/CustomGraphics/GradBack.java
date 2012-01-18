@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.PointF;
@@ -38,8 +39,6 @@ public class GradBack extends RectShape
 	int m_clrEnd;
 /** Отступ краёв фона от прямоугольника, на котором фон отрисовывается */	
 	int m_gap = DEFAULT_GAP;
-/** Текущее состояние фона */	
-	int m_states[];
 /** Радиус скругления прямоугольника в пикселях по X*/	
 	public int m_cornerX = DEFAULT_CORNER_X;
 /** Радиус скругления прямоугольника в пикселях по Y*/	
@@ -52,8 +51,11 @@ public class GradBack extends RectShape
     GradBack m_stroke=null;
 /** Толщина обводки*/    
     int m_strokeSize=1;
-    int abrisColor = DEFAULT_COLOR;
-    boolean m_bUseCache = false;
+    boolean m_bUseCache = true;
+    boolean m_bCheckable = false;
+    boolean m_bPressed = false;
+    boolean m_bChecked = false;
+    public static ColorFilter m_pressFilter = new PorterDuffColorFilter(0xff888888, PorterDuff.Mode.MULTIPLY);
     public static class PaintEntry
     {
         public PaintEntry(float width,float height,Paint paint)
@@ -208,14 +210,13 @@ public class GradBack extends RectShape
 	    {
 	        m_stroke.draw(canvas, paint);
 	    }
+        m_ptFill.setColorFilter(m_bDrawPressedBack&&m_bPressed?m_pressFilter:null);
 		canvas.drawRoundRect(m_rect, m_cornerX, m_cornerY, m_ptFill);
 //		if(m_bDrawPressedBack&&hasState(android.R.attr.state_pressed))
 //			canvas.drawRoundRect(m_rect, m_cornerX, m_cornerY, m_ptFillPressed);
 		
-		boolean bChecked = hasState(android.R.attr.state_checked);
-		boolean bCheckable = hasState(android.R.attr.state_checkable);
-		if(bCheckable||bChecked)
-		    onDrawCheckMark(canvas,bChecked, m_rect);
+		if(m_bCheckable||m_bChecked)
+		    onDrawCheckMark(canvas,m_bChecked, m_rect);
 	}
 /** Функция отрисовки метки для состояний checked и checkable.
  * Вызывается только при наличии этих состояний
@@ -230,26 +231,13 @@ public class GradBack extends RectShape
 /** Обработчик изменения состояния */	
 	public void changeState(int []states)
 	{
-	    boolean bPress = hasState(android.R.attr.state_pressed);
-		m_states = new int[states.length];
-		System.arraycopy(states, 0, m_states, 0, states.length);
-		if(m_ptFill!=null)
-		{
-		    if(hasState(android.R.attr.state_pressed))
-		        m_ptFill.setColorFilter(new PorterDuffColorFilter(0xff888888, PorterDuff.Mode.MULTIPLY));
-		    else if(bPress)
-		        m_ptFill.setColorFilter(null);
-		}
-		    
+        m_bCheckable = hasState(android.R.attr.state_checkable, states);
+	    m_bChecked = hasState(android.R.attr.state_checked, states);
+        m_bPressed = hasState(android.R.attr.state_pressed, states);
 	}
     public GradBack setShadowColor(int shadow)
     {
         shadowColor = shadow;
-        return this;
-    }
-    public GradBack setAbrisColor(int color)
-    {
-        abrisColor = color;
         return this;
     }
 /** Устанавливает обводку stroke, в виде еще одного объекта {@link GradBack}
@@ -265,11 +253,9 @@ public class GradBack extends RectShape
 /** Проверяет наличие статуса s в массиве текущих статусов 
 *@param s Проверяемый статус, одна из констант <b>android.R.attr.state_</b>
 *@return true - статус есть, false - нет */
-	public boolean hasState(int s)
+	public boolean hasState(int s,int []states)
 	{
-	    if(m_states==null)
-	        return false;
-		for(int stat:m_states)
+		for(int stat:states)
 		{
 			if(stat==s)
 				return true;

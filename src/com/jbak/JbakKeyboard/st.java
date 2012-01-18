@@ -21,7 +21,9 @@ import android.widget.Toast;
 /** Класс содержит полезные статические переменные */
 public class st extends IKeyboard implements IKbdSettings
 {
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
+/** Код, который используется, если основной текст клавиши из нескольких букв*/    
+    public static int KeySymbol = -201;
 //--------------------------------------------------------------------------
     /** Универсальный обсервер. Содержит 2 параметра m_param1 и m_param2, которые вызываются и меняются в зависимости от контекста*/
     public static abstract class UniObserver
@@ -92,7 +94,7 @@ public class st extends IKeyboard implements IKbdSettings
             return ar.elementAt(index);
         }
         if(ar.size()>0)
-            return ar.elementAt(index);
+            return ar.elementAt(0);
         return null;
     }
     static void log(String txt)
@@ -238,11 +240,15 @@ public class st extends IKeyboard implements IKbdSettings
     }
     static JbKbd loadKeyboard(Keybrd k)
     {
-        if(k.kbdCode==KBD_CUSTOM)
+        KeySymbol = -201;
+        JbKbd kb;
+        if(k.kbdCode==KBD_CUSTOM||k.kbdCode==KBD_COMPILED)
         {
             CustomKeyboard jk =  new CustomKeyboard(st.c(), k);
             if(!jk.m_bBrokenLoad)
+            {
                 return jk;
+            }
             for(Keybrd ck:arKbd)
             {
                 if(ck.lang.name.equals(k.lang.name))
@@ -252,7 +258,8 @@ public class st extends IKeyboard implements IKbdSettings
         }
         else
         {
-            return new JbKbd(st.c(),k);
+            kb =  new JbKbd(st.c(),k);
+            return kb;
         }
 
     }
@@ -391,7 +398,13 @@ public class st extends IKeyboard implements IKbdSettings
     static int getCmdByLabel(String label)
     {
         if(!label.startsWith(DRW_PREFIX))
+        {
+            if(label.equals("tab"))
+                return 9;
+            if(label.equals("opt"))
+                return CMD_MAIN_MENU;
             return 0;
+        }
         String l = label.substring(DRW_PREFIX.length());
         if(l.equals("vr"))
             return CMD_VOICE_RECOGNIZER;

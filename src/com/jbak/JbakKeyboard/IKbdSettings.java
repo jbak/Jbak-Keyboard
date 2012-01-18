@@ -60,6 +60,8 @@ public interface IKbdSettings
     public static final String PREF_KEY_SHIFT_STATE = "shift_state";
     /** Ключ, String, задержка нажатий клавиш в ms (хранится в виде строки, по умолчанию - 0)*/
     public static final String PREF_KEY_REPEAT_DELAY = "key_repeat";
+    /** Ключ, String, количество записей в буфере обмена */
+    public static final String PREF_KEY_CLIPBRD_SIZE = "clipboard_size";
     
 
     public static final int PREF_VAL_EDIT_TYPE_DEFAULT = 0;
@@ -79,7 +81,7 @@ public interface IKbdSettings
     public static final int SET_KEYS =4;
 /** Вызывает настройку вида клавиатуры (обычный, для планешета...)*/    
     public static final int SET_SELECT_KEYBOARD = 5;
-    /** Вызывает настройку внешнего вида клавиатуры (стандартный, айфон..)*/    
+/** Вызывает настройку внешнего вида клавиатуры (стандартный, айфон..)*/    
     public static final int SET_SELECT_SKIN= 6;
     
 	//-------------------------------------------------------------------    

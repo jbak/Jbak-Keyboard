@@ -52,25 +52,42 @@ public class IKeyboard
     public static final int KBD_SMILE=9;
     
     public static final int KBD_CUSTOM=-1;
+    public static final int KBD_COMPILED=-2;
     
     public static String getSettingsPath()
     {
         return Environment.getExternalStorageDirectory().getAbsolutePath()+"/jbakKeyboard/";
     }
- /** Массив ресурсов для клавиатуры */    
     public static Keybrd[] arKbd = 
     {
-        new Keybrd(KBD_QWERTY_EN,       arLangs[LANG_EN],       R.xml.qwerty_en,        R.string.kbd_name_qwerty),
-        new Keybrd(KBD_QWERTY_RU,       arLangs[LANG_RU],       R.xml.qwerty_ru,        R.string.kbd_name_qwerty),
-        new Keybrd(KBD_QWERTY_BE,       arLangs[LANG_BE],       R.xml.qwerty_be,        R.string.kbd_name_qwerty),
-        new Keybrd(KBD_QWERTY_UA,       arLangs[LANG_UK],       R.xml.qwerty_ua,        R.string.kbd_name_qwerty),
-        new Keybrd(KBD_QWERTY_RU_HALF,  arLangs[LANG_RU],       R.xml.qwerty_ru_tablet, R.string.kbd_name_qwerty_tablet),
-        new Keybrd(KBD_QWERTY_EN_HALF,  arLangs[LANG_EN],       R.xml.qwerty_en_tablet, R.string.kbd_name_qwerty_tablet),
-        new Keybrd(KBD_SYM,             arLangs[LANG_SYM],    R.xml.symbols, R.string.lang_symbol),
-        new Keybrd(KBD_SYM1,            arLangs[LANG_SYM1],    R.xml.symbols_shift, R.string.lang_symbol_shift),
-        new Keybrd(KBD_EDITTEXT,        arLangs[LANG_EDIT],    R.xml.edittext, R.string.lang_edittext),
-        new Keybrd(KBD_SMILE,           arLangs[LANG_SMIL],    R.xml.smileys, R.string.lang_smiles),
+        new Keybrd(arLangs[LANG_EN],    "en_qwerty",        R.string.kbd_name_qwerty),
+        new Keybrd(arLangs[LANG_EN],    "en_wide",          R.string.kbd_name_wide),
+        new Keybrd(arLangs[LANG_RU],    "ru_qwerty",        R.string.kbd_name_qwerty),
+        new Keybrd(arLangs[LANG_RU],    "ru_wide",          R.string.kbd_name_wide),
+        new Keybrd(arLangs[LANG_BE],    "be_qwerty",        R.string.kbd_name_qwerty),
+        new Keybrd(arLangs[LANG_UK],    "ua_qwerty",        R.string.kbd_name_qwerty),
+        new Keybrd(arLangs[LANG_RU],    "ru_qwerty_tablet", R.string.kbd_name_qwerty_tablet),
+        new Keybrd(arLangs[LANG_EN],    "en_qwerty_tablet", R.string.kbd_name_qwerty_tablet),
+        new Keybrd(arLangs[LANG_SYM],   "symbol_standard",  R.string.lang_symbol),
+        new Keybrd(arLangs[LANG_SYM1],  "symbol2_standard", R.string.lang_symbol_shift),
+        new Keybrd(arLangs[LANG_EDIT],  "edittext_standard",R.string.lang_edittext),
+        new Keybrd(arLangs[LANG_SMIL],  "smile_standard",   R.string.lang_smiles),
     };
+    
+ /** Массив ресурсов для клавиатуры */    
+//    public static Keybrd[] arKbd = 
+//    {
+//        new Keybrd(KBD_QWERTY_EN,       arLangs[LANG_EN],       R.xml.qwerty_en,        R.string.kbd_name_qwerty),
+//        new Keybrd(KBD_QWERTY_RU,       arLangs[LANG_RU],       R.xml.qwerty_ru,        R.string.kbd_name_qwerty),
+//        new Keybrd(KBD_QWERTY_BE,       arLangs[LANG_BE],       R.xml.qwerty_be,        R.string.kbd_name_qwerty),
+//        new Keybrd(KBD_QWERTY_UA,       arLangs[LANG_UK],       R.xml.qwerty_ua,        R.string.kbd_name_qwerty),
+//        new Keybrd(KBD_QWERTY_RU_HALF,  arLangs[LANG_RU],       R.xml.qwerty_ru_tablet, R.string.kbd_name_qwerty_tablet),
+//        new Keybrd(KBD_QWERTY_EN_HALF,  arLangs[LANG_EN],       R.xml.qwerty_en_tablet, R.string.kbd_name_qwerty_tablet),
+//        new Keybrd(KBD_SYM,             arLangs[LANG_SYM],    R.xml.symbols, R.string.lang_symbol),
+//        new Keybrd(KBD_SYM1,            arLangs[LANG_SYM1],    R.xml.symbols_shift, R.string.lang_symbol_shift),
+//        new Keybrd(KBD_EDITTEXT,        arLangs[LANG_EDIT],    R.xml.edittext, R.string.lang_edittext),
+//        new Keybrd(KBD_SMILE,           arLangs[LANG_SMIL],    R.xml.smileys, R.string.lang_smiles),
+//    };
 // Флаги дизайна (Design Flags)
 /** Жирный шрифт */    
     public static final int DF_BOLD = 0x0001;
@@ -251,6 +268,15 @@ public class IKeyboard
  * @param resId XML-ресурс клавиатуры (из R.xml)
  * @param resName Строка из ресурсов с названием клавиатуры 
  */
+        Keybrd(Lang lang, String asset,int resName)
+        {
+            
+            this.kbdCode = KBD_COMPILED;
+            this.lang = lang;
+            this.resId = R.xml.kbd_empty;
+            path = asset;
+            this.resName = resName;
+        }
         Keybrd(int kbdCode,Lang lang, int resId,int resName)
         {
             
@@ -270,12 +296,12 @@ public class IKeyboard
         public String path = null;
         String getName(Context c)
         {
+            if(resName!=0)
+                return c.getString(resName);
             if(path!=null)
             {
                 return new File(path).getName();
             }
-            if(resName!=0)
-                return c.getString(resName);
             return "<undef>";
         }
     }

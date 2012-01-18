@@ -1,9 +1,12 @@
 package com.jbak.JbakKeyboard;
 
+import java.util.Vector;
+
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 
 import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
@@ -25,6 +28,8 @@ public class KeyboardPaints
     int m_defaultFontSize = 32;
     int m_defaultLabelSize = 21;
     boolean m_bMainBold = false;
+    Vector <BitmapCache> m_arBitmaps = new Vector<BitmapCache>();
+    int BitmapCacheSize = 120;
     public KeyboardPaints()
     {
         inst = this;
@@ -81,5 +86,54 @@ public class KeyboardPaints
             label = getDefaultLabel().getTextPaint();
         else
             label = es.getTextPaint();
+    }
+    void addBitmap(BitmapCache c)
+    {
+        if(m_arBitmaps.size()==BitmapCacheSize)
+            m_arBitmaps.remove(0);
+        m_arBitmaps.add(c);
+    }
+    BitmapDrawable getBitmap(String path)
+    {
+        for(BitmapCache bc:m_arBitmaps)
+        {
+            if(path.equals(bc.path))
+                return bc.bd;
+        }
+        try{
+            BitmapDrawable bd = (BitmapDrawable)BitmapDrawable.createFromPath(path);
+            addBitmap(new BitmapCache(path, bd));
+            return bd;
+        }
+        catch (Throwable e) {
+        }
+        return null;
+    }
+    BitmapDrawable getBitmap(int id)
+    {
+        for(BitmapCache bc:m_arBitmaps)
+        {
+            if(bc.resId==id)
+                return bc.bd;
+        }
+        BitmapDrawable bd =(BitmapDrawable)st.c().getResources().getDrawable(id);
+        addBitmap(new BitmapCache(id, bd));
+        return bd;
+    }
+    public static class BitmapCache
+    {
+        public BitmapCache(String path,BitmapDrawable b)
+        {
+            this.path = path;
+            bd = b;
+        }
+        public BitmapCache(int id,BitmapDrawable b)
+        {
+            resId = id;
+            bd = b;
+        }
+        int resId = 0;
+        String path;
+        BitmapDrawable bd;
     }
 }

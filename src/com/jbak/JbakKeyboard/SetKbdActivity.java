@@ -170,6 +170,8 @@ public class SetKbdActivity extends Activity
             int pv = pref.getInt(st.PREF_KEY_LANG_KBD_PORTRAIT+m_LangName, 0);
             int lv = pref.getInt(st.PREF_KEY_LANG_KBD_LANDSCAPE+m_LangName, 0);
             m_curKbd = bLandscape?lv:pv;
+            if(m_curKbd>=ar.size())
+                m_curKbd = 0;
             int sel = 0;
             if(pv!=lv)
                 sel = bLandscape?2:1;

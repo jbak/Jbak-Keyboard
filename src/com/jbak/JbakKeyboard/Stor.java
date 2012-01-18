@@ -32,7 +32,7 @@ public class Stor extends SQLiteOpenHelper
     public static final String C_ACTION = "act";
     public static final String C_BINARY = "bin";
 
-    public static final int CLIPBOARD_LIMIT = 20;
+    public int CLIPBOARD_LIMIT = 20;
     public static final String DB_FILENAME="kbstor";
     private static final String KEYS_TABLE_CREATE = 
         "CREATE TABLE IF NOT EXISTS " + TABLE_KEYS + " (" +
@@ -52,6 +52,12 @@ public class Stor extends SQLiteOpenHelper
     Stor(Context context) 
     {
         super(context, DB_FILENAME, null, DATABASE_VERSION);
+        try{
+            CLIPBOARD_LIMIT = Integer.decode(st.pref(context).getString(st.PREF_KEY_CLIPBRD_SIZE, "20"));
+        }
+        catch (Throwable e) {
+            CLIPBOARD_LIMIT = 20;
+        }
         inst = this;
         m_db = getWritableDatabase();
         try{m_db.execSQL(CLIPBOARD_TABLE_CREATE);}catch (Exception e){st.logEx(e);}

@@ -169,10 +169,16 @@
             android:entryValues="@array/integer_vals"
             android:key="shift_state"
             android:title="@string/set_key_shift" />
+        <EditTextPreference 
+            android:defaultValue="20"
+            android:key="clipboard_size"
+            android:inputType="numberDecimal"
+            android:title="@string/set_key_clipbrd_size" 
+            android:summary="@string/set_key_clipbrd_size_desc"
+            />
     </PreferenceScreen>
 
     <!-- о программе -->
-
     <Preference
         android:key="about_app"
         android:title="@string/about" />
