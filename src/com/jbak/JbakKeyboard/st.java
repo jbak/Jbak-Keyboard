@@ -87,15 +87,25 @@ public class st extends IKeyboard implements IKbdSettings
     {
         String pname = isLandscape(c())?st.PREF_KEY_LANG_KBD_LANDSCAPE:st.PREF_KEY_LANG_KBD_PORTRAIT;
         pname+=langName;
-        int index = pref().getInt(pname, 0);
-        Vector<Keybrd> ar = getKeybrdArrayByLang(langName);
-        if(index<ar.size())
+        String kbdName = pref().getString(pname, "");
+        Keybrd ret = null;
+        for(Keybrd k:arKbd)
         {
-            return ar.elementAt(index);
+            if(k.isLang(langName))
+            {
+                // если не настроено - вернем первую в списке клаву с тем же языком
+                if(kbdName.length()==0||kbdName.equals(k.path))
+                        return k;
+            }
         }
-        if(ar.size()>0)
-            return ar.elementAt(0);
-        return null;
+        Context c = st.c();
+        if(c!=null)
+            Toast.makeText(c, "Lang not found:"+langName, 700).show();
+        return arKbd[0];
+    }
+    public static float screenDens(Context c)
+    {
+        return c.getResources().getDisplayMetrics().density;
     }
     static void log(String txt)
     {
@@ -353,29 +363,9 @@ public class st extends IKeyboard implements IKbdSettings
     {
         switch(action)
         {
-          case 100:
-            try {
-                Process proc = Runtime.getRuntime().exec("fbtool -d /sdcard/jbkbd.bmp");
-                int av = proc.getInputStream().available();
-                int ave = proc.getErrorStream().available();
-                String in=null,err = null;
-                if(av>0)
-                {
-                  byte b[] = new byte[av];
-                  proc.getInputStream().read(b);
-                  in = new String(b);
-                }
-                if(ave>0)
-                {
-                  byte b[] = new byte[ave];
-                  proc.getErrorStream().read(b);
-                  err = new String(b);
-                }
-                Toast.makeText(c(), err==null?in:err, 1500).show();
-            } catch (Throwable e) {
-                st.logEx(e);
-            }
-              break;
+            case CMD_COMPILE_KEYBOARDS:
+                    CustomKeyboard.loadCustomKeyboards(true);
+                break;
             case CMD_MAIN_MENU: 
                 if(st.kv().isUserInput())
                 {
@@ -421,16 +411,6 @@ public class st extends IKeyboard implements IKbdSettings
         if(bid!=0)
             return BitmapFactory.decodeResource(st.c().getResources(), bid);
         return null;
-    }
-    static Lang addCustomLang(String name)
-    {
-        Lang lng = new Lang(arLangs.length, name, 0);
-        Lang al[] = new Lang[arLangs.length+1];
-        int pos = arLangs.length;
-        System.arraycopy(arLangs, 0, al, 0, pos);
-        al[pos] = lng;
-        arLangs = al;
-        return lng;
     }
     static final SharedPreferences pref()
     {

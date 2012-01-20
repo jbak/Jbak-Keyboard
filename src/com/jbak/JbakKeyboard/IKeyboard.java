@@ -6,6 +6,7 @@ import java.util.Locale;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.jbak.CustomGraphics.GradBack;
 
@@ -21,22 +22,29 @@ public class IKeyboard
     public static final int LANG_RU = 1;
     public static final int LANG_UK = 2;
     public static final int LANG_BE = 3;
-    public static final int LANG_SYM = 4;
-    public static final int LANG_SYM1 = 5;
-    public static final int LANG_EDIT = 6;
-    public static final int LANG_SMIL = 7;
+    public static final int LANG_FR = 4;
+    public static final int LANG_IT = 5;
+    public static final int LANG_DE = 6;
+    
+    public static final int LANG_SYM = 7;
+    public static final int LANG_SYM1 = 8;
+    public static final int LANG_EDIT = 9;
+    public static final int LANG_SMIL = 10;
     public static final int MAX_LANG = 3;
 //--------------------------------------------------------------------------
     public static Lang[] arLangs = 
     {
-        new Lang(LANG_EN,"en", R.string.lang_en),
-        new Lang(LANG_RU,"ru", R.string.lang_ru),
-        new Lang(LANG_UK,"uk", R.string.lang_ua),
-        new Lang(LANG_BE,"be", R.string.lang_be),
-        new Lang(LANG_SYM,LANG_SYM_KBD, R.string.lang_symbol),
-        new Lang(LANG_SYM1,LANG_SYM_KBD1, R.string.lang_symbol_shift),
-        new Lang(LANG_EDIT,LANG_EDITTEXT, R.string.lang_edittext),
-        new Lang(LANG_SMIL,LANG_SMILE, R.string.lang_smiles),
+        new Lang(LANG_EN,"en"),
+        new Lang(LANG_RU,"ru"),
+        new Lang(LANG_UK,"uk"),
+        new Lang(LANG_BE,"be"),
+        new Lang(LANG_FR,"fr"),
+        new Lang(LANG_IT,"it"),
+        new Lang(LANG_DE,"de"),
+        new Lang(LANG_SYM,LANG_SYM_KBD),
+        new Lang(LANG_SYM1,LANG_SYM_KBD1),
+        new Lang(LANG_EDIT,LANG_EDITTEXT),
+        new Lang(LANG_SMIL,LANG_SMILE),
     };
 //--------------------------------------------------------------------------
  // Коды клавиатур  
@@ -60,34 +68,27 @@ public class IKeyboard
     }
     public static Keybrd[] arKbd = 
     {
-        new Keybrd(arLangs[LANG_EN],    "en_qwerty",        R.string.kbd_name_qwerty),
-        new Keybrd(arLangs[LANG_EN],    "en_wide",          R.string.kbd_name_wide),
-        new Keybrd(arLangs[LANG_RU],    "ru_qwerty",        R.string.kbd_name_qwerty),
-        new Keybrd(arLangs[LANG_RU],    "ru_wide",          R.string.kbd_name_wide),
-        new Keybrd(arLangs[LANG_BE],    "be_qwerty",        R.string.kbd_name_qwerty),
-        new Keybrd(arLangs[LANG_UK],    "ua_qwerty",        R.string.kbd_name_qwerty),
-        new Keybrd(arLangs[LANG_RU],    "ru_qwerty_tablet", R.string.kbd_name_qwerty_tablet),
-        new Keybrd(arLangs[LANG_EN],    "en_qwerty_tablet", R.string.kbd_name_qwerty_tablet),
-        new Keybrd(arLangs[LANG_SYM],   "symbol_standard",  R.string.lang_symbol),
-        new Keybrd(arLangs[LANG_SYM1],  "symbol2_standard", R.string.lang_symbol_shift),
-        new Keybrd(arLangs[LANG_EDIT],  "edittext_standard",R.string.lang_edittext),
-        new Keybrd(arLangs[LANG_SMIL],  "smile_standard",   R.string.lang_smiles),
+        new Keybrd("en_qwerty",        R.string.kbd_name_qwerty),
+        new Keybrd("en_wide",          R.string.kbd_name_wide),
+        new Keybrd("ru_qwerty",        R.string.kbd_name_qwerty),
+        new Keybrd("ru_wide",          R.string.kbd_name_wide),
+        new Keybrd("be_qwerty",        R.string.kbd_name_qwerty),
+        new Keybrd("be_wide",          R.string.kbd_name_wide),
+        new Keybrd("uk_qwerty",        R.string.kbd_name_qwerty),
+        new Keybrd("uk_wide",          R.string.kbd_name_wide),
+        new Keybrd("fr_qwerty",        R.string.kbd_name_qwerty),
+        new Keybrd("fr_wide",          R.string.kbd_name_wide),
+        new Keybrd("it_qwerty",        R.string.kbd_name_qwerty),
+        new Keybrd("it_wide",          R.string.kbd_name_wide),
+        new Keybrd("de_qwerty",        R.string.kbd_name_qwerty),
+        new Keybrd("de_wide",          R.string.kbd_name_wide),
+        new Keybrd("ru_qwerty_tablet", R.string.kbd_name_qwerty_tablet),
+        new Keybrd("en_qwerty_tablet", R.string.kbd_name_qwerty_tablet),
+        new Keybrd("symbol_standard",  R.string.lang_symbol),
+        new Keybrd("symbol2_standard", R.string.lang_symbol_shift),
+        new Keybrd("edittext_standard",R.string.lang_edittext),
+        new Keybrd("smile_standard",   R.string.lang_smiles),
     };
-    
- /** Массив ресурсов для клавиатуры */    
-//    public static Keybrd[] arKbd = 
-//    {
-//        new Keybrd(KBD_QWERTY_EN,       arLangs[LANG_EN],       R.xml.qwerty_en,        R.string.kbd_name_qwerty),
-//        new Keybrd(KBD_QWERTY_RU,       arLangs[LANG_RU],       R.xml.qwerty_ru,        R.string.kbd_name_qwerty),
-//        new Keybrd(KBD_QWERTY_BE,       arLangs[LANG_BE],       R.xml.qwerty_be,        R.string.kbd_name_qwerty),
-//        new Keybrd(KBD_QWERTY_UA,       arLangs[LANG_UK],       R.xml.qwerty_ua,        R.string.kbd_name_qwerty),
-//        new Keybrd(KBD_QWERTY_RU_HALF,  arLangs[LANG_RU],       R.xml.qwerty_ru_tablet, R.string.kbd_name_qwerty_tablet),
-//        new Keybrd(KBD_QWERTY_EN_HALF,  arLangs[LANG_EN],       R.xml.qwerty_en_tablet, R.string.kbd_name_qwerty_tablet),
-//        new Keybrd(KBD_SYM,             arLangs[LANG_SYM],    R.xml.symbols, R.string.lang_symbol),
-//        new Keybrd(KBD_SYM1,            arLangs[LANG_SYM1],    R.xml.symbols_shift, R.string.lang_symbol_shift),
-//        new Keybrd(KBD_EDITTEXT,        arLangs[LANG_EDIT],    R.xml.edittext, R.string.lang_edittext),
-//        new Keybrd(KBD_SMILE,           arLangs[LANG_SMIL],    R.xml.smileys, R.string.lang_smiles),
-//    };
 // Флаги дизайна (Design Flags)
 /** Жирный шрифт */    
     public static final int DF_BOLD = 0x0001;
@@ -172,6 +173,10 @@ public class IKeyboard
             this.backDrawableRes = backDrawable;
             this.flags = flags;
         }
+        public KbdDesign(String path)
+        {
+            this.path = path;
+        }
         KbdDesign setKeysBackground(GradBack bg)
         {
             m_keyBackground = bg;
@@ -186,6 +191,15 @@ public class IKeyboard
         {
             m_kbdFuncKeys = fc;
             return this;
+        }
+        public KbdDesign getDesign()
+        {
+            if(path==null)
+                return this;
+            CustomKbdDesign d = new CustomKbdDesign();
+            if(!d.load(path))
+                return arDesign[0];
+            return d.getDesign();
         }
         String getName(Context c)
         {
@@ -224,11 +238,19 @@ public class IKeyboard
 /** Класс для хранения сведений о языке */    
     public static class Lang
     {
-        public Lang(int lang,String name, int strId)
+        public Lang(int lang,String name)
         {
             this.lang = lang;
             this.name = name;
-            this.strId = strId;
+            switch (lang)
+            {
+                case LANG_EDIT: strId = R.string.lang_edittext;break;
+                case LANG_SYM: strId = R.string.lang_symbol;break;
+                case LANG_SYM1: strId = R.string.lang_symbol_shift;break;
+                case LANG_SMIL: strId = R.string.lang_smiles;break;
+                default:strId = 0;
+            }
+                
         }
         /** Код языка, одна из констант LANG_ */
         public int lang;
@@ -236,15 +258,22 @@ public class IKeyboard
         public String name;
         /** Строка с названием языка из ресурсов */
         public int strId;
+        boolean bVirtual = false;
         String getName(Context c)
         {
             try
             {
                 if(strId>0)
+                {
                     return c.getString(strId);
+                }
                 else
                 {
-                    new Locale(name).getDisplayLanguage();
+                    String ln = new Locale(name).getDisplayName();
+                    if(ln.length()>1)
+                    {
+                        return Character.toUpperCase(ln.charAt(0))+ln.substring(1);
+                    }
                 }
             }
             catch (Throwable e) 
@@ -255,7 +284,7 @@ public class IKeyboard
         }
         final boolean isVirtualLang()
         {
-            return name.equals(LANG_SYM_KBD)||name.equals(LANG_SYM_KBD1)||name.equals(LANG_EDITTEXT)||name.equals(LANG_SMILE);
+            return lang==LANG_SYM||lang==LANG_SMIL||lang==LANG_SYM1||lang==LANG_EDIT;
         }
     }
 //*****************************************************************    
@@ -268,11 +297,10 @@ public class IKeyboard
  * @param resId XML-ресурс клавиатуры (из R.xml)
  * @param resName Строка из ресурсов с названием клавиатуры 
  */
-        Keybrd(Lang lang, String asset,int resName)
+        Keybrd(String asset,int resName)
         {
-            
             this.kbdCode = KBD_COMPILED;
-            this.lang = lang;
+            this.lang = getLangByName(asset.substring(0,asset.indexOf('_')));
             this.resId = R.xml.kbd_empty;
             path = asset;
             this.resName = resName;
@@ -304,6 +332,10 @@ public class IKeyboard
             }
             return "<undef>";
         }
+        final boolean isLang(String lng)
+        {
+            return lang.name.equals(lng);
+        }
     }
 //-----------------------------------------------------------------------------    
     public static Keybrd defKbd()
@@ -324,15 +356,25 @@ public class IKeyboard
     }
 //-----------------------------------------------------------------------------    
 /** Возвращает клавиатуру по коду клавиатуры из ресурсов */    
-    public static Keybrd kbdForId(int rid)
+    static Lang getLangByName(String name)
     {
-        for(int i=0;i<arKbd.length;i++)
+        for(Lang l:arLangs)
         {
-            Keybrd l = arKbd[i];
-            if(rid==l.resId)
+            if(l.name.equals(name))
                 return l;
         }
-        return null;
+        return addCustomLang(name);
     }
+    static Lang addCustomLang(String name)
+    {
+        Lang lng = new Lang(arLangs.length, name);
+        Lang al[] = new Lang[arLangs.length+1];
+        int pos = arLangs.length;
+        System.arraycopy(arLangs, 0, al, 0, pos);
+        al[pos] = lng;
+        arLangs = al;
+        return lng;
+    }
+
     public static final int KEYCODE_LANG_CHANGE = -20;
 }

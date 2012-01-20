@@ -233,15 +233,7 @@ public class CustomKbdDesign
             Vector<KbdDesign> ar = new Vector<IKeyboard.KbdDesign>();
             for(File fs:skins)
             {
-                CustomKbdDesign skin = new CustomKbdDesign();
-                if(skin.load(fs.getAbsolutePath()))
-                {
-                    ar.add(skin.getDesign());
-                }
-                else
-                {
-                   err+=skin.getErrString();
-                }
+                ar.add(new KbdDesign(fs.getAbsolutePath()));
             }
             int pos = 0;
             for(KbdDesign kd:st.arDesign)

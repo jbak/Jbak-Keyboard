@@ -26,6 +26,10 @@
     <string name="set_key_short_vibro_desc">If enabled - screen vibrates on key press</string>
     <string name="set_key_long_vibro">Vibro on long press</string>
     <string name="set_key_long_vibro_desc">If enabled - screen vibrates on key long press</string>
+    <string name="set_key_short_vibro_duration">Short press duration</string>
+    <string name="set_key_short_vibro_duration_desc">Duration of vibro on short press</string>
+    <string name="set_key_long_vibro_duration">Long press duration</string>
+    <string name="set_key_long_vibro_duration_desc">Duration of vibro on long press</string>
     <string name="set_key_sounds">Enable sounds</string>
     <string name="set_key_sounds_desc">If enabled - keys sounds after each press</string>
     <string name="set_key_other">Autoinput</string>
@@ -84,7 +88,7 @@
     <string name="es_sample">Edit sample</string>
     <string name="es_sample_text">First line\nSecond line\nThird line</string>
     <string name="es_font">Font</string>
-    <string name="es_font_size">Font</string>
+    <string name="es_font_size">Font size</string>
     <string name="es_font_bold">Bold</string>
     <string name="es_font_italic">Italic</string>
     <string name="es_def_font">Default font size</string>
@@ -113,7 +117,9 @@
     <string name="no">No</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
-    
+    <string name="def">Default</string>
+    <string name="settings_saved">Settings saved!</string>
+        
     <string name="tpl_new_template">New\ntemplate</string>
     <string name="tpl_new_folder">New\nfolder</string>
     <string name="tpl_folder_name">Type folder name</string>

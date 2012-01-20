@@ -85,9 +85,10 @@ public class JbKbdView extends KeyboardView {
         return (JbKbd) getKeyboard();
     }
 /** Возвращает значение поля f типа int. В случае ошибки возвращает defVal */    
-    static int getFieldInt(Field f,Object o,int defVal)
+    static int getFieldInt(String name,Object o,int defVal)
     {
         try{
+            Field f = JbKbdView.class.getDeclaredField(name);
             f.setAccessible(true);
             return f.getInt(o);
             }
@@ -97,29 +98,25 @@ public class JbKbdView extends KeyboardView {
             }
             return defVal;
     }
+    Drawable m_defDrawable;
+    Drawable m_defBackground;
+    int m_designIndex = -1;
 /** Инициализация. Берутся значения приватных переменных для задания размера шрифта */    
     void init()
     {
         inst = this;
+        
         int index = st.pref().getInt(st.PREF_KEY_KBD_SKIN, st.KBD_DESIGN_STANDARD);
         if(index<0||index>=st.arDesign.length||st.arDesign[index]==null)
         {
             index = 0;
             st.pref().edit().putInt(st.PREF_KEY_KBD_SKIN, 0).commit();
         }
-    	m_curDesign = st.arDesign[index];
-    	
+        if(m_designIndex!=index)
+            m_curDesign = st.arDesign[index].getDesign();
+    	m_designIndex = index;
         setPreferences();
         int clr = Color.WHITE;
-        Field[] af = KeyboardView.class.getDeclaredFields();
-        String txtClr="mKeyTextColor";  
-        String txtSz = "mKeyTextSize";  
-        String labSz="mLabelTextSize";  
-        String prevText="mPreviewText";
-        String prevTs = "mPreviewTextSizeLarge";
-        String ph = "mPreviewHeight";
-        String keyBack = "mKeyBackground";
-        String shadowRadius = "mShadowRadius";
         if(st.has(m_curDesign.flags, st.DF_BIG_GAP))
           KeyDrw.GAP = KeyDrw.BIG_GAP;
         else
@@ -138,77 +135,52 @@ public class JbKbdView extends KeyboardView {
         }
         if(m_curDesign.backDrawableRes!=0)
             setBackgroundResource(m_curDesign.backDrawableRes);
-        if(m_curDesign.m_kbdBackground!=null)
+        else if(m_curDesign.m_kbdBackground!=null)
         	setBackgroundDrawable(m_curDesign.m_kbdBackground.getStateDrawable());
-        for(int i=0;i<af.length;i++)
+        else
+            setBackgroundDrawable(null);
+        
+        Field f=null;
+        try{
+            f = KeyboardView.class.getDeclaredField("mShadowRadius");
+            f.setAccessible(true);
+            f.setFloat(this, 0);
+        }catch (Throwable e) {}
+        clr = getFieldInt("mKeyTextColor", this, clr);
+        m_KeyTextSz = getFieldInt("mKeyTextSize", this, m_KeyTextSz);
+        m_PreviewTextSize = getFieldInt("mPreviewTextSizeLarge", this, 25);
+        m_LabelTextSize = getFieldInt("mLabelTextSize", this, m_LabelTextSize);
+        m_PreviewHeight = getFieldInt("mPreviewHeight", this, 80);
+        m_tpPreview = null;
+        try{
+            f = KeyboardView.class.getDeclaredField("mPreviewText");
+            f.setAccessible(true);
+            m_tpPreview = ((TextView)f.get(this)).getPaint();
+            m_PreviewTextSize = (int) m_tpPreview.getTextSize();
+        }catch (Throwable e) {}
+        try
         {
-            Field f = af[i];
-            if(f.getName().equals(shadowRadius))
+            f = KeyboardView.class.getDeclaredField("mKeyBackground");
+            f.setAccessible(true);
+            if(m_curDesign.drawResId==0&&m_curDesign.m_keyBackground==null)
             {
-              try {
-                f.setAccessible(true);
-                f.setFloat(this, 0);
-              } catch (Throwable e) {
-              }
-            }
-            else if(f.getName().equals(txtClr))
-            {
-              try{
-                  f.setAccessible(true);
-                  clr = f.getInt(this);
-                }
-                catch(Throwable e)
-                {
+                m_KeyBackDrw = ((StateListDrawable)f.get(this));
+                if(m_defDrawable!=null)
+                    f.set(this, m_defDrawable);
                     
-                }
             }
-            else if(f.getName().equals(txtSz))
+            else 
             {
-                m_KeyTextSz = getFieldInt(f, this, m_KeyTextSz);
-            }
-            else if(f.getName().equals(prevTs))
-            {
-                m_PreviewTextSize = getFieldInt(f, this, 25);
-            }
-            else if(f.getName().equals(keyBack))
-            {
-                	try
-                	{
-	                    f.setAccessible(true);
-	                    if(m_curDesign.drawResId==0&&m_curDesign.m_keyBackground==null)
-	                    {
-	                        m_KeyBackDrw = ((StateListDrawable)f.get(this));
-	                    }
-	                    else
-	                    {
-	                        f.set(this, m_KeyBackDrw);
-	                    }
-                    }
-                    catch(Throwable e)
-                    {
-                        m_KeyBackDrw = null;
-                    }
-            }
-            else if(f.getName().equals(labSz))
-            {
-                m_LabelTextSize = getFieldInt(f, this, m_LabelTextSize);
-            }
-            else if(f.getName().equals(ph))
-            {
-                m_PreviewHeight = getFieldInt(f, this, 80);
-            }
-            else if(f.getName().equals(prevText))
-            {
-                try{
-                f.setAccessible(true);
-                m_tpPreview = ((TextView)f.get(this)).getPaint();
-                }
-                catch(Throwable e)
-                {
-                    m_tpPreview = null;
-                }
+                if(m_defDrawable==null)
+                    m_defDrawable = ((StateListDrawable)f.get(this));
+                f.set(this, m_KeyBackDrw);
             }
         }
+        catch(Throwable e)
+        {
+            m_KeyBackDrw = null;
+        }
+        
         if(m_KeyBackDrw!=null)
         {
             // Дёргаем фон ненажатой кнопки
@@ -360,9 +332,9 @@ public class JbKbdView extends KeyboardView {
             }
                 
         }
-        if(!bSet&&wm.getDefaultDisplay().getHeight()<wm.getDefaultDisplay().getWidth())
+        if(!bSet&&st.isLandscape(st.c()))
             bPortrait = false;
-        m_KeyHeight = pref.getInt(bPortrait?st.PREF_KEY_HEIGHT_PORTRAIT:st.PREF_KEY_HEIGHT_LANDSCAPE, 0);
+        m_KeyHeight = pref.getInt(bPortrait?st.PREF_KEY_HEIGHT_PORTRAIT:st.PREF_KEY_HEIGHT_LANDSCAPE, (int) getResources().getDimension(R.dimen.def_key_height));
     }
     @Override
     public void setKeyboard(Keyboard keyboard) 

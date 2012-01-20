@@ -16,6 +16,8 @@ import android.widget.Toast;
 public class JbKbdPreference extends PreferenceActivity implements OnSharedPreferenceChangeListener
 {
     public static final String DEF_SIZE_CLIPBRD = "20";
+    public static final String DEF_SHORT_VIBRO = "30";
+    public static final String DEF_LONG_VIBRO = "10";
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -25,6 +27,8 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         setShiftState();
         SharedPreferences p = st.pref(this);
         setSummary(st.PREF_KEY_CLIPBRD_SIZE, R.string.set_key_clipbrd_size_desc, p.getString(st.PREF_KEY_CLIPBRD_SIZE,DEF_SIZE_CLIPBRD ));
+        setSummary(st.PREF_KEY_VIBRO_SHORT_DURATION, R.string.set_key_short_vibro_duration_desc, p.getString(st.PREF_KEY_VIBRO_SHORT_DURATION,DEF_SHORT_VIBRO ));
+        setSummary(st.PREF_KEY_VIBRO_LONG_DURATION, R.string.set_key_long_vibro_duration_desc, p.getString(st.PREF_KEY_VIBRO_LONG_DURATION,DEF_LONG_VIBRO));
         st.pref(this).registerOnSharedPreferenceChangeListener(this);
     }
     @Override
@@ -161,6 +165,20 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
                     String v = st.pref(this).getString(key, DEF_SIZE_CLIPBRD);
                     st.stor().CLIPBOARD_LIMIT = Integer.decode(v);
                     setSummary(key, R.string.set_key_clipbrd_size_desc,v);
+                }
+                catch (Throwable e) {
+                }
+            }
+        }
+        if(st.PREF_KEY_VIBRO_LONG_DURATION.equals(key)||st.PREF_KEY_VIBRO_SHORT_DURATION.equals(key))
+        {
+            String def = st.PREF_KEY_VIBRO_LONG_DURATION.equals(key)?DEF_LONG_VIBRO:DEF_SHORT_VIBRO;
+            int desc = st.PREF_KEY_VIBRO_LONG_DURATION.equals(key)?R.string.set_key_long_vibro_duration_desc:R.string.set_key_short_vibro_duration_desc;
+            if(checkIntValue(key,def))
+            {
+                try{
+                    String v = st.pref(this).getString(key, def);
+                    setSummary(key, desc,v);
                 }
                 catch (Throwable e) {
                 }

@@ -108,12 +108,24 @@
             android:key="vs"
             android:summary="@string/set_key_short_vibro_desc"
             android:title="@string/set_key_short_vibro" />
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="vl"
             android:summary="@string/set_key_long_vibro_desc"
             android:title="@string/set_key_long_vibro" />
+        <EditTextPreference
+            android:inputType="numberDecimal"
+            android:defaultValue="30"
+            android:key="vibro_short_duration"
+            android:summary="@string/set_key_short_vibro_duration_desc"
+            android:title="@string/set_key_short_vibro_duration" />
+        <EditTextPreference
+            android:inputType="numberDecimal"
+            android:defaultValue="10"
+            android:key="vibro_long_duration"
+            android:summary="@string/set_key_long_vibro_duration_desc"
+            android:title="@string/set_key_long_vibro_duration" />
+        
     </PreferenceScreen>
     <!-- Автоввод -->
 

@@ -32,7 +32,7 @@ public class LangSetActivity extends ListActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         inst = this;
-        CustomKeyboard.loadCustomKeyboards();
+        CustomKeyboard.loadCustomKeyboards(false);
         LangAdapter adapt = new LangAdapter(this, R.layout.lang_list_item);
         for(Lang l:st.arLangs)
             adapt.add(l);
@@ -128,44 +128,57 @@ public class LangSetActivity extends ListActivity
                     m_arLangs.add(l);
             }
         }
+/** Возвращает язык для позиции pos, так, чтобы виртуальные языки были снизу*/        
+        Lang getLangAtPos(int pos)
+        {
+            int cp = 0;
+            int vp = -1;
+            for(Lang l:st.arLangs)
+            {
+                if(l.isVirtualLang())
+                {
+                    if(vp<0)vp = cp;
+                }
+                else
+                {
+                    if(cp==pos)
+                        return l; 
+                    ++cp;
+                }
+            }
+            return st.arLangs[vp+pos-cp];
+        }
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
             if(convertView==null)
                 convertView = getLayoutInflater().inflate(rId, null);
-            Lang l = st.arLangs[position];
+            Lang l = getLangAtPos(position);
             CheckBox cb = (CheckBox)convertView.findViewById(R.id.checkbox);
             cb.setText(l.getName(inst));
             cb.setTag(l);
-            if(l.isVirtualLang())
-            {
-                cb.setEnabled(false);
-            }
+            cb.setEnabled(!l.isVirtualLang());
+            boolean bCheck = false;
             for(String s:m_arLangs)
             {
                 if(s.equals(l.name))
                 {
-                    cb.setChecked(true);
+                    bCheck=true;
                     break;
                 }
             }
+            cb.setChecked(bCheck);
+            
             cb.setOnCheckedChangeListener(m_chkListener);
-            ImageButton b = (ImageButton)convertView.findViewById(R.id.button);
-            int cnt = 0;
-            for(Keybrd k:st.arKbd)
+            Button b = (Button)convertView.findViewById(R.id.button);
+            if(st.getKeybrdArrayByLang(l.name).size()>1)
             {
-                if(l.strId==k.lang.strId)
-                    cnt++;
-            }
-            if(cnt>1)
-            {
-                //b.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                 b.setOnClickListener(m_butListener);
                 b.setVisibility(View.VISIBLE);
             }
             else
             {
-                b.setVisibility(View.INVISIBLE);
+                b.setVisibility(View.GONE);
                 //b.getLayoutParams().width = 0;
             }
             b.setTag(l);

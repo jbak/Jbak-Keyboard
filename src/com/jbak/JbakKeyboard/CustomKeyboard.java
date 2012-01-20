@@ -1,5 +1,6 @@
 package com.jbak.JbakKeyboard;
 
+import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -79,7 +80,6 @@ public class CustomKeyboard extends JbKbd
     public static final  byte BA_KBD=(byte)'|';
     public static final  byte BA_ROW=(byte)':';
     public static final  byte BA_KEY=(byte)'k';
-    
     int m_displayWidth;
     int m_displayHeight;
     int m_x = 0;
@@ -104,14 +104,14 @@ public class CustomKeyboard extends JbKbd
             if(kbd.kbdCode==st.KBD_COMPILED)
             {
                 AssetManager am = context.getResources().getAssets();
-                makeCompiledKeyboard(new DataInputStream(am.open(kbd.path)));
+                makeCompiledKeyboard(new DataInputStream(new BufferedInputStream(am.open(kbd.path))));
                 
             }
             else
             {
                 XmlPullParser xp = Xml.newPullParser();
                 FileInputStream fs = new FileInputStream(kbd.path);
-                xp.setInput(fs, null);
+                xp.setInput(new BufferedInputStream(fs), null);
                 makeKeyboard(xp);
             }
         }
@@ -530,7 +530,7 @@ public class CustomKeyboard extends JbKbd
         catch (Throwable e) {
         }
     }
-    public static String loadCustomKeyboards()
+    public static String loadCustomKeyboards(boolean bCompile)
     {
         try{
             String path = st.getSettingsPath()+KEYBOARD_FOLDER;
@@ -555,7 +555,7 @@ public class CustomKeyboard extends JbKbd
                 return null;
             for(File kf:keyboards)
             {
-                Keybrd k = processCustomKeyboardFile(kf);
+                Keybrd k = processCustomKeyboardFile(kf,bCompile);
                 if(k!=null)
                     arKb.add(k);
             }
@@ -589,7 +589,7 @@ public class CustomKeyboard extends JbKbd
         f=f*m_displayWidth/100;
         return (int)f;
     }
-    public static Keybrd processCustomKeyboardFile(File kf)
+    public static Keybrd processCustomKeyboardFile(File kf,boolean bCompile)
     {
         if(!kf.exists()||!kf.canRead())
             return null;
@@ -611,14 +611,15 @@ public class CustomKeyboard extends JbKbd
             lng = st.addCustomLang(name);
         Keybrd kb = new Keybrd(st.KBD_CUSTOM, lng, R.xml.kbd_empty, 0);
         kb.path = kf.getAbsolutePath();
-//        compileKeyboard(kf, kb);
+        if(bCompile)
+            compileKeyboard(kf, kb);
         return kb;
     }
     static boolean compileKeyboard(File kf,Keybrd kb)
     {
         String path = kf.getParentFile().getAbsolutePath()+"/compiled";
         new File(path).mkdirs();
-        path+="/"+kf.getName();
+        path+="/"+kf.getName().substring(0,kf.getName().length()-4);
         return convertToCompiledFormat(st.c(), kb, path);
 
     }

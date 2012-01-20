@@ -27,6 +27,7 @@ import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
@@ -82,12 +83,13 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
         inst = this;
         CustomKbdDesign.loadCustomSkins();
-        CustomKeyboard.loadCustomKeyboards();
+        CustomKeyboard.loadCustomKeyboards(false);
         m_vibro = new VibroThread(this);
         m_words = new Words();
         startService(new Intent(this, ClipbrdService.class));
         // setTheme(R.style.fullscreen_input);
         super.onCreate();
+        getWindow().getWindow().setBackgroundDrawable(null);
         SharedPreferences pref = st.pref();
         m_es.load(st.PREF_KEY_EDIT_SETTINGS);
         pref.registerOnSharedPreferenceChangeListener(this);
@@ -690,7 +692,9 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         menu.add(R.string.mm_settings, st.CMD_PREFERENCES);
         if(st.kv().m_curDesign.path!=null)
             menu.add(R.string.mm_reload_skin, -10);
-        
+        if(Debug.isDebuggerConnected())
+            menu.add("compile kbd", st.CMD_COMPILE_KEYBOARDS);
+            
         menu.show(onMenu);
     }
 
@@ -855,6 +859,11 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
     {
+        if(st.PREF_KEY_VIBRO_LONG_DURATION.equals(key)||st.PREF_KEY_VIBRO_SHORT_DURATION.equals(key))
+        {
+            if(m_vibro!=null)
+                m_vibro.readSettings();
+        }
         if (st.PREF_KEY_EDIT_SETTINGS.equals(key))
         {
             m_es.load(st.PREF_KEY_EDIT_SETTINGS);
@@ -962,7 +971,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             Toast.makeText(this, cd.getErrString(), 800);
             return;
         }
-        st.arDesign[si] = cd.getDesign();
+        st.kv().m_curDesign = cd.getDesign(); 
+        st.arDesign[si] = st.kv().m_curDesign;
         st.kv().init();
         st.setQwertyKeyboard(true);
     }

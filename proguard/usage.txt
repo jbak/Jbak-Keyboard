@@ -155,8 +155,6 @@ com.jbak.JbakKeyboard.CustomKeyboard:
     public static final byte BA_KBD
     public static final byte BA_ROW
     public static final byte BA_KEY
-    620:623:static boolean compileKeyboard(java.io.File,com.jbak.JbakKeyboard.IKeyboard$Keybrd)
-    629:639:static boolean convertToCompiledFormat(android.content.Context,com.jbak.JbakKeyboard.IKeyboard$Keybrd,java.lang.String)
 com.jbak.JbakKeyboard.Dlg:
     43:51:public static android.app.AlertDialog CustomDialog(android.content.Context,android.view.View,java.lang.String,java.lang.String,java.lang.String,com.jbak.JbakKeyboard.st$UniObserver)
 com.jbak.JbakKeyboard.EditSetActivity:
@@ -172,6 +170,9 @@ com.jbak.JbakKeyboard.IKeyboard:
     public static final int LANG_RU
     public static final int LANG_UK
     public static final int LANG_BE
+    public static final int LANG_FR
+    public static final int LANG_IT
+    public static final int LANG_DE
     public static final int LANG_SYM
     public static final int LANG_SYM1
     public static final int LANG_EDIT
@@ -194,13 +195,14 @@ com.jbak.JbakKeyboard.IKeyboard:
     public static final int DEF_COLOR
     public static final int KBD_DESIGN_STANDARD
     public static final int KEYCODE_LANG_CHANGE
-    315:321:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
-    327:333:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForId(int)
+    344:350:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
 com.jbak.JbakKeyboard.JbCandView
 com.jbak.JbakKeyboard.JbKbd:
     55:56:void setHeightKey(int)
 com.jbak.JbakKeyboard.JbKbdPreference:
     public static final java.lang.String DEF_SIZE_CLIPBRD
+    public static final java.lang.String DEF_SHORT_VIBRO
+    public static final java.lang.String DEF_LONG_VIBRO
 com.jbak.JbakKeyboard.JbKbdReceiver:
     22:24:static android.content.Intent getClipbrdServiceIntent(android.content.Context)
 com.jbak.JbakKeyboard.JbKbdView:
@@ -211,6 +213,7 @@ com.jbak.JbakKeyboard.JbKbdView:
     public static final int STATE_VIBRO_SHORT
     public static final int STATE_VIBRO_LONG
     public static final int STATE_SOUNDS
+    android.graphics.drawable.Drawable m_defBackground
     com.jbak.JbakKeyboard.EditSetActivity$EditSet m_esMainFont
     com.jbak.JbakKeyboard.EditSetActivity$EditSet m_esSecondFont
     com.jbak.JbakKeyboard.EditSetActivity$EditSet m_esLabelFont
@@ -285,3 +288,5 @@ com.jbak.JbakKeyboard.st:
 com.jbak.JbakKeyboard.st$SyncAsycOper
 com.jbak.JbakKeyboard.st$UniObserver:
     32:36:public st$UniObserver(java.lang.Object,java.lang.Object)
+com.jbak.ctrl.IntEditor:
+    117:117:public final boolean isFromUser()

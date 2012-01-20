@@ -24,14 +24,12 @@ public interface IKbdSettings
     public static final String PREF_KEY_VIBRO_LONG_KEY = "vl";
 /** Ключ, boolean, хранящий настройку проигрывания звуков */    
     public static final String PREF_KEY_SOUND = "sound";
-/** Ключ, int, хранящий клавиатуру для выбраного языка в портрете
- *  Полный ключ выглядит как PREF_KEY_LANG_KBD+"en".
- *  Хранит индекс клавиатуры в массиве, который возвращает функция st.getKeybrdArrayByLang() */    
-    public static final String PREF_KEY_LANG_KBD_PORTRAIT = "langkbd_portrait_";
-/** Ключ, int, хранящий клавиатуру для выбраного языка в ландшафте
- *  Полный ключ выглядит как PREF_KEY_LANG_KBD+"en".
- *  Хранит индекс клавиатуры в массиве, который возвращает функция st.getKeybrdArrayByLang() */    
-    public static final String PREF_KEY_LANG_KBD_LANDSCAPE = "langkbd_landscape_";
+/** Ключ, String, хранящий путь к клавиатуре для выбраного языка в портрете
+ *  Полный ключ выглядит как PREF_KEY_LANG_KBD+"en".*/    
+    public static final String PREF_KEY_LANG_KBD_PORTRAIT = "kp_path_";
+/** Ключ, String, хранящий путь к клавиатуре для выбраного языка в ландшафте
+ *  Полный ключ выглядит как PREF_KEY_LANG_KBD+"en".*/
+    public static final String PREF_KEY_LANG_KBD_LANDSCAPE = "kl_path_";
 /** Ключ, int, хранящий индекс текущего скина*/    
     public static final String PREF_KEY_KBD_SKIN = "kbd_skin";
 /** Ключ, boolean - предложения с большой буквы */    
@@ -60,8 +58,12 @@ public interface IKbdSettings
     public static final String PREF_KEY_SHIFT_STATE = "shift_state";
     /** Ключ, String, задержка нажатий клавиш в ms (хранится в виде строки, по умолчанию - 0)*/
     public static final String PREF_KEY_REPEAT_DELAY = "key_repeat";
-    /** Ключ, String, количество записей в буфере обмена */
+    /** Ключ, String, количество записей в буфере обмена (преобразуется в int)*/
     public static final String PREF_KEY_CLIPBRD_SIZE = "clipboard_size";
+    /** Ключ, String, интервал вибро для короткого нажатия*/
+    public static final String PREF_KEY_VIBRO_SHORT_DURATION = "vibro_short_duration";
+    /** Ключ, String, интервал вибро для удержания*/
+    public static final String PREF_KEY_VIBRO_LONG_DURATION = "vibro_long_duration";
     
 
     public static final int PREF_VAL_EDIT_TYPE_DEFAULT = 0;
@@ -102,6 +104,7 @@ public interface IKbdSettings
     public static final int CMD_TPL_NEW_FOLDER = -505;
     /** Внутреняя команда - запуск редактора шаблонов */    
     public static final int CMD_TPL_EDITOR = -506;
+    public static final int CMD_COMPILE_KEYBOARDS = -1000;
 
   //-------------------------------------------------------------------    
   /// Прочие строковые значения

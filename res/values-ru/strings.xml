@@ -15,7 +15,7 @@
     <string name="set_key_height_landscape">Высота клавиш - ландшафт</string>
     <string name="set_key_height_landscape_desc">Изменение высоты клавиш в ландшафтном режиме</string>
 
-    <string name="set_languages">Выбор языков</string>
+    <string name="set_languages">Языки и клавиатуры</string>
     <string name="set_languages_desc">Выбор языков для переключения и раскладок клавиатур</string>
     <string name="set_key_voice">Вибрация и звук</string>
     <string name="set_key_voice_desc">Для корректной работы должны быть включены системные настройки звука и вибрации</string>
@@ -23,6 +23,11 @@
     <string name="set_key_short_vibro_desc">Если включено - экран вибрирует при нажатии</string>
     <string name="set_key_long_vibro">Вибрация при удержании</string>
     <string name="set_key_long_vibro_desc">Если включено - экран вибрирует при долгом нажатии клавиши</string>
+    <string name="set_key_short_vibro_duration">Интервал для нажатия</string>
+    <string name="set_key_short_vibro_duration_desc">Интервал вибрации при нажатии клавиши (ms)</string>
+    <string name="set_key_long_vibro_duration">Интервал для удержания</string>
+    <string name="set_key_long_vibro_duration_desc">Интервал вибрации при удержании клавиши (ms)</string>
+        
     <string name="set_key_sounds">Звуковое сопровождение</string>
     <string name="set_key_sounds_desc">Проигрывать системные звуки при нажатии на клавиши</string>
     <string name="set_select_keyboard">Выбор клавиатуры</string>
@@ -77,6 +82,12 @@
         <item>2 позиции (normal,shift)</item>
         <item>2 позиции (normal,capslock)</item>
     </string-array>
+    <string-array name="screen_type_vars">
+        <item>Портрет и ландшафт</item>
+        <item>В портретном режиме</item>
+        <item>В ландшафтном режиме</item>
+    </string-array>
+        
             <string name="es_title">Настрока полноэкранного редактора</string>
     <string name="es_sample">Образец</string>
     <string name="es_sample_text">В каком бы районе ты не поселился, сосед с дрелькой найдет тебя и поселится рядом!</string>
@@ -90,6 +101,8 @@
     <string name="mm_multiclipboard">Буфер обмена</string>
     <string name="mm_settings">Настройки Jbak Keyboard</string>
     <string name="mm_close">Закрыть</string>
+    <string name="mm_reload_skin">Перезагрузка скина</string>
+        
 
     <string name="ok">Ok</string>
     <string name="cancel">Отмена</string>
@@ -97,7 +110,10 @@
     <string name="no">Нет</string>
     <string name="save">Сохранить</string>
     <string name="delete">Удалить</string>
-    
+    <string name="def">Стандарт</string>
+    <string name="settings_saved">Настройки сохранены!</string>
+        
+        
     <string name="tpl_new_template">Новый\nшаблон</string>
     <string name="tpl_new_folder">Новая\nпапка</string>
     <string name="tpl_folder_name">Введите название папки</string>

@@ -10,13 +10,29 @@
 	  android:id="@+id/kbd_set_controls"
 	  android:orientation="vertical"
     >  
-<SeekBar
-	  android:max="100" 
+<LinearLayout 
+	  android:layout_width="fill_parent"
+	  android:layout_height="wrap_content" 
+	  android:id="@+id/set_height"
+	  android:gravity="right"
+	  android:orientation="horizontal"
+    >
+    <Button 
+      android:id="@+id/default_size"  
+      android:layout_gravity="left"
+	  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content"
+	  android:text="@string/def" 
+        />
+	<com.jbak.ctrl.IntEditor
 	  android:id="@+id/key_height"
+	  android:layout_gravity="center_horizontal"
 	  android:layout_width="fill_parent"
 	  android:layout_height="wrap_content" 
  	  android:layout_alignParentTop="true"
 	  />  
+    
+</LinearLayout>
 <RelativeLayout 
 	  android:id="@+id/select_kbd"	
 	  android:layout_width="fill_parent"
@@ -53,15 +69,24 @@
 	  style="@android:style/TextAppearance.Small"
 	  android:textStyle="bold"
 />
-<Spinner
-	  android:id="@+id/screen_type"	
+<Button
+      android:id="@+id/save"
+      android:drawableTop="@drawable/save"
+      style="@style/img_button"	
+	  android:text="@string/save"
+	  android:layout_below="@id/keyboard_name"
+	  android:layout_toLeftOf="@id/next"
+/>
+<Button
+	  android:id="@+id/screen_type"
+	  android:textSize="16px"	
+	  android:maxLines="2"
 	  android:layout_width="wrap_content"
 	  android:layout_height="wrap_content" 
 	  android:layout_below="@id/keyboard_name"
-	  android:layout_toLeftOf="@id/next"
+	  android:layout_toLeftOf="@id/save"
 	  android:layout_toRightOf="@id/prew"
-	  android:entries="@array/screen_type_vars"
-	  style="@android:style/TextAppearance.Medium"
+	  android:layout_alignBottom="@id/save"
 />
 </RelativeLayout>
 </LinearLayout>

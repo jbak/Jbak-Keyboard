@@ -9,13 +9,16 @@ import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.widget.SeekBar;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
+import com.jbak.ctrl.IntEditor;
 /** Класс для настроек различных значений клавиатуры, требующих просмотра qwerty-слоя */
 public class SetKbdActivity extends Activity
 {
@@ -26,6 +29,9 @@ public class SetKbdActivity extends Activity
     int m_curKbd=-1;
     View m_MainView;
     JbKbdView m_kbd;
+    int m_curSkin;
+/** Текущий тип экрана, для которого выбирается клава. 0- оба типа, 1 - портрет, 2 - ландшафт*/    
+    int m_screenType;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -52,19 +58,48 @@ public class SetKbdActivity extends Activity
         else if(m_curAction==st.SET_SELECT_SKIN)
         {
         	m_curKbd= st.pref().getInt(st.PREF_KEY_KBD_SKIN, 0);
-            m_MainView.findViewById(R.id.key_height).setVisibility(View.GONE);
+        	m_curSkin = m_curKbd;
+            m_MainView.findViewById(R.id.set_height).setVisibility(View.GONE);
             m_MainView.findViewById(R.id.select_kbd).setVisibility(View.VISIBLE);
             m_MainView.findViewById(R.id.screen_type).setVisibility(View.GONE);
             String name = st.arDesign[m_curKbd].getName(this);
             if(name==null)
                 name = getString(st.arDesign[m_curKbd].nameResId);
             ((TextView)m_MainView.findViewById(R.id.keyboard_name)).setText(name);
+            m_MainView.findViewById(R.id.save).setOnClickListener(new OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    m_curSkin = m_curKbd;
+                    Toast.makeText(inst, R.string.settings_saved, 700).show();
+                    finish();
+                }
+            });
             m_kbd.reload();
         }
         else if(m_curAction==st.SET_SELECT_KEYBOARD)
         {
-            m_MainView.findViewById(R.id.key_height).setVisibility(View.GONE);
+            m_MainView.findViewById(R.id.set_height).setVisibility(View.GONE);
             m_MainView.findViewById(R.id.select_kbd).setVisibility(View.VISIBLE);
+            m_MainView.findViewById(R.id.save).setOnClickListener(new OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    saveKeyboard();
+                    Toast.makeText(inst, R.string.settings_saved, 700).show();
+                }
+            });
+            m_MainView.findViewById(R.id.screen_type).setOnClickListener(new OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                   showScreenTypes();
+                }
+            });
+                    
             setTitle(R.string.set_select_keyboard);
             m_LangName = getIntent().getStringExtra(st.SET_INTENT_LANG_NAME);
             m_curKbd = -1;
@@ -75,29 +110,51 @@ public class SetKbdActivity extends Activity
         m_kbd.setOnKeyboardActionListener(m_kbdListener);
         if(m_curAction==st.SET_KEY_HEIGHT_PORTRAIT||m_curAction==st.SET_KEY_HEIGHT_LANDSCAPE)
         {
-            SeekBar sb = (SeekBar)m_MainView.findViewById(R.id.key_height);
-            sb.setProgress(m_kbd.getCurKeyboard().getHeightKey());
-            sb.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
+            final IntEditor sb = (IntEditor)m_MainView.findViewById(R.id.key_height);
+            String p = m_curAction==st.SET_KEY_HEIGHT_PORTRAIT?st.PREF_KEY_HEIGHT_PORTRAIT:st.PREF_KEY_HEIGHT_LANDSCAPE;
+            sb.setMinAndMax(20, 150);
+            int defHeight = (int) (getResources().getDimension(R.dimen.def_key_height)/st.screenDens(inst));
+            int val = st.pref().getInt(p,defHeight);
+            sb.setOnChangeValue(new IntEditor.OnChangeValue()
             {
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar)
+                public void onChangeIntValue(IntEditor edit)
                 {
+                    changeKeyHeight(edit.getValue());
                 }
+            });
+            sb.setValue(val);
+            ((Button)m_MainView.findViewById(R.id.default_size)).setOnClickListener(new OnClickListener()
+            {
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar)
+                public void onClick(View v)
                 {
-                }
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress,
-                        boolean fromUser)
-                {
-                    if(fromUser)
-                        changeKeyHeight(progress);
+                    sb.setValue((int) v.getContext().getResources().getDimension(R.dimen.def_key_height));
                 }
             });
         }
         setContentView(m_MainView);
         super.onCreate(savedInstanceState);
+    }
+    void showScreenTypes()
+    {
+        st.UniObserver obs = new st.UniObserver()
+        {
+            @Override
+            int OnObserver(Object param1, Object param2)
+            {
+                setScreenType(((Integer)param1).intValue());
+                return 0;
+            }
+        };
+        ArrayAdapter<String>adapt = new ArrayAdapter<String>(inst, android.R.layout.select_dialog_item, getResources().getStringArray(R.array.screen_type_vars));
+        Dlg.CustomMenu(inst, adapt, null, obs);
+    }
+    void setScreenType(int sel)
+    {
+        m_screenType = sel;
+        ((TextView)m_MainView.findViewById(R.id.screen_type))
+        .setText(getResources().getStringArray(R.array.screen_type_vars)[sel]);
     }
     void changeKeyHeight(int height)
     {
@@ -106,26 +163,27 @@ public class SetKbdActivity extends Activity
         m_kbd.m_KeyHeight = height;
         m_kbd.reload();
     }
-    @Override
-    public void onBackPressed()
-    {
-        if(JbKbdView.inst!=null)
-            JbKbdView.inst = null;
-        inst = null;
-        super.onBackPressed();
-    };
-    @Override
-    protected void onDestroy()
+    void saveKeyboard()
     {
         if(m_curAction==st.SET_SELECT_KEYBOARD)
         {
+            String path = st.getKeybrdArrayByLang(m_LangName).elementAt(m_curKbd).path;
+            if(m_screenType==0||m_screenType==1)
+                st.pref().edit().putString(st.PREF_KEY_LANG_KBD_PORTRAIT+m_LangName, path).commit();
+            if(m_screenType==0||m_screenType==2)
+                st.pref().edit().putString(st.PREF_KEY_LANG_KBD_LANDSCAPE+m_LangName, path).commit();
             
-            int pos = ((Spinner)m_MainView.findViewById(R.id.screen_type)).getSelectedItemPosition();
-            if(pos==0||pos==1)
-                st.pref().edit().putInt(st.PREF_KEY_LANG_KBD_PORTRAIT+m_LangName, m_curKbd).commit();
-            if(pos==0||pos==2)
-                st.pref().edit().putInt(st.PREF_KEY_LANG_KBD_LANDSCAPE+m_LangName, m_curKbd).commit();
         }
+    }
+    @Override
+    protected void onDestroy()
+    {
+        if(m_curAction==st.SET_SELECT_SKIN)
+        {
+            st.pref(inst).edit().putInt(st.PREF_KEY_KBD_SKIN, m_curSkin).commit();
+        }
+        JbKbdView.inst = null;
+        inst = null;
         super.onDestroy();
     }
 /** */
@@ -155,9 +213,9 @@ public class SetKbdActivity extends Activity
     }
     void setCurSkin()
     {
+        ((TextView)m_MainView.findViewById(R.id.keyboard_name)).setText(st.arDesign[m_curKbd].getName(inst));
     	st.pref().edit().putInt(st.PREF_KEY_KBD_SKIN, m_curKbd).commit();
-    	finish();
-    	startActivity(getIntent());
+    	m_kbd.reload();
     }
 /** Устанавливает в просмотр следующую клавиатуру в массиве {@link IKeyboard#arKbd}*/   
     void changeKbd(boolean bNext)
@@ -167,15 +225,27 @@ public class SetKbdActivity extends Activity
         {
             boolean bLandscape = st.isLandscape(this);
             SharedPreferences pref = st.pref();
-            int pv = pref.getInt(st.PREF_KEY_LANG_KBD_PORTRAIT+m_LangName, 0);
-            int lv = pref.getInt(st.PREF_KEY_LANG_KBD_LANDSCAPE+m_LangName, 0);
-            m_curKbd = bLandscape?lv:pv;
-            if(m_curKbd>=ar.size())
+            String pv = pref.getString(st.PREF_KEY_LANG_KBD_PORTRAIT+m_LangName, "");
+            String lv = pref.getString(st.PREF_KEY_LANG_KBD_LANDSCAPE+m_LangName,"");
+            String t = bLandscape?lv:pv;
+            int pos = 0;
+            for(Keybrd k:ar)
+            {
+                if(t.length()==0||t.equals(k.path))
+                {
+                   m_curKbd = pos; 
+                   break;
+                }
+                pos++;
+            }
+            if(m_curKbd<0)
+            {
                 m_curKbd = 0;
+            }
             int sel = 0;
-            if(pv!=lv)
+            if(!pv.equals(lv))
                 sel = bLandscape?2:1;
-            ((Spinner)m_MainView.findViewById(R.id.screen_type)).setSelection(sel);
+            setScreenType(sel);
         }
         else
         {

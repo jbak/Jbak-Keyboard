@@ -227,6 +227,8 @@ class KeyDrw extends RectShape
             }
             int y = h2+GAP+a1;
             int dy = (rb.height()-GAP-y)/2;
+            if(dy<4)
+                dy = 0;
             canvas.drawText(txtMain, rb.width()/2-w1/2, y+dy, p1);
             
         }

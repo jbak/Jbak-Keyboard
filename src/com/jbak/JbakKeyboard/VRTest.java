@@ -38,7 +38,10 @@ public class VRTest
         Intent voiceIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         voiceIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, st.c().getString(R.string.ime_name));
-        voiceIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_USER_ACTION|Intent.FLAG_ACTIVITY_NO_HISTORY);
+        voiceIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                |Intent.FLAG_ACTIVITY_NO_USER_ACTION
+                                |Intent.FLAG_ACTIVITY_NO_HISTORY
+                                );
         voiceIntent.putExtra(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT, resultsPendingIntent);
         voiceIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
         // this intent wraps voice recognition intent
