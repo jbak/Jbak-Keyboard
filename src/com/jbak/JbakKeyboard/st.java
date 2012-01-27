@@ -1,10 +1,10 @@
 package com.jbak.JbakKeyboard;
 
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.Vector;
-
-import com.jbak.CustomGraphics.GradBack;
-import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -19,6 +19,8 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.jbak.CustomGraphics.GradBack;
 /** Класс содержит полезные статические переменные */
 public class st extends IKeyboard implements IKbdSettings
 {

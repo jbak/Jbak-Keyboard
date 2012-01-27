@@ -38,7 +38,8 @@ public class CustomButtonDrawable extends StateListDrawable
 		if(m_grad!=null)
 			m_grad.changeState(stateSet);
 		super.onStateChange(stateSet);
-		return true;
+		invalidateSelf();
+		return false;
 	}
 	@Override
 	public Drawable getCurrent()
