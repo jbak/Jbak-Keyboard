@@ -26,7 +26,8 @@
         android:key="pref_languages"
         android:summary="@string/set_languages_desc"
         android:title="@string/set_languages" />
-<!-- Внешний вид -->
+    <!-- Внешний вид -->
+
     <PreferenceScreen
         android:summary="@string/set_key_appearance_desc"
         android:title="@string/set_key_appearance" >
@@ -103,29 +104,33 @@
             android:summary="@string/set_key_sounds_desc"
             android:title="@string/set_key_sounds" />
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="vs"
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/vibro_short_type"
+            android:entryValues="@array/integer_vals"
+            android:key="vibro_short"
             android:summary="@string/set_key_short_vibro_desc"
             android:title="@string/set_key_short_vibro" />
+
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="vl"
             android:summary="@string/set_key_long_vibro_desc"
             android:title="@string/set_key_long_vibro" />
+
         <EditTextPreference
-            android:inputType="numberDecimal"
             android:defaultValue="30"
+            android:inputType="numberDecimal"
             android:key="vibro_short_duration"
             android:summary="@string/set_key_short_vibro_duration_desc"
             android:title="@string/set_key_short_vibro_duration" />
+
         <EditTextPreference
-            android:inputType="numberDecimal"
             android:defaultValue="10"
+            android:inputType="numberDecimal"
             android:key="vibro_long_duration"
             android:summary="@string/set_key_long_vibro_duration_desc"
             android:title="@string/set_key_long_vibro_duration" />
-        
     </PreferenceScreen>
     <!-- Автоввод -->
 
@@ -137,23 +142,42 @@
 
             <CheckBoxPreference
                 android:defaultValue="false"
+                android:key="up_sentence"
+                android:summary="@string/set_key_auto_case"
+                android:title="@string/set_key_auto_case_desc" />
+            <PreferenceScreen 
+                android:title="@string/set_key_auto_case_rules"
+                android:summary="@string/set_key_auto_case_rules_desc"
+                >
+        	<PreferenceCategory android:title="@string/set_key_register" >
+                <CheckBoxPreference
+                android:defaultValue="true"
                 android:key="up_empty"
                 android:summary="@string/set_key_empty_uppercase_desc"
                 android:title="@string/set_key_empty_uppercase" />
-
-            <CheckBoxPreference
-                android:defaultValue="false"
+            
+			<CheckBoxPreference
+                android:defaultValue="true"
                 android:key="up_sentence"
                 android:summary="@string/set_key_sentence_upper_desc"
                 android:title="@string/set_key_sentence_upper" />
+            
 
             <EditTextPreference
                 android:defaultValue=".!?"
                 android:key="sentence_ends"
                 android:summary="@string/set_key_sentence_ends_desc"
                 android:title="@string/set_key_sentence_ends" />
-        </PreferenceCategory>
 
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="space_after_sentence"
+                android:summary="@string/set_key_sentence_space_end_desc"
+                android:title="@string/set_key_sentence_space_end" />
+            </PreferenceCategory>
+            </PreferenceScreen>
+            </PreferenceCategory>
+        	    
         <PreferenceCategory android:title="@string/set_key_spaces" >
 
             <CheckBoxPreference
@@ -181,16 +205,22 @@
             android:entryValues="@array/integer_vals"
             android:key="shift_state"
             android:title="@string/set_key_shift" />
-        <EditTextPreference 
+
+        <EditTextPreference
             android:defaultValue="20"
-            android:key="clipboard_size"
             android:inputType="numberDecimal"
-            android:title="@string/set_key_clipbrd_size" 
+            android:key="clipboard_size"
             android:summary="@string/set_key_clipbrd_size_desc"
-            />
+            android:title="@string/set_key_clipbrd_size" />
+
+        <Preference
+            android:key="intervals"
+            android:summary="@string/set_key_intervals_desc"
+            android:title="@string/set_key_intervals" />
     </PreferenceScreen>
 
     <!-- о программе -->
+
     <Preference
         android:key="about_app"
         android:title="@string/about" />

@@ -13,6 +13,10 @@
         <item name="android:textColor">#ff00ffff</item>
         <!-- item name="android:textColor">#ff179bcf</item-->
     </style>
+    <style name="label_white" parent="@android:style/TextAppearance.Small">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
     <style name="label_big" parent="@android:style/TextAppearance.Large">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>

@@ -54,6 +54,8 @@ public class CustomKeyboard extends JbKbd
     public static final String A_keyOutputText="keyOutputText"; 
     public static final String A_popupCharacters="popupCharacters"; 
     public static final String A_popupKeyboard="popupKeyboard";
+/** Текстовая метка, рисующаяся мелким шрифтом по центру клавиши с разбиением на строки */    
+    public static final String A_smallLabel="smallLabel";
 /** Код, срабатывающий по удержанию клавиши */    
     public static final String A_upCode="longCode";   
 /** Аттрибут, bool. Если true - на заднем плане клавиши рисуется фон 2, иначе - 1 */    
@@ -76,6 +78,7 @@ public class CustomKeyboard extends JbKbd
     public static final  byte B_popupKeyboard=15;
     public static final  byte B_upCode=16;   
     public static final  byte B_specKey=17;
+    public static final  byte B_smallLabel=18;
 
     public static final  byte BA_KBD=(byte)'|';
     public static final  byte BA_ROW=(byte)':';
@@ -125,7 +128,12 @@ public class CustomKeyboard extends JbKbd
     {
         try{
             byte b = is.readByte();
-            b = parseKeyboard(is);
+            boolean bConvert = m_os!=null;
+            if(bConvert)
+            {
+                m_os.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n".getBytes());
+            }
+            b = bConvert?parseKeyboardWithConvert(is):parseKeyboard(is);
             do
             {
                 switch (b)
@@ -133,11 +141,20 @@ public class CustomKeyboard extends JbKbd
                     case BA_ROW:
                         if(m_row!=null)
                             m_y+=m_row.defaultHeight+m_row.verticalGap;
-                        parseRow();
+                        if(bConvert)
+                        {
+                            if(m_row!=null)
+                                m_os.write(" </Row>\n".getBytes());
+                            m_os.write(" <Row>\n".getBytes());
+                            m_row = new Row(this); 
+                        }
+                        else
+                            parseRow();
+                            
                         b = is.readByte();
                     break;
                     case BA_KEY:
-                        b = parseKey(is);
+                        b = bConvert?parseKeyWithConvert(is):parseKey(is);
                     break;
                     default:
                         b = is.readByte();
@@ -145,6 +162,11 @@ public class CustomKeyboard extends JbKbd
                 }
             }
             while(b!=BA_KBD);
+            if(bConvert)
+            {
+                m_os.write(" </Row>\n".getBytes());
+                m_os.write("</Keyboard>\n".getBytes());
+            }
             m_y+=m_row.defaultHeight+m_row.verticalGap;
         }
         catch (Throwable e) {
@@ -237,6 +259,31 @@ public class CustomKeyboard extends JbKbd
             st.logEx(e);
         }
     }
+    final byte parseKeyboardWithConvert(DataInputStream is)throws IOException
+    {
+        String out = "<"+TAG_KEYBOARD+" ";
+        byte b = 0;
+        do
+        {
+            b = is.readByte();
+            if(b==BA_ROW)
+                break;
+            float f;
+            switch (b)
+            {
+                case B_keyWidth:
+                    out+=A_ANDROID+A_keyWidth+"=\""+is.readFloat()+"%p\" ";
+                    break;
+                default:
+                    f = is.readFloat();
+                break;
+            }
+        }
+        while (b<BA_ROW);
+        out+=">\n";
+        m_os.write(out.getBytes());
+        return b;
+    }
     final byte parseKeyboard(DataInputStream is)throws IOException
     {
         byte b = 0;
@@ -308,11 +355,84 @@ public class CustomKeyboard extends JbKbd
     final void processKey(LatinKey k)
     {
         k.x+=k.gap;
+        try{
         k.init(m_row);
+        }
+        catch(Throwable e)
+        {
+            
+        }
         if(k.codes!=null&&k.codes.length>0&&k.codes[0]==KEYCODE_SHIFT)
             setShiftKey(m_keys.size(), k);
         m_keys.add(k);
         m_x+=k.gap+k.width;
+    }
+    final byte parseKeyWithConvert(DataInputStream is) throws IOException
+    {
+        String out = "  <Key ";
+        LatinKey k = newKey();
+        byte b = 0;
+        String val;
+        do{
+            b = is.readByte();
+            switch(b)
+            {
+                case B_keyWidth:
+                    out+=A_ANDROID+A_keyWidth+"=\""+is.readFloat()+"%p\" ";
+                    k.width = 10;//getPercentSize(is);
+                    break;
+                case B_codes:
+                    out+=A_ANDROID+A_codes+"=\""+is.readUTF()+"\" ";
+                    break;
+                case B_upCode:
+                    out+=A_ANDROID+A_upCode+"=\""+is.readInt()+"\" ";
+
+//                    k.longCode = is.readInt();
+                    break;
+                case B_keyLabel:
+                    String label = is.readUTF();
+                    String mk = "";
+                    for(int i=0;i<label.length();i++)
+                    {
+                        char ch = label.charAt(i);
+                        switch(ch)
+                        {
+                            case '\n': mk+="\\n"; break;
+                            case '&': mk+="&amp;";break;
+                            case '<': mk+="&lt;";break;
+                            case '>': mk+="&gt;";break;
+                            case '\"': mk+="&guot;";break;
+                            case '\'': mk+="\\'";break;
+                            default: mk+=ch;
+                        }
+                    }
+                    out+=A_ANDROID+A_keyLabel+"=\""+mk+"\" ";
+                    break;
+                case B_smallLabel:
+                    out+=A_ANDROID+A_smallLabel+"=\""+(is.readBoolean()?"true":"false")+"\" ";
+                    break;
+                case B_keyIcon:
+                    out+=A_ANDROID+A_keyIcon+"=\""+is.readUTF()+"\" ";
+                    break;
+                case B_isSticky:
+                    out+=A_ANDROID+A_isSticky+"=\""+(is.readBoolean()?"true":"false")+"\" ";
+                    break;
+                case B_isRepeatable:
+                    out+=A_ANDROID+A_isRepeatable+"=\""+(is.readBoolean()?"true":"false")+"\" ";
+                    break;
+                case B_specKey:    
+                    out+=A_ANDROID+A_specKey+"=\""+(is.readBoolean()?"true":"false")+"\" ";
+                    break;
+                case B_horizontalGap:    
+                    out+=A_ANDROID+A_horizontalGap+"=\""+is.readFloat()+"%p\" ";
+                    break;
+            }
+        }
+        while(b<BA_ROW);
+        out+="/>\n";
+        processKey(k);
+        m_os.write(out.getBytes());
+        return b;
     }
     final byte parseKey(DataInputStream is) throws IOException
     {
@@ -333,6 +453,9 @@ public class CustomKeyboard extends JbKbd
                     break;
                 case B_keyLabel:
                     k.label = is.readUTF();
+                    break;
+                case B_smallLabel:
+                    k.smallLabel = is.readBoolean();
                     break;
                 case B_keyIcon:
                     k.icon = getDrawable(is.readUTF(),true);
@@ -387,6 +510,8 @@ public class CustomKeyboard extends JbKbd
                 k.icon = getDrawable(p.getAttributeValue(i),false);
             if(name.equals(A_isSticky))
                 k.sticky = getBoolean(p.getAttributeValue(i),B_isSticky);
+            if(name.equals(A_smallLabel))
+                k.smallLabel = getBoolean(p.getAttributeValue(i),B_smallLabel);
             if(name.equals(A_isRepeatable))
                 k.repeatable = getBoolean(p.getAttributeValue(i),B_isRepeatable);
             if(name.equals(A_specKey))

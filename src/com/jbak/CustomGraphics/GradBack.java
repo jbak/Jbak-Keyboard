@@ -33,12 +33,13 @@ public class GradBack extends RectShape
 	Paint m_ptFillPressed;
 	Paint m_ptFillCheckable;
 	Paint m_ptFillChecked;
+	GradBack m_dependentBack;
 /** Цвет начала градиента */	
 	int m_clrStart;
 /** Цвет конца градиента */	
 	int m_clrEnd;
 /** Отступ краёв фона от прямоугольника, на котором фон отрисовывается */	
-	int m_gap = DEFAULT_GAP;
+	public int m_gap = DEFAULT_GAP;
 /** Радиус скругления прямоугольника в пикселях по X*/	
 	public int m_cornerX = DEFAULT_CORNER_X;
 /** Радиус скругления прямоугольника в пикселях по Y*/	
@@ -75,6 +76,17 @@ public class GradBack extends RectShape
 		m_ptFillPressed = newColorPaint(0x44ffffff);
 		m_ptFillChecked = newColorPaint(Color.GREEN);
 		m_ptFillCheckable = newColorPaint(Color.DKGRAY);
+	}
+	public GradBack clone()
+	{
+	    GradBack gb = new GradBack(m_clrStart, m_clrEnd);
+	    gb.setCorners(m_cornerX, m_cornerY);
+	    gb.m_gap = m_gap;
+	    gb.m_gradType = m_gradType;
+        gb.m_bDrawPressedBack = m_bDrawPressedBack;
+	    if(m_stroke!=null)
+	        gb.m_stroke = m_stroke.clone();
+	    return gb;
 	}
 /** Конструктор, задающий цвета градииента
  * @param startColor Начальный цвет градиента
@@ -175,6 +187,8 @@ public class GradBack extends RectShape
 	@Override
 	protected void onResize(float width, float height) 
 	{
+	    if(m_dependentBack!=null)
+	        m_dependentBack.resize(width, height);
         if(m_stroke!=null)
             m_stroke.onResize(width, height);
 	    if(m_ptFill!=null&&width==m_rect.width()+m_gap*2&&height==m_rect.height()+m_gap*2)
@@ -231,6 +245,8 @@ public class GradBack extends RectShape
 /** Обработчик изменения состояния */	
 	public void changeState(int []states)
 	{
+	    if(m_dependentBack!=null)
+	        m_dependentBack.changeState(states);
         m_bCheckable = hasState(android.R.attr.state_checkable, states);
 	    m_bChecked = hasState(android.R.attr.state_checked, states);
         m_bPressed = hasState(android.R.attr.state_pressed, states);
@@ -249,6 +265,10 @@ public class GradBack extends RectShape
     {
         m_stroke = stroke;
         return this;
+    }
+    public void setDependentback(GradBack gb)
+    {
+        m_dependentBack = gb;
     }
 /** Проверяет наличие статуса s в массиве текущих статусов 
 *@param s Проверяемый статус, одна из констант <b>android.R.attr.state_</b>

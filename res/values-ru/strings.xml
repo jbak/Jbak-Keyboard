@@ -18,9 +18,9 @@
     <string name="set_languages">Языки и клавиатуры</string>
     <string name="set_languages_desc">Выбор языков для переключения и раскладок клавиатур</string>
     <string name="set_key_voice">Вибрация и звук</string>
-    <string name="set_key_voice_desc">Для корректной работы должны быть включены системные настройки звука и вибрации</string>
+    <string name="set_key_voice_desc">Настройки вибрации и звука</string>
     <string name="set_key_short_vibro">Вибрация при нажатии</string>
-    <string name="set_key_short_vibro_desc">Если включено - экран вибрирует при нажатии</string>
+    <string name="set_key_short_vibro_desc">Выбор вибрации при коротких нажатиях клавиш</string>
     <string name="set_key_long_vibro">Вибрация при удержании</string>
     <string name="set_key_long_vibro_desc">Если включено - экран вибрирует при долгом нажатии клавиши</string>
     <string name="set_key_short_vibro_duration">Интервал для нажатия</string>
@@ -37,7 +37,13 @@
     <string name="set_key_other">Автоввод</string>
     <string name="set_key_register">Переход в верхний регистр</string>
     <string name="set_key_spaces">Добавление пробелов</string>
-    <string name="set_key_other_desc">Некоторые настройки автоматического ввода</string>
+    <string name="set_key_other_desc">Настройки автоматического ввода</string>
+    <string name="set_key_auto_case">Автосмена регистра</string>
+    <string name="set_key_auto_case_desc">Автоматический переход в верхний регистр.</string>
+    <string name="set_key_auto_case_rules">Правила автосмены</string>
+    <string name="set_key_auto_case_rules_desc">Правила для перехода в верхний регистр</string>
+        
+        
     <string name="set_key_empty_uppercase">В пустых полях</string>
     <string name="set_key_empty_uppercase_desc">Если включено - в пустом текстовом поле включается верхний регистр</string>
     <string name="set_key_sentence_upper">После ввода символов</string>
@@ -48,6 +54,9 @@
     <string name="set_key_space_sentence_end_desc">Включает добавление пробелов после некоторых символов, перечисленных в следующей настройке</string>
     <string name="set_key_space_symbols">Символы добавления пробелов</string>
     <string name="set_key_space_symbols_desc">После ввода одного из этих символов вставляется пробел. Нажмите для редактирования</string>
+    <string name="set_key_sentence_space_end">Только после пробелов</string>
+    <string name="set_key_sentence_space_end_desc">Смена регистра после пробела или конца абзаца после одного из символов из предыдущей настройки</string>
+    
     <string name="set_key_landscape_input">Полноэкранный режим</string>
     <string name="set_key_landscape_input_desc">Настроки для ввода в полноэкранном режиме</string>
     <string name="set_key_portrait_input_type">В портретном режиме</string>
@@ -76,6 +85,11 @@
     <string name="set_key_shift">Клавиша Shift</string>
     <string name="set_key_appearance">Внешний вид</string>
     <string name="set_key_appearance_desc">Настройки внешнего вида клавиатуры и полноэкранного редактора</string>
+	<string name="set_key_intervals">Интервалы клавиш</string>
+    <string name="set_key_intervals_desc">Задержка удержания и повтора клавиши</string>
+    <string name="interval_long_press">Задержка удержания клавиши  (ms)</string>
+    <string name="interval_first_repeat">Задержка первого повтора клавиши (ms)</string>
+    <string name="interval_next_repeat">Задержка следующего повтора клавиши(ms)</string>
         
     <string-array name="array_shift_vars">
         <item>3 позиции (normal,shift,capslock)</item>
@@ -87,10 +101,15 @@
         <item>В портретном режиме</item>
         <item>В ландшафтном режиме</item>
     </string-array>
+    <string-array name="vibro_short_type">
+        <item>Нет вибрации</item>
+        <item>При отпускании клавиши</item>
+        <item>При нажатии клавиши</item>
+    </string-array>
         
             <string name="es_title">Настрока полноэкранного редактора</string>
     <string name="es_sample">Образец</string>
-    <string name="es_sample_text">В каком бы районе ты не поселился, сосед с дрелькой найдет тебя и поселится рядом!</string>
+    <string name="es_sample_text">Жизнь - игра, но с классной графикой. Никак не могу пройти уровень, где у меня зарплата 500 баксов...</string>
     <string name="es_font">Шрифт</string>
     <string name="es_font_size">Размер шрифта</string>
     <string name="es_font_bold">Жирный</string>
@@ -139,7 +158,7 @@
 	<string name="about_version">Версия:</string>
 	<string name="about_market">Маркет:</string>
 	<string name="about_author">Автор:</string>
-	<string name="about_author_desc">Юрий \"Jbak\" Бакунин \njbak1979@gmail.com</string>
+	<string name="about_author_desc">Юрий \"Jbak\" Бакунин \njbak1979@gmail.com\n\nweb: http://jbak.ru/jbakkeyboard</string>
 	<string name="about_other">Прочее:</string>
 	<string name="about_other_desc">Автор иконок: Али Гамидов (ali.gamidov@mail.ru)</string>
         
@@ -147,7 +166,8 @@
     <string name="kbd_name_qwerty">Клавиатура Qwerty</string>    
     <string name="kbd_name_qwerty_tablet">Qwerty для планшетов</string>
 	<string name="kbd_name_wide">Широкие клавиши</string>
-        
+	<string name="kbd_name_sym_edit">Символы и редактирование</string>
+	    
 <!-- Names for keyboards designs -->
 	<string name="kbd_design_standard">Стандартный</string>    
 	<string name="kbd_design_iphone">Псевдо iPhone</string>
@@ -155,5 +175,10 @@
 	<string name="kbd_design_chokolate">Шоколад</string>
 	<string name="kbd_design_ussr">Рождённый в СССР</string>
 	<string name="kbd_design_htc">Псевдо HTC</string>
-	    
+	
+ 	<string name="lang_symbol">Символьная клавиатура</string>   
+ 	<string name="lang_symbol_shift">Доп. символьная клавиатура</string>   
+ 	<string name="lang_edittext">Клавиатура правки текста</string>   
+ 	<string name="lang_smiles">Клавиатура смайликов</string>   
+	    	    
 </resources>

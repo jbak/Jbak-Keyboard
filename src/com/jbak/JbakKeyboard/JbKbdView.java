@@ -27,15 +27,14 @@ import android.graphics.drawable.StateListDrawable;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jbak.CustomGraphics.CustomButtonDrawable;
 import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
@@ -49,26 +48,26 @@ public class JbKbdView extends KeyboardView {
     static JbKbdView inst;
     /** Высота клавиш */    
     int m_KeyHeight =0;
+    int m_KeyTextSz =0;
     StateListDrawable m_KeyBackDrw;
-    StateListDrawable m_KeyBackSecondDrw;
     Drawable m_drwKeyBack;
     Drawable m_drwKeyPress;
     TextPaint m_tpPreview;
-    int m_KeyTextSz = 20;
-    int m_LabelTextSize = 14;
-    int m_PreviewTextSize;
+    int m_LabelTextSize = 0;
+    int m_PreviewTextSize=0;
 /** Состояние - клавиши в верхнем регистре на одну букву. После ввода любого символа - сбрасывается */    
-    public static final int STATE_TEMP_SHIFT = 0x0000001;
+    public static final int STATE_TEMP_SHIFT    = 0x0000001;
 /** Состояние - включён CAPS_LOCK */    
-    public static final int STATE_CAPS_LOCK = 0x0000002;
+    public static final int STATE_CAPS_LOCK     = 0x0000002;
 /** Состояние - вибрируем при коротком нажатии */    
-    public static final int STATE_VIBRO_SHORT = 0x0000004;
+    public static final int STATE_VIBRO_SHORT   = 0x0000004;
 /** Состояние - вибрируем при долгом нажатии */    
-    public static final int STATE_VIBRO_LONG = 0x0000008;
+    public static final int STATE_VIBRO_LONG    = 0x0000008;
     /** Состояние - звуки при каждом нажатии */    
-    public static final int STATE_SOUNDS = 0x0000010;
+    public static final int STATE_SOUNDS        = 0x0000010;
+    public static final int STATE_VIBRO_PRESS   = 0x0000020;
     int m_state = 0;
-    int m_PreviewHeight;
+    int m_PreviewHeight=0;
     KbdDesign m_curDesign = st.arDesign[st.KBD_DESIGN_STANDARD];
     public JbKbdView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -85,36 +84,32 @@ public class JbKbdView extends KeyboardView {
         return (JbKbd) getKeyboard();
     }
 /** Возвращает значение поля f типа int. В случае ошибки возвращает defVal */    
-    static int getFieldInt(String name,Object o,int defVal)
+    static int getFieldInt(Field f,Object o,int defVal)
     {
         try{
-            Field f = JbKbdView.class.getDeclaredField(name);
             f.setAccessible(true);
-            return f.getInt(o);
-            }
-            catch(Throwable e)
-            {
-                
-            }
-            return defVal;
+            return(f.getInt(o));
+        }
+        catch(Throwable e)
+        {
+             st.logEx(e);   
+        }
+        return defVal;
     }
     Drawable m_defDrawable;
     Drawable m_defBackground;
-    int m_designIndex = -1;
+    String m_designPath;
 /** Инициализация. Берутся значения приватных переменных для задания размера шрифта */    
     void init()
     {
         inst = this;
-        
-        int index = st.pref().getInt(st.PREF_KEY_KBD_SKIN, st.KBD_DESIGN_STANDARD);
-        if(index<0||index>=st.arDesign.length||st.arDesign[index]==null)
+        String path = st.pref().getString(st.PREF_KEY_KBD_SKIN_PATH, st.ZERO_STRING);
+        KbdDesign d = st.getSkinByPath(path);
+        path = st.getSkinPath(m_curDesign);
+        if(!path.equals(m_designPath))
         {
-            index = 0;
-            st.pref().edit().putInt(st.PREF_KEY_KBD_SKIN, 0).commit();
+            m_curDesign = d.getDesign();
         }
-        if(m_designIndex!=index)
-            m_curDesign = st.arDesign[index].getDesign();
-    	m_designIndex = index;
         setPreferences();
         int clr = Color.WHITE;
         if(st.has(m_curDesign.flags, st.DF_BIG_GAP))
@@ -124,70 +119,122 @@ public class JbKbdView extends KeyboardView {
         if(m_curDesign.drawResId!=0)
             m_KeyBackDrw = (StateListDrawable)getResources().getDrawable(m_curDesign.drawResId);
         if(m_curDesign.m_keyBackground!=null)
-        	m_KeyBackDrw = m_curDesign.m_keyBackground.getStateDrawable(); 
-        if(m_curDesign.m_kbdFuncKeys!=null&&m_curDesign.m_kbdFuncKeys.m_keyBackground!=null)
         {
-            m_KeyBackSecondDrw = m_curDesign.m_kbdFuncKeys.m_keyBackground.getStateDrawable();
-            if(m_KeyBackDrw instanceof CustomButtonDrawable)
-            {
-                ((CustomButtonDrawable)m_KeyBackDrw).setDependentDrawable(m_KeyBackSecondDrw);
-            }
+        	m_KeyBackDrw = m_curDesign.m_keyBackground.getStateDrawable(); 
+        	KeyDrw.GAP = m_curDesign.m_keyBackground.m_gap+3;
         }
+        else
+            KeyDrw.GAP = KeyDrw.DEFAULT_GAP;
         if(m_curDesign.backDrawableRes!=0)
             setBackgroundResource(m_curDesign.backDrawableRes);
         else if(m_curDesign.m_kbdBackground!=null)
         	setBackgroundDrawable(m_curDesign.m_kbdBackground.getStateDrawable());
         else
-            setBackgroundDrawable(null);
-        
-        Field f=null;
-        try{
-            f = KeyboardView.class.getDeclaredField("mShadowRadius");
-            f.setAccessible(true);
-            f.setFloat(this, 0);
-        }catch (Throwable e) {}
-        clr = getFieldInt("mKeyTextColor", this, clr);
-        m_KeyTextSz = getFieldInt("mKeyTextSize", this, m_KeyTextSz);
-        m_PreviewTextSize = getFieldInt("mPreviewTextSizeLarge", this, 25);
-        m_LabelTextSize = getFieldInt("mLabelTextSize", this, m_LabelTextSize);
-        m_PreviewHeight = getFieldInt("mPreviewHeight", this, 80);
-        m_tpPreview = null;
-        try{
-            f = KeyboardView.class.getDeclaredField("mPreviewText");
-            f.setAccessible(true);
-            m_tpPreview = ((TextView)f.get(this)).getPaint();
-            m_PreviewTextSize = (int) m_tpPreview.getTextSize();
-        }catch (Throwable e) {}
-        try
         {
-            f = KeyboardView.class.getDeclaredField("mKeyBackground");
-            f.setAccessible(true);
-            if(m_curDesign.drawResId==0&&m_curDesign.m_keyBackground==null)
+            if(m_defBackground==null)
+                m_defBackground = getBackground();
+            else
+                setBackgroundDrawable(m_defBackground);
+        }
+        Field[] af = KeyboardView.class.getDeclaredFields();
+        String txtClr="mKeyTextColor";  
+        String txtSz = "mKeyTextSize";  
+        String labSz="mLabelTextSize";  
+        String prevText="mPreviewText";
+        String prevTs = "mPreviewTextSizeLarge";
+        String ph = "mPreviewHeight";
+        String keyBack = "mKeyBackground";
+        String shadowRadius = "mShadowRadius";
+        String handler = "mHandler";
+        for(int i=0;i<af.length;i++)
+        {
+            Field f = af[i];
+            if(f.getName().equals(shadowRadius))
             {
-                m_KeyBackDrw = ((StateListDrawable)f.get(this));
-                if(m_defDrawable!=null)
-                    f.set(this, m_defDrawable);
+              try {
+                f.setAccessible(true);
+                f.setFloat(this, 0);
+              } catch (Throwable e) {
+              }
+            }
+            else if(f.getName().equals(handler))
+            {
+              try {
+                f.setAccessible(true);
+                OwnKeyboardHandler h = new OwnKeyboardHandler((Handler)f.get(this),this);
+                if(h.m_bSuccessInit)
+                    f.set(this,h);
+              } catch (Throwable e) {
+              }
+            }
+            else if(f.getName().equals(txtClr))
+            {
+              try{
+                  f.setAccessible(true);
+                  clr = f.getInt(this);
+                }
+                catch(Throwable e)
+                {
                     
+                }
             }
-            else 
+            else if(f.getName().equals(txtSz)&&m_KeyTextSz==0)
             {
-                if(m_defDrawable==null)
-                    m_defDrawable = ((StateListDrawable)f.get(this));
-                f.set(this, m_KeyBackDrw);
+                m_KeyTextSz = getFieldInt(f, this, 20);
+            }
+            else if(f.getName().equals(prevTs))
+            {
+                m_PreviewTextSize = getFieldInt(f, this, 25);
+            }
+            else if(f.getName().equals(keyBack))
+            {
+                try
+                {
+                    f.setAccessible(true);
+                    if(m_defDrawable==null)
+                        m_defDrawable = (Drawable)f.get(this);
+                    if(m_curDesign.drawResId==0&&m_curDesign.m_keyBackground==null)
+                    {
+                        f.set(this,m_defDrawable);
+                        m_KeyBackDrw = (StateListDrawable) m_defDrawable;
+                    }
+                    else
+                    {
+                        f.set(this, m_KeyBackDrw);
+                    }
+                }
+                catch(Throwable e)
+                {
+                    m_KeyBackDrw = null;
+                }
+            }
+            else if(f.getName().equals(labSz)&&m_LabelTextSize==0)
+            {
+                m_LabelTextSize = getFieldInt(f, this, 12);
+            }
+            else if(f.getName().equals(ph)&&m_PreviewHeight==0)
+            {
+                m_PreviewHeight = getFieldInt(f, this, 80);
+            }
+            else if(f.getName().equals(prevText))
+            {
+                try{
+                f.setAccessible(true);
+                m_tpPreview = ((TextView)f.get(this)).getPaint();
+                }
+                catch(Throwable e)
+                {
+                    m_tpPreview = null;
+                }
             }
         }
-        catch(Throwable e)
-        {
-            m_KeyBackDrw = null;
-        }
-        
         if(m_KeyBackDrw!=null)
         {
             // Дёргаем фон ненажатой кнопки
             m_drwKeyBack = m_KeyBackDrw.getCurrent();
             int stat[] = m_KeyBackDrw.getState();
             // Дёргаем фон нажатой кнопки
-            boolean bSet = m_KeyBackDrw.setState(PRESSED_ENABLED_STATE_SET);
+            m_KeyBackDrw.setState(PRESSED_ENABLED_STATE_SET);
             m_drwKeyPress = m_KeyBackDrw.getCurrent();
             // Возвращаем всё на место
             m_KeyBackDrw.setState(stat);
@@ -243,6 +290,19 @@ public class JbKbdView extends KeyboardView {
         if(processLongPress((LatinKey)key))
             return true;
         return super.onLongPress(key);
+    }
+    void setTempShift(boolean bShift,boolean bInvalidate)
+    {
+        m_state = st.rem(m_state, STATE_CAPS_LOCK);
+        if(bShift)
+            m_state|=STATE_TEMP_SHIFT;
+        else
+            m_state = st.rem(m_state, STATE_TEMP_SHIFT);
+        if(isShifted())
+            setShifted(false);
+        else if(bInvalidate)
+            invalidateAllKeys();
+        
     }
     void handleShift()
     {
@@ -307,8 +367,13 @@ public class JbKbdView extends KeyboardView {
         if(pref==null)
             return;
         m_state = 0;
-        if(pref.getBoolean(st.PREF_KEY_VIBRO_SHORT_KEY, false))
+//        if(pref.getBoolean(st.PREF_KEY_VIBRO_SHORT_KEY, false))
+//            m_state|=STATE_VIBRO_SHORT;
+        int v = Integer.decode(pref.getString(st.PREF_KEY_VIBRO_SHORT_TYPE, st.ONE_STRING));
+        if(v>0)
             m_state|=STATE_VIBRO_SHORT;
+        if(v==2)
+            m_state|=STATE_VIBRO_PRESS;
         if(pref.getBoolean(st.PREF_KEY_VIBRO_LONG_KEY, false))
             m_state|=STATE_VIBRO_LONG;
         if(pref.getBoolean(st.PREF_KEY_SOUND, false))
@@ -337,15 +402,6 @@ public class JbKbdView extends KeyboardView {
         m_KeyHeight = pref.getInt(bPortrait?st.PREF_KEY_HEIGHT_PORTRAIT:st.PREF_KEY_HEIGHT_LANDSCAPE, (int) getResources().getDimension(R.dimen.def_key_height));
     }
     @Override
-    public void setKeyboard(Keyboard keyboard) 
-    {
-        m_state = st.rem(m_state, STATE_CAPS_LOCK);
-        m_state = st.rem(m_state, STATE_TEMP_SHIFT);
-        super.setKeyboard(keyboard);
-        if(getOnKeyboardActionListener() instanceof ServiceJbKbd)
-            ServiceJbKbd.inst.onChangeKeyboard();
-    }
-    @Override
     public void onDraw(android.graphics.Canvas canvas) 
     {
         m_bStopInvalidate = false;
@@ -362,6 +418,10 @@ public class JbKbdView extends KeyboardView {
     {
         if(!m_bStopInvalidate)
             super.invalidateKey(keyIndex);
+    }
+    public final boolean isDefaultDesign()
+    {
+        return m_curDesign==null||m_curDesign.m_keyBackground==null;
     }
     boolean m_bStopInvalidate = false;
     public void handleLangChange()
@@ -387,6 +447,12 @@ public class JbKbdView extends KeyboardView {
     {
     	init();
     	setKeyboard(st.loadKeyboard(st.getCurQwertyKeybrd()));
+    }
+    void reloadSkin()
+    {
+        m_designPath = null;
+        init();
+        invalidateAllKeys();
     }
     void onKeyPress(int primaryCode)
     {

@@ -88,6 +88,7 @@ public class IKeyboard
         new Keybrd("symbol2_standard", R.string.lang_symbol_shift),
         new Keybrd("edittext_standard",R.string.lang_edittext),
         new Keybrd("smile_standard",   R.string.lang_smiles),
+        new Keybrd("symbol_edtext",    R.string.kbd_name_sym_edit),
     };
 // Флаги дизайна (Design Flags)
 /** Жирный шрифт */    

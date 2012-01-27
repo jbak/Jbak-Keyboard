@@ -13,22 +13,24 @@ import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 
 public class CustomKbdDesign
 {
-    public static final int P_KeyBackStartColor              = 0;
-    public static final int P_KeyBackEndColor                = 1;
-    public static final int P_KeyBackGradientType            = 2;
-    public static final int P_KeyTextColor                   = 3;
-    public static final int P_KeyTextBold                    = 4;
-    public static final int P_KeyGapSize                     = 5;
-    public static final int P_KeyStrokeStartColor            = 6;
-    public static final int P_KeyStrokeEndColor              = 7;
-    public static final int P_KeyboardBackgroundStartColor   = 8;
-    public static final int P_KeyboardBackgroundEndColor     = 9;
-    public static final int P_KeyboardBackgroundGradientType = 10;
-    public static final int P_SpecKeyBackStartColor         =11;
-    public static final int P_SpecKeyBackEndColor =12;
-    public static final int P_SpecKeyStrokeStartColor = 13;
-    public static final int P_SpecKeyStrokeEndColor = 14;
-    public static final int P_SpecKeyTextColor = 15;
+    public static final byte P_KeyBackStartColor              = 0;
+    public static final byte P_KeyBackEndColor                = 1;
+    public static final byte P_KeyBackGradientType            = 2;
+    public static final byte P_KeyTextColor                   = 3;
+    public static final byte P_KeyTextBold                    = 4;
+    public static final byte P_KeyGapSize                     = 5;
+    public static final byte P_KeyStrokeStartColor            = 6;
+    public static final byte P_KeyStrokeEndColor              = 7;
+    public static final byte P_KeyboardBackgroundStartColor   = 8;
+    public static final byte P_KeyboardBackgroundEndColor     = 9;
+    public static final byte P_KeyboardBackgroundGradientType = 10;
+    public static final byte P_SpecKeyBackStartColor         =11;
+    public static final byte P_SpecKeyBackEndColor =12;
+    public static final byte P_SpecKeyStrokeStartColor = 13;
+    public static final byte P_SpecKeyStrokeEndColor = 14;
+    public static final byte P_SpecKeyTextColor = 15;
+    public static final byte P_KeyBackCornerX = 16;
+    public static final byte P_KeyBackCornerY = 16;
     int errorLine = 0;
     String arNames[] = new String[]{
           "KeyBackStartColor",
@@ -46,7 +48,9 @@ public class CustomKbdDesign
           "SpecKeyBackEndColor",
           "SpecKeyStrokeStartColor",
           "SpecKeyStrokeEndColor",
-          "SpecKeyTextColor"
+          "SpecKeyTextColor",
+          "KeyBackCornerX",
+          "KeyBackCornerY"
     };
     String skinPath = "";
     Vector<IntEntry> arValues = new Vector<IntEntry>();
@@ -106,11 +110,15 @@ public class CustomKbdDesign
         endColor = getIntValue(P_KeyBackEndColor, st.DEF_COLOR);
         gradType = getIntValue(P_KeyBackGradientType, GradBack.GRADIENT_TYPE_LINEAR);
         int gap = getIntValue(P_KeyGapSize, GradBack.DEFAULT_GAP);
+        int cornerX = getIntValue(P_KeyBackCornerX, GradBack.DEFAULT_CORNER_X);
+        int cornerY = getIntValue(P_KeyBackCornerY, GradBack.DEFAULT_CORNER_Y);
         if(startColor!=st.DEF_COLOR)
         {
             ret.setKeysBackground(new GradBack(startColor, endColor)
                                        .setGradType(gradType)
-                                       .setGap(gap));
+                                       .setGap(gap)
+                                       .setCorners(cornerX, cornerY)
+                                        );
         }
         startColor = getIntValue(P_KeyboardBackgroundStartColor, st.DEF_COLOR);
         endColor = getIntValue(P_KeyboardBackgroundEndColor, st.DEF_COLOR);
@@ -130,6 +138,7 @@ public class CustomKbdDesign
             ret.m_keyBackground.setStroke(
                     new GradBack(startColor,endColor)
                         .setGap(gap-1)
+                        .setCorners(cornerX, cornerY)
                             );
         }
         
@@ -144,10 +153,11 @@ public class CustomKbdDesign
             GradBack gb = new GradBack(startColor, endColor).
             setGradType(ret.m_kbdBackground.m_gradType)
             .setGap(gap);
+            gb.setCorners(cornerX, cornerY);
             startColor = getIntValue(P_SpecKeyStrokeStartColor, st.DEF_COLOR);
             endColor = getIntValue(P_SpecKeyStrokeEndColor, st.DEF_COLOR);
             if(startColor!=st.DEF_COLOR)
-                gb.setStroke(new GradBack(startColor, endColor));
+                gb.setStroke(new GradBack(startColor, endColor).setCorners(cornerX, cornerY).setGap(gap-1));
             ret.setFuncKeysDesign(new KbdDesign(0, 0, textColor, 0, 0).setKeysBackground(gb));
         }
         return ret;

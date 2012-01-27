@@ -10,6 +10,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,7 +22,7 @@ import android.widget.Toast;
 /** Класс содержит полезные статические переменные */
 public class st extends IKeyboard implements IKbdSettings
 {
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 /** Код, который используется, если основной текст клавиши из нескольких букв*/    
     public static int KeySymbol = -201;
 //--------------------------------------------------------------------------
@@ -89,14 +90,22 @@ public class st extends IKeyboard implements IKbdSettings
         pname+=langName;
         String kbdName = pref().getString(pname, "");
         Keybrd ret = null;
-        for(Keybrd k:arKbd)
+        for(int i=0;i<3;i++)
         {
-            if(k.isLang(langName))
+            for(Keybrd k:arKbd)
             {
-                // если не настроено - вернем первую в списке клаву с тем же языком
-                if(kbdName.length()==0||kbdName.equals(k.path))
-                        return k;
+                if(k.isLang(langName))
+                {
+                    // если не настроено - вернем первую в списке клаву с тем же языком
+                    if(kbdName.length()==0||kbdName.equals(k.path))
+                            return k;
+                }
             }
+            // Теперь попробуем перезагрузить клавиатуры...
+            if(i==0)
+                CustomKeyboard.loadCustomKeyboards(false);
+            else if(i==1)
+                kbdName = "";
         }
         Context c = st.c();
         if(c!=null)
@@ -252,26 +261,17 @@ public class st extends IKeyboard implements IKbdSettings
     {
         KeySymbol = -201;
         JbKbd kb;
-        if(k.kbdCode==KBD_CUSTOM||k.kbdCode==KBD_COMPILED)
+        CustomKeyboard jk =  new CustomKeyboard(st.c(), k);
+        if(!jk.m_bBrokenLoad)
         {
-            CustomKeyboard jk =  new CustomKeyboard(st.c(), k);
-            if(!jk.m_bBrokenLoad)
-            {
-                return jk;
-            }
-            for(Keybrd ck:arKbd)
-            {
-                if(ck.lang.name.equals(k.lang.name))
-                    return loadKeyboard(ck);
-            }
-            return null;
+            return jk;
         }
-        else
+        for(Keybrd ck:arKbd)
         {
-            kb =  new JbKbd(st.c(),k);
-            return kb;
+            if(ck.lang.name.equals(k.lang.name))
+                return loadKeyboard(ck);
         }
-
+        return loadKeyboard(arKbd[0]);
     }
 /** Временно устанавливает английскую клавиатуру без запоминания языка */    
     public static void setTempEnglishQwerty()
@@ -443,5 +443,82 @@ public class st extends IKeyboard implements IKbdSettings
     static final boolean isLandscape(Context c)
     {
         return c.getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT;
+    }
+    public static KbdDesign getSkinByPath(String path)
+    {
+        if(path.startsWith("/"))
+        {
+            for(int i=0;i<2;i++)
+            {
+                for(KbdDesign d:st.arDesign)
+                {
+                    if(path.equals(d.path))
+                        return d;
+                }
+                // Учтем возможность отключения карты и сделаем перезагрузку скинов
+                CustomKbdDesign.loadCustomSkins();
+            }
+            path = ZERO_STRING;
+        }
+        try{
+            return arDesign[Integer.decode(path)];
+        }
+        catch (Throwable e) {
+        }
+        return arDesign[0];
+    }
+    public static String getSkinPath(KbdDesign kd)
+    {
+        if(kd.path!=null)
+            return kd.path;
+        int pos = 0;
+        for(KbdDesign k:arDesign)
+        {
+            if(k==kd)
+                return ""+pos;
+            ++pos;
+        }
+        return ZERO_STRING;
+    }
+    public static void upgradeSettings(Context c)
+    {
+        SharedPreferences pref = st.pref(c);
+        Editor ped = pref.edit();
+        if(pref.contains(st.PREF_KEY_KBD_SKIN))
+        {
+            CustomKbdDesign.loadCustomSkins();
+            int id = pref.getInt(st.PREF_KEY_KBD_SKIN, 0);
+            if(st.arDesign.length>id&&id>=0)
+            {
+                ped.putString(st.PREF_KEY_KBD_SKIN_PATH, st.getSkinPath(st.arDesign[id]));
+            }
+            ped.remove(st.PREF_KEY_KBD_SKIN);
+        }
+        int ph = pref.getInt(st.PREF_KEY_HEIGHT_PORTRAIT,getDefaultKeyHeight(c));
+        if(ph%2>0)
+        {
+            ped.putInt(st.PREF_KEY_HEIGHT_PORTRAIT,ph-1);
+        }
+        ph = pref.getInt(st.PREF_KEY_HEIGHT_LANDSCAPE,getDefaultKeyHeight(c));
+        if(ph%2>0)
+        {
+            ped.putInt(st.PREF_KEY_HEIGHT_LANDSCAPE,ph-1);
+        }
+        if(pref.contains(st.PREF_KEY_VIBRO_SHORT_KEY))
+        {
+            boolean bVibroShort = pref.getBoolean(st.PREF_KEY_VIBRO_SHORT_KEY, false);
+            String vt = bVibroShort?st.ONE_STRING:st.ZERO_STRING;
+            ped.putString(st.PREF_KEY_VIBRO_SHORT_TYPE,vt);
+            ped.remove(st.PREF_KEY_VIBRO_SHORT_KEY);
+        }
+        if(!pref.contains(st.PREF_KEY_UP_AFTER_SYMBOLS))
+        {
+            ped.putBoolean(st.PREF_KEY_UP_AFTER_SYMBOLS, pref.getBoolean(PREF_KEY_AUTO_CASE, false));
+        }
+        ped.commit();
+    }
+    public static int getDefaultKeyHeight(Context c)
+    {
+        return (int) (c.getResources().getDimension(R.dimen.def_key_height));
     }
 }

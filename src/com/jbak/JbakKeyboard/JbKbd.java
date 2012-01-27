@@ -99,10 +99,6 @@ public class JbKbd extends Keyboard {
                 break;
         }
         mEnterKey.m_kd = new KeyDrw(mEnterKey);
-        if(st.kv().m_curDesign.m_kbdFuncKeys!=null)
-        {
-            mEnterKey.m_kd.setFuncKey(st.kv().m_KeyBackSecondDrw);
-        }
         mEnterKey.icon = mEnterKey.m_kd.getDrawable();
         mEnterKey.label = null;
     }
@@ -125,6 +121,7 @@ public class JbKbd extends Keyboard {
         KeyDrw m_kd;
         int longCode = 0;
         int specKey = -1;
+        boolean smallLabel = false;
         public LatinKey(Resources res, Keyboard.Row parent, int x, int y, XmlResourceParser parser) {
             super(res, parent, x, y, parser);
             init(parent);
@@ -141,6 +138,7 @@ public class JbKbd extends Keyboard {
                 height = JbKbdView.inst.m_KeyHeight;
             }
             m_kd = new KeyDrw(this);
+            m_kd.setSmallLabel(smallLabel);
             if((codes==null||codes.length>0&&codes[0]==0)&&m_kd.txtMain!=null)
             {
                 if(m_kd.txtMain.length()==1)
@@ -152,10 +150,7 @@ public class JbKbd extends Keyboard {
             {
                 longCode = st.getCmdByLabel(getUpText());
             }
-            if(isFuncKey()&&st.kv().m_curDesign.m_kbdFuncKeys!=null)
-            {
-                m_kd.setFuncKey(st.kv().m_KeyBackSecondDrw);
-            }
+            m_kd.setFuncKey(isFuncKey());
             icon = m_kd.getDrawable();
             label = null;
             iconPreview = icon;

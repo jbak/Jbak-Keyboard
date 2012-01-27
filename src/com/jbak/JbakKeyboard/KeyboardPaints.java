@@ -4,10 +4,13 @@ import java.util.Vector;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.StateListDrawable;
 
+import com.jbak.CustomGraphics.CustomButtonDrawable;
 import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 
@@ -30,6 +33,10 @@ public class KeyboardPaints
     boolean m_bMainBold = false;
     Vector <BitmapCache> m_arBitmaps = new Vector<BitmapCache>();
     int BitmapCacheSize = 120;
+    StateListDrawable funcBackDrawable;
+    Paint bitmapNormal;
+    Paint bitmapFunc;
+    Paint bitmapPreview;
     public KeyboardPaints()
     {
         inst = this;
@@ -44,6 +51,38 @@ public class KeyboardPaints
         m_bMainBold = st.has(design.flags,st.DF_BOLD);
         m_defaultFontSize = fontSize;
         m_defaultLabelSize = labelSize;
+        if(design.m_kbdFuncKeys!=null&&design.m_kbdFuncKeys.m_keyBackground!=null)
+        {
+            funcBackDrawable = design.m_kbdFuncKeys.m_keyBackground.getStateDrawable();
+            if(st.kv().m_KeyBackDrw instanceof CustomButtonDrawable)
+            {
+//                design.m_keyBackground.setDependentback(design.m_kbdFuncKeys.m_keyBackground);
+                ((CustomButtonDrawable)st.kv().m_KeyBackDrw).setDependentDrawable(funcBackDrawable);
+            }
+        }
+        else
+        {
+            funcBackDrawable = null;
+        }
+        bitmapNormal = new Paint();
+        bitmapNormal.setColorFilter(new PorterDuffColorFilter(mainColor, PorterDuff.Mode.SRC_ATOP));
+        if(secondColor==mainColor)
+            bitmapFunc = bitmapNormal;
+        else
+        {
+            bitmapFunc = new Paint();
+            bitmapFunc.setColorFilter(new PorterDuffColorFilter(secondColor, PorterDuff.Mode.SRC_ATOP));
+        }
+        bitmapPreview = new Paint();
+        bitmapPreview.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP));
+    }
+    public final Paint getBitmapPaint(boolean bPreview,boolean bFunc)
+    {
+        if(bPreview)
+            return bitmapPreview;
+        if(bFunc)
+            return bitmapFunc;
+        return bitmapNormal;
     }
     final EditSet getDefaultMain()
     {
@@ -102,7 +141,8 @@ public class KeyboardPaints
         }
         try{
             BitmapDrawable bd = (BitmapDrawable)BitmapDrawable.createFromPath(path);
-            addBitmap(new BitmapCache(path, bd));
+            if(bd!=null)
+                addBitmap(new BitmapCache(path, bd));
             return bd;
         }
         catch (Throwable e) {

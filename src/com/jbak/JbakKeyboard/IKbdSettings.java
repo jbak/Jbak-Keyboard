@@ -1,4 +1,7 @@
 package com.jbak.JbakKeyboard;
+
+import android.content.Context;
+
 /** Константы для настроек клавиатуры */
 public interface IKbdSettings
 {
@@ -18,8 +21,11 @@ public interface IKbdSettings
     public static final String PREF_KEY_DEF_HEIGHT = "dh";
 /** Ключ, String, хранящий порядок переключения языков */    
     public static final String PREF_KEY_LANGS = "langs";
-/** Ключ, boolean, хранящий настройку вибро при коротком нажатии */    
+/** @deprecated Ключ, boolean, хранящий настройку вибро при коротком нажатии 
+ *  Заменено на PREF_KEY_VIBRO_SHORT_TYPE */
     public static final String PREF_KEY_VIBRO_SHORT_KEY = "vs";
+/** Ключ, String, тип вибро при коротком нажатии. "0" - нет, "1" - при отпускании, "2" - при нажатии*/    
+    public static final String PREF_KEY_VIBRO_SHORT_TYPE = "vibro_short";
 /** Ключ, boolean, хранящий настройку вибро при коротком нажатии */    
     public static final String PREF_KEY_VIBRO_LONG_KEY = "vl";
 /** Ключ, boolean, хранящий настройку проигрывания звуков */    
@@ -30,12 +36,20 @@ public interface IKbdSettings
 /** Ключ, String, хранящий путь к клавиатуре для выбраного языка в ландшафте
  *  Полный ключ выглядит как PREF_KEY_LANG_KBD+"en".*/
     public static final String PREF_KEY_LANG_KBD_LANDSCAPE = "kl_path_";
-/** Ключ, int, хранящий индекс текущего скина*/    
+/**@deprecated
+ *  Ключ, int, хранящий индекс текущего скина
+ *  Уже не юзается. Но его надо выпилить со старых версий */    
     public static final String PREF_KEY_KBD_SKIN = "kbd_skin";
-/** Ключ, boolean - предложения с большой буквы */    
-    public static final String PREF_KEY_SENTENCE_UPPERCASE = "up_sentence";
+/** Ключ, String. Для сторонних скинов - путь к скину, для встроенных - индекс в виде строки?*/    
+    public static final String PREF_KEY_KBD_SKIN_PATH = "kbd_skin_path";
+/** Ключ, boolean - глобальный ключ, включающий/отключающий автоматическую смену регистра */    
+    public static final String PREF_KEY_AUTO_CASE = "up_sentence";
+/** Ключ, boolean - включает/отключает смену регистра после набора символов */    
+    public static final String PREF_KEY_UP_AFTER_SYMBOLS = "up_after_symbols";
 /** Ключ, String, список символов для перехода в верхний регистр */    
     public static final String PREF_KEY_SENTENCE_ENDS = "sentence_ends";
+/** Ключ, boolean - смена регистра только после символа из PREF_KEY_SENTENCE_ENDS и следующего за ним пробела*/    
+    public static final String PREF_KEY_UPERCASE_AFTER_SPACE = "space_after_sentence";
 /** Ключ, boolean - добавление пробела после конца предложения */    
     public static final String PREF_KEY_SENTENCE_SPACE = "space_sentence";
 /** Ключ, boolean - переход в верхний регистр в пустом поле */    
@@ -64,6 +78,12 @@ public interface IKbdSettings
     public static final String PREF_KEY_VIBRO_SHORT_DURATION = "vibro_short_duration";
     /** Ключ, String, интервал вибро для удержания*/
     public static final String PREF_KEY_VIBRO_LONG_DURATION = "vibro_long_duration";
+    /** Ключ, int, интервал длинного нажатия в ms*/
+    public static final String PREF_KEY_LONG_PRESS_INTERVAL = "int_long_press";
+    /** Ключ, int, интервал первого повтора в ms*/
+    public static final String PREF_KEY_REPEAT_FIRST_INTERVAL = "int_first_repeat";
+    /** Ключ, int, интервал следующих повторов в ms*/
+    public static final String PREF_KEY_REPEAT_NEXT_INTERVAL = "int_next_repeat";
     
 
     public static final int PREF_VAL_EDIT_TYPE_DEFAULT = 0;
@@ -120,5 +140,6 @@ public interface IKbdSettings
     public static final String DRW_PREFIX = "d_"; 
 /** Тэг для записи в logcat*/
     public static final String TAG = "JBK";
-
+    public static final String ZERO_STRING = "0";
+    public static final String ONE_STRING = "1";
 }

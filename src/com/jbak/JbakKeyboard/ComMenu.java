@@ -31,8 +31,10 @@ public class ComMenu
     ArrayList<MenuEntry> m_arItems = new ArrayList<MenuEntry>();
     int m_state = 0;
     public static final int STAT_TEMPLATES = 0x000001;
-    public static final int STAT_ADMOB = 0x000002;
+    public static final int STAT_CLIPBOARD = 0x000002;
     static ComMenu inst; 
+    protected static final int[] PRESSED_STATE_SET = {android.R.attr.state_pressed};
+    protected static final int[] EMPTY_STATE_SET = {};
 /** Класс, хранящий информацию об элементе меню */  
     public static class MenuEntry
     {
@@ -59,30 +61,35 @@ public class ComMenu
         m_MainView = ServiceJbKbd.inst.getLayoutInflater().inflate(R.layout.com_menu, null);
     }
 /** Устанавливает фон ненажатой кнопки, соответствующий текущему оформлению клавиатуры*/    
-    void setButtonKeyboardBackground(View btn)
-    {
-        if(st.kv().m_KeyBackDrw!=null)
-        {
-            btn.setBackgroundDrawable(st.kv().m_drwKeyBack);
-//            btn.setOnTouchListener(m_btnListener);
-        }
-    }
+//    void setButtonKeyboardBackground(View btn)
+//    {
+//        if(st.kv().m_KeyBackDrw!=null)
+//        {
+//            btn.setBackgroundDrawable(st.kv().m_drwKeyBack);
+////            btn.setOnTouchListener(m_btnListener);
+//        }
+//    }
 /** Создаёт новую кнопку элемента меню */   
     View newView(MenuEntry ent)
     {
         Button btn = new Button(st.c());
-        btn.setBackgroundDrawable(st.kv().m_KeyBackDrw);
+        if(st.kv().isDefaultDesign())
+        {
+            btn.setBackgroundDrawable(st.kv().m_KeyBackDrw);
+        }
+        else
+        {
+            btn.setBackgroundDrawable(st.kv().m_curDesign.m_keyBackground.clone().getStateDrawable());
+        }
 //        setButtonKeyboardBackground(btn);
         btn.setTextColor(st.paint().mainColor);
-        if(st.has(m_state, STAT_TEMPLATES))
+        if(st.has(m_state, STAT_TEMPLATES)||st.has(m_state, STAT_CLIPBOARD))
         {
-            btn.setLongClickable(true);
             btn.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
             btn.setLongClickable(true);
             btn.setOnLongClickListener(m_longListener);
         }
         btn.setMaxLines(1);
-        btn.setDuplicateParentStateEnabled(false);
         btn.setEllipsize(TruncateAt.MARQUEE);
         btn.setTag(ent);
         btn.setText(ent.text);
@@ -152,7 +159,7 @@ public class ComMenu
         inst = null;
         if(ServiceJbKbd.inst!=null)
         {
-            st.setQwertyKeyboard(true);
+            st.kv().setKeyboard(st.curKbd());
             ServiceJbKbd.inst.setInputView(st.kv());
         }
     }
@@ -226,6 +233,7 @@ public class ComMenu
     static boolean showClipboard()
     {
         ComMenu menu = new ComMenu();
+        menu.m_state = STAT_CLIPBOARD;
         Cursor c = st.stor().getClipboardCursor();
         if(c==null)
             return false;

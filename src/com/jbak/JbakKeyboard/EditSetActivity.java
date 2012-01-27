@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.TextPaint;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -67,7 +68,7 @@ public class EditSetActivity extends Activity
                     if(pos==0)
                     {
                         m_es.fontSize = 0;
-                        m_edit.setTextSize(m_defaultFontSize);
+                        m_edit.setTextSize(TypedValue.COMPLEX_UNIT_PX,m_defaultFontSize);
                         return;
                     }
                     else
@@ -169,10 +170,9 @@ public class EditSetActivity extends Activity
         }
         void setToEditor(EditText et)
         {
-            float dens = et.getPaint().density;
-            float df = et.getTextSize()/dens;
+            float df = et.getTextSize();
             et.setTypeface(typeface, style);
-            et.setTextSize(fontSize!=0?fontSize/dens:df);
+            et.setTextSize(TypedValue.COMPLEX_UNIT_PX,fontSize>0?fontSize:df);
         }
         TextPaint getTextPaint(boolean bOwnBoldAndItalic)
         {

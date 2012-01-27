@@ -21,6 +21,7 @@ public class IntEditor extends LinearLayout
     boolean m_bFromUser = false;
     TextView m_edit;
     OnChangeValue m_listener = null;
+    int steps[]=new int[]{1,3,5};
     public IntEditor(Context context, AttributeSet attrs)
     {
         super(context, attrs);
@@ -42,11 +43,11 @@ public class IntEditor extends LinearLayout
               long dt = ct-m_downTime;
               m_interval = 200;
               if(dt>1000)
-                  changeValue(inc,5);
+                  changeValue(inc,steps[2]);
               else if(dt>500)
-                  changeValue(inc,3);
+                  changeValue(inc,steps[1]);
               else
-                  changeValue(inc,1);
+                  changeValue(inc,steps[0]);
               sendPressMessage(inc);
           }
       };
@@ -67,16 +68,16 @@ public class IntEditor extends LinearLayout
             boolean bInc = v.getId()==R.id.plus;
             if(act==MotionEvent.ACTION_DOWN)
             {
-                changeValue(bInc,1);
+                changeValue(bInc,steps[0]);
                 m_downTime = System.currentTimeMillis();
                 m_interval = 400;
                 sendPressMessage(bInc);
             }
             if(act==MotionEvent.ACTION_UP||act==MotionEvent.ACTION_CANCEL)
             {
+                m_handler.removeMessages(0);
                 m_downTime = 0;
                 m_interval = 400;
-                m_handler.removeMessages(0);
             }
             
             return false;
@@ -123,6 +124,11 @@ public class IntEditor extends LinearLayout
     public void setOnChangeValue(OnChangeValue listener)
     {
         m_listener = listener;
+    }
+/** Устанавливает массив шагов */    
+    public void setSteps(int steps[])
+    {
+        this.steps = steps;
     }
     public static interface OnChangeValue
     {

@@ -18,7 +18,7 @@
     <string name="set_key_height_portrait_desc">Change key height for qwerty-keyboard in portrait mode </string>
     <string name="set_key_height_landscape">Key height landscape</string>
     <string name="set_key_height_landscape_desc">Change key height for qwerty-keyboard in landscape mode </string>
-    <string name="set_languages">Select languages</string>
+    <string name="set_languages">Languages and keyboards</string>
     <string name="set_languages_desc">Here you can select languages for switching</string>
     <string name="set_key_voice">Voice and vibro</string>
     <string name="set_key_voice_desc">Here you can change settings for voice and tactile feedback </string>
@@ -38,10 +38,18 @@
     <string name="set_key_spaces">Adding spaces</string>
     <string name="set_key_empty_uppercase">In empty text field</string>
     <string name="set_key_empty_uppercase_desc">If target text-field is empty - then starts input from uppercase</string>
+    <string name="set_key_auto_case">Autochange case</string>
+    <string name="set_key_auto_case_desc">Auto change upper and lower case. See next setting for rules</string>
+    <string name="set_key_auto_case_rules">Case rules</string>
+    <string name="set_key_auto_case_rules_desc">Rules for going to uppercase</string>
+        
     <string name="set_key_sentence_upper">After some symbols</string>
     <string name="set_key_sentence_upper_desc">Automatic uppercase after some symbols. See next setting</string>
     <string name="set_key_sentence_ends">Upper case symbols</string>
     <string name="set_key_sentence_ends_desc">After input one of these symbols keyboard go to uppercase. Click to edit</string>
+    <string name="set_key_sentence_space_end">Only after spaces</string>
+    <string name="set_key_sentence_space_end_desc">Upper case after space or linefeed, inserted after symbol from previous setting</string>
+        
     <string name="set_key_space_sentence_end">After some symbols</string>
     <string name="set_key_space_sentence_end_desc">Automatic space adding after some symbols. See next setting</string>
     <string name="set_key_space_symbols">Symbols for add space</string>
@@ -72,12 +80,24 @@
     <string name="set_key_appearance_desc">Settings for look and feel</string>
     <string name="set_key_clipbrd_size">Clipboard size</string>
     <string name="set_key_clipbrd_size_desc">Number of max entries in multiclipboard</string>
+    <string name="set_key_intervals">Key delays</string>
+    <string name="set_key_intervals_desc">Delays for long-press and repeats</string>
+    
+    <string name="interval_long_press">Long-press delay (ms)</string>
+    <string name="interval_first_repeat">First repeat delay (ms)</string>
+    <string name="interval_next_repeat">Next repeats delay (ms)</string>
         
     <string-array name="array_shift_vars">
         <item>3-state (normal,shift,capslock)</item>
         <item>2-state (normal,shift)</item>
         <item>2-state (normal,capslock)</item>
     </string-array>
+    <string-array name="vibro_short_type">
+        <item>No vibro</item>
+        <item>On key release</item>
+        <item>On key press</item>
+    </string-array>
+        
     <string-array name="screen_type_vars">
         <item>Portrait and landscape</item>
         <item>Only portrait</item>
@@ -145,7 +165,7 @@
 	<string name="about_version">Version: </string>
 	<string name="about_market">Market:</string>
 	<string name="about_author">Author:</string>
-	<string name="about_author_desc">Juriy Bakunin aka Jbak\njbak1979@gmail.com</string>
+	<string name="about_author_desc">Juriy Bakunin aka Jbak\njbak1979@gmail.com\nweb: http://jbak.ru/jbakkeyboard/index_en.php</string>
 	<string name="about_other">Other:</string>
 	<string name="about_other_desc">Icons by Ali Gamidov (ali.gamidov@mail.ru)</string>
 	    	    	    	    
@@ -154,7 +174,8 @@
 	<string name="kbd_name_qwerty">Qwerty keyboard</string>    
 	<string name="kbd_name_wide">Wide keys</string>
 	<string name="kbd_name_qwerty_tablet">Qwerty for tablet</string>
-	    
+	<string name="kbd_name_sym_edit">Symbols and edit</string>
+	    	    
  <!-- Names for keyboards designs -->
 	<string name="kbd_design_standard">Standard</string>    
 	<string name="kbd_design_iphone">Pseudo iPhone</string>
@@ -165,10 +186,6 @@
 	    	    	    
  
  <!-- Names for languages -->
- 	<string name="lang_en">English</string>   
- 	<string name="lang_ru">Русский</string>   
- 	<string name="lang_ua">Українська</string>   
- 	<string name="lang_be">Белорусский</string>   
  	<string name="lang_symbol">Symbol keyboard</string>   
  	<string name="lang_symbol_shift">Symbol shift keyboard</string>   
  	<string name="lang_edittext">Edit text keyboard</string>   

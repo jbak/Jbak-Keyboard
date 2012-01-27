@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 import com.jbak.ctrl.IntEditor;
 /** Класс для настроек различных значений клавиатуры, требующих просмотра qwerty-слоя */
@@ -57,14 +58,22 @@ public class SetKbdActivity extends Activity
         }
         else if(m_curAction==st.SET_SELECT_SKIN)
         {
-        	m_curKbd= st.pref().getInt(st.PREF_KEY_KBD_SKIN, 0);
+            String path = st.pref().getString(st.PREF_KEY_KBD_SKIN_PATH, st.ZERO_STRING);
+            int pos = 0;
+            for(KbdDesign kd:st.arDesign)
+            {
+                if(st.getSkinPath(kd).equals(path))
+                {
+                    m_curKbd = pos;
+                    break;
+                }
+                ++pos;
+            }
         	m_curSkin = m_curKbd;
             m_MainView.findViewById(R.id.set_height).setVisibility(View.GONE);
             m_MainView.findViewById(R.id.select_kbd).setVisibility(View.VISIBLE);
             m_MainView.findViewById(R.id.screen_type).setVisibility(View.GONE);
             String name = st.arDesign[m_curKbd].getName(this);
-            if(name==null)
-                name = getString(st.arDesign[m_curKbd].nameResId);
             ((TextView)m_MainView.findViewById(R.id.keyboard_name)).setText(name);
             m_MainView.findViewById(R.id.save).setOnClickListener(new OnClickListener()
             {
@@ -111,9 +120,10 @@ public class SetKbdActivity extends Activity
         if(m_curAction==st.SET_KEY_HEIGHT_PORTRAIT||m_curAction==st.SET_KEY_HEIGHT_LANDSCAPE)
         {
             final IntEditor sb = (IntEditor)m_MainView.findViewById(R.id.key_height);
+            sb.setSteps(new int[]{2,4,8});
             String p = m_curAction==st.SET_KEY_HEIGHT_PORTRAIT?st.PREF_KEY_HEIGHT_PORTRAIT:st.PREF_KEY_HEIGHT_LANDSCAPE;
             sb.setMinAndMax(20, 150);
-            int defHeight = (int) (getResources().getDimension(R.dimen.def_key_height)/st.screenDens(inst));
+            int defHeight = st.getDefaultKeyHeight(inst);
             int val = st.pref().getInt(p,defHeight);
             sb.setOnChangeValue(new IntEditor.OnChangeValue()
             {
@@ -180,7 +190,7 @@ public class SetKbdActivity extends Activity
     {
         if(m_curAction==st.SET_SELECT_SKIN)
         {
-            st.pref(inst).edit().putInt(st.PREF_KEY_KBD_SKIN, m_curSkin).commit();
+            st.pref(inst).edit().putString(st.PREF_KEY_KBD_SKIN_PATH, st.getSkinPath(st.arDesign[m_curSkin])).commit();
         }
         JbKbdView.inst = null;
         inst = null;
@@ -213,9 +223,10 @@ public class SetKbdActivity extends Activity
     }
     void setCurSkin()
     {
-        ((TextView)m_MainView.findViewById(R.id.keyboard_name)).setText(st.arDesign[m_curKbd].getName(inst));
-    	st.pref().edit().putInt(st.PREF_KEY_KBD_SKIN, m_curKbd).commit();
-    	m_kbd.reload();
+        KbdDesign kd = st.arDesign[m_curKbd];
+        ((TextView)m_MainView.findViewById(R.id.keyboard_name)).setText(kd.getName(inst));
+    	st.pref().edit().putString(st.PREF_KEY_KBD_SKIN_PATH,st.getSkinPath(kd)).commit();
+    	m_kbd.reloadSkin();
     }
 /** Устанавливает в просмотр следующую клавиатуру в массиве {@link IKeyboard#arKbd}*/   
     void changeKbd(boolean bNext)
