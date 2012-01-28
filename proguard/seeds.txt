@@ -22,6 +22,7 @@ com.jbak.JbakKeyboard.EditSetActivity
 com.jbak.JbakKeyboard.JbCandView
 com.jbak.JbakKeyboard.JbCandView: JbCandView(android.content.Context,android.util.AttributeSet)
 com.jbak.JbakKeyboard.JbKbdPreference
+com.jbak.JbakKeyboard.JbKbdReceiver
 com.jbak.JbakKeyboard.JbKbdView
 com.jbak.JbakKeyboard.JbKbdView: JbKbdView(android.content.Context,android.util.AttributeSet)
 com.jbak.JbakKeyboard.JbKbdView: JbKbdView(android.content.Context,android.util.AttributeSet,int)

@@ -1,10 +1,10 @@
 package com.jbak.JbakKeyboard;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.Locale;
+import java.util.Map.Entry;
 import java.util.Vector;
-
-import com.jbak.CustomGraphics.GradBack;
-import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -19,6 +19,8 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.jbak.CustomGraphics.GradBack;
 /** Класс содержит полезные статические переменные */
 public class st extends IKeyboard implements IKbdSettings
 {
@@ -520,5 +522,54 @@ public class st extends IKeyboard implements IKbdSettings
     public static int getDefaultKeyHeight(Context c)
     {
         return (int) (c.getResources().getDimension(R.dimen.def_key_height));
+    }
+    public static boolean savePrefs(SharedPreferences from,SharedPreferences to)
+    {
+        try{
+            Editor ped = to.edit();
+            ped.clear();
+            for(Entry<String, ?> me:from.getAll().entrySet())
+            {
+                Object v = me.getValue();
+                String k = me.getKey();
+                if(v instanceof Boolean)
+                {
+                    ped.putBoolean(k, ((Boolean)v).booleanValue());
+                }
+                else if(v instanceof String)
+                {
+                    ped.putString(k, (String)v);
+                }
+                if(v instanceof Integer)
+                {
+                    ped.putInt(k, ((Integer)v).intValue());
+                }
+                if(v instanceof Float)
+                {
+                    ped.putFloat(k, ((Float)v).floatValue());
+                }
+                if(v instanceof Long)
+                {
+                    ped.putLong(k, ((Long)v).longValue());
+                }
+            }
+            ped.commit();
+        }
+        catch (Throwable e) {
+        }
+        return false;
+    }
+    public static File[] getFilesByExt(File dir,final String ext)
+    {
+        return dir.listFiles(new FilenameFilter()
+        {
+            @Override
+            public boolean accept(File dir, String filename)
+            {
+                int pos = filename.lastIndexOf('.');
+                if(pos<0)return false;
+                return filename.substring(pos+1).compareTo(ext)==0;
+            }
+        });
     }
 }

@@ -77,7 +77,7 @@ com.jbak.CustomGraphics.GradBack:
     public static final int DEFAULT_COLOR
     public static final int GRADIENT_TYPE_LINEAR
     public static final int GRADIENT_TYPE_SWEEP
-    260:261:public void setDependentback(com.jbak.CustomGraphics.GradBack)
+    271:272:public void setDependentback(com.jbak.CustomGraphics.GradBack)
 com.jbak.JbakKeyboard.AdPreference
 com.jbak.JbakKeyboard.CandidateView:
     private static final int OUT_OF_BOUNDS
@@ -91,8 +91,7 @@ com.jbak.JbakKeyboard.ClipbrdService:
 com.jbak.JbakKeyboard.ComMenu:
     public static final int ID_DELIMETER
     public static final int STAT_TEMPLATES
-    public static final int STAT_ADMOB
-    64:69:void setButtonKeyboardBackground(android.view.View)
+    public static final int STAT_CLIPBOARD
 com.jbak.JbakKeyboard.CustomKbdDesign:
     public static final byte P_KeyBackStartColor
     public static final byte P_KeyBackEndColor
@@ -207,6 +206,8 @@ com.jbak.JbakKeyboard.JbKbdPreference:
     public static final java.lang.String DEF_SIZE_CLIPBRD
     public static final java.lang.String DEF_SHORT_VIBRO
     public static final java.lang.String DEF_LONG_VIBRO
+com.jbak.JbakKeyboard.JbKbdReceiver:
+    22:24:static android.content.Intent getClipbrdServiceIntent(android.content.Context)
 com.jbak.JbakKeyboard.JbKbdView:
     static final int KEYCODE_OPTIONS
     android.graphics.drawable.Drawable m_PreviewDrawable
@@ -224,9 +225,6 @@ com.jbak.JbakKeyboard.KeyDrw:
     public static final int DELIM
     public static final int DEFAULT_GAP
     public static final int BIG_GAP
-com.jbak.JbakKeyboard.KeyDrw$DrwCache:
-    float m_xMainUpper
-    float m_yMainUpper
 com.jbak.JbakKeyboard.OwnKeyboardHandler:
     private static final int MSG_SHOW_PREVIEW
     private static final int MSG_REMOVE_PREVIEW
@@ -246,9 +244,11 @@ com.jbak.JbakKeyboard.R$xml
 com.jbak.JbakKeyboard.ServiceJbKbd:
     static final boolean PROCESS_HARD_KEYS
     public static final java.lang.String PID
-    public static final int STATE_SENTENCE_UP
+    public static final int STATE_AUTO_CASE
     public static final int STATE_SENTENCE_SPACE
     public static final int STATE_EMPTY_UP
+    public static final int STATE_SPACE_SENTENCE_UP
+    public static final int STATE_UP_AFTER_SYMBOLS
     android.inputmethodservice.AbstractInputMethodService$AbstractInputMethodSessionImpl m_is
 com.jbak.JbakKeyboard.Stor:
     public static final int DATABASE_VERSION
@@ -293,11 +293,11 @@ com.jbak.JbakKeyboard.Words:
     53:72:java.util.ArrayList getWords(java.lang.String)
 com.jbak.JbakKeyboard.st:
     public static final boolean DEBUG
-    69:70:public static final int min(int,int)
-    74:75:public static final int max(int,int)
-    117:117:public static float screenDens(android.content.Context)
+    71:72:public static final int min(int,int)
+    119:119:public static float screenDens(android.content.Context)
+    529:560:public static boolean savePrefs(android.content.SharedPreferences,android.content.SharedPreferences)
 com.jbak.JbakKeyboard.st$SyncAsycOper
 com.jbak.JbakKeyboard.st$UniObserver:
-    33:37:public st$UniObserver(java.lang.Object,java.lang.Object)
+    35:39:public st$UniObserver(java.lang.Object,java.lang.Object)
 com.jbak.ctrl.IntEditor:
     118:118:public final boolean isFromUser()

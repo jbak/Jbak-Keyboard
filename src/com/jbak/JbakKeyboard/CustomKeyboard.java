@@ -666,16 +666,7 @@ public class CustomKeyboard extends JbKbd
                 f.mkdirs();
                 return null;
             }
-            File keyboards[] = f.listFiles(new FilenameFilter()
-            {
-                @Override
-                public boolean accept(File dir, String filename)
-                {
-                    int pos = filename.lastIndexOf('.');
-                    if(pos<0)return false;
-                    return filename.substring(pos+1).compareTo("xml")==0;
-                }
-            });
+            File keyboards[] = st.getFilesByExt(f, st.EXT_XML);
             if(keyboards==null||keyboards.length==0)
                 return null;
             for(File kf:keyboards)

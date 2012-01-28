@@ -87,6 +87,12 @@
     <string name="set_key_appearance_desc">Настройки внешнего вида клавиатуры и полноэкранного редактора</string>
 	<string name="set_key_intervals">Интервалы клавиш</string>
     <string name="set_key_intervals_desc">Задержка удержания и повтора клавиши</string>
+    
+    <string name="set_key_save_pref">Сохранить настройки</string>
+    <string name="set_key_save_pref_desc">В файл:</string>
+    <string name="set_key_load_pref">Загрузить настройки</string>
+    <string name="set_key_load_pref_desc">Из файла:</string>
+        
     <string name="interval_long_press">Задержка удержания клавиши  (ms)</string>
     <string name="interval_first_repeat">Задержка первого повтора клавиши (ms)</string>
     <string name="interval_next_repeat">Задержка следующего повтора клавиши(ms)</string>

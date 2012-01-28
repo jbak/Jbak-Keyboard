@@ -1,6 +1,11 @@
 package com.jbak.JbakKeyboard;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -32,6 +37,10 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         addPreferencesFromResource(R.xml.preferences);
         setShiftState();
         SharedPreferences p = st.pref(this);
+        Preference pr = getPreferenceScreen().findPreference(st.PREF_KEY_SAVE);
+        pr.setSummary(pr.getSummary().toString()+'\n'+getBackupPath());
+        pr = getPreferenceScreen().findPreference(st.PREF_KEY_LOAD);
+        pr.setSummary(pr.getSummary().toString()+'\n'+getBackupPath());
         setSummary(st.PREF_KEY_CLIPBRD_SIZE, R.string.set_key_clipbrd_size_desc, p.getString(st.PREF_KEY_CLIPBRD_SIZE,DEF_SIZE_CLIPBRD ));
         int index = Integer.decode(p.getString(st.PREF_KEY_VIBRO_SHORT_TYPE, st.ONE_STRING));
         setSummary(st.PREF_KEY_VIBRO_SHORT_TYPE, R.string.set_key_short_vibro_desc, strVal(getResources().getStringArray(R.array.vibro_short_type)[index]));
@@ -75,7 +84,15 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         {
             showIntervalsEditor();
         }
-        if("set_skins".equals(k))
+        else if(st.PREF_KEY_LOAD.equals(k))
+        {
+            backup(false);
+        }
+        else if(st.PREF_KEY_SAVE.equals(k))
+        {
+            backup(true);
+        }
+        else if("set_skins".equals(k))
         {
             String err = CustomKbdDesign.loadCustomSkins();
             if(err.length()>0)
@@ -85,17 +102,17 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
             runSetKbd(st.SET_SELECT_SKIN);
             return true;
         }
-        if("pref_port_key_height".equals(k))
+        else if("pref_port_key_height".equals(k))
         {
             runSetKbd(st.SET_KEY_HEIGHT_PORTRAIT);
             return true;
         }
-        if("pref_land_key_height".equals(k))
+        else if("pref_land_key_height".equals(k))
         {
             runSetKbd(st.SET_KEY_HEIGHT_LANDSCAPE);
             return true;
         }
-        if("set_key_main_font".equals(k))
+        else if("set_key_main_font".equals(k))
         {
             c.startActivity(
                     new Intent(c,EditSetActivity.class)
@@ -105,7 +122,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
                 );
             
         }
-        if("set_key_second_font".equals(k))
+        else if("set_key_second_font".equals(k))
          {
              c.startActivity(
                      new Intent(c,EditSetActivity.class)
@@ -115,7 +132,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
                  );
              
          }
-        if("set_key_label_font".equals(k))
+        else if("set_key_label_font".equals(k))
          {
              c.startActivity(
                      new Intent(c,EditSetActivity.class)
@@ -125,12 +142,12 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
                  );
              
          }
-        if("pref_languages".equals(k))
+        else if("pref_languages".equals(k))
         {
             st.runAct(LangSetActivity.class,c);
             return true;
         }
-        if("fs_editor_set".equals(k))
+        else if("fs_editor_set".equals(k))
         {
             getApplicationContext().startActivity(
                     new Intent(getApplicationContext(),EditSetActivity.class)
@@ -139,7 +156,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
                 );
             return true;
         }
-        if("about_app".equals(k))
+        else if("about_app".equals(k))
         {
             st.runAct(AboutActivity.class,c);
             return true;
@@ -271,5 +288,78 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
             }
         };
         Dlg.CustomDialog(this, v, getString(R.string.ok), getString(R.string.cancel), null, obs);
+    }
+    final String getBackupPath()
+    {
+        return st.getSettingsPath()+st.SETTINGS_BACKUP_FILE;
+    }
+    void backup(final boolean bSave)
+    {
+        Dlg.yesNoDialog(this, getString(bSave?R.string.set_key_save_pref:R.string.set_key_load_pref)+" ?", new st.UniObserver()
+        {
+            @Override
+            int OnObserver(Object param1, Object param2)
+            {
+                if(((Integer)param1).intValue()==AlertDialog.BUTTON_POSITIVE)
+                {
+                    int ret = prefBackup(bSave);
+                    if(ret==0)
+                        Toast.makeText(st.c(), "ERROR", 700).show();
+                    else if(ret==1)
+                        Toast.makeText(st.c(), R.string.ok, 700).show();
+                }
+                return 0;
+            }
+        });
+    }
+    int prefBackup(boolean bSave)
+    {
+        try{
+            String path = getBackupPath();
+            String prefDir = getFilesDir().getParent()+"/shared_prefs/";
+            File ar[] = st.getFilesByExt(new File(prefDir), st.EXT_XML);
+            if(ar==null||ar.length==0)
+                return 0;
+            File f = new File(path);
+            File bf = ar[0];
+            FileInputStream in;
+            FileOutputStream out;
+            if(bSave)
+            {
+                in = new FileInputStream(ar[0]);
+                f.delete();
+                out = new FileOutputStream(f);
+            }
+            else
+            {
+                if(!f.exists())
+                {
+                    Toast.makeText(this, "File not exist: "+path, 700).show();
+                    return -1;
+                }
+                out = new FileOutputStream(ar[0]);
+                in = new FileInputStream(f);
+            }
+            byte b[] = new byte[in.available()];
+            in.read(b);
+            out.write(b);
+            out.flush();
+            in.close();
+            out.close();
+            if(!bSave)
+            {
+                if(JbKbdView.inst!=null)
+                    JbKbdView.inst = null;
+                if(ServiceJbKbd.inst!=null)
+                    ServiceJbKbd.inst.stopSelf();
+                finish();
+                startActivity(getIntent());
+            }
+            return 1;
+        }
+        catch (Throwable e) {
+            st.logEx(e);
+        }
+        return 0;
     }
 }

@@ -217,7 +217,15 @@
             android:key="intervals"
             android:summary="@string/set_key_intervals_desc"
             android:title="@string/set_key_intervals" />
-    </PreferenceScreen>
+        <Preference
+            android:key="save"
+            android:title="@string/set_key_save_pref"
+            android:summary="@string/set_key_save_pref_desc" />
+        <Preference
+            android:key="load"
+            android:title="@string/set_key_load_pref"
+            android:summary="@string/set_key_load_pref_desc" />
+</PreferenceScreen>
 
     <!-- о программе -->
 

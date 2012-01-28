@@ -85,7 +85,15 @@ public interface IKbdSettings
     /** Ключ, int, интервал следующих повторов в ms*/
     public static final String PREF_KEY_REPEAT_NEXT_INTERVAL = "int_next_repeat";
     
+    /** Ключ, none, ключ для пункта сохранения настроек*/
+    public static final String PREF_KEY_SAVE = "save";
+    /** Ключ, none, ключ для пункта загрузки настроек*/
+    public static final String PREF_KEY_LOAD = "load";
 
+    public static final String EXT_XML = "xml";
+    public static final String SETTINGS_BACKUP_FILE= "settings_backup"+'.'+EXT_XML;
+    
+    
     public static final int PREF_VAL_EDIT_TYPE_DEFAULT = 0;
     public static final int PREF_VAL_EDIT_TYPE_FULLSCREEN = 1;
     public static final int PREF_VAL_EDIT_TYPE_NOT_FULLSCREEN = 2;

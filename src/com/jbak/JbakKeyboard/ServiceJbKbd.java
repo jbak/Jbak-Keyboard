@@ -72,7 +72,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     VibroThread                m_vibro;
 /** Разрешена автоматическая смена регистра */
     public static final int    STATE_AUTO_CASE      = 0x00000001;
-/** Статус - пробел после конца предложения */
+/** Статус - вставка пробела после конца предложения */
     public static final int    STATE_SENTENCE_SPACE = 0x0000002;
 /** Статус - верхний регистр в пустом поле */
     public static final int    STATE_EMPTY_UP       = 0x0000004;
@@ -652,7 +652,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 
     public void swipeRight()
     {
-        processKey(IKeyboard.KEYCODE_LANG_CHANGE);
     }
 
     public void swipeLeft()
@@ -661,9 +660,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 
     public void swipeDown()
     {
-        processKey(Keyboard.KEYCODE_CANCEL);
     }
-
     public void swipeUp()
     {
     }
@@ -877,6 +874,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
     {
+ 
         if(st.PREF_KEY_VIBRO_LONG_DURATION.equals(key)||st.PREF_KEY_VIBRO_SHORT_DURATION.equals(key))
         {
             if(m_vibro!=null)
