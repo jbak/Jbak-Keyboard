@@ -57,4 +57,11 @@ public class CustomButtonDrawable extends StateListDrawable
     {
         m_dependedDrawable = depDrawable;
     }
+	@Override 
+	public boolean getPadding(Rect padding)
+	{
+	    int g = m_grad.m_gap+1;
+	    padding.set(g, g, g, g);
+	    return true;
+	}
 }

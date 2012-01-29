@@ -443,7 +443,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         {
             onOptions();
         }
-        else if (primaryCode == IKeyboard.KEYCODE_LANG_CHANGE)
+        else if (primaryCode == st.CMD_LANG_CHANGE)
         {
             st.kv().handleLangChange();
             openWords();
@@ -652,9 +652,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 
     public void swipeRight()
     {
-        processKey(IKeyboard.KEYCODE_LANG_CHANGE);
     }
-
     public void swipeLeft()
     {
     }

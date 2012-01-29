@@ -126,10 +126,8 @@ public class JbKbdView extends KeyboardView {
         if(m_curDesign.m_keyBackground!=null)
         {
         	m_KeyBackDrw = m_curDesign.m_keyBackground.getStateDrawable(); 
-        	KeyDrw.GAP = m_curDesign.m_keyBackground.m_gap+3;
+        	KeyDrw.GAP = m_curDesign.m_keyBackground.m_gap+2;
         }
-        else
-            KeyDrw.GAP = KeyDrw.DEFAULT_GAP;
         if(m_curDesign.backDrawableRes!=0)
             setBackgroundResource(m_curDesign.backDrawableRes);
         else if(m_curDesign.m_kbdBackground!=null)

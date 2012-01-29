@@ -124,7 +124,11 @@ public interface IKbdSettings
     public static final int CMD_TPL_NEW_FOLDER = -505;
     /** Внутреняя команда - запуск редактора шаблонов */    
     public static final int CMD_TPL_EDITOR = -506;
-    public static final int CMD_COMPILE_KEYBOARDS = -1000;
+    
+    public static final int CMD_LANG_CHANGE = -20;
+
+    
+    public static final int CMD_COMPILE_KEYBOARDS = -10000;
 
   //-------------------------------------------------------------------    
   /// Прочие строковые значения

@@ -307,11 +307,11 @@ class KeyDrw extends RectShape
             h2 = w2 = 0;
         }
         w1 = (int) p1.measureText(m_c.mainLower);
-        int fh = GAP*2+h1+h2+DELIM; // Полная высота
+        int fh = st.paint().padding.top+st.paint().padding.left+h1+h2+DELIM; // Полная высота
         if(fh>rb.height())
         {
             // Изображение основного текста и доп. символов не умещается в высоту
-            int x2 = rb.width()-GAP-w2;
+            int x2 = rb.width()-st.paint().padding.right-w2;
             if(bmp!=null)
             {
                 m_c.m_xSmall = x2;
@@ -324,8 +324,8 @@ class KeyDrw extends RectShape
             }
             if(txtMain!=null)
             {
-                m_c.m_xMainLower = horzX(GAP+DELIM,rb.width()/2-w1/2,w1,rb.width()-GAP-w2);
-                m_c.m_yMainLower = rb.height()-GAP-d1-2;
+                m_c.m_xMainLower = horzX(st.paint().padding.left,rb.width()/2-w1/2,w1,rb.width()-st.paint().padding.right-w2);
+                m_c.m_yMainLower = rb.height()-st.paint().padding.bottom-d1;
                 if(m_c.mainUpper==m_c.mainLower)
                 {
                     m_c.m_xMainUpper = m_c.m_xMainLower;
@@ -333,7 +333,7 @@ class KeyDrw extends RectShape
                 else
                 {
                     w1 = (int) p1.measureText(m_c.mainUpper);
-                    m_c.m_xMainUpper = horzX(GAP+DELIM,rb.width()/2-w1/2,w1,rb.width()-GAP-w2);
+                    m_c.m_xMainUpper = horzX(st.paint().padding.left,rb.width()/2-w1/2,w1,rb.width()-st.paint().padding.right-w2);
                 }
                 m_c.m_yMainUpper = m_c.m_yMainLower;
             }
@@ -344,15 +344,15 @@ class KeyDrw extends RectShape
             if(bmp!=null)
             {
                 m_c.m_xSmall = rb.width()/2-w2/2;
-                m_c.m_ySmall = GAP+3;
+                m_c.m_ySmall = st.paint().padding.top;
             }
             else if(txtSmall!=null)
             {
                 m_c.m_xSmall = rb.width()/2-w2/2;
-                m_c.m_ySmall = GAP+a2;
+                m_c.m_ySmall = st.paint().padding.top+a2;
             }
             int y = h2+DELIM+a1;
-            int dy = (rb.height()-GAP-y)/2;
+            int dy = (rb.height()-st.paint().padding.bottom-y)/2;
             if(dy<4)
                 dy = 0;
             m_c.m_xMainLower = rb.width()/2-w1/2;
