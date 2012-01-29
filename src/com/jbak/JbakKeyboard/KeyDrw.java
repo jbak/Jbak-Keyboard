@@ -2,11 +2,9 @@ package com.jbak.JbakKeyboard;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -24,6 +22,7 @@ class KeyDrw extends RectShape
     String txtMain;
     String txtSmall;
     boolean m_bPreview = false;
+    boolean m_bLongPreview = false;
     boolean m_bSmallLabel = false;
     Rect rb;
     boolean m_bFunc = false;
@@ -62,6 +61,15 @@ class KeyDrw extends RectShape
         if(c!=st.DEF_COLOR)
             pt.setColor(c);
     }
+//    @Override
+//    protected void onResize(float width, float height) 
+//    {
+//        super.onResize(width, height);
+//        if(m_bPreview&&st.paint().previewBack!=null)
+//        {
+//            st.paint().previewBack.setBounds(new Rect(0,0,(int)width,(int)height));
+//        }
+//    };
     void set(Keyboard.Key key, boolean bPreview)
     {
         m_bPreview = bPreview;
@@ -388,14 +396,20 @@ class KeyDrw extends RectShape
         if(m_bPreview)
         {
 //Рисуем просмотр     
-            if(txtMain!=null)
+            String text = m_bLongPreview?txtSmall:txtMain;
+//            st.paint().previewBack.draw(canvas);
+            if(text!=null)
             {
                 p1 = JbKbdView.inst.m_tpPreview;
-                if(txtMain.length()>1)
+                if(text.length()>1)
                 {
                     p1.setTextSize(st.kv().m_PreviewTextSize/2);
                 }
-                canvas.drawText(txtMain, m_c.m_xMainLower, m_c.m_yMainLower, p1);
+                else
+                {
+                    p1.setTextSize(st.kv().m_PreviewTextSize);
+                }
+                canvas.drawText(text, m_c.m_xMainLower, m_c.m_yMainLower, p1);
             }
             return;
         }

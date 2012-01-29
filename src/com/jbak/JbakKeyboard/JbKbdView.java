@@ -99,6 +99,7 @@ public class JbKbdView extends KeyboardView {
     Drawable m_defDrawable;
     Drawable m_defBackground;
     String m_designPath;
+    OwnKeyboardHandler m_handler;
 /** Инициализация. Берутся значения приватных переменных для задания размера шрифта */    
     void init()
     {
@@ -157,14 +158,16 @@ public class JbKbdView extends KeyboardView {
               } catch (Throwable e) {
               }
             }
+/** Пытаемся подложить собственный хэндлер */            
             else if(f.getName().equals(handler))
             {
               try {
                 f.setAccessible(true);
-                OwnKeyboardHandler h = new OwnKeyboardHandler((Handler)f.get(this),this);
-                if(h.m_bSuccessInit)
-                    f.set(this,h);
+                m_handler= new OwnKeyboardHandler((Handler)f.get(this),this);
+                if(m_handler.m_bSuccessInit)
+                    f.set(this,m_handler);
               } catch (Throwable e) {
+                  m_handler = null;
               }
             }
             else if(f.getName().equals(txtClr))
@@ -287,8 +290,31 @@ public class JbKbdView extends KeyboardView {
     }
     @Override
     protected boolean onLongPress(Key key) {
+        if(isPreviewEnabled()&&m_handler!=null)
+        {
+            int pos = 0;
+            int index = -1;
+            for(Key k:getCurKeyboard().getKeys())
+            {
+                if(k==key)
+                {
+                    index = pos;
+                    break;
+                }
+                ++pos;
+            }
+            if(index>-1)
+            {
+                m_handler.removeMessages(OwnKeyboardHandler.MSG_REMOVE_PREVIEW);
+                m_PreviewDrw.set(key,true);
+                m_PreviewDrw.m_bLongPreview = true;
+                key.iconPreview = m_PreviewDrw.getDrawable();
+                m_handler.sendMessageDelayed(m_handler.obtainMessage(OwnKeyboardHandler.MSG_SHOW_PREVIEW, index, 0), 10);
+                m_handler.sendMessageDelayed(m_handler.obtainMessage(OwnKeyboardHandler.MSG_REMOVE_PREVIEW), 400);
+            }
+        }
         if(processLongPress((LatinKey)key))
-            return true;
+            return false;
         return super.onLongPress(key);
     }
     void setTempShift(boolean bShift,boolean bInvalidate)
@@ -462,6 +488,7 @@ public class JbKbdView extends KeyboardView {
            if(key==null)
                return;
            m_PreviewDrw.set(key,true);
+           m_PreviewDrw.m_bLongPreview = false;
            key.iconPreview = m_PreviewDrw.getDrawable();
         }
     }

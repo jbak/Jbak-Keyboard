@@ -476,6 +476,11 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     int m_procCode = -10000;
     public void onKey(int primaryCode, int[] keyCodes)
     {
+        if(m_LongPressedCode==primaryCode)
+        {
+            m_LongPressedCode = -1000;
+            return;
+        }
         processKey(primaryCode);
         if (st.has(st.kv().m_state, JbKbdView.STATE_VIBRO_SHORT))
         {
@@ -957,12 +962,14 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             b = false;
         return b;
     }
-
+    int m_LongPressedCode = -1000;
     public void onLongPress(LatinKey key)
     {
         try
         {
-            if (st.has(st.kv().m_state, JbKbdView.STATE_VIBRO_LONG)&&(key.m_kd.bmp!=null||key.getUpText()!=null))
+            if(key.codes!=null&&key.codes.length!=0)
+                m_LongPressedCode = key.codes[0];
+            if (st.has(st.kv().m_state, JbKbdView.STATE_VIBRO_LONG)&&(key.m_kd.bmp!=null||key.getUpText()!=null||key.longCode!=0))
                 m_vibro.vibro(false);
         }
         catch (Throwable e)

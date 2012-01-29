@@ -8,9 +8,11 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 
 import com.jbak.CustomGraphics.CustomButtonDrawable;
+import com.jbak.CustomGraphics.GradBack;
 import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 
@@ -37,6 +39,7 @@ public class KeyboardPaints
     Paint bitmapNormal;
     Paint bitmapFunc;
     Paint bitmapPreview;
+//    Drawable previewBack;
     public KeyboardPaints()
     {
         inst = this;
@@ -51,6 +54,14 @@ public class KeyboardPaints
         m_bMainBold = st.has(design.flags,st.DF_BOLD);
         m_defaultFontSize = fontSize;
         m_defaultLabelSize = labelSize;
+//        if(design.m_keyBackground!=null)
+//        {
+//            previewBack = design.m_keyBackground.clone().getStateDrawable();
+//        }
+//        else
+//        {
+//            previewBack = st.kv().m_drwKeyBack;
+//        }
         if(design.m_kbdFuncKeys!=null&&design.m_kbdFuncKeys.m_keyBackground!=null)
         {
             funcBackDrawable = design.m_kbdFuncKeys.m_keyBackground.getStateDrawable();

@@ -15,10 +15,10 @@ public class OwnKeyboardHandler extends Handler
     int repeatInterval = 0;
     int deltaLongPress = 0;
     int deltaRepeatStart = 0;
-    private static final int MSG_SHOW_PREVIEW = 1;
-    private static final int MSG_REMOVE_PREVIEW = 2;
-    private static final int MSG_REPEAT = 3;
-    private static final int MSG_LONGPRESS = 4;
+    public static final int MSG_SHOW_PREVIEW = 1;
+    public static final int MSG_REMOVE_PREVIEW = 2;
+    public static final int MSG_REPEAT = 3;
+    public static final int MSG_LONGPRESS = 4;
     Handler m_existHandler;
     TextView m_PreviewText;
     Method m_showKey;
@@ -68,56 +68,58 @@ public class OwnKeyboardHandler extends Handler
         try{
             if(m_showKey!=null)
             {
-                m_showKey.invoke(m_PreviewText, key);
+                m_showKey.invoke(m_kv, key);
             }
         }
         catch(Throwable e)
         {
-            
+            st.logEx(e);
         }
     }
     @Override
     public void handleMessage(Message msg)
     {
-        switch (msg.what) {
-            case MSG_SHOW_PREVIEW:
-                invokeShowKey(msg.arg1);
-                break;
-            case MSG_REMOVE_PREVIEW:
-                m_PreviewText.setVisibility(View.INVISIBLE);
-                break;
-            case MSG_REPEAT:
-                {
-                    if(m_repeatKey!=null)
+        try{
+            switch (msg.what) 
+            {
+                case MSG_SHOW_PREVIEW:
+                    invokeShowKey(msg.arg1);
+                    break;
+                case MSG_REMOVE_PREVIEW:
+                    if(m_PreviewText!=null)
+                        m_PreviewText.setVisibility(View.INVISIBLE);
+                    break;
+                case MSG_REPEAT:
                     {
-                        try{
-                        m_repeatKey.invoke(m_kv);
+                        if(m_repeatKey!=null)
+                        {
+                            try{
+                            m_repeatKey.invoke(m_kv);
+                            }
+                            catch (Throwable e) {
+                                st.logEx(e);
+                            }
                         }
-                        catch (Throwable e) {
-                            st.logEx(e);
-                        }
+                        Message repeat = Message.obtain(this, MSG_REPEAT);
+                        sendMessageDelayed(repeat, repeatInterval);                        
                     }
-                    Message repeat = Message.obtain(this, MSG_REPEAT);
-                    sendMessageDelayed(repeat, repeatInterval);                        
-                }
-                break;
-            case MSG_LONGPRESS:
-                if(deltaLongPress>0&&msg.arg1==0)
-                {
-                    sendMessageDelayed(obtainMessage(MSG_LONGPRESS,1,1, msg.obj),deltaLongPress);
-                    return;
-                }
-                if(m_openPopupIfRequired!=null)
-                {
-                    try{
+                    break;
+                case MSG_LONGPRESS:
+                    if(deltaLongPress>0&&msg.arg1==0)
+                    {
+                        sendMessageDelayed(obtainMessage(MSG_LONGPRESS,1,1, msg.obj),deltaLongPress);
+                        return;
+                    }
+                    if(m_openPopupIfRequired!=null)
+                    {
                         m_openPopupIfRequired.invoke(m_kv, (MotionEvent) msg.obj);
                     }
-                    catch (Throwable e) {
-                        st.logEx(e);
-                    }
-                }
-                break;
+                    break;
+            }
         }
-
+        catch (Throwable e) {
+            st.logEx(e);
+        }
     }
+        
 }
