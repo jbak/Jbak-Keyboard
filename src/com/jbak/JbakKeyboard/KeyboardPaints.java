@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -39,7 +40,7 @@ public class KeyboardPaints
     Paint bitmapNormal;
     Paint bitmapFunc;
     Paint bitmapPreview;
-//    Drawable previewBack;
+    Rect padding = new Rect();
     public KeyboardPaints()
     {
         inst = this;
@@ -86,6 +87,8 @@ public class KeyboardPaints
         }
         bitmapPreview = new Paint();
         bitmapPreview.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP));
+        st.kv().m_KeyBackDrw.getPadding(padding);
+        padding.offset(2,2);
     }
     public final Paint getBitmapPaint(boolean bPreview,boolean bFunc)
     {

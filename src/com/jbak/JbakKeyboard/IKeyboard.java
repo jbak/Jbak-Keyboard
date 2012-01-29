@@ -377,5 +377,4 @@ public class IKeyboard
         return lng;
     }
 
-    public static final int KEYCODE_LANG_CHANGE = -20;
 }

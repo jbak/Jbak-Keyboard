@@ -224,8 +224,11 @@ public class GradBack extends RectShape
 	    {
 	        m_stroke.draw(canvas, paint);
 	    }
-        m_ptFill.setColorFilter(m_bDrawPressedBack&&m_bPressed?m_pressFilter:null);
-		canvas.drawRoundRect(m_rect, m_cornerX, m_cornerY, m_ptFill);
+	    if(m_ptFill!=null)
+	    {
+	        m_ptFill.setColorFilter(m_bDrawPressedBack&&m_bPressed?m_pressFilter:null);
+	        canvas.drawRoundRect(m_rect, m_cornerX, m_cornerY, m_ptFill);
+	    }
 //		if(m_bDrawPressedBack&&hasState(android.R.attr.state_pressed))
 //			canvas.drawRoundRect(m_rect, m_cornerX, m_cornerY, m_ptFillPressed);
 		

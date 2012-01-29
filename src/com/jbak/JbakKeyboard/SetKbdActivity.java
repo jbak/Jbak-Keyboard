@@ -321,7 +321,7 @@ public class SetKbdActivity extends Activity
             {
                 st.kv().handleShift();
             }
-            if(primaryCode==IKeyboard.KEYCODE_LANG_CHANGE&&m_curAction!=st.SET_LANGUAGES_SELECTION)
+            if(primaryCode==st.CMD_LANG_CHANGE&&m_curAction!=st.SET_LANGUAGES_SELECTION)
             {
                 st.kv().handleLangChange();
             }

@@ -31,6 +31,8 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +41,7 @@ import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
+import com.jbak.JbakKeyboard.KeyboardGesture.GestureInfo;
 
 public class JbKbdView extends KeyboardView {
 
@@ -68,6 +71,7 @@ public class JbKbdView extends KeyboardView {
     public static final int STATE_VIBRO_PRESS   = 0x0000020;
     int m_state = 0;
     int m_PreviewHeight=0;
+    KeyboardGesture m_gd;
     KbdDesign m_curDesign = st.arDesign[st.KBD_DESIGN_STANDARD];
     public JbKbdView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -104,6 +108,7 @@ public class JbKbdView extends KeyboardView {
     void init()
     {
         inst = this;
+        m_gd = new KeyboardGesture(this);
         String path = st.pref().getString(st.PREF_KEY_KBD_SKIN_PATH, st.ZERO_STRING);
         KbdDesign d = st.getSkinByPath(path);
         path = st.getSkinPath(m_curDesign);
@@ -122,10 +127,8 @@ public class JbKbdView extends KeyboardView {
         if(m_curDesign.m_keyBackground!=null)
         {
         	m_KeyBackDrw = m_curDesign.m_keyBackground.getStateDrawable(); 
-        	KeyDrw.GAP = m_curDesign.m_keyBackground.m_gap+3;
+        	KeyDrw.GAP = m_curDesign.m_keyBackground.m_gap+2;
         }
-        else
-            KeyDrw.GAP = KeyDrw.DEFAULT_GAP;
         if(m_curDesign.backDrawableRes!=0)
             setBackgroundResource(m_curDesign.backDrawableRes);
         else if(m_curDesign.m_kbdBackground!=null)
@@ -147,6 +150,7 @@ public class JbKbdView extends KeyboardView {
         String keyBack = "mKeyBackground";
         String shadowRadius = "mShadowRadius";
         String handler = "mHandler";
+        String gd = "mGestureDetector";
         for(int i=0;i<af.length;i++)
         {
             Field f = af[i];
@@ -214,6 +218,15 @@ public class JbKbdView extends KeyboardView {
             else if(f.getName().equals(labSz)&&m_LabelTextSize==0)
             {
                 m_LabelTextSize = getFieldInt(f, this, 12);
+            }
+            else if(f.getName().equals(gd))
+            {
+                try{
+                    f.setAccessible(true);
+                    f.set(this, m_gd);
+                }
+                catch (Throwable e) {
+                }
             }
             else if(f.getName().equals(ph)&&m_PreviewHeight==0)
             {
@@ -452,7 +465,6 @@ public class JbKbdView extends KeyboardView {
     boolean m_bStopInvalidate = false;
     public void handleLangChange()
     {
-        m_bStopInvalidate = true;
         String ls[]=st.getLangsArray(st.c());
         int f = st.searchStr(st.getCurLang(), ls);
         String newLang = st.defKbd().lang.name;
@@ -495,5 +507,38 @@ public class JbKbdView extends KeyboardView {
     public boolean isUserInput()
     {
         return getOnKeyboardActionListener() instanceof ServiceJbKbd;
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent me)
+    {
+        if(me.getAction()==MotionEvent.ACTION_DOWN)
+            Log.w(st.TAG, "down:x="+me.getX()+" y="+me.getY());
+        return super.onTouchEvent(me);
+    }
+    public void gesture(GestureInfo gest)
+    {
+        if(!isUserInput())
+            return;
+        if(gest.dir==GestureInfo.UP)
+        {
+            if(gest.downKey!=null)
+            processLongPress(gest.downKey);
+            else handleLangChange();
+        }
+        if(gest.dir==GestureInfo.DOWN)
+        {
+            handleLangChange();
+        }
+        if(gest.dir==GestureInfo.LEFT)
+        {
+            if(st.curKbd().kbd.lang.lang==st.LANG_SMIL)
+                st.setQwertyKeyboard();
+            else
+                st.setSmilesKeyboard();
+        }
+        if(gest.dir==GestureInfo.RIGHT)
+        {
+            st.kbdCommand(st.CMD_CLIPBOARD);
+        }
     }
 }

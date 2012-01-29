@@ -3,7 +3,6 @@ package com.jbak.JbakKeyboard;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Locale;
-import java.util.Map.Entry;
 import java.util.Vector;
 
 import android.content.ComponentName;
@@ -522,42 +521,6 @@ public class st extends IKeyboard implements IKbdSettings
     public static int getDefaultKeyHeight(Context c)
     {
         return (int) (c.getResources().getDimension(R.dimen.def_key_height));
-    }
-    public static boolean savePrefs(SharedPreferences from,SharedPreferences to)
-    {
-        try{
-            Editor ped = to.edit();
-            ped.clear();
-            for(Entry<String, ?> me:from.getAll().entrySet())
-            {
-                Object v = me.getValue();
-                String k = me.getKey();
-                if(v instanceof Boolean)
-                {
-                    ped.putBoolean(k, ((Boolean)v).booleanValue());
-                }
-                else if(v instanceof String)
-                {
-                    ped.putString(k, (String)v);
-                }
-                if(v instanceof Integer)
-                {
-                    ped.putInt(k, ((Integer)v).intValue());
-                }
-                if(v instanceof Float)
-                {
-                    ped.putFloat(k, ((Float)v).floatValue());
-                }
-                if(v instanceof Long)
-                {
-                    ped.putLong(k, ((Long)v).longValue());
-                }
-            }
-            ped.commit();
-        }
-        catch (Throwable e) {
-        }
-        return false;
     }
     public static File[] getFilesByExt(File dir,final String ext)
     {
