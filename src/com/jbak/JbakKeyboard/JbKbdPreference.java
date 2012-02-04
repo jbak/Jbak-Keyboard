@@ -4,7 +4,6 @@ package com.jbak.JbakKeyboard;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -14,11 +13,11 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.widget.Toast;
 
 import com.jbak.ctrl.IntEditor;
@@ -27,7 +26,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
 {
     public static final String DEF_SIZE_CLIPBRD = "20";
     public static final String DEF_SHORT_VIBRO = "30";
-    public static final String DEF_LONG_VIBRO = "10";
+    public static final String DEF_LONG_VIBRO = "15";
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -37,18 +36,43 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         addPreferencesFromResource(R.xml.preferences);
         setShiftState();
         SharedPreferences p = st.pref(this);
-        Preference pr = getPreferenceScreen().findPreference(st.PREF_KEY_SAVE);
+        PreferenceScreen ps =getPreferenceScreen(); 
+        Preference pr = ps.findPreference(st.PREF_KEY_SAVE);
         pr.setSummary(pr.getSummary().toString()+'\n'+getBackupPath());
         pr = getPreferenceScreen().findPreference(st.PREF_KEY_LOAD);
         pr.setSummary(pr.getSummary().toString()+'\n'+getBackupPath());
         setSummary(st.PREF_KEY_CLIPBRD_SIZE, R.string.set_key_clipbrd_size_desc, p.getString(st.PREF_KEY_CLIPBRD_SIZE,DEF_SIZE_CLIPBRD ));
         int index = Integer.decode(p.getString(st.PREF_KEY_VIBRO_SHORT_TYPE, st.ONE_STRING));
+        
+        CharSequence entries[] = st.getGestureEntries(this);
+        CharSequence entValues[] = st.getGestureEntryValues(); 
+        setGestureList(p, st.PREF_KEY_GESTURE_LEFT, entries, entValues);
+        setGestureList(p, st.PREF_KEY_GESTURE_RIGHT, entries, entValues);
+        setGestureList(p, st.PREF_KEY_GESTURE_UP, entries, entValues);
+        setGestureList(p, st.PREF_KEY_GESTURE_DOWN, entries, entValues);
         setSummary(st.PREF_KEY_VIBRO_SHORT_TYPE, R.string.set_key_short_vibro_desc, strVal(getResources().getStringArray(R.array.vibro_short_type)[index]));
         setSummary(st.PREF_KEY_VIBRO_SHORT_DURATION, R.string.set_key_short_vibro_duration_desc, p.getString(st.PREF_KEY_VIBRO_SHORT_DURATION,DEF_SHORT_VIBRO ));
         setSummary(st.PREF_KEY_VIBRO_LONG_DURATION, R.string.set_key_long_vibro_duration_desc, p.getString(st.PREF_KEY_VIBRO_LONG_DURATION,DEF_LONG_VIBRO));
         st.pref(this).registerOnSharedPreferenceChangeListener(this);
     }
-    String strVal(String src)
+    void setGestureList(SharedPreferences p,final String set,CharSequence entries[],CharSequence entValues[])
+    {
+        ListPreference lp = (ListPreference)getPreferenceScreen().findPreference(set);
+        if(lp!=null)
+        {
+            int index = st.getGestureIndexBySetting(p.getString(set, st.ZERO_STRING));
+            if(entries==null)
+            {
+                lp.setSummary(strVal(st.getGestureEntries(this)[index].toString()));
+                return;
+            }
+            lp.setEntries(entries);
+            lp.setEntryValues(entValues);
+            lp.setValueIndex(index);
+            lp.setSummary(strVal(entries[index].toString()));
+        }
+    }
+    final String strVal(String src)
     {
         return "[ "+src+" ]";
     }
@@ -188,6 +212,15 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
     {
+        if(st.PREF_KEY_GESTURE_LEFT.equals(key)||st.PREF_KEY_GESTURE_RIGHT.equals(key)
+            ||st.PREF_KEY_GESTURE_UP.equals(key)||st.PREF_KEY_GESTURE_DOWN.equals(key)
+         )
+        {
+            JbKbdView.inst = null;
+            setGestureList(sharedPreferences, key, null, null);
+        }
+        if(st.PREF_KEY_USE_GESTURES.equals(key))
+            JbKbdView.inst = null;
         if(st.PREF_KEY_SHIFT_STATE.equals(key))
             setShiftState();
         if(st.PREF_KEY_VIBRO_SHORT_TYPE.equals(key))
@@ -268,7 +301,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         st.UniObserver obs = new st.UniObserver()
         {
             @Override
-            int OnObserver(Object param1, Object param2)
+            public int OnObserver(Object param1, Object param2)
             {
                 if(((Integer)param1).intValue()==AlertDialog.BUTTON_POSITIVE)
                 {
@@ -298,15 +331,25 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         Dlg.yesNoDialog(this, getString(bSave?R.string.set_key_save_pref:R.string.set_key_load_pref)+" ?", new st.UniObserver()
         {
             @Override
-            int OnObserver(Object param1, Object param2)
+            public int OnObserver(Object param1, Object param2)
             {
                 if(((Integer)param1).intValue()==AlertDialog.BUTTON_POSITIVE)
                 {
                     int ret = prefBackup(bSave);
+                    try{
                     if(ret==0)
                         Toast.makeText(st.c(), "ERROR", 700).show();
                     else if(ret==1)
                         Toast.makeText(st.c(), R.string.ok, 700).show();
+                        if(!bSave)
+                        {
+                            finish();
+                            startActivity(getIntent());
+                        }
+                    }
+                    catch(Throwable e)
+                    {
+                    }
                 }
                 return 0;
             }
@@ -352,8 +395,6 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
                     JbKbdView.inst = null;
                 if(ServiceJbKbd.inst!=null)
                     ServiceJbKbd.inst.stopSelf();
-                finish();
-                startActivity(getIntent());
             }
             return 1;
         }

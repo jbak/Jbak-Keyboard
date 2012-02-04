@@ -3,6 +3,7 @@ package com.jbak.JbakKeyboard;
 import java.io.File;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -13,11 +14,12 @@ import android.widget.Toast;
 
 public class TplEditorActivity extends Activity
 {
-
+    public static final String EXTRA_CLIPBOARD_ENTRY = "e_clp";
+    Long m_clipbrdDate=null;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        if(Templates.inst==null)
+        if(Templates.inst==null&&!getIntent().hasExtra(EXTRA_CLIPBOARD_ENTRY))
             finish();
         View v = getLayoutInflater().inflate(R.layout.tpl_editor, null);
         v.findViewById(R.id.tpl_save).setOnClickListener(m_clkListener);
@@ -27,37 +29,59 @@ public class TplEditorActivity extends Activity
         bSpec.setOnClickListener(m_clkListener);
         m_edName = (EditText)v.findViewById(R.id.tpl_name);
         m_edText = (EditText)v.findViewById(R.id.tpl_text);
-        if(Templates.inst.isEditFolder())
+        int pos = -1;
+        pos = getIntent().getIntExtra(EXTRA_CLIPBOARD_ENTRY, -1);
+        if(pos>-1)
         {
-            setTitle(R.string.tpl_new_folder);
-            m_edName.setHint(R.string.tpl_folder_name);
-            m_edText.getLayoutParams().width=0;
-            bSpec.getLayoutParams().width=0;
-        }
-        File f =Templates.inst.m_editFile; 
-        if(f!=null)
-        {
-            m_edName.setText(f.getName());
-            if(!f.isDirectory())
+            setTitle(getString(R.string.mm_multiclipboard));
+            Cursor c = st.stor().getClipboardCursor();
+            v.findViewById(R.id.tpl_save).setVisibility(View.GONE);
+            v.findViewById(R.id.tpl_spec_options).setVisibility(View.GONE);
+            m_edName.setVisibility(View.GONE);
+            m_edText.setFocusableInTouchMode(false);
+            if(c!=null)
             {
-                String txt = Templates.getFileString(f);
-                if(txt!=null)
-                    m_edText.setText(txt);
+                c.move(0-pos);
+                String cp = c.getString(0);
+                m_clipbrdDate = new Long(c.getLong(2));
+                m_edText.setText(cp);
+                c.close();
             }
-            v.findViewById(R.id.delete).getLayoutParams().width = -2;
         }
-        m_edName.setOnFocusChangeListener(new OnFocusChangeListener()
+        else
         {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus)
+            File f =Templates.inst.m_editFile; 
+            if(Templates.inst.isEditFolder())
             {
-                if(v==m_edName&&hasFocus)
+                setTitle(R.string.tpl_new_folder);
+                m_edName.setHint(R.string.tpl_folder_name);
+                m_edText.getLayoutParams().width=0;
+                bSpec.getLayoutParams().width=0;
+            }
+            if(f!=null)
+            {
+                m_edName.setText(f.getName());
+                if(!f.isDirectory())
                 {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
+                    String txt = Templates.getFileString(f);
+                    if(txt!=null)
+                        m_edText.setText(txt);
                 }
+                v.findViewById(R.id.delete).getLayoutParams().width = -2;
             }
-        });
+            m_edName.setOnFocusChangeListener(new OnFocusChangeListener()
+            {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus)
+                {
+                    if(v==m_edName&&hasFocus)
+                    {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
+                    }
+                }
+            });
+        }
         super.onCreate(savedInstanceState);
         setContentView(v);
         m_edName.requestFocusFromTouch();
@@ -65,7 +89,7 @@ public class TplEditorActivity extends Activity
     @Override
     protected void onDestroy()
     {
-        if(Templates.inst!=null)
+        if(Templates.inst!=null&&m_clipbrdDate==null)
             Templates.inst.onCloseEditor();
         super.onDestroy();
     }
@@ -100,6 +124,14 @@ public class TplEditorActivity extends Activity
     }
     void delete()
     {
+        if(m_clipbrdDate!=null)
+        {
+            st.stor().removeClipboardByDate(m_clipbrdDate.longValue(), 0);
+            if(ComMenu.inst!=null)
+                ComMenu.inst.removeLastLongClicked();
+            finish();
+            return;
+        }
         String query = getString(R.string.tpl_delete,Templates.inst.m_editFile.getName());
         new Dlg.RunOnYes(this,query){
             @Override
@@ -125,7 +157,7 @@ public class TplEditorActivity extends Activity
         Dlg.CustomMenu(this, ar, null, new st.UniObserver()
         {
             @Override
-            int OnObserver(Object param1, Object param2)
+            public int OnObserver(Object param1, Object param2)
             {
                 int which = ((Integer)param1).intValue();
                 if(which>=0)

@@ -17,6 +17,8 @@ public class KeyboardGesture extends GestureDetector
     static class KvListener extends SimpleOnGestureListener
     {
         JbKbdView m_kv;
+        int minGestSize = 100;
+        float deltaDelim = (float) 1.5;
         public KvListener setKeyboardView(JbKbdView kv)
         {
             m_kv = kv;
@@ -29,27 +31,24 @@ public class KeyboardGesture extends GestureDetector
             float downY = e1.getY();
             float dx = e2.getX()-e1.getX();
             float dy = e2.getY()-e1.getY();
-            if(Math.abs(velocityX)>1000&&(velocityY==0||Math.abs(velocityX/velocityY)>=4))
-            {
-                float mdx = Math.abs(dx);
-                int type = velocityX>0?GestureInfo.RIGHT:GestureInfo.LEFT;
-                if(60<mdx&&mdx<150)
-                    m_kv.gesture(new GestureInfo(getKey((int)downX, (int)downY),type));
-                else if(mdx>=150)
-                    m_kv.gesture(new GestureInfo(null,type));
-            }
-            if(Math.abs(velocityY)>1000&&(velocityX==0||Math.abs(velocityY/velocityX)>=4))
-            {
-                float mdy = Math.abs(dy);
-                int type = velocityY>0?GestureInfo.DOWN:GestureInfo.UP;
-                if(60<mdy&&mdy<150)
-                    m_kv.gesture(new GestureInfo(getKey((int)downX, (int)downY),type));
-                else if(mdy>=150)
-                    m_kv.gesture(new GestureInfo(null,type));
-            }
+            float mdx = Math.abs(dx);
+            float mdy = Math.abs(dy);
             Log.w(st.TAG, "dx="+dx+"; dy="+dy+";vX="+velocityX+";vY="+velocityY+"|downX="+downX+"; downY="+downY);
-            return true;
-//            return super.onFling(e1, e2, velocityX, velocityY);
+            if(mdx>=minGestSize&&(mdy==0||mdx/mdy>=deltaDelim)&&Math.abs(velocityX)>1000)
+            {
+                int type = velocityX>0?GestureInfo.RIGHT:GestureInfo.LEFT;
+                m_kv.gesture(new GestureInfo(null,type));
+                return true;
+            }
+            if(mdy>=minGestSize&&(mdx==0||mdy/mdx>=deltaDelim)&&Math.abs(velocityY)>1000&&(velocityX==0||Math.abs(velocityY/velocityX)>=2.5))
+            {
+                int type = velocityY>0?GestureInfo.DOWN:GestureInfo.UP;
+                m_kv.gesture(new GestureInfo(null,type));
+                return true;
+            }
+            if(mdx>=minGestSize||mdy>=minGestSize)
+                return true;
+            return false;
         }
         final LatinKey getKey(int x,int y)
         {
@@ -63,10 +62,10 @@ public class KeyboardGesture extends GestureDetector
     };
     public static class GestureInfo
     {
-        public static final int LEFT    = 1;
-        public static final int RIGHT   = 2;
-        public static final int UP      = 3;
-        public static final int DOWN    = 4;
+        public static final int LEFT    = 0;
+        public static final int RIGHT   = 1;
+        public static final int UP      = 2;
+        public static final int DOWN    = 3;
         LatinKey downKey;
         int dir;
         public GestureInfo(LatinKey k,int dir)

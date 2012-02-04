@@ -30,6 +30,12 @@
   android:id="@+id/but_new_template_folder"	
   android:text="@string/tpl_new_folder"
 />
+<Button
+  style="@style/img_button"
+  android:drawableTop="@drawable/tpl_delete"
+  android:id="@+id/clear"	
+  android:text="@string/clear"
+/>
 </LinearLayout>
 <ListView
   android:id="@+id/com_menu_container"

@@ -308,7 +308,7 @@ public class Templates
         st.UniObserver obs = new st.UniObserver()
         {
             @Override
-            int OnObserver(Object param1, Object param2)
+            public int OnObserver(Object param1, Object param2)
             {
                 int pos = ((Integer)param1).intValue();
                 boolean bLong = ((Boolean)param2).booleanValue();

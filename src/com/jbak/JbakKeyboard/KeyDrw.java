@@ -72,6 +72,7 @@ class KeyDrw extends RectShape
 //    };
     void set(Keyboard.Key key, boolean bPreview)
     {
+        m_c = null;
         m_bPreview = bPreview;
         if(key.icon!=null)
         {
@@ -258,8 +259,16 @@ class KeyDrw extends RectShape
         if(txtMain==null&&bmp!=null)
         {
 // Рисуем просто картинку, без текста (по центру)
-            m_c.m_xMainLower = rb.width()/2-bmp.getWidth()/2;
-            m_c.m_yMainLower = rb.height()/2-bmp.getHeight()/2;
+            if(m_bPreview)
+            {
+                m_c.m_xMainLower = getWidth()/2-bmp.getWidth()/2;
+                m_c.m_yMainLower = getHeight()/2-bmp.getHeight()/2;
+            }
+            else
+            {
+                m_c.m_xMainLower = rb.width()/2-bmp.getWidth()/2;
+                m_c.m_yMainLower = rb.height()/2-bmp.getHeight()/2;
+            }
             return;
         }
         if(m_bPreview)
@@ -269,8 +278,8 @@ class KeyDrw extends RectShape
             {
                 p1 = JbKbdView.inst.m_tpPreview;
                 float mw = p1.measureText(txtMain);
-                m_c.m_yMainLower = rb.height()/2+(0-p1.ascent())/2;
-                m_c.m_xMainLower = rb.width()/2-mw/2;
+                m_c.m_yMainLower = getHeight()/2+(0-p1.ascent())/2;
+                m_c.m_xMainLower = getWidth()/2-mw/2;
             }
             return;
         }
@@ -379,18 +388,22 @@ class KeyDrw extends RectShape
     @Override
     public void draw(Canvas canvas, Paint paint)
     {
-        if(m_c==null)
+        if(m_c==null&&!m_bPreview)
             buildCache();
-        if(m_c==null||txtMain==null&&bmp==null||JbKbdView.inst==null)
+        if(m_c==null&&!m_bPreview||txtMain==null&&bmp==null||JbKbdView.inst==null)
             return;
         Paint p1 = st.paint().main;
         if(txtMain==null&&bmp!=null)
         {
 // Рисуем просто картинку, без текста (по центру)
-            if(!m_bPreview)
+            if(m_bPreview)
+                canvas.drawBitmap(bmp, getWidth()/2-bmp.getWidth()/2,getHeight()/2-bmp.getHeight()/2, st.paint().getBitmapPaint(m_bPreview, m_bFunc));
+            else
+            {
                 canvas.translate(0-rb.width()/2, 0-rb.height()/2);
-            drawFuncBackground(canvas);
-            canvas.drawBitmap(bmp, m_c.m_xMainLower,m_c.m_yMainLower, st.paint().getBitmapPaint(m_bPreview, m_bFunc));
+                drawFuncBackground(canvas);
+                canvas.drawBitmap(bmp, m_c.m_xMainLower,m_c.m_yMainLower, st.paint().getBitmapPaint(m_bPreview, m_bFunc));
+            }
             return;
         }
         if(m_bPreview)
@@ -409,7 +422,11 @@ class KeyDrw extends RectShape
                 {
                     p1.setTextSize(st.kv().m_PreviewTextSize);
                 }
-                canvas.drawText(text, m_c.m_xMainLower, m_c.m_yMainLower, p1);
+                Rect bb = new Rect();
+                p1.getTextBounds(text, 0, text.length(), bb);
+                float x = getWidth()/2-bb.width()/2;
+                float y = getHeight()/2-bb.height()/2;
+                canvas.drawText(text, x, y+(0-p1.ascent()), p1);
             }
             return;
         }

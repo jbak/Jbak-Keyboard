@@ -193,6 +193,34 @@
                 android:title="@string/set_key_space_symbols" />
         </PreferenceCategory>
     </PreferenceScreen>
+    <!-- Жесты  -->
+    <PreferenceScreen 
+	        android:title="@string/set_key_gestures"
+	        android:summary="@string/set_key_gestures_desc"
+        >
+        <CheckBoxPreference
+	        android:title="@string/set_key_use_gestures"
+	        android:summary="@string/set_key_use_gestures_desc"
+			android:key="use_gestures"
+			android:defaultValue="false"            
+            />
+        <ListPreference
+	        android:title="@string/set_key_gesture_left"
+			android:key="g_left"
+            />
+        <ListPreference
+	        android:title="@string/set_key_gesture_right"
+			android:key="g_right"
+            />
+             <ListPreference
+		        android:title="@string/set_key_gesture_up"
+				android:key="g_up"
+            />
+            <ListPreference
+		        android:title="@string/set_key_gesture_down"
+				android:key="g_down"
+            />
+        </PreferenceScreen>
     <!-- прочие настройки -->
 
     <PreferenceScreen
@@ -226,9 +254,7 @@
             android:title="@string/set_key_load_pref"
             android:summary="@string/set_key_load_pref_desc" />
 </PreferenceScreen>
-
     <!-- о программе -->
-
     <Preference
         android:key="about_app"
         android:title="@string/about" />

@@ -87,6 +87,16 @@
     <string name="set_key_load_pref">Load settings</string>
     <string name="set_key_load_pref_desc">From file:</string>
         
+    <string name="set_key_gestures">Gestures</string>
+    <string name="set_key_gestures_desc">Settings for gestures</string>
+    
+    <string name="set_key_use_gestures">Use gestures</string>
+    <string name="set_key_use_gestures_desc">Enable/disable all gestures</string>
+    <string name="set_key_gesture_left">Left</string>
+    <string name="set_key_gesture_right">Right</string>
+    <string name="set_key_gesture_up">Up</string>
+    <string name="set_key_gesture_down">Down</string>
+        
     <string name="interval_long_press">Long-press delay (ms)</string>
     <string name="interval_first_repeat">First repeat delay (ms)</string>
     <string name="interval_next_repeat">Next repeats delay (ms)</string>
@@ -142,6 +152,7 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="def">Default</string>
+    <string name="clear">Clear</string>
     <string name="settings_saved">Settings saved!</string>
         
     <string name="tpl_new_template">New\ntemplate</string>
@@ -154,7 +165,9 @@
     <string name="tpl_spec_options">Special options</string>
     <string name="tpl_fields_empty">All template fields must be completed!</string>
     <string name="tpl_delete">Do you want to delete \"%s\"?</string>
-
+	
+    <string name="clipboard_clear">Do you want to clear clipboard ?</string>
+        
 <!-- List for menu with special template instructions -->    
     <string-array name="tpl_spec_instructions">
         <item><b>$select</b> - instruction will replaced with text of current selection</item>
@@ -194,4 +207,12 @@
  	<string name="lang_symbol_shift">Symbol shift keyboard</string>   
  	<string name="lang_edittext">Edit text keyboard</string>   
  	<string name="lang_smiles">Smiles keyboard</string>   
+ 
+ <!-- Names for gestures commands -->
+ 	<string name="cmd_lang_change">Change language</string>   
+ 	<string name="cmd_left">Cursor left</string>   
+ 	<string name="cmd_right">Cursor right</string>   
+ 	<string name="cmd_up">Cursor up</string>   
+ 	<string name="cmd_down">Cursor down</string>   
+ 	<string name="cmd_none">Do nothing</string>   
 </resources>

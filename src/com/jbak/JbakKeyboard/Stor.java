@@ -121,6 +121,10 @@ public class Stor extends SQLiteOpenHelper
         }
         runSql(sql);
     }
+    public boolean clearClipboard()
+    {
+        return runSql("DELETE FROM "+TABLE_CLIPBOARD);
+    }
 /** Удаляет строки, совпадающие с txt, проверяет */ 
     boolean checkClipboardString(String txt )
     {

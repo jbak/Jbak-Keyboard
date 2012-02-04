@@ -46,11 +46,11 @@
  	android:hint="@string/tpl_text"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:layout_below="@id/tpl_save"
+	android:layout_below="@id/close"
 	android:layout_alignParentLeft="true"  
 	android:layout_alignParentBottom="true"  
 	android:autoText="true"
-	android:inputType="text|textAutoCorrect|textAutoComplete"
+	android:inputType="textMultiLine"
 	android:gravity="top"  
 	/>
 </RelativeLayout>

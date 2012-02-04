@@ -2,7 +2,9 @@ package com.jbak.JbakKeyboard;
 import com.google.ads.*;
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
@@ -17,9 +19,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.ads.AdSize;
 import com.google.ads.AdView;
+import com.jbak.ctrl.GlobDialog;
 
 /** Универсальное меню. Используется как для выпадающего, так и для контекстного меню */
 public class ComMenu
@@ -75,13 +79,14 @@ public class ComMenu
         Button btn = new Button(st.c());
         if(st.kv().isDefaultDesign())
         {
-            btn.setBackgroundDrawable(st.kv().m_KeyBackDrw);
+            btn.setBackgroundDrawable(st.kv().m_drwKeyBack.mutate());
         }
         else
         {
             btn.setBackgroundDrawable(st.kv().m_curDesign.m_keyBackground.clone().getStateDrawable());
         }
 //        setButtonKeyboardBackground(btn);
+        btn.setHeight(st.kv().m_KeyHeight);
         btn.setTextColor(st.paint().mainColor);
         if(st.has(m_state, STAT_TEMPLATES)||st.has(m_state, STAT_CLIPBOARD))
         {
@@ -100,7 +105,7 @@ public class ComMenu
     st.UniObserver m_lvObserver = new st.UniObserver()
     {
         @Override
-        int OnObserver(Object param1, Object param2)
+        public int OnObserver(Object param1, Object param2)
         {
             if(m_MenuObserver==null)return 0;
             m_MenuObserver.m_param1 = param1;
@@ -108,6 +113,7 @@ public class ComMenu
             return 0;
         }
     };
+    int m_longClicked=-1;
 /** Обработчик длинного нажатия кнопки меню */
     OnLongClickListener m_longListener = new OnLongClickListener()
     {
@@ -115,10 +121,12 @@ public class ComMenu
         public boolean onLongClick(View v)
         {
             v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-            close();
+            if(!st.has(m_state, STAT_CLIPBOARD))
+                close();
+            MenuEntry me = (MenuEntry)v.getTag();
+            m_longClicked = me.id;
             if(m_MenuObserver!=null)
             {
-                MenuEntry me = (MenuEntry)v.getTag();
                 m_MenuObserver.OnObserver(new Integer(me.id),new Boolean(true));
             }
             return true;
@@ -175,6 +183,23 @@ public class ComMenu
             {
                 case R.id.but_new_template_folder: st.kbdCommand(st.CMD_TPL_NEW_FOLDER); return;
                 case R.id.but_new_template: st.kbdCommand(st.CMD_TPL_EDITOR);return;
+                case R.id.clear: 
+                    GlobDialog gd = new GlobDialog(st.c());
+                    gd.set(R.string.clipboard_clear, R.string.yes, R.string.no);
+                    gd.setObserver(new st.UniObserver()
+                    {
+                        @Override
+                        public int OnObserver(Object param1, Object param2)
+                        {
+                            if(((Integer)param1).intValue()==AlertDialog.BUTTON_POSITIVE)
+                            {
+                                st.stor().clearClipboard();
+                            }
+                            return 0;
+                        }
+                    });
+                    gd.showAlert();
+                    return;
                 case R.id.close: return;
             }
             MenuEntry me = (MenuEntry)v.getTag();
@@ -184,13 +209,15 @@ public class ComMenu
             }
         }
     };
+    Adapt m_adapter;
 /** Показывает меню
  * @param observer Обработчик нажатия */    
     void show(st.UniObserver observer)
     {
         m_MenuObserver = observer;
         ListView lv = (ListView)m_MainView.findViewById(R.id.com_menu_container);
-        lv.setAdapter(new Adapt(st.c(), this));
+        m_adapter = new Adapt(st.c(), this);
+        lv.setAdapter(m_adapter);
 //        LinearLayout ll = (LinearLayout)m_MainView.findViewById(R.id.com_menu_container);
 //        for(MenuEntry me:m_arItems)
 //        {
@@ -207,21 +234,19 @@ public class ComMenu
         for(int i=cnt-1;i>=0;i--)
         {
             View v = bl.getChildAt(i);
-            if(st.has(m_state, STAT_TEMPLATES))
-            {
+            int id = v.getId();
+            boolean bUse = false;
+            if(id==R.id.clear)
+               bUse = st.has(m_state, STAT_CLIPBOARD);
+            else if(v.getId()==R.id.close)
+                bUse = true;
+            else
+                bUse = st.has(m_state, STAT_TEMPLATES); 
+            
+            if(bUse)
                 v.setOnClickListener(m_listener);
-            }
-            else 
-            {
-                if(v.getId()==R.id.close)
-                {
-                    v.setOnClickListener(m_listener);
-                }
-                else
-                {
-                    bl.removeViewAt(i);
-                }
-            }
+            else
+                v.setVisibility(View.GONE);
         }
         ServiceJbKbd.inst.setInputView(m_MainView);
         ViewGroup.LayoutParams lp = m_MainView.getLayoutParams();
@@ -232,11 +257,11 @@ public class ComMenu
 /** Функция создаёт меню для мультибуфера обмена */    
     static boolean showClipboard()
     {
-        ComMenu menu = new ComMenu();
-        menu.m_state = STAT_CLIPBOARD;
         Cursor c = st.stor().getClipboardCursor();
         if(c==null)
             return false;
+        ComMenu menu = new ComMenu();
+        menu.m_state = STAT_CLIPBOARD;
         int pos = 0;
         do
         {
@@ -250,9 +275,17 @@ public class ComMenu
         st.UniObserver obs = new st.UniObserver()
         {
             @Override
-            int OnObserver(Object param1, Object param2)
+            public int OnObserver(Object param1, Object param2)
             {
                 int pos = ((Integer)param1).intValue();
+                if(((Boolean)param2).booleanValue())
+                {
+                    Intent in = new Intent(ServiceJbKbd.inst,TplEditorActivity.class)
+                        .putExtra(TplEditorActivity.EXTRA_CLIPBOARD_ENTRY, pos)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    ServiceJbKbd.inst.startActivity(in);
+                    return 0;
+                }
                 Cursor c = st.stor().getClipboardCursor();
                 if(c==null)
                     return 0;
@@ -296,5 +329,18 @@ public class ComMenu
             }
             return convertView;
         }
+    }
+    void removeLastLongClicked()
+    {
+        for(int i=m_arItems.size()-1;i>=0;i--)
+        {
+            MenuEntry me = m_arItems.get(i);
+            if(me.id==m_longClicked)
+            {
+                m_arItems.remove(i);
+                break;
+            }
+        }
+        m_adapter.notifyDataSetChanged();
     }
 }

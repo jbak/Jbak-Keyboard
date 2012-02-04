@@ -38,6 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
+import com.jbak.JbakKeyboard.IKbdSettings.KbdGesture;
 import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
@@ -58,17 +59,13 @@ public class JbKbdView extends KeyboardView {
     TextPaint m_tpPreview;
     int m_LabelTextSize = 0;
     int m_PreviewTextSize=0;
+    KbdGesture m_gestures[]=new KbdGesture[4];
 /** Состояние - клавиши в верхнем регистре на одну букву. После ввода любого символа - сбрасывается */    
     public static final int STATE_TEMP_SHIFT    = 0x0000001;
 /** Состояние - включён CAPS_LOCK */    
     public static final int STATE_CAPS_LOCK     = 0x0000002;
-/** Состояние - вибрируем при коротком нажатии */    
-    public static final int STATE_VIBRO_SHORT   = 0x0000004;
-/** Состояние - вибрируем при долгом нажатии */    
-    public static final int STATE_VIBRO_LONG    = 0x0000008;
-    /** Состояние - звуки при каждом нажатии */    
-    public static final int STATE_SOUNDS        = 0x0000010;
-    public static final int STATE_VIBRO_PRESS   = 0x0000020;
+    public static final int STATE_SOUNDS        = 0x0000004;
+    public static final int STATE_GESTURES      = 0x0000008;
     int m_state = 0;
     int m_PreviewHeight=0;
     KeyboardGesture m_gd;
@@ -108,7 +105,6 @@ public class JbKbdView extends KeyboardView {
     void init()
     {
         inst = this;
-        m_gd = new KeyboardGesture(this);
         String path = st.pref().getString(st.PREF_KEY_KBD_SKIN_PATH, st.ZERO_STRING);
         KbdDesign d = st.getSkinByPath(path);
         path = st.getSkinPath(m_curDesign);
@@ -219,9 +215,10 @@ public class JbKbdView extends KeyboardView {
             {
                 m_LabelTextSize = getFieldInt(f, this, 12);
             }
-            else if(f.getName().equals(gd))
+            else if(f.getName().equals(gd)&&st.has(m_state, STATE_GESTURES))
             {
                 try{
+                    m_gd = new KeyboardGesture(this);
                     f.setAccessible(true);
                     f.set(this, m_gd);
                 }
@@ -244,16 +241,21 @@ public class JbKbdView extends KeyboardView {
                 }
             }
         }
-        if(m_KeyBackDrw!=null)
+        if(isDefaultDesign()&&m_defDrawable!=null)
         {
             // Дёргаем фон ненажатой кнопки
-            m_drwKeyBack = m_KeyBackDrw.getCurrent();
-            int stat[] = m_KeyBackDrw.getState();
-            // Дёргаем фон нажатой кнопки
-            m_KeyBackDrw.setState(PRESSED_ENABLED_STATE_SET);
-            m_drwKeyPress = m_KeyBackDrw.getCurrent();
-            // Возвращаем всё на место
-            m_KeyBackDrw.setState(stat);
+            try{
+                StateListDrawable ds = (StateListDrawable)m_defDrawable;
+                m_drwKeyBack = ds.getCurrent();
+                int stat[] = m_KeyBackDrw.getState();
+                // Дёргаем фон нажатой кнопки
+                ds.setState(PRESSED_ENABLED_STATE_SET);
+                m_drwKeyPress = ds.getCurrent();
+                m_KeyBackDrw.setState(stat);
+            }
+            catch(Throwable e)
+            {
+            }
         }
         st.paint().setDefault(m_KeyTextSz, m_LabelTextSize, m_curDesign, clr);
         st.paint().createFromSettings();
@@ -270,7 +272,6 @@ public class JbKbdView extends KeyboardView {
         if(key.popupCharacters!=null)
             return false;
         boolean isService = getOnKeyboardActionListener() instanceof ServiceJbKbd;
-        String ut = key.getUpText();
         if(key.longCode!=0)
         {
             if(isService)
@@ -408,20 +409,18 @@ public class JbKbdView extends KeyboardView {
         m_state = 0;
 //        if(pref.getBoolean(st.PREF_KEY_VIBRO_SHORT_KEY, false))
 //            m_state|=STATE_VIBRO_SHORT;
-        int v = Integer.decode(pref.getString(st.PREF_KEY_VIBRO_SHORT_TYPE, st.ONE_STRING));
-        if(v>0)
-            m_state|=STATE_VIBRO_SHORT;
-        if(v==2)
-            m_state|=STATE_VIBRO_PRESS;
-        if(pref.getBoolean(st.PREF_KEY_VIBRO_LONG_KEY, false))
-            m_state|=STATE_VIBRO_LONG;
+        if(pref.getBoolean(st.PREF_KEY_USE_GESTURES, false))
+            m_state|=STATE_GESTURES;
         if(pref.getBoolean(st.PREF_KEY_SOUND, false))
             m_state|=STATE_SOUNDS;
         boolean bp = pref.getBoolean(st.PREF_KEY_PREVIEW, true);
         setPreviewEnabled(bp);
-        WindowManager wm = (WindowManager)st.c().getSystemService(Service.WINDOW_SERVICE);
         boolean bPortrait = true;
         boolean bSet = false;
+        m_gestures[GestureInfo.LEFT] = st.getGesture(st.PREF_KEY_GESTURE_LEFT, pref);
+        m_gestures[GestureInfo.RIGHT] = st.getGesture(st.PREF_KEY_GESTURE_RIGHT, pref);
+        m_gestures[GestureInfo.UP] = st.getGesture(st.PREF_KEY_GESTURE_UP, pref);
+        m_gestures[GestureInfo.DOWN] = st.getGesture(st.PREF_KEY_GESTURE_DOWN, pref);
         if(SetKbdActivity.inst!=null)
         {
             if(SetKbdActivity.inst.m_curAction==st.SET_KEY_HEIGHT_PORTRAIT)
@@ -434,7 +433,6 @@ public class JbKbdView extends KeyboardView {
                 bPortrait = false;
                 bSet = true;
             }
-                
         }
         if(!bSet&&st.isLandscape(st.c()))
             bPortrait = false;
@@ -449,13 +447,20 @@ public class JbKbdView extends KeyboardView {
     @Override
     public void invalidateAllKeys() 
     {
-        if(!m_bStopInvalidate)
+        if(m_handler!=null)
+            m_handler.removeMessages(OwnKeyboardHandler.MSG_INVALIDATE);
+        if(ComMenu.inst==null)
             super.invalidateAllKeys();
     };
     @Override
     public void invalidateKey(int keyIndex)
     {
-        if(!m_bStopInvalidate)
+        if(m_handler!=null)
+        {
+            m_handler.sendMessageDelayed(m_handler.obtainMessage(OwnKeyboardHandler.MSG_INVALIDATE, keyIndex, 0), 50);
+            return;
+        }
+        if(ComMenu.inst==null)
             super.invalidateKey(keyIndex);
     }
     public final boolean isDefaultDesign()
@@ -519,26 +524,20 @@ public class JbKbdView extends KeyboardView {
     {
         if(!isUserInput())
             return;
-        if(gest.dir==GestureInfo.UP)
-        {
-            if(gest.downKey!=null)
-            processLongPress(gest.downKey);
-            else handleLangChange();
-        }
-        if(gest.dir==GestureInfo.DOWN)
-        {
-            handleLangChange();
-        }
-        if(gest.dir==GestureInfo.LEFT)
-        {
-            if(st.curKbd().kbd.lang.lang==st.LANG_SMIL)
-                st.setQwertyKeyboard();
-            else
-                st.setSmilesKeyboard();
-        }
-        if(gest.dir==GestureInfo.RIGHT)
-        {
-            st.kbdCommand(st.CMD_CLIPBOARD);
-        }
+        KbdGesture g = m_gestures[gest.dir];
+        if(g.code!=0)
+            st.kbdCommand(g.code);
+    }
+    @Override
+    public boolean setShifted(boolean shifted)
+    {
+        boolean b = isUpperCase();
+        if(shifted&&b||!shifted&&!b)
+            return false;
+        return super.setShifted(shifted);
+    }
+    public void trueInvalidateKey(int index)
+    {
+        super.invalidateKey(index);
     }
 }

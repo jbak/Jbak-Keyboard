@@ -94,7 +94,7 @@ public class Dlg
                 return new UniObserver()
                 {
                     @Override
-                    int OnObserver(Object param1, Object param2)
+                    public int OnObserver(Object param1, Object param2)
                     {
                         if(((Integer)param1).intValue()==AlertDialog.BUTTON_POSITIVE)
                             run();

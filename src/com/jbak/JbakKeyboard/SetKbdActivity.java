@@ -151,7 +151,7 @@ public class SetKbdActivity extends Activity
         st.UniObserver obs = new st.UniObserver()
         {
             @Override
-            int OnObserver(Object param1, Object param2)
+            public int OnObserver(Object param1, Object param2)
             {
                 setScreenType(((Integer)param1).intValue());
                 return 0;
@@ -192,6 +192,7 @@ public class SetKbdActivity extends Activity
         {
             st.pref(inst).edit().putString(st.PREF_KEY_KBD_SKIN_PATH, st.getSkinPath(st.arDesign[m_curSkin])).commit();
         }
+        m_kbd.setOnKeyboardActionListener(null);
         JbKbdView.inst = null;
         inst = null;
         super.onDestroy();

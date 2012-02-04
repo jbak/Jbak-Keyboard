@@ -16,6 +16,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -43,7 +44,7 @@ public class st extends IKeyboard implements IKbdSettings
     /** Вызов функции {@link #OnObserver(Object, Object)} с текущими параметрами*/
         public int Observ(){return OnObserver(m_param1, m_param2);}
     /** Основная функция обработчика */ 
-        abstract int OnObserver(Object param1,Object param2);
+        public abstract int OnObserver(Object param1,Object param2);
     /** Пользовательский параметр 1 */  
         Object m_param1;
     /** Пользовательский параметр 2 */  
@@ -382,6 +383,10 @@ public class st extends IKeyboard implements IKbdSettings
             case CMD_TPL: new Templates().makeCommonMenu(); return true;
             case CMD_PREFERENCES: return runAct(JbKbdPreference.class);
             case CMD_CLIPBOARD: return ComMenu.showClipboard();
+            default: 
+                if(ServiceJbKbd.inst!=null)
+                    ServiceJbKbd.inst.processKey(action);
+                return true;
         }
         return false;
     }
@@ -534,5 +539,36 @@ public class st extends IKeyboard implements IKbdSettings
                 return filename.substring(pos+1).compareTo(ext)==0;
             }
         });
+    }
+    public static CharSequence[] getGestureEntries(Context c)
+    {
+        CharSequence ret[] = new CharSequence[arGestures.length];
+        for(int i=0;i<ret.length;i++)
+            ret[i] = c.getText(arGestures[i].nameId);
+        return ret;
+    }
+    public static CharSequence[] getGestureEntryValues()
+    {
+        CharSequence ret[] = new CharSequence[arGestures.length];
+        for(int i=0;i<ret.length;i++)
+            ret[i] = String.valueOf(arGestures[i].code);
+        return ret;
+    }
+    public static int getGestureIndexBySetting(String set)
+    {
+        try{
+            int code = Integer.decode(set);
+            for(int i=0;i<arGestures.length;i++)
+            {
+                if(arGestures[i].code==code)
+                    return i;
+            }
+        }catch (Throwable e) {
+        }
+        return 0;
+    }
+    public static KbdGesture getGesture(String prefName,SharedPreferences p)
+    {
+        return arGestures[getGestureIndexBySetting(p.getString(prefName, ZERO_STRING))];
     }
 }

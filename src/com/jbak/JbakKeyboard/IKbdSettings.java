@@ -1,6 +1,6 @@
 package com.jbak.JbakKeyboard;
 
-import android.content.Context;
+import android.view.KeyEvent;
 
 /** Константы для настроек клавиатуры */
 public interface IKbdSettings
@@ -90,6 +90,18 @@ public interface IKbdSettings
     /** Ключ, none, ключ для пункта загрузки настроек*/
     public static final String PREF_KEY_LOAD = "load";
 
+    /** Ключ, boolean, true - включает использование жестов */
+    public static final String PREF_KEY_USE_GESTURES = "use_gestures";
+    /** Ключ, String, команда для жеста влево (код команды)*/
+    public static final String PREF_KEY_GESTURE_LEFT = "g_left";
+    /** Ключ, String, команда для жеста вправо (код команды)*/
+    public static final String PREF_KEY_GESTURE_RIGHT = "g_right";
+    /** Ключ, String, команда для жеста вверх (код команды)*/
+    public static final String PREF_KEY_GESTURE_UP = "g_up";
+    /** Ключ, String, команда для жеста вниз (код команды)*/
+    public static final String PREF_KEY_GESTURE_DOWN = "g_down";
+    
+    
     public static final String EXT_XML = "xml";
     public static final String SETTINGS_BACKUP_FILE= "settings_backup"+'.'+EXT_XML;
     
@@ -135,7 +147,6 @@ public interface IKbdSettings
     
     public static final int CMD_LANG_CHANGE = -20;
 
-    
     public static final int CMD_COMPILE_KEYBOARDS = -10000;
 
   //-------------------------------------------------------------------    
@@ -154,4 +165,26 @@ public interface IKbdSettings
     public static final String TAG = "JBK";
     public static final String ZERO_STRING = "0";
     public static final String ONE_STRING = "1";
+
+    public static class KbdGesture
+    {
+        public KbdGesture(int name,int cod)
+        {
+            nameId = name;
+            code = cod;
+        }
+        int nameId;
+        int code;
+    }
+    public static KbdGesture arGestures[] = new KbdGesture[]{
+        new  KbdGesture(R.string.cmd_none, 0),
+        new  KbdGesture(R.string.cmd_lang_change, CMD_LANG_CHANGE),
+        new  KbdGesture(R.string.cmd_left, KeyEvent.KEYCODE_DPAD_LEFT),
+        new  KbdGesture(R.string.cmd_right, KeyEvent.KEYCODE_DPAD_RIGHT),
+        new  KbdGesture(R.string.cmd_up, KeyEvent.KEYCODE_DPAD_UP),
+        new  KbdGesture(R.string.cmd_down, KeyEvent.KEYCODE_DPAD_DOWN),
+        new  KbdGesture(R.string.mm_multiclipboard, CMD_CLIPBOARD),
+        new  KbdGesture(R.string.mm_templates, CMD_TPL),
+        new  KbdGesture(R.string.mm_settings, CMD_PREFERENCES),
+    };
 }

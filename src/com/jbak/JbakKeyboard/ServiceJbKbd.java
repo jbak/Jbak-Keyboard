@@ -104,7 +104,13 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public void onDestroy()
     {
 //        JbKbdView.inst = null;
+        if(ClipbrdService.inst!=null)
+            ClipbrdService.inst.stopSelf();
         st.pref().unregisterOnSharedPreferenceChangeListener(this);
+        if(st.kv()!=null)
+        {
+            st.kv().setOnKeyboardActionListener(null);
+        }
         inst = null;
         super.onDestroy();
     }
@@ -473,7 +479,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             handleCharacter(primaryCode);
         }
     }
-    int m_procCode = -10000;
+    int m_pressedCode = -10000;
     public void onKey(int primaryCode, int[] keyCodes)
     {
         if(m_LongPressedCode==primaryCode)
@@ -482,13 +488,10 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             return;
         }
         processKey(primaryCode);
-        if (st.has(st.kv().m_state, JbKbdView.STATE_VIBRO_SHORT))
-        {
-            if(m_procCode==primaryCode||!st.has(st.kv().m_state,JbKbdView.STATE_VIBRO_PRESS))
-                m_vibro.vibro(false);
-            else
-                m_procCode = primaryCode;
-        }
+        if(m_pressedCode==primaryCode||m_vibro.m_shortType==1)
+            m_vibro.vibro(false,m_vibro.m_shortType==2);
+        else
+            m_pressedCode = primaryCode;
     }
     final boolean canAutoInput(EditorInfo ei)
     {
@@ -671,9 +674,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 
     public void onPress(int primaryCode)
     {
-        m_procCode = -10000;
-        if(st.has(st.kv().m_state,JbKbdView.STATE_VIBRO_PRESS))
-            m_vibro.vibro(false);
+        m_pressedCode = -10000;
+        m_vibro.vibro(false,true);
         st.kv().onKeyPress(primaryCode);
     }
 
@@ -685,7 +687,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         ComMenu menu = new ComMenu();
         st.UniObserver onMenu = new st.UniObserver()
         {
-            int OnObserver(Object param1, Object param2)
+            public int OnObserver(Object param1, Object param2)
             {
                 int id = ((Integer) param1).intValue();
                 if(id==-10)
@@ -732,7 +734,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         st.UniObserver obs = new st.UniObserver()
         {
             @Override
-            int OnObserver(Object param1, Object param2)
+            public int OnObserver(Object param1, Object param2)
             {
                 int index = ((Integer) param1).intValue();
                 onText(ar.get(index));
@@ -879,11 +881,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
     {
  
-        if(st.PREF_KEY_VIBRO_LONG_DURATION.equals(key)||st.PREF_KEY_VIBRO_SHORT_DURATION.equals(key))
-        {
-            if(m_vibro!=null)
-                m_vibro.readSettings();
-        }
+        if(m_vibro!=null)
+            m_vibro.readSettings();
         if (st.PREF_KEY_EDIT_SETTINGS.equals(key))
         {
             m_es.load(st.PREF_KEY_EDIT_SETTINGS);
@@ -912,7 +911,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             m_state |= STATE_UP_AFTER_SYMBOLS;
         else
             m_state = st.rem(m_state, STATE_UP_AFTER_SYMBOLS);
-        boolean bSpac = sharedPreferences.getBoolean(st.PREF_KEY_SENTENCE_SPACE, true);
+        boolean bSpac = sharedPreferences.getBoolean(st.PREF_KEY_SENTENCE_SPACE, false);
         if (bSpac)
             m_state |= STATE_SENTENCE_SPACE;
         else
@@ -968,8 +967,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         {
             if(key.codes!=null&&key.codes.length!=0)
                 m_LongPressedCode = key.codes[0];
-            if (st.has(st.kv().m_state, JbKbdView.STATE_VIBRO_LONG)&&(key.m_kd.bmp!=null||key.getUpText()!=null||key.longCode!=0))
-                m_vibro.vibro(false);
+            if (key.m_kd.bmp!=null||key.getUpText()!=null||key.longCode!=0)
+                m_vibro.vibro(true,false);
         }
         catch (Throwable e)
         {

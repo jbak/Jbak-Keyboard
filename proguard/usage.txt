@@ -77,7 +77,7 @@ com.jbak.CustomGraphics.GradBack:
     public static final int DEFAULT_COLOR
     public static final int GRADIENT_TYPE_LINEAR
     public static final int GRADIENT_TYPE_SWEEP
-    271:272:public void setDependentback(com.jbak.CustomGraphics.GradBack)
+    274:275:public void setDependentback(com.jbak.CustomGraphics.GradBack)
 com.jbak.JbakKeyboard.AdPreference
 com.jbak.JbakKeyboard.CandidateView:
     private static final int OUT_OF_BOUNDS
@@ -197,7 +197,6 @@ com.jbak.JbakKeyboard.IKeyboard:
     public static final int DF_BIG_GAP
     public static final int DEF_COLOR
     public static final int KBD_DESIGN_STANDARD
-    public static final int KEYCODE_LANG_CHANGE
     350:356:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
 com.jbak.JbakKeyboard.JbCandView
 com.jbak.JbakKeyboard.JbKbd:
@@ -225,11 +224,16 @@ com.jbak.JbakKeyboard.KeyDrw:
     public static final int DELIM
     public static final int DEFAULT_GAP
     public static final int BIG_GAP
+com.jbak.JbakKeyboard.KeyboardGesture$GestureInfo:
+    public static final int LEFT
+    public static final int RIGHT
+    public static final int UP
+    public static final int DOWN
 com.jbak.JbakKeyboard.OwnKeyboardHandler:
-    private static final int MSG_SHOW_PREVIEW
-    private static final int MSG_REMOVE_PREVIEW
-    private static final int MSG_REPEAT
-    private static final int MSG_LONGPRESS
+    public static final int MSG_SHOW_PREVIEW
+    public static final int MSG_REMOVE_PREVIEW
+    public static final int MSG_REPEAT
+    public static final int MSG_LONGPRESS
 com.jbak.JbakKeyboard.R
 com.jbak.JbakKeyboard.R$array
 com.jbak.JbakKeyboard.R$attr
@@ -293,11 +297,10 @@ com.jbak.JbakKeyboard.Words:
     53:72:java.util.ArrayList getWords(java.lang.String)
 com.jbak.JbakKeyboard.st:
     public static final boolean DEBUG
-    71:72:public static final int min(int,int)
-    119:119:public static float screenDens(android.content.Context)
-    529:560:public static boolean savePrefs(android.content.SharedPreferences,android.content.SharedPreferences)
+    70:71:public static final int min(int,int)
+    118:118:public static float screenDens(android.content.Context)
 com.jbak.JbakKeyboard.st$SyncAsycOper
 com.jbak.JbakKeyboard.st$UniObserver:
-    35:39:public st$UniObserver(java.lang.Object,java.lang.Object)
+    34:38:public st$UniObserver(java.lang.Object,java.lang.Object)
 com.jbak.ctrl.IntEditor:
     118:118:public final boolean isFromUser()

@@ -136,6 +136,7 @@
     <string name="save">Сохранить</string>
     <string name="delete">Удалить</string>
     <string name="def">Стандарт</string>
+    <string name="clear">Очистить</string>
     <string name="settings_saved">Настройки сохранены!</string>
         
         
@@ -150,6 +151,8 @@
     <string name="tpl_fields_empty">Все поля шаблона должны быть заполнены!</string>
     <string name="tpl_delete">Вы хотите удалить \"%s\"?</string>
 
+    <string name="clipboard_clear">Вы хотите очистить буфер обмена ?</string>
+        
 <!-- List for menu with special template instructions -->    
     <string-array name="tpl_spec_instructions">
         <item><b>$select</b> - инструкция заменяется на текст текущего выделения</item>
@@ -186,5 +189,13 @@
  	<string name="lang_symbol_shift">Доп. символьная клавиатура</string>   
  	<string name="lang_edittext">Клавиатура правки текста</string>   
  	<string name="lang_smiles">Клавиатура смайликов</string>   
-	    	    
+ 
+ <!-- Names for gestures commands -->
+ 	<string name="cmd_lang_change">Смена языка</string>   
+ 	<string name="cmd_left">Курсор влево</string>   
+ 	<string name="cmd_right">Курсор вправо</string>   
+ 	<string name="cmd_up">Курсор вверх</string>   
+ 	<string name="cmd_down">Курсор вниз</string>   
+ 	<string name="cmd_none">Ничего не делать</string>   
+ 	
 </resources>

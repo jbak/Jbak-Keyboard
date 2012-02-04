@@ -19,15 +19,16 @@ public class OwnKeyboardHandler extends Handler
     public static final int MSG_REMOVE_PREVIEW = 2;
     public static final int MSG_REPEAT = 3;
     public static final int MSG_LONGPRESS = 4;
+    public static final int MSG_INVALIDATE = 5;
     Handler m_existHandler;
     TextView m_PreviewText;
     Method m_showKey;
     Method m_repeatKey;
     Method m_openPopupIfRequired;
-    KeyboardView m_kv;
+    JbKbdView m_kv;
     public boolean m_bSuccessInit;
     public static OwnKeyboardHandler inst;
-    public OwnKeyboardHandler(Handler exist,KeyboardView kv)
+    public OwnKeyboardHandler(Handler exist,JbKbdView kv)
     {
         super();
         inst = this;
@@ -82,6 +83,9 @@ public class OwnKeyboardHandler extends Handler
         try{
             switch (msg.what) 
             {
+                case MSG_INVALIDATE:
+                    m_kv.trueInvalidateKey(msg.arg1);
+                    break;
                 case MSG_SHOW_PREVIEW:
                     invokeShowKey(msg.arg1);
                     break;
