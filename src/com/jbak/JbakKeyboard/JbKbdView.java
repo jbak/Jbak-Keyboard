@@ -17,8 +17,8 @@
 package com.jbak.JbakKeyboard;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -32,8 +32,8 @@ import android.preference.PreferenceManager;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +45,7 @@ import com.jbak.JbakKeyboard.JbKbd.LatinKey;
 import com.jbak.JbakKeyboard.KeyboardGesture.GestureInfo;
 
 public class JbKbdView extends KeyboardView {
-
+    static final int INTERVAL_REDRAW = 100;
     static final int KEYCODE_OPTIONS = -100;
     KeyDrw m_PreviewDrw = new KeyDrw();
     Drawable m_PreviewDrawable;
@@ -257,7 +257,7 @@ public class JbKbdView extends KeyboardView {
             {
             }
         }
-        st.paint().setDefault(m_KeyTextSz, m_LabelTextSize, m_curDesign, clr);
+        st.paint().setDefault(m_curDesign, clr);
         st.paint().createFromSettings();
         if(m_tpPreview==null)
         {
@@ -328,7 +328,11 @@ public class JbKbdView extends KeyboardView {
             }
         }
         if(processLongPress((LatinKey)key))
+        {
+            if(key.codes!=null&&key.codes[0]==Keyboard.KEYCODE_SHIFT)
+                return true;
             return false;
+        }
         return super.onLongPress(key);
     }
     void setTempShift(boolean bShift,boolean bInvalidate)
@@ -362,7 +366,6 @@ public class JbKbdView extends KeyboardView {
                 {
                     m_state|=v==1?STATE_TEMP_SHIFT:STATE_CAPS_LOCK;
                 }
-                if(v==1)invalidateAllKeys();
             }
             else
             {
@@ -374,15 +377,20 @@ public class JbKbdView extends KeyboardView {
                 else if(st.has(m_state, STATE_CAPS_LOCK))
                 {
                     m_state = st.rem(m_state, STATE_CAPS_LOCK);
+                    m_state = st.rem(m_state, STATE_TEMP_SHIFT);
                 }
                 else
                 {
                     JbKbdView.inst.m_state|=JbKbdView.STATE_TEMP_SHIFT;
-                    invalidateAllKeys();
                 }
             }
-            setShifted(st.has(m_state,STATE_CAPS_LOCK));
-//            invalidateAllKeys();
+            int index = getCurKeyboard().getShiftKeyIndex();
+            List<Key> ar = getCurKeyboard().getKeys();
+            if(index>-1&&index<ar.size())
+            {
+                ar.get(index).on = st.has(m_state, STATE_CAPS_LOCK);
+                invalidateAllKeys();
+            }
         }
         else
         {
@@ -436,7 +444,7 @@ public class JbKbdView extends KeyboardView {
         }
         if(!bSet&&st.isLandscape(st.c()))
             bPortrait = false;
-        m_KeyHeight = pref.getInt(bPortrait?st.PREF_KEY_HEIGHT_PORTRAIT:st.PREF_KEY_HEIGHT_LANDSCAPE, (int) getResources().getDimension(R.dimen.def_key_height));
+        m_KeyHeight = KeyboardPaints.getValue(getContext(), pref, bPortrait?KeyboardPaints.VAL_KEY_HEIGHT_PORTRAIT:KeyboardPaints.VAL_KEY_HEIGHT_LANDSCAPE);
     }
     @Override
     public void onDraw(android.graphics.Canvas canvas) 
@@ -455,9 +463,9 @@ public class JbKbdView extends KeyboardView {
     @Override
     public void invalidateKey(int keyIndex)
     {
-        if(m_handler!=null)
+        if(m_handler!=null&&INTERVAL_REDRAW>0)
         {
-            m_handler.sendMessageDelayed(m_handler.obtainMessage(OwnKeyboardHandler.MSG_INVALIDATE, keyIndex, 0), 50);
+            m_handler.sendMessageDelayed(m_handler.obtainMessage(OwnKeyboardHandler.MSG_INVALIDATE, keyIndex, 0), INTERVAL_REDRAW);
             return;
         }
         if(ComMenu.inst==null)
@@ -531,10 +539,7 @@ public class JbKbdView extends KeyboardView {
     @Override
     public boolean setShifted(boolean shifted)
     {
-        boolean b = isUpperCase();
-        if(shifted&&b||!shifted&&!b)
-            return false;
-        return super.setShifted(shifted);
+        return true;
     }
     public void trueInvalidateKey(int index)
     {

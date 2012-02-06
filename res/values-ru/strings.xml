@@ -92,6 +92,16 @@
     <string name="set_key_save_pref_desc">В файл:</string>
     <string name="set_key_load_pref">Загрузить настройки</string>
     <string name="set_key_load_pref_desc">Из файла:</string>
+
+        <string name="set_key_gestures">Жесты</string>
+    <string name="set_key_gestures_desc">Настройки для жестов</string>
+    
+    <string name="set_key_use_gestures">Включить жесты</string>
+    <string name="set_key_use_gestures_desc">Включает/отключает все жесты</string>
+    <string name="set_key_gesture_left">Влево</string>
+    <string name="set_key_gesture_right">Вправо</string>
+    <string name="set_key_gesture_up">Вверх</string>
+    <string name="set_key_gesture_down">Вниз</string>
         
     <string name="interval_long_press">Задержка удержания клавиши  (ms)</string>
     <string name="interval_first_repeat">Задержка первого повтора клавиши (ms)</string>

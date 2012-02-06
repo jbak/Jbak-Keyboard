@@ -21,6 +21,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.jbak.CustomGraphics.GradBack;
+import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 /** Класс содержит полезные статические переменные */
 public class st extends IKeyboard implements IKbdSettings
 {
@@ -486,30 +487,36 @@ public class st extends IKeyboard implements IKbdSettings
         }
         return ZERO_STRING;
     }
+/** Обновление настроек. Если у юзера старые настройки - меняем их на новые */    
     public static void upgradeSettings(Context c)
     {
         SharedPreferences pref = st.pref(c);
         Editor ped = pref.edit();
+// 0.91 - 0.92 Меняем индекс скина на путь к скину
         if(pref.contains(st.PREF_KEY_KBD_SKIN))
         {
             CustomKbdDesign.loadCustomSkins();
             int id = pref.getInt(st.PREF_KEY_KBD_SKIN, 0);
             if(st.arDesign.length>id&&id>=0)
             {
-                ped.putString(st.PREF_KEY_KBD_SKIN_PATH, st.getSkinPath(st.arDesign[id]));
+               ped.putString(st.PREF_KEY_KBD_SKIN_PATH, st.getSkinPath(st.arDesign[id]));
             }
             ped.remove(st.PREF_KEY_KBD_SKIN);
         }
-        int ph = pref.getInt(st.PREF_KEY_HEIGHT_PORTRAIT,getDefaultKeyHeight(c));
-        if(ph%2>0)
+ // 0.92 - 0.93 Меняем настройку высоты клавиш в пикселях на процент от экрана
+        if(pref.contains(st.PREF_KEY_HEIGHT_PORTRAIT))
         {
-            ped.putInt(st.PREF_KEY_HEIGHT_PORTRAIT,ph-1);
+            int ph = pref.getInt(st.PREF_KEY_HEIGHT_PORTRAIT,0);
+            ped.remove(st.PREF_KEY_HEIGHT_PORTRAIT);
+            ped.putFloat(st.PREF_KEY_HEIGHT_PORTRAIT_PERC, KeyboardPaints.pixelToPerc(c, true,ph));
         }
-        ph = pref.getInt(st.PREF_KEY_HEIGHT_LANDSCAPE,getDefaultKeyHeight(c));
-        if(ph%2>0)
+        if(pref.contains(st.PREF_KEY_HEIGHT_LANDSCAPE))
         {
-            ped.putInt(st.PREF_KEY_HEIGHT_LANDSCAPE,ph-1);
+            int ph = pref.getInt(st.PREF_KEY_HEIGHT_LANDSCAPE,0);
+            ped.remove(st.PREF_KEY_HEIGHT_LANDSCAPE);
+            ped.putFloat(st.PREF_KEY_HEIGHT_LANDSCAPE_PERC, KeyboardPaints.pixelToPerc(c,false, ph));
         }
+// 0.92 - 0.93 Меняет тип вибрации (было вкл/выкл , стало - выкл/при нажатии/при отпускании)         
         if(pref.contains(st.PREF_KEY_VIBRO_SHORT_KEY))
         {
             boolean bVibroShort = pref.getBoolean(st.PREF_KEY_VIBRO_SHORT_KEY, false);
@@ -517,15 +524,12 @@ public class st extends IKeyboard implements IKbdSettings
             ped.putString(st.PREF_KEY_VIBRO_SHORT_TYPE,vt);
             ped.remove(st.PREF_KEY_VIBRO_SHORT_KEY);
         }
-        if(!pref.contains(st.PREF_KEY_UP_AFTER_SYMBOLS))
+// 0.92 - 0.93 Меняем старую автосмену регистра на новую         
+        if(!pref.contains(st.PREF_KEY_AUTO_CASE))
         {
-            ped.putBoolean(st.PREF_KEY_UP_AFTER_SYMBOLS, pref.getBoolean(PREF_KEY_AUTO_CASE, false));
+            ped.putBoolean(PREF_KEY_AUTO_CASE, pref.getBoolean(PREF_KEY_UP_AFTER_SYMBOLS, false));
         }
         ped.commit();
-    }
-    public static int getDefaultKeyHeight(Context c)
-    {
-        return (int) (c.getResources().getDimension(R.dimen.def_key_height));
     }
     public static File[] getFilesByExt(File dir,final String ext)
     {

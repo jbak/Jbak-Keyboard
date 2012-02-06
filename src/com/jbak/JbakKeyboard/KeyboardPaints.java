@@ -2,6 +2,8 @@ package com.jbak.JbakKeyboard;
 
 import java.util.Vector;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -11,6 +13,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.util.DisplayMetrics;
 
 import com.jbak.CustomGraphics.CustomButtonDrawable;
 import com.jbak.CustomGraphics.GradBack;
@@ -19,6 +22,11 @@ import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 
 public class KeyboardPaints
 {
+    public static final int VAL_KEY_HEIGHT_PORTRAIT =1;
+    public static final int VAL_KEY_HEIGHT_LANDSCAPE =2;
+    public static final int VAL_TEXT_SIZE_MAIN =3;
+    public static final int VAL_TEXT_SIZE_SYMBOL =4;
+    public static final int VAL_TEXT_SIZE_LABEL =5;
     public static KeyboardPaints inst;
 /** Шрифт клавиатуры для основных символов */    
     public Paint main;
@@ -31,8 +39,6 @@ public class KeyboardPaints
 /** Дополнительный цвет*/    
     public int secondColor = st.DEF_COLOR;
     public PorterDuffColorFilter bmpColorFilter = null;
-    int m_defaultFontSize = 32;
-    int m_defaultLabelSize = 21;
     boolean m_bMainBold = false;
     Vector <BitmapCache> m_arBitmaps = new Vector<BitmapCache>();
     int BitmapCacheSize = 120;
@@ -40,12 +46,13 @@ public class KeyboardPaints
     Paint bitmapNormal;
     Paint bitmapFunc;
     Paint bitmapPreview;
+    Paint bitmapNoColor;
     Rect padding = new Rect();
     public KeyboardPaints()
     {
         inst = this;
     }
-    void setDefault(int fontSize,int labelSize,KbdDesign design,int defColor)
+    void setDefault(KbdDesign design,int defColor)
     {
         mainColor = design.textColor==st.DEF_COLOR?defColor:design.textColor;
         if(design.m_kbdFuncKeys!=null&&design.m_kbdFuncKeys.textColor!=st.DEF_COLOR)
@@ -53,8 +60,6 @@ public class KeyboardPaints
         else
             secondColor = mainColor;
         m_bMainBold = st.has(design.flags,st.DF_BOLD);
-        m_defaultFontSize = fontSize;
-        m_defaultLabelSize = labelSize;
 //        if(design.m_keyBackground!=null)
 //        {
 //            previewBack = design.m_keyBackground.clone().getStateDrawable();
@@ -85,23 +90,26 @@ public class KeyboardPaints
             bitmapFunc = new Paint();
             bitmapFunc.setColorFilter(new PorterDuffColorFilter(secondColor, PorterDuff.Mode.SRC_ATOP));
         }
+        bitmapNoColor = new Paint();
         bitmapPreview = new Paint();
         bitmapPreview.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP));
         st.kv().m_KeyBackDrw.getPadding(padding);
         padding.offset(2,2);
     }
-    public final Paint getBitmapPaint(boolean bPreview,boolean bFunc)
+    public final Paint getBitmapPaint(KeyDrw d)
     {
-        if(bPreview)
+        if(d.m_bPreview)
             return bitmapPreview;
-        if(bFunc)
+        if(d.m_bFunc)
             return bitmapFunc;
+        if(d.m_bNoColorIcon)
+            return bitmapNoColor;
         return bitmapNormal;
     }
     final EditSet getDefaultMain()
     {
         EditSet es = new EditSet();
-        es.fontSize = m_defaultFontSize;
+        es.fontSize = getValue(st.c(), null, VAL_TEXT_SIZE_MAIN);
         es.style = 0;
         if(m_bMainBold)
             es.style|=Typeface.BOLD;
@@ -111,13 +119,13 @@ public class KeyboardPaints
     {
         EditSet es = new EditSet();
      // создаем second        
-         es.fontSize = m_defaultFontSize/2;
+        es.fontSize = getValue(st.c(), null, VAL_TEXT_SIZE_SYMBOL);
          return es;
     }
     final EditSet getDefaultLabel()
     {
         EditSet es = new EditSet();
-         es.fontSize = m_defaultLabelSize;
+        es.fontSize = getValue(st.c(), null, VAL_TEXT_SIZE_LABEL);
          es.style=Typeface.BOLD;
          return es;
     }
@@ -189,5 +197,73 @@ public class KeyboardPaints
         int resId = 0;
         String path;
         BitmapDrawable bd;
+    }
+    public static final int getScreen(Context c,boolean bPortrait)
+    {
+        DisplayMetrics dm = c.getResources().getDisplayMetrics(); 
+        if(bPortrait)
+            return st.max(dm.widthPixels,dm.heightPixels);
+        return st.min(dm.widthPixels,dm.heightPixels);
+    }
+/** Перевод процентов от размера экрана в пиксели
+*@param c Контекст 
+*@param bPortrait - true - для расчёта используется большее значение ширины/высоты, false - меньшее 
+*@param val Значение для перевода
+*@return
+ */
+    public static final float pixelToPerc(Context c,boolean bPortrait,float val)
+    {
+        float sh = getScreen(c, bPortrait);
+        return val/sh;
+    }
+    /** Преобразует значение в процентах от высоты экрана в пиксели
+    *@param c Контекст
+    *@param val Значение а процентах от высоты экрана
+    *@param bPortrait - true - для расчёта используется большее значение ширины/высоты, false - меньшее 
+    *@param bEven true - вернуть четное значение
+    *@return Размер в пикселях
+     */
+        public static int percToPixel(Context c,boolean bPortrait,float val,boolean bEven)
+        {
+            float sh = getScreen(c, bPortrait);
+            float ret = val*sh;
+            if(!bEven)
+                return (int)ret;
+            int r = (int)ret;
+            if(r%2>0)
+                return r+1;
+            return r;
+        }
+    public static float getDefValue(int type)
+    {
+        switch(type)
+        {
+            case VAL_KEY_HEIGHT_PORTRAIT:
+                return (float) 0.1;
+            case VAL_KEY_HEIGHT_LANDSCAPE:
+                return (float) 0.12;
+            case VAL_TEXT_SIZE_MAIN:
+                return (float) 0.04;
+            case VAL_TEXT_SIZE_SYMBOL:
+                return (float) 0.025;
+            case VAL_TEXT_SIZE_LABEL:
+                return (float) 0.03;
+        }
+        return 0;
+    }
+    public static int getValue(Context c,SharedPreferences p,int type)
+    {
+        switch(type)
+        {
+            case VAL_KEY_HEIGHT_PORTRAIT:
+                return percToPixel(c, true,p.getFloat(st.PREF_KEY_HEIGHT_PORTRAIT_PERC, getDefValue(type)),true);
+            case VAL_KEY_HEIGHT_LANDSCAPE:
+                return percToPixel(c, false,p.getFloat(st.PREF_KEY_HEIGHT_LANDSCAPE_PERC, getDefValue(type)),true);
+            case VAL_TEXT_SIZE_MAIN:
+            case VAL_TEXT_SIZE_SYMBOL:
+            case VAL_TEXT_SIZE_LABEL:
+                return percToPixel(c, true,getDefValue(type),false);
+        }
+        return 0;
     }
 }

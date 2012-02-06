@@ -107,6 +107,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         if(ClipbrdService.inst!=null)
             ClipbrdService.inst.stopSelf();
         st.pref().unregisterOnSharedPreferenceChangeListener(this);
+        KeyboardPaints.inst = null;
         if(st.kv()!=null)
         {
             st.kv().setOnKeyboardActionListener(null);
@@ -142,6 +143,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
         m_SelStart = attribute.initialSelStart;
         m_SelEnd = attribute.initialSelEnd;
+        m_LongPressedCode = -10000;
+        m_pressedCode = -10000;
         st.log("onStartInputView " + m_SelStart + " " + m_SelEnd);
 //        getCurrentInputConnection().getExtractedText(new ExtractedTextRequest(), STATE_EMPTY_UP)
         setCandidatesViewShown(false);
@@ -168,6 +171,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             case EditorInfo.TYPE_CLASS_NUMBER:
             case EditorInfo.TYPE_CLASS_DATETIME:
             case EditorInfo.TYPE_CLASS_PHONE:
+                m_bCanAutoInput = false;
                 st.setSymbolKeyboard(false);
             break;
             default:
@@ -493,19 +497,27 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         else
             m_pressedCode = primaryCode;
     }
+/** 
+ * Проверка, можно ли использовать автосмену регистра и вставку пробелов    
+*@param ei Информация о редакторе
+*@return true - используется автоввод, false - не используется
+ */
     final boolean canAutoInput(EditorInfo ei)
     {
         if(!st.has(m_state, STATE_AUTO_CASE))
             return false;
+        try{
         int var = ei.inputType & EditorInfo.TYPE_MASK_VARIATION;
         int type = ei.inputType&EditorInfo.TYPE_MASK_CLASS;
         return type==EditorInfo.TYPE_CLASS_TEXT
-                &&ei != null && st.isQwertyKeyboard(st.curKbd().kbd) 
+                &&ei != null 
                 && var != EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS 
                 && var != EditorInfo.TYPE_TEXT_VARIATION_URI 
                 && var != EditorInfo.TYPE_TEXT_VARIATION_PASSWORD 
                 && var != EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                 && var != EditorInfo.TYPE_TEXT_VARIATION_FILTER;
+        }catch (Throwable e) {}
+        return false;
     }
     private final void handleWordSeparator(int primaryCode)
     {
@@ -675,6 +687,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public void onPress(int primaryCode)
     {
         m_pressedCode = -10000;
+        m_LongPressedCode = -10000;
         m_vibro.vibro(false,true);
         st.kv().onKeyPress(primaryCode);
     }

@@ -60,6 +60,7 @@ public class CustomKeyboard extends JbKbd
     public static final String A_upCode="longCode";   
 /** Аттрибут, bool. Если true - на заднем плане клавиши рисуется фон 2, иначе - 1 */    
     public static final String A_specKey="specKey";   
+    public static final String A_noColor="noColor";   
 
     public static final  byte B_keyWidth   = 1;
     public static final  byte B_keyHeight  = 2;
@@ -79,6 +80,7 @@ public class CustomKeyboard extends JbKbd
     public static final  byte B_upCode=16;   
     public static final  byte B_specKey=17;
     public static final  byte B_smallLabel=18;
+    public static final  byte B_noColor=19;
 
     public static final  byte BA_KBD=(byte)'|';
     public static final  byte BA_ROW=(byte)':';
@@ -504,6 +506,8 @@ public class CustomKeyboard extends JbKbd
             }
             if(name.equals(A_keyLabel))
                 k.label = processLabel(p.getAttributeValue(i));
+            if(name.equals(A_noColor))
+                k.noColorIcon = getBoolean(p.getAttributeValue(i), B_noColor);
             if(name.equals(A_horizontalGap))
                 k.gap = getSize(p.getAttributeValue(i), m_displayWidth, getHorizontalGap(),B_horizontalGap);
             if(name.equals(A_keyIcon))

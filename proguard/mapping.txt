@@ -576,38 +576,44 @@ com.jbak.JbakKeyboard.ComMenu -> com.jbak.JbakKeyboard.d:
     int[] PRESSED_STATE_SET -> e
     int[] EMPTY_STATE_SET -> f
     com.jbak.JbakKeyboard.st$UniObserver m_lvObserver -> g
-    android.view.View$OnLongClickListener m_longListener -> h
-    android.view.View$OnTouchListener m_btnListener -> i
-    com.jbak.JbakKeyboard.st$UniObserver m_MenuObserver -> j
-    android.view.View$OnClickListener m_listener -> k
-    75:98:android.view.View newView(com.jbak.JbakKeyboard.ComMenu$MenuEntry) -> a
-    151:152:void add(java.lang.String,int) -> a
-    156:157:void add(int,int) -> a
-    160:166:void close() -> a
-    192:232:void show(com.jbak.JbakKeyboard.st$UniObserver) -> a
-    236:269:boolean showClipboard() -> b
+    int m_longClicked -> h
+    android.view.View$OnLongClickListener m_longListener -> i
+    android.view.View$OnTouchListener m_btnListener -> j
+    com.jbak.JbakKeyboard.st$UniObserver m_MenuObserver -> k
+    android.view.View$OnClickListener m_listener -> l
+    com.jbak.JbakKeyboard.ComMenu$Adapt m_adapter -> m
+    79:102:android.view.View newView(com.jbak.JbakKeyboard.ComMenu$MenuEntry) -> a
+    158:159:void add(java.lang.String,int) -> a
+    163:164:void add(int,int) -> a
+    167:173:void close() -> a
+    217:256:void show(com.jbak.JbakKeyboard.st$UniObserver) -> a
+    260:301:boolean showClipboard() -> b
+    335:345:void removeLastLongClicked() -> c
 com.jbak.JbakKeyboard.ComMenu$1 -> com.jbak.JbakKeyboard.e:
     com.jbak.JbakKeyboard.ComMenu this$0 -> a
-    106:109:int OnObserver(java.lang.Object,java.lang.Object) -> a
+    110:113:int OnObserver(java.lang.Object,java.lang.Object) -> a
 com.jbak.JbakKeyboard.ComMenu$2 -> com.jbak.JbakKeyboard.f:
     com.jbak.JbakKeyboard.ComMenu this$0 -> a
-    118:125:boolean onLongClick(android.view.View) -> onLongClick
+    123:132:boolean onLongClick(android.view.View) -> onLongClick
 com.jbak.JbakKeyboard.ComMenu$3 -> com.jbak.JbakKeyboard.g:
     com.jbak.JbakKeyboard.ComMenu this$0 -> a
-    134:143:boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
+    141:150:boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
 com.jbak.JbakKeyboard.ComMenu$4 -> com.jbak.JbakKeyboard.h:
     com.jbak.JbakKeyboard.ComMenu this$0 -> a
-    174:186:void onClick(android.view.View) -> onClick
-com.jbak.JbakKeyboard.ComMenu$5 -> com.jbak.JbakKeyboard.i:
-    256:265:int OnObserver(java.lang.Object,java.lang.Object) -> a
-com.jbak.JbakKeyboard.ComMenu$Adapt -> com.jbak.JbakKeyboard.j:
+    181:210:void onClick(android.view.View) -> onClick
+com.jbak.JbakKeyboard.ComMenu$4$1 -> com.jbak.JbakKeyboard.i:
+    com.jbak.JbakKeyboard.ComMenu$4 this$1 -> a
+    194:198:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.ComMenu$5 -> com.jbak.JbakKeyboard.j:
+    280:297:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.ComMenu$Adapt -> com.jbak.JbakKeyboard.k:
     com.jbak.JbakKeyboard.ComMenu m_menu -> a
-    282:282:int getCount() -> getCount
-    287:298:android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
-com.jbak.JbakKeyboard.ComMenu$MenuEntry -> com.jbak.JbakKeyboard.k:
+    314:314:int getCount() -> getCount
+    319:330:android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
+com.jbak.JbakKeyboard.ComMenu$MenuEntry -> com.jbak.JbakKeyboard.l:
     java.lang.String text -> a
     int id -> b
-com.jbak.JbakKeyboard.CustomKbdDesign -> com.jbak.JbakKeyboard.l:
+com.jbak.JbakKeyboard.CustomKbdDesign -> com.jbak.JbakKeyboard.m:
     int errorLine -> a
     java.lang.String[] arNames -> b
     java.lang.String skinPath -> c
@@ -617,12 +623,12 @@ com.jbak.JbakKeyboard.CustomKbdDesign -> com.jbak.JbakKeyboard.l:
     74:93:boolean load(java.io.BufferedReader) -> a
     97:102:int getIntValue(int,int) -> a
     222:269:java.lang.String loadCustomSkins() -> a
-com.jbak.JbakKeyboard.CustomKbdDesign$1 -> com.jbak.JbakKeyboard.m:
+com.jbak.JbakKeyboard.CustomKbdDesign$1 -> com.jbak.JbakKeyboard.n:
     236:238:boolean accept(java.io.File,java.lang.String) -> accept
-com.jbak.JbakKeyboard.CustomKbdDesign$IntEntry -> com.jbak.JbakKeyboard.n:
+com.jbak.JbakKeyboard.CustomKbdDesign$IntEntry -> com.jbak.JbakKeyboard.o:
     int index -> a
     int value -> b
-com.jbak.JbakKeyboard.CustomKeyboard -> com.jbak.JbakKeyboard.o:
+com.jbak.JbakKeyboard.CustomKeyboard -> com.jbak.JbakKeyboard.p:
     int m_displayWidth -> a
     int m_displayHeight -> b
     int m_x -> c
@@ -633,36 +639,36 @@ com.jbak.JbakKeyboard.CustomKeyboard -> com.jbak.JbakKeyboard.o:
     boolean m_bBrokenLoad -> h
     android.util.DisplayMetrics m_dm -> i
     java.io.DataOutputStream m_os -> j
-    130:177:void makeCompiledKeyboard(java.io.DataInputStream) -> a
-    182:239:void makeKeyboard(org.xmlpull.v1.XmlPullParser) -> a
-    243:261:void postProcessKeyboard() -> a
-    289:307:byte parseKeyboard(java.io.DataInputStream) -> b
-    331:341:boolean parseRow() -> b
-    345:353:com.jbak.JbakKeyboard.JbKbd$LatinKey newKey() -> c
-    357:369:void processKey(com.jbak.JbakKeyboard.JbKbd$LatinKey) -> a
-    372:435:byte parseKeyWithConvert(java.io.DataInputStream) -> c
-    439:479:byte parseKey(java.io.DataInputStream) -> d
-    562:572:int[] parseCodes(java.lang.String) -> a
-    576:579:java.lang.String attName(org.xmlpull.v1.XmlPullParser,int) -> a
-    583:604:int getSize(java.lang.String,float,int,byte) -> a
-    608:614:boolean getBoolean(java.lang.String,byte) -> a
-    618:633:android.graphics.drawable.Drawable getDrawable(java.lang.String,boolean) -> a
-    661:700:java.lang.String loadCustomKeyboards(boolean) -> a
-    704:706:int getPercentSize(java.io.DataInputStream) -> e
-    710:732:com.jbak.JbakKeyboard.IKeyboard$Keybrd processCustomKeyboardFile(java.io.File,boolean) -> a
-    745:755:boolean convertToCompiledFormat(android.content.Context,com.jbak.JbakKeyboard.IKeyboard$Keybrd,java.lang.String) -> a
-com.jbak.JbakKeyboard.Dlg -> com.jbak.JbakKeyboard.p:
+    132:179:void makeCompiledKeyboard(java.io.DataInputStream) -> a
+    184:241:void makeKeyboard(org.xmlpull.v1.XmlPullParser) -> a
+    245:263:void postProcessKeyboard() -> a
+    291:309:byte parseKeyboard(java.io.DataInputStream) -> b
+    333:343:boolean parseRow() -> b
+    347:355:com.jbak.JbakKeyboard.JbKbd$LatinKey newKey() -> c
+    359:371:void processKey(com.jbak.JbakKeyboard.JbKbd$LatinKey) -> a
+    374:437:byte parseKeyWithConvert(java.io.DataInputStream) -> c
+    441:481:byte parseKey(java.io.DataInputStream) -> d
+    566:576:int[] parseCodes(java.lang.String) -> a
+    580:583:java.lang.String attName(org.xmlpull.v1.XmlPullParser,int) -> a
+    587:608:int getSize(java.lang.String,float,int,byte) -> a
+    612:618:boolean getBoolean(java.lang.String,byte) -> a
+    622:637:android.graphics.drawable.Drawable getDrawable(java.lang.String,boolean) -> a
+    665:704:java.lang.String loadCustomKeyboards(boolean) -> a
+    708:710:int getPercentSize(java.io.DataInputStream) -> e
+    714:736:com.jbak.JbakKeyboard.IKeyboard$Keybrd processCustomKeyboardFile(java.io.File,boolean) -> a
+    749:759:boolean convertToCompiledFormat(android.content.Context,com.jbak.JbakKeyboard.IKeyboard$Keybrd,java.lang.String) -> a
+com.jbak.JbakKeyboard.Dlg -> com.jbak.JbakKeyboard.q:
     56:71:android.app.AlertDialog CustomMenu$5617b1ba(android.content.Context,android.widget.ListAdapter,com.jbak.JbakKeyboard.st$UniObserver) -> a
     77:84:android.app.AlertDialog yesNoDialog(android.content.Context,java.lang.String,com.jbak.JbakKeyboard.st$UniObserver) -> a
-com.jbak.JbakKeyboard.Dlg$1 -> com.jbak.JbakKeyboard.q:
+com.jbak.JbakKeyboard.Dlg$1 -> com.jbak.JbakKeyboard.r:
     com.jbak.JbakKeyboard.st$UniObserver val$obs -> a
     63:64:void onClick(android.content.DialogInterface,int) -> onClick
-com.jbak.JbakKeyboard.Dlg$OnButtonListener -> com.jbak.JbakKeyboard.r:
+com.jbak.JbakKeyboard.Dlg$OnButtonListener -> com.jbak.JbakKeyboard.s:
     com.jbak.JbakKeyboard.st$UniObserver callback -> a
     27:29:void onClick(android.content.DialogInterface,int) -> onClick
-com.jbak.JbakKeyboard.Dlg$RunOnYes -> com.jbak.JbakKeyboard.s:
+com.jbak.JbakKeyboard.Dlg$RunOnYes -> com.jbak.JbakKeyboard.t:
     void run() -> a
-com.jbak.JbakKeyboard.Dlg$RunOnYes$1 -> com.jbak.JbakKeyboard.t:
+com.jbak.JbakKeyboard.Dlg$RunOnYes$1 -> com.jbak.JbakKeyboard.u:
     com.jbak.JbakKeyboard.Dlg$RunOnYes this$1 -> a
     99:101:int OnObserver(java.lang.Object,java.lang.Object) -> a
 com.jbak.JbakKeyboard.EditSetActivity -> com.jbak.JbakKeyboard.EditSetActivity:
@@ -674,36 +680,45 @@ com.jbak.JbakKeyboard.EditSetActivity -> com.jbak.JbakKeyboard.EditSetActivity:
     float m_defaultFontSize -> f
     android.widget.CompoundButton$OnCheckedChangeListener m_onCheckChange -> g
     android.widget.AdapterView$OnItemSelectedListener m_OnSpinnerChange -> h
-    92:132:void onCreate(android.os.Bundle) -> onCreate
-    136:143:void onDestroy() -> onDestroy
-com.jbak.JbakKeyboard.EditSetActivity$1 -> com.jbak.JbakKeyboard.u:
+    81:118:void onCreate(android.os.Bundle) -> onCreate
+    122:129:void onDestroy() -> onDestroy
+com.jbak.JbakKeyboard.EditSetActivity$1 -> com.jbak.JbakKeyboard.v:
     com.jbak.JbakKeyboard.EditSetActivity this$0 -> a
-    34:51:void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-com.jbak.JbakKeyboard.EditSetActivity$2 -> com.jbak.JbakKeyboard.v:
+    36:53:void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
+com.jbak.JbakKeyboard.EditSetActivity$2 -> com.jbak.JbakKeyboard.w:
     com.jbak.JbakKeyboard.EditSetActivity this$0 -> a
-    59:81:void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
-    86:86:void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
-com.jbak.JbakKeyboard.EditSetActivity$EditSet -> com.jbak.JbakKeyboard.w:
+    61:70:void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
+    75:75:void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
+com.jbak.JbakKeyboard.EditSetActivity$3 -> com.jbak.JbakKeyboard.x:
+    com.jbak.JbakKeyboard.EditSetActivity this$0 -> a
+    112:115:void onChangeIntValue(com.jbak.ctrl.IntEditor) -> a
+com.jbak.JbakKeyboard.EditSetActivity$EditSet -> com.jbak.JbakKeyboard.y:
     android.graphics.Typeface typeface -> a
     int style -> b
     int fontSize -> c
-    153:153:boolean isDefault() -> a
-    157:161:int typefaceToInt(android.graphics.Typeface) -> a
-    165:169:android.graphics.Typeface intToTypeface(int) -> a
-    173:176:void setToEditor(android.widget.EditText) -> a
-    179:193:android.text.TextPaint getTextPaint(boolean) -> a
-    201:201:boolean load(java.lang.String) -> a
-    205:220:boolean fromString(java.lang.String) -> b
-    224:224:java.lang.String toString() -> toString
-com.jbak.JbakKeyboard.IKeyboard -> com.jbak.JbakKeyboard.x:
-    com.jbak.JbakKeyboard.IKeyboard$Lang[] arLangs -> a
+    139:139:boolean isDefault() -> a
+    143:147:int typefaceToInt(android.graphics.Typeface) -> a
+    151:155:android.graphics.Typeface intToTypeface(int) -> a
+    159:162:void setToEditor(android.widget.EditText) -> a
+    165:179:android.text.TextPaint getTextPaint(boolean) -> a
+    187:192:boolean load(java.lang.String) -> a
+    196:219:int fromString(java.lang.String) -> b
+    223:223:java.lang.String toString() -> toString
+    229:230:void save(android.content.SharedPreferences,java.lang.String) -> a
+com.jbak.JbakKeyboard.IKbdSettings -> com.jbak.JbakKeyboard.z:
+    com.jbak.JbakKeyboard.IKbdSettings$KbdGesture[] arGestures -> a
+com.jbak.JbakKeyboard.IKbdSettings$KbdGesture -> com.jbak.JbakKeyboard.aa:
+    int nameId -> a
+    int code -> b
+com.jbak.JbakKeyboard.IKeyboard -> com.jbak.JbakKeyboard.ab:
+    com.jbak.JbakKeyboard.IKeyboard$Lang[] arLangs -> a_
     com.jbak.JbakKeyboard.IKeyboard$Keybrd[] arKbd -> b
     com.jbak.JbakKeyboard.IKeyboard$KbdDesign[] arDesign -> c
-    67:67:java.lang.String getSettingsPath() -> a
-    344:344:com.jbak.JbakKeyboard.IKeyboard$Keybrd defKbd() -> b
-    362:367:com.jbak.JbakKeyboard.IKeyboard$Lang getLangByName(java.lang.String) -> a
-    371:377:com.jbak.JbakKeyboard.IKeyboard$Lang addCustomLang(java.lang.String) -> b
-com.jbak.JbakKeyboard.IKeyboard$KbdDesign -> com.jbak.JbakKeyboard.y:
+    68:68:java.lang.String getSettingsPath() -> a
+    348:348:com.jbak.JbakKeyboard.IKeyboard$Keybrd defKbd() -> b
+    366:371:com.jbak.JbakKeyboard.IKeyboard$Lang getLangByName(java.lang.String) -> a
+    375:381:com.jbak.JbakKeyboard.IKeyboard$Lang addCustomLang(java.lang.String) -> b
+com.jbak.JbakKeyboard.IKeyboard$KbdDesign -> com.jbak.JbakKeyboard.ac:
     int drawResId -> a
     int nameResId -> b
     int textColor -> c
@@ -713,56 +728,58 @@ com.jbak.JbakKeyboard.IKeyboard$KbdDesign -> com.jbak.JbakKeyboard.y:
     com.jbak.CustomGraphics.GradBack m_keyBackground -> g
     com.jbak.CustomGraphics.GradBack m_kbdBackground -> h
     com.jbak.JbakKeyboard.IKeyboard$KbdDesign m_kbdFuncKeys -> i
-    208:214:java.lang.String getName(android.content.Context) -> a
-com.jbak.JbakKeyboard.IKeyboard$Keybrd -> com.jbak.JbakKeyboard.z:
+    212:218:java.lang.String getName(android.content.Context) -> a
+com.jbak.JbakKeyboard.IKeyboard$Keybrd -> com.jbak.JbakKeyboard.ad:
     com.jbak.JbakKeyboard.IKeyboard$Lang lang -> a
     int resId -> b
     int kbdCode -> c
     int resName -> d
     java.lang.String path -> e
-com.jbak.JbakKeyboard.IKeyboard$Lang -> com.jbak.JbakKeyboard.aa:
+com.jbak.JbakKeyboard.IKeyboard$Lang -> com.jbak.JbakKeyboard.ae:
     int lang -> a
     java.lang.String name -> b
     int strId -> c
     boolean bVirtual -> d
-    267:284:java.lang.String getName(android.content.Context) -> a
-    288:288:boolean isVirtualLang() -> a
-com.jbak.JbakKeyboard.JbKbd -> com.jbak.JbakKeyboard.ab:
+    271:288:java.lang.String getName(android.content.Context) -> a
+    292:292:boolean isVirtualLang() -> a
+com.jbak.JbakKeyboard.JbKbd -> com.jbak.JbakKeyboard.af:
     com.jbak.JbakKeyboard.JbKbd$LatinKey mEnterKey -> a
     com.jbak.JbakKeyboard.IKeyboard$Keybrd kbd -> k
     60:64:android.inputmethodservice.Keyboard$Key createKeyFromXml(android.content.res.Resources,android.inputmethodservice.Keyboard$Row,int,int,android.content.res.XmlResourceParser) -> createKeyFromXml
     71:104:void setImeOptions(android.content.res.Resources,int) -> a
     107:114:com.jbak.JbakKeyboard.JbKbd$LatinKey getKeyByCode(int) -> a
-com.jbak.JbakKeyboard.JbKbd$LatinKey -> com.jbak.JbakKeyboard.ac:
+com.jbak.JbakKeyboard.JbKbd$LatinKey -> com.jbak.JbakKeyboard.ag:
     com.jbak.JbakKeyboard.KeyDrw m_kd -> a
     int longCode -> b
     int specKey -> c
     boolean smallLabel -> d
-    135:157:void init(android.inputmethodservice.Keyboard$Row) -> a
-    160:160:java.lang.String getMainText() -> a
-    164:164:java.lang.String getUpText() -> b
+    boolean noColorIcon -> e
+    136:159:void init(android.inputmethodservice.Keyboard$Row) -> a
+    162:162:java.lang.String getMainText() -> a
+    166:166:java.lang.String getUpText() -> b
 com.jbak.JbakKeyboard.JbKbdPreference -> com.jbak.JbakKeyboard.JbKbdPreference:
-    34:50:void onCreate(android.os.Bundle) -> onCreate
-    53:53:java.lang.String strVal(java.lang.String) -> a
-    58:62:void onDestroy() -> onDestroy
-    66:77:void runSetKbd(int) -> a
-    81:164:boolean onPreferenceTreeClick(android.preference.PreferenceScreen,android.preference.Preference) -> onPreferenceTreeClick
-    168:182:void setSummary(java.lang.String,int,java.lang.String) -> a
-    185:187:void setShiftState() -> a
-    191:225:void onSharedPreferenceChanged(android.content.SharedPreferences,java.lang.String) -> onSharedPreferenceChanged
-    228:243:boolean checkIntValue(java.lang.String,java.lang.String) -> a
-    294:294:java.lang.String getBackupPath() -> b
-    298:324:void backup(boolean) -> b
-    328:371:int prefBackup(boolean) -> a
-com.jbak.JbakKeyboard.JbKbdPreference$1 -> com.jbak.JbakKeyboard.ad:
+    33:57:void onCreate(android.os.Bundle) -> onCreate
+    60:74:void setGestureList(android.content.SharedPreferences,java.lang.String,java.lang.CharSequence[],java.lang.CharSequence[]) -> a
+    77:77:java.lang.String strVal(java.lang.String) -> a
+    82:86:void onDestroy() -> onDestroy
+    90:101:void runSetKbd(int) -> a
+    105:188:boolean onPreferenceTreeClick(android.preference.PreferenceScreen,android.preference.Preference) -> onPreferenceTreeClick
+    192:206:void setSummary(java.lang.String,int,java.lang.String) -> a
+    209:211:void setShiftState() -> a
+    215:258:void onSharedPreferenceChanged(android.content.SharedPreferences,java.lang.String) -> onSharedPreferenceChanged
+    261:276:boolean checkIntValue(java.lang.String,java.lang.String) -> a
+    327:327:java.lang.String getBackupPath() -> b
+    331:357:void backup(boolean) -> b
+    361:404:int prefBackup(boolean) -> a
+com.jbak.JbakKeyboard.JbKbdPreference$1 -> com.jbak.JbakKeyboard.ah:
     com.jbak.JbakKeyboard.JbKbdPreference this$0 -> a
     android.content.SharedPreferences val$p -> d
     android.view.View val$v -> e
-    273:287:int OnObserver(java.lang.Object,java.lang.Object) -> a
-com.jbak.JbakKeyboard.JbKbdPreference$2 -> com.jbak.JbakKeyboard.ae:
+    306:320:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.JbKbdPreference$2 -> com.jbak.JbakKeyboard.ai:
     com.jbak.JbakKeyboard.JbKbdPreference this$0 -> a
     boolean val$bSave -> d
-    303:321:int OnObserver(java.lang.Object,java.lang.Object) -> a
+    336:354:int OnObserver(java.lang.Object,java.lang.Object) -> a
 com.jbak.JbakKeyboard.JbKbdReceiver -> com.jbak.JbakKeyboard.JbKbdReceiver:
     15:19:void onReceive(android.content.Context,android.content.Intent) -> onReceive
 com.jbak.JbakKeyboard.JbKbdView -> com.jbak.JbakKeyboard.JbKbdView:
@@ -776,36 +793,38 @@ com.jbak.JbakKeyboard.JbKbdView -> com.jbak.JbakKeyboard.JbKbdView:
     android.text.TextPaint m_tpPreview -> h
     int m_LabelTextSize -> i
     int m_PreviewTextSize -> j
-    int m_state -> k
-    int m_PreviewHeight -> l
-    com.jbak.JbakKeyboard.KeyboardGesture m_gd -> m
-    com.jbak.JbakKeyboard.IKeyboard$KbdDesign m_curDesign -> n
-    android.graphics.drawable.Drawable m_defDrawable -> o
-    android.graphics.drawable.Drawable m_defBackground -> p
-    java.lang.String m_designPath -> q
-    com.jbak.JbakKeyboard.OwnKeyboardHandler m_handler -> r
-    boolean m_bStopInvalidate -> s
-    88:88:com.jbak.JbakKeyboard.JbKbd getCurKeyboard() -> a
-    94:101:int getFieldInt(java.lang.reflect.Field,java.lang.Object,int) -> a
-    110:270:void init() -> j
-    273:306:boolean processLongPress(com.jbak.JbakKeyboard.JbKbd$LatinKey) -> a
-    310:335:boolean onLongPress(android.inputmethodservice.Keyboard$Key) -> onLongPress
-    339:349:void setTempShift(boolean,boolean) -> a
-    352:394:void handleShift() -> b
-    397:401:boolean isUpperCase() -> c
-    409:444:void setPreferences() -> d
-    448:450:void onDraw(android.graphics.Canvas) -> onDraw
-    454:456:void invalidateAllKeys() -> invalidateAllKeys
-    460:462:void invalidateKey(int) -> invalidateKey
-    465:465:boolean isDefaultDesign() -> e
-    470:485:void handleLangChange() -> f
-    488:490:void reload() -> g
-    493:496:void reloadSkin() -> h
-    499:508:void onKeyPress(int) -> a
-    511:511:boolean isUserInput() -> i
-    516:518:boolean onTouchEvent(android.view.MotionEvent) -> onTouchEvent
-    522:545:void gesture(com.jbak.JbakKeyboard.KeyboardGesture$GestureInfo) -> a
-com.jbak.JbakKeyboard.KeyDrw -> com.jbak.JbakKeyboard.af:
+    com.jbak.JbakKeyboard.IKbdSettings$KbdGesture[] m_gestures -> k
+    int m_state -> l
+    int m_PreviewHeight -> m
+    com.jbak.JbakKeyboard.KeyboardGesture m_gd -> n
+    com.jbak.JbakKeyboard.IKeyboard$KbdDesign m_curDesign -> o
+    android.graphics.drawable.Drawable m_defDrawable -> p
+    android.graphics.drawable.Drawable m_defBackground -> q
+    java.lang.String m_designPath -> r
+    com.jbak.JbakKeyboard.OwnKeyboardHandler m_handler -> s
+    boolean m_bStopInvalidate -> t
+    85:85:com.jbak.JbakKeyboard.JbKbd getCurKeyboard() -> a
+    91:98:int getFieldInt(java.lang.reflect.Field,java.lang.Object,int) -> a
+    107:267:void init() -> j
+    307:336:boolean onLongPress(android.inputmethodservice.Keyboard$Key) -> onLongPress
+    340:350:void setTempShift(boolean,boolean) -> a
+    353:399:void handleShift() -> b
+    402:406:boolean isUpperCase() -> c
+    414:448:void setPreferences() -> d
+    452:454:void onDraw(android.graphics.Canvas) -> onDraw
+    458:462:void invalidateAllKeys() -> invalidateAllKeys
+    466:473:void invalidateKey(int) -> invalidateKey
+    476:476:boolean isDefaultDesign() -> e
+    481:496:void handleLangChange() -> f
+    499:501:void reload() -> g
+    504:507:void reloadSkin() -> h
+    510:519:void onKeyPress(int) -> a
+    522:522:boolean isUserInput() -> i
+    527:529:boolean onTouchEvent(android.view.MotionEvent) -> onTouchEvent
+    533:538:void gesture(com.jbak.JbakKeyboard.KeyboardGesture$GestureInfo) -> a
+    542:542:boolean setShifted(boolean) -> setShifted
+    546:547:void trueInvalidateKey(int) -> b
+com.jbak.JbakKeyboard.KeyDrw -> com.jbak.JbakKeyboard.aj:
     android.graphics.Bitmap bmp -> a
     java.lang.String txtMain -> b
     java.lang.String txtSmall -> c
@@ -814,17 +833,18 @@ com.jbak.JbakKeyboard.KeyDrw -> com.jbak.JbakKeyboard.af:
     boolean m_bSmallLabel -> f
     android.graphics.Rect rb -> g
     boolean m_bFunc -> h
-    int GAP -> i
-    com.jbak.JbakKeyboard.KeyDrw$DrwCache m_c -> j
-    46:48:android.graphics.drawable.Drawable getDrawable() -> a
-    52:53:void setSmallLabel(boolean) -> a
-    56:57:void setFuncKey(boolean) -> b
-    60:63:void useTextColor(android.graphics.Paint) -> a
-    75:113:void set(android.inputmethodservice.Keyboard$Key,boolean) -> a
-    116:118:void drawFuncBackground(android.graphics.Canvas) -> a
-    248:250:int horzX(int,int,int,int) -> a
-    391:466:void draw(android.graphics.Canvas,android.graphics.Paint) -> draw
-com.jbak.JbakKeyboard.KeyDrw$DrwCache -> com.jbak.JbakKeyboard.ag:
+    boolean m_bNoColorIcon -> i
+    int GAP -> j
+    com.jbak.JbakKeyboard.KeyDrw$DrwCache m_c -> k
+    47:49:android.graphics.drawable.Drawable getDrawable() -> a
+    53:54:void setSmallLabel(boolean) -> a
+    57:58:void setFuncKey(boolean) -> b
+    61:64:void useTextColor(android.graphics.Paint) -> a
+    76:114:void set(android.inputmethodservice.Keyboard$Key,boolean) -> a
+    117:119:void drawFuncBackground(android.graphics.Canvas) -> a
+    249:251:int horzX(int,int,int,int) -> a
+    392:467:void draw(android.graphics.Canvas,android.graphics.Paint) -> draw
+com.jbak.JbakKeyboard.KeyDrw$DrwCache -> com.jbak.JbakKeyboard.ak:
     java.lang.String mainLower -> a
     java.lang.String mainUpper -> b
     float m_xMainLower -> c
@@ -833,16 +853,17 @@ com.jbak.JbakKeyboard.KeyDrw$DrwCache -> com.jbak.JbakKeyboard.ag:
     float m_yMainUpper -> f
     float m_xSmall -> g
     float m_ySmall -> h
-com.jbak.JbakKeyboard.KeyboardGesture -> com.jbak.JbakKeyboard.ah:
-com.jbak.JbakKeyboard.KeyboardGesture$GestureInfo -> com.jbak.JbakKeyboard.ai:
+com.jbak.JbakKeyboard.KeyboardGesture -> com.jbak.JbakKeyboard.al:
+com.jbak.JbakKeyboard.KeyboardGesture$GestureInfo -> com.jbak.JbakKeyboard.am:
     com.jbak.JbakKeyboard.JbKbd$LatinKey downKey -> a
     int dir -> b
-com.jbak.JbakKeyboard.KeyboardGesture$KvListener -> com.jbak.JbakKeyboard.aj:
+com.jbak.JbakKeyboard.KeyboardGesture$KvListener -> com.jbak.JbakKeyboard.an:
     com.jbak.JbakKeyboard.JbKbdView m_kv -> a
-    22:23:com.jbak.JbakKeyboard.KeyboardGesture$KvListener setKeyboardView(com.jbak.JbakKeyboard.JbKbdView) -> a
-    28:51:boolean onFling(android.view.MotionEvent,android.view.MotionEvent,float,float) -> onFling
-    56:61:com.jbak.JbakKeyboard.JbKbd$LatinKey getKey(int,int) -> a
-com.jbak.JbakKeyboard.KeyboardPaints -> com.jbak.JbakKeyboard.ak:
+    int minGestSize -> b
+    float deltaDelim -> c
+    24:25:com.jbak.JbakKeyboard.KeyboardGesture$KvListener setKeyboardView(com.jbak.JbakKeyboard.JbKbdView) -> a
+    30:51:boolean onFling(android.view.MotionEvent,android.view.MotionEvent,float,float) -> onFling
+com.jbak.JbakKeyboard.KeyboardPaints -> com.jbak.JbakKeyboard.ao:
     com.jbak.JbakKeyboard.KeyboardPaints inst -> a
     android.graphics.Paint main -> b
     android.graphics.Paint second -> c
@@ -850,46 +871,50 @@ com.jbak.JbakKeyboard.KeyboardPaints -> com.jbak.JbakKeyboard.ak:
     int mainColor -> e
     int secondColor -> f
     android.graphics.PorterDuffColorFilter bmpColorFilter -> g
-    int m_defaultFontSize -> h
-    int m_defaultLabelSize -> i
-    boolean m_bMainBold -> j
-    java.util.Vector m_arBitmaps -> k
-    int BitmapCacheSize -> l
-    android.graphics.drawable.StateListDrawable funcBackDrawable -> m
-    android.graphics.Paint bitmapNormal -> n
-    android.graphics.Paint bitmapFunc -> o
-    android.graphics.Paint bitmapPreview -> p
-    android.graphics.Rect padding -> q
-    95:99:android.graphics.Paint getBitmapPaint(boolean,boolean) -> a
-    103:108:com.jbak.JbakKeyboard.EditSetActivity$EditSet getDefaultMain() -> a
-    112:115:com.jbak.JbakKeyboard.EditSetActivity$EditSet getDefaultSecond() -> b
-    119:122:com.jbak.JbakKeyboard.EditSetActivity$EditSet getDefaultLabel() -> c
-    145:148:void addBitmap(com.jbak.JbakKeyboard.KeyboardPaints$BitmapCache) -> a
-    151:164:android.graphics.drawable.BitmapDrawable getBitmap(java.lang.String) -> a
-    168:175:android.graphics.drawable.BitmapDrawable getBitmap(int) -> a
-com.jbak.JbakKeyboard.KeyboardPaints$BitmapCache -> com.jbak.JbakKeyboard.al:
+    boolean m_bMainBold -> h
+    java.util.Vector m_arBitmaps -> i
+    int BitmapCacheSize -> j
+    android.graphics.drawable.StateListDrawable funcBackDrawable -> k
+    android.graphics.Paint bitmapNormal -> l
+    android.graphics.Paint bitmapFunc -> m
+    android.graphics.Paint bitmapPreview -> n
+    android.graphics.Paint bitmapNoColor -> o
+    android.graphics.Rect padding -> p
+    101:107:android.graphics.Paint getBitmapPaint(com.jbak.JbakKeyboard.KeyDrw) -> a
+    111:116:com.jbak.JbakKeyboard.EditSetActivity$EditSet getDefaultMain() -> a
+    120:123:com.jbak.JbakKeyboard.EditSetActivity$EditSet getDefaultSecond() -> b
+    127:130:com.jbak.JbakKeyboard.EditSetActivity$EditSet getDefaultLabel() -> c
+    153:156:void addBitmap(com.jbak.JbakKeyboard.KeyboardPaints$BitmapCache) -> a
+    159:172:android.graphics.drawable.BitmapDrawable getBitmap(java.lang.String) -> a
+    176:183:android.graphics.drawable.BitmapDrawable getBitmap(int) -> a
+    203:206:int getScreen(android.content.Context,boolean) -> a
+    216:217:float pixelToPerc(android.content.Context,boolean,float) -> a
+    228:235:int percToPixel(android.content.Context,boolean,float,boolean) -> a
+    239:252:float getDefValue(int) -> b
+    256:267:int getValue(android.content.Context,android.content.SharedPreferences,int) -> a
+com.jbak.JbakKeyboard.KeyboardPaints$BitmapCache -> com.jbak.JbakKeyboard.ap:
     int resId -> a
     java.lang.String path -> b
     android.graphics.drawable.BitmapDrawable bd -> c
 com.jbak.JbakKeyboard.LangSetActivity -> com.jbak.JbakKeyboard.LangSetActivity:
     com.jbak.JbakKeyboard.LangSetActivity inst -> a
     android.view.View$OnClickListener m_butListener -> b
-    34:43:void onCreate(android.os.Bundle) -> onCreate
-    47:51:void onDestroy() -> onDestroy
-com.jbak.JbakKeyboard.LangSetActivity$1 -> com.jbak.JbakKeyboard.am:
+    34:41:void onCreate(android.os.Bundle) -> onCreate
+    45:49:void onDestroy() -> onDestroy
+com.jbak.JbakKeyboard.LangSetActivity$1 -> com.jbak.JbakKeyboard.aq:
     com.jbak.JbakKeyboard.LangSetActivity this$0 -> a
-    57:72:void onClick(android.view.View) -> onClick
-com.jbak.JbakKeyboard.LangSetActivity$LangAdapter -> com.jbak.JbakKeyboard.an:
+    55:70:void onClick(android.view.View) -> onClick
+com.jbak.JbakKeyboard.LangSetActivity$LangAdapter -> com.jbak.JbakKeyboard.ar:
     android.widget.CompoundButton$OnCheckedChangeListener m_chkListener -> a
     int rId -> b
     java.util.Vector m_arLangs -> c
     com.jbak.JbakKeyboard.LangSetActivity this$0 -> d
-    78:85:java.lang.String getLangString() -> a
-    154:185:android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
-com.jbak.JbakKeyboard.LangSetActivity$LangAdapter$1 -> com.jbak.JbakKeyboard.ao:
+    76:83:java.lang.String getLangString() -> a
+    152:183:android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
+com.jbak.JbakKeyboard.LangSetActivity$LangAdapter$1 -> com.jbak.JbakKeyboard.as:
     com.jbak.JbakKeyboard.LangSetActivity$LangAdapter this$1 -> a
-    92:109:void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-com.jbak.JbakKeyboard.OwnKeyboardHandler -> com.jbak.JbakKeyboard.ap:
+    90:107:void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
+com.jbak.JbakKeyboard.OwnKeyboardHandler -> com.jbak.JbakKeyboard.at:
     int repeatInterval -> a
     int deltaLongPress -> b
     int deltaRepeatStart -> c
@@ -898,12 +923,12 @@ com.jbak.JbakKeyboard.OwnKeyboardHandler -> com.jbak.JbakKeyboard.ap:
     java.lang.reflect.Method m_showKey -> f
     java.lang.reflect.Method m_repeatKey -> g
     java.lang.reflect.Method m_openPopupIfRequired -> h
-    android.inputmethodservice.KeyboardView m_kv -> i
+    com.jbak.JbakKeyboard.JbKbdView m_kv -> i
     boolean m_bSuccessInit -> j
     com.jbak.JbakKeyboard.OwnKeyboardHandler inst -> k
-    41:47:void loadFromSettings() -> a
-    51:64:boolean init() -> b
-    83:123:void handleMessage(android.os.Message) -> handleMessage
+    42:48:void loadFromSettings() -> a
+    52:65:boolean init() -> b
+    84:127:void handleMessage(android.os.Message) -> handleMessage
 com.jbak.JbakKeyboard.ServiceJbKbd -> com.jbak.JbakKeyboard.ServiceJbKbd:
     com.jbak.JbakKeyboard.Words m_words -> a
     boolean m_bComplete -> b
@@ -926,59 +951,60 @@ com.jbak.JbakKeyboard.ServiceJbKbd -> com.jbak.JbakKeyboard.ServiceJbKbd:
     int m_SelStart -> m
     int m_SelEnd -> n
     boolean m_bBackProcessed -> o
-    int m_procCode -> p
+    int m_pressedCode -> p
     android.widget.EditText m_extraText -> q
     int m_LongPressedCode -> r
     89:100:void onCreate() -> onCreate
-    107:116:void onDestroy() -> onDestroy
-    122:125:android.view.View onCreateInputView() -> onCreateInputView
-    137:137:android.view.View onCreateCandidatesView() -> onCreateCandidatesView
-    143:191:void onStartInputView(android.view.inputmethod.EditorInfo,boolean) -> onStartInputView
-    205:211:void onStartInput(android.view.inputmethod.EditorInfo,boolean) -> onStartInput
-    216:217:void onFinishInputView(boolean) -> onFinishInputView
-    222:224:void onBindInput() -> onBindInput
-    231:245:void onFinishInput() -> onFinishInput
-    253:271:void onUpdateSelection(int,int,int,int,int,int) -> onUpdateSelection
-    279:279:void onDisplayCompletions(android.view.inputmethod.CompletionInfo[]) -> onDisplayCompletions
-    321:329:boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
-    336:342:boolean onKeyUp(int,android.view.KeyEvent) -> onKeyUp
-    351:357:void commitTyped(android.view.inputmethod.InputConnection) -> a
-    375:377:void keyDownUp(int) -> b
-    402:481:void processKey(int) -> a
-    485:498:void onKey(int,int[]) -> onKey
-    516:526:void handleWordSeparator(int) -> c
-    530:551:void onText(java.lang.CharSequence) -> onText
-    557:570:void updateCandidates() -> d
-    574:586:void setSuggestions$2e5c089a(java.util.List,boolean) -> a
-    649:649:boolean isWordSeparator(int) -> d
-    654:662:void SetWord(java.lang.String) -> a
-    666:666:void swipeRight() -> swipeRight
-    669:669:void swipeLeft() -> swipeLeft
-    673:673:void swipeDown() -> swipeDown
-    676:676:void swipeUp() -> swipeUp
-    680:684:void onPress(int) -> onPress
-    688:688:void onRelease(int) -> onRelease
-    691:724:void onOptions() -> a
-    728:753:void onVoiceRecognition(java.util.ArrayList) -> a
-    759:761:void forceShow() -> e
-    767:772:boolean isSelMode() -> f
-    826:832:void forceHide() -> b
-    856:857:void onAppPrivateCommand(java.lang.String,android.os.Bundle) -> onAppPrivateCommand
-    862:862:boolean onExtractTextContextMenuItem(int) -> onExtractTextContextMenuItem
-    888:936:void onSharedPreferenceChanged(android.content.SharedPreferences,java.lang.String) -> onSharedPreferenceChanged
-    942:956:android.view.View onCreateExtractTextView() -> onCreateExtractTextView
-    962:968:boolean onEvaluateFullscreenMode() -> onEvaluateFullscreenMode
-    975:983:void onLongPress(com.jbak.JbakKeyboard.JbKbd$LatinKey) -> a
-    987:1006:void CompiledKbdToXML() -> c
-    1012:1038:int getCase() -> g
-    1043:1049:void changeCase(boolean) -> a
-com.jbak.JbakKeyboard.ServiceJbKbd$1 -> com.jbak.JbakKeyboard.aq:
+    107:117:void onDestroy() -> onDestroy
+    123:126:android.view.View onCreateInputView() -> onCreateInputView
+    138:138:android.view.View onCreateCandidatesView() -> onCreateCandidatesView
+    144:195:void onStartInputView(android.view.inputmethod.EditorInfo,boolean) -> onStartInputView
+    209:215:void onStartInput(android.view.inputmethod.EditorInfo,boolean) -> onStartInput
+    220:221:void onFinishInputView(boolean) -> onFinishInputView
+    226:228:void onBindInput() -> onBindInput
+    235:249:void onFinishInput() -> onFinishInput
+    257:275:void onUpdateSelection(int,int,int,int,int,int) -> onUpdateSelection
+    283:283:void onDisplayCompletions(android.view.inputmethod.CompletionInfo[]) -> onDisplayCompletions
+    325:333:boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
+    340:346:boolean onKeyUp(int,android.view.KeyEvent) -> onKeyUp
+    355:361:void commitTyped(android.view.inputmethod.InputConnection) -> a
+    379:381:void keyDownUp(int) -> b
+    406:485:void processKey(int) -> a
+    489:499:void onKey(int,int[]) -> onKey
+    507:520:boolean canAutoInput(android.view.inputmethod.EditorInfo) -> a
+    525:535:void handleWordSeparator(int) -> c
+    539:560:void onText(java.lang.CharSequence) -> onText
+    566:579:void updateCandidates() -> d
+    583:595:void setSuggestions$2e5c089a(java.util.List,boolean) -> a
+    658:658:boolean isWordSeparator(int) -> d
+    663:671:void SetWord(java.lang.String) -> a
+    675:675:void swipeRight() -> swipeRight
+    678:678:void swipeLeft() -> swipeLeft
+    682:682:void swipeDown() -> swipeDown
+    685:685:void swipeUp() -> swipeUp
+    689:693:void onPress(int) -> onPress
+    697:697:void onRelease(int) -> onRelease
+    700:733:void onOptions() -> a
+    737:762:void onVoiceRecognition(java.util.ArrayList) -> a
+    768:770:void forceShow() -> e
+    776:781:boolean isSelMode() -> f
+    835:841:void forceHide() -> b
+    865:866:void onAppPrivateCommand(java.lang.String,android.os.Bundle) -> onAppPrivateCommand
+    871:871:boolean onExtractTextContextMenuItem(int) -> onExtractTextContextMenuItem
+    897:942:void onSharedPreferenceChanged(android.content.SharedPreferences,java.lang.String) -> onSharedPreferenceChanged
+    948:962:android.view.View onCreateExtractTextView() -> onCreateExtractTextView
+    968:974:boolean onEvaluateFullscreenMode() -> onEvaluateFullscreenMode
+    981:989:void onLongPress(com.jbak.JbakKeyboard.JbKbd$LatinKey) -> a
+    993:1012:void CompiledKbdToXML() -> c
+    1018:1044:int getCase() -> g
+    1049:1055:void changeCase(boolean) -> a
+com.jbak.JbakKeyboard.ServiceJbKbd$1 -> com.jbak.JbakKeyboard.au:
     com.jbak.JbakKeyboard.ServiceJbKbd this$0 -> a
-    696:709:int OnObserver(java.lang.Object,java.lang.Object) -> a
-com.jbak.JbakKeyboard.ServiceJbKbd$2 -> com.jbak.JbakKeyboard.ar:
+    705:718:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.ServiceJbKbd$2 -> com.jbak.JbakKeyboard.av:
     com.jbak.JbakKeyboard.ServiceJbKbd this$0 -> a
     java.util.ArrayList val$ar -> d
-    743:745:int OnObserver(java.lang.Object,java.lang.Object) -> a
+    752:754:int OnObserver(java.lang.Object,java.lang.Object) -> a
 com.jbak.JbakKeyboard.SetKbdActivity -> com.jbak.JbakKeyboard.SetKbdActivity:
     com.jbak.JbakKeyboard.SetKbdActivity inst -> a
     int m_curAction -> b
@@ -990,15 +1016,15 @@ com.jbak.JbakKeyboard.SetKbdActivity -> com.jbak.JbakKeyboard.SetKbdActivity:
     int m_screenType -> h
     android.inputmethodservice.KeyboardView$OnKeyboardActionListener m_kbdListener -> i
     android.view.View$OnClickListener m_NextPrevListener -> j
-    39:148:void onCreate(android.os.Bundle) -> onCreate
-    151:162:void showScreenTypes() -> a
-    165:168:void setScreenType(int) -> a
-    171:175:void changeKeyHeight(int) -> b
+    39:147:void onCreate(android.os.Bundle) -> onCreate
+    150:161:void showScreenTypes() -> a
+    164:167:void setScreenType(int) -> a
+    170:175:void changeKeyHeight(int) -> b
     178:187:void saveKeyboard() -> b
     191:199:void onDestroy() -> onDestroy
     203:224:void changeSkin(boolean) -> a
     235:278:void changeKbd(boolean) -> b
-com.jbak.JbakKeyboard.SetKbdActivity$1 -> com.jbak.JbakKeyboard.as:
+com.jbak.JbakKeyboard.SetKbdActivity$1 -> com.jbak.JbakKeyboard.aw:
     com.jbak.JbakKeyboard.SetKbdActivity this$0 -> a
     290:290:void swipeUp() -> swipeUp
     294:294:void swipeRight() -> swipeRight
@@ -1008,29 +1034,29 @@ com.jbak.JbakKeyboard.SetKbdActivity$1 -> com.jbak.JbakKeyboard.as:
     310:310:void onRelease(int) -> onRelease
     314:315:void onPress(int) -> onPress
     319:329:void onKey(int,int[]) -> onKey
-com.jbak.JbakKeyboard.SetKbdActivity$2 -> com.jbak.JbakKeyboard.at:
+com.jbak.JbakKeyboard.SetKbdActivity$2 -> com.jbak.JbakKeyboard.ax:
     com.jbak.JbakKeyboard.SetKbdActivity this$0 -> a
     337:347:void onClick(android.view.View) -> onClick
-com.jbak.JbakKeyboard.SetKbdActivity$3 -> com.jbak.JbakKeyboard.au:
+com.jbak.JbakKeyboard.SetKbdActivity$3 -> com.jbak.JbakKeyboard.ay:
     com.jbak.JbakKeyboard.SetKbdActivity this$0 -> a
     83:86:void onClick(android.view.View) -> onClick
-com.jbak.JbakKeyboard.SetKbdActivity$4 -> com.jbak.JbakKeyboard.av:
+com.jbak.JbakKeyboard.SetKbdActivity$4 -> com.jbak.JbakKeyboard.az:
     com.jbak.JbakKeyboard.SetKbdActivity this$0 -> a
     99:101:void onClick(android.view.View) -> onClick
-com.jbak.JbakKeyboard.SetKbdActivity$5 -> com.jbak.JbakKeyboard.aw:
+com.jbak.JbakKeyboard.SetKbdActivity$5 -> com.jbak.JbakKeyboard.ba:
     com.jbak.JbakKeyboard.SetKbdActivity this$0 -> a
     108:109:void onClick(android.view.View) -> onClick
-com.jbak.JbakKeyboard.SetKbdActivity$6 -> com.jbak.JbakKeyboard.ax:
+com.jbak.JbakKeyboard.SetKbdActivity$6 -> com.jbak.JbakKeyboard.bb:
     com.jbak.JbakKeyboard.SetKbdActivity this$0 -> a
-    133:134:void onChangeIntValue(com.jbak.ctrl.IntEditor) -> a
-com.jbak.JbakKeyboard.SetKbdActivity$7 -> com.jbak.JbakKeyboard.ay:
+    131:132:void onChangeIntValue(com.jbak.ctrl.IntEditor) -> a
+com.jbak.JbakKeyboard.SetKbdActivity$7 -> com.jbak.JbakKeyboard.bc:
     com.jbak.JbakKeyboard.SetKbdActivity this$0 -> a
     com.jbak.ctrl.IntEditor val$sb -> b
-    142:143:void onClick(android.view.View) -> onClick
-com.jbak.JbakKeyboard.SetKbdActivity$8 -> com.jbak.JbakKeyboard.az:
+    140:142:void onClick(android.view.View) -> onClick
+com.jbak.JbakKeyboard.SetKbdActivity$8 -> com.jbak.JbakKeyboard.bd:
     com.jbak.JbakKeyboard.SetKbdActivity this$0 -> a
-    156:157:int OnObserver(java.lang.Object,java.lang.Object) -> a
-com.jbak.JbakKeyboard.Stor -> com.jbak.JbakKeyboard.ba:
+    155:156:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.Stor -> com.jbak.JbakKeyboard.be:
     com.jbak.JbakKeyboard.Stor inst -> a
     int CLIPBOARD_LIMIT -> b
     android.database.sqlite.SQLiteDatabase m_db -> c
@@ -1039,8 +1065,10 @@ com.jbak.JbakKeyboard.Stor -> com.jbak.JbakKeyboard.ba:
     72:86:void saveClipboardString(java.lang.String) -> b
     91:98:boolean runSql(java.lang.String) -> c
     104:112:android.database.Cursor getClipboardCursor() -> a
-    127:167:boolean checkClipboardString(java.lang.String) -> a
-com.jbak.JbakKeyboard.Templates -> com.jbak.JbakKeyboard.bb:
+    117:123:void removeClipboardByDate(long,long) -> a
+    126:126:boolean clearClipboard() -> b
+    131:171:boolean checkClipboardString(java.lang.String) -> a
+com.jbak.JbakKeyboard.Templates -> com.jbak.JbakKeyboard.bf:
     com.jbak.JbakKeyboard.Templates inst -> a
     java.io.File m_rootDir -> b
     java.io.File m_curDir -> c
@@ -1063,10 +1091,10 @@ com.jbak.JbakKeyboard.Templates -> com.jbak.JbakKeyboard.bb:
     461:474:java.lang.String getCurWordStart(java.lang.CharSequence,boolean) -> a
     482:496:java.lang.String getCurWordEnd(java.lang.CharSequence,boolean) -> b
     500:518:boolean deleteDir(java.io.File) -> c
-com.jbak.JbakKeyboard.Templates$1 -> com.jbak.JbakKeyboard.bc:
+com.jbak.JbakKeyboard.Templates$1 -> com.jbak.JbakKeyboard.bg:
     com.jbak.JbakKeyboard.Templates this$0 -> a
     313:316:int OnObserver(java.lang.Object,java.lang.Object) -> a
-com.jbak.JbakKeyboard.Templates$CurInput -> com.jbak.JbakKeyboard.bd:
+com.jbak.JbakKeyboard.Templates$CurInput -> com.jbak.JbakKeyboard.bh:
     java.lang.String wordStart -> a
     java.lang.String wordEnd -> b
     java.lang.String lineStart -> c
@@ -1075,106 +1103,136 @@ com.jbak.JbakKeyboard.Templates$CurInput -> com.jbak.JbakKeyboard.bd:
     boolean bInited -> f
     382:385:boolean replaceCurWord(android.view.inputmethod.InputConnection,java.lang.String) -> a
     413:453:boolean init(android.view.inputmethod.InputConnection) -> a
-com.jbak.JbakKeyboard.Templates$FilesComp -> com.jbak.JbakKeyboard.be:
+com.jbak.JbakKeyboard.Templates$FilesComp -> com.jbak.JbakKeyboard.bi:
     1:1:int compare(java.lang.Object,java.lang.Object) -> compare
 com.jbak.JbakKeyboard.TplEditorActivity -> com.jbak.JbakKeyboard.TplEditorActivity:
-    android.view.View$OnClickListener m_clkListener -> a
-    android.widget.EditText m_edName -> b
-    android.widget.EditText m_edText -> c
-    20:64:void onCreate(android.os.Bundle) -> onCreate
-    68:71:void onDestroy() -> onDestroy
-    74:100:void onSave() -> a
-    103:112:void delete() -> b
-    116:117:void onBackPressed() -> onBackPressed
-    120:145:void onSpecOptions() -> c
-com.jbak.JbakKeyboard.TplEditorActivity$1 -> com.jbak.JbakKeyboard.bf:
+    java.lang.Long m_clipbrdDate -> a
+    android.view.View$OnClickListener m_clkListener -> b
+    android.widget.EditText m_edName -> c
+    android.widget.EditText m_edText -> d
+    22:88:void onCreate(android.os.Bundle) -> onCreate
+    92:95:void onDestroy() -> onDestroy
+    98:124:void onSave() -> a
+    127:144:void delete() -> b
+    148:149:void onBackPressed() -> onBackPressed
+    152:177:void onSpecOptions() -> c
+com.jbak.JbakKeyboard.TplEditorActivity$1 -> com.jbak.JbakKeyboard.bj:
     com.jbak.JbakKeyboard.TplEditorActivity this$0 -> a
-    151:158:void onClick(android.view.View) -> onClick
-com.jbak.JbakKeyboard.TplEditorActivity$2 -> com.jbak.JbakKeyboard.bg:
+    183:190:void onClick(android.view.View) -> onClick
+com.jbak.JbakKeyboard.TplEditorActivity$2 -> com.jbak.JbakKeyboard.bk:
     com.jbak.JbakKeyboard.TplEditorActivity this$0 -> a
-    54:59:void onFocusChange(android.view.View,boolean) -> onFocusChange
-com.jbak.JbakKeyboard.TplEditorActivity$3 -> com.jbak.JbakKeyboard.bh:
+    77:82:void onFocusChange(android.view.View,boolean) -> onFocusChange
+com.jbak.JbakKeyboard.TplEditorActivity$3 -> com.jbak.JbakKeyboard.bl:
     com.jbak.JbakKeyboard.TplEditorActivity this$0 -> a
-    108:110:void run() -> a
-com.jbak.JbakKeyboard.TplEditorActivity$4 -> com.jbak.JbakKeyboard.bi:
+    140:142:void run() -> a
+com.jbak.JbakKeyboard.TplEditorActivity$4 -> com.jbak.JbakKeyboard.bm:
     com.jbak.JbakKeyboard.TplEditorActivity this$0 -> a
     android.widget.ArrayAdapter val$ar -> d
-    130:141:int OnObserver(java.lang.Object,java.lang.Object) -> a
-com.jbak.JbakKeyboard.VRTest -> com.jbak.JbakKeyboard.bj:
+    162:173:int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.JbakKeyboard.VRTest -> com.jbak.JbakKeyboard.bn:
     android.content.BroadcastReceiver m_recv -> a
     java.lang.String bcastAction -> b
     android.app.PendingIntent$OnFinished m_fin -> c
-com.jbak.JbakKeyboard.VRTest$1 -> com.jbak.JbakKeyboard.bk:
+com.jbak.JbakKeyboard.VRTest$1 -> com.jbak.JbakKeyboard.bo:
     com.jbak.JbakKeyboard.VRTest this$0 -> a
     20:26:void onReceive(android.content.Context,android.content.Intent) -> onReceive
-com.jbak.JbakKeyboard.VRTest$2 -> com.jbak.JbakKeyboard.bl:
+com.jbak.JbakKeyboard.VRTest$2 -> com.jbak.JbakKeyboard.bp:
     com.jbak.JbakKeyboard.VRTest this$0 -> a
     63:63:void onSendFinished(android.app.PendingIntent,android.content.Intent,int,java.lang.String,android.os.Bundle) -> onSendFinished
-com.jbak.JbakKeyboard.VibroThread -> com.jbak.JbakKeyboard.bm:
+com.jbak.JbakKeyboard.VibroThread -> com.jbak.JbakKeyboard.bq:
     android.os.Vibrator m_vibro -> a
     int m_shortVibro -> b
     int m_longVibro -> c
-    java.lang.Runnable m_runShort -> d
-    java.lang.Runnable m_runLong -> e
-    20:23:void readSettings() -> a
-    26:27:void vibro$1385ff() -> b
-com.jbak.JbakKeyboard.VibroThread$1 -> com.jbak.JbakKeyboard.bn:
+    boolean m_bLongVibro -> d
+    int m_shortType -> e
+    boolean m_bSilent -> f
+    android.content.Context m_c -> g
+    java.lang.Runnable m_runShort -> h
+    java.lang.Runnable m_runLong -> i
+    35:36:void onChange(boolean) -> onChange
+    39:45:void readSettings() -> a
+    48:56:void vibro(boolean,boolean) -> a
+    59:60:boolean isSilent() -> b
+com.jbak.JbakKeyboard.VibroThread$1 -> com.jbak.JbakKeyboard.br:
     com.jbak.JbakKeyboard.VibroThread this$0 -> a
-    33:34:void run() -> run
-com.jbak.JbakKeyboard.VibroThread$2 -> com.jbak.JbakKeyboard.bo:
+    67:68:void run() -> run
+com.jbak.JbakKeyboard.VibroThread$2 -> com.jbak.JbakKeyboard.bs:
     com.jbak.JbakKeyboard.VibroThread this$0 -> a
-    41:42:void run() -> run
-com.jbak.JbakKeyboard.Words -> com.jbak.JbakKeyboard.bp:
+    75:76:void run() -> run
+com.jbak.JbakKeyboard.Words -> com.jbak.JbakKeyboard.bt:
     java.lang.String[] m_cArrayCompletions -> a
-com.jbak.JbakKeyboard.st -> com.jbak.JbakKeyboard.bq:
+com.jbak.JbakKeyboard.st -> com.jbak.JbakKeyboard.bu:
     int KeySymbol -> d
-    54:54:android.graphics.drawable.Drawable getBack() -> c
-    59:59:boolean has(int,int) -> a
-    64:66:int rem(int,int) -> b
-    75:76:int max(int,int) -> c
-    86:86:void logEx$786b7c60() -> d
-    90:114:com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForLangName(java.lang.String) -> c
-    124:124:void log$552c4e01() -> e
-    128:132:void saveCurLang() -> f
-    136:145:com.jbak.JbakKeyboard.IKeyboard$Keybrd getCurQwertyKeybrd() -> g
-    150:151:com.jbak.JbakKeyboard.JbKbd curKbd() -> h
-    156:164:android.content.Context c() -> i
-    213:213:boolean isQwertyKeyboard(com.jbak.JbakKeyboard.IKeyboard$Keybrd) -> a
-    217:223:java.util.Vector getKeybrdArrayByLang(java.lang.String) -> d
-    229:230:void setTextEditKeyboard() -> j
-    234:235:void setSmilesKeyboard() -> k
-    240:242:void setSymbolKeyboard(boolean) -> a
-    246:247:void setQwertyKeyboard() -> l
-    253:260:void setQwertyKeyboard$1385ff() -> m
-    263:275:com.jbak.JbakKeyboard.JbKbd loadKeyboard(com.jbak.JbakKeyboard.IKeyboard$Keybrd) -> b
-    280:285:void setTempEnglishQwerty() -> n
-    288:288:java.lang.String getCurLang() -> o
-    293:293:com.jbak.JbakKeyboard.JbKbdView kv() -> p
-    311:312:java.lang.String[] getLangsArray$33c6ab02() -> q
-    317:324:int searchStr(java.lang.String,java.lang.String[]) -> a
-    329:333:com.jbak.JbakKeyboard.Stor stor() -> r
-    344:355:boolean runAct(java.lang.Class,android.content.Context) -> a
-    360:360:java.lang.String normalizeFileName(java.lang.String) -> e
-    365:386:boolean kbdCommand(int) -> a
-    391:402:int getCmdByLabel(java.lang.String) -> f
-    407:414:android.graphics.Bitmap getBitmapByCmd(int) -> b
-    418:418:android.content.SharedPreferences pref() -> s
-    422:422:android.content.SharedPreferences pref(android.content.Context) -> a
-    426:428:com.jbak.JbakKeyboard.KeyboardPaints paint() -> t
-    431:442:int parseInt$505cff29(java.lang.String) -> g
-    446:446:boolean isLandscape(android.content.Context) -> b
-    450:469:com.jbak.JbakKeyboard.IKeyboard$KbdDesign getSkinByPath(java.lang.String) -> h
-    473:482:java.lang.String getSkinPath(com.jbak.JbakKeyboard.IKeyboard$KbdDesign) -> a
-    486:520:void upgradeSettings(android.content.Context) -> c
-    523:523:int getDefaultKeyHeight(android.content.Context) -> d
-    527:527:java.io.File[] getFilesByExt(java.io.File,java.lang.String) -> a
-com.jbak.JbakKeyboard.st$1 -> com.jbak.JbakKeyboard.br:
+    56:56:android.graphics.drawable.Drawable getBack() -> c
+    61:61:boolean has(int,int) -> a
+    66:68:int rem(int,int) -> b
+    72:73:int min(int,int) -> c
+    77:78:int max(int,int) -> d
+    88:88:void logEx$786b7c60() -> d
+    92:116:com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForLangName(java.lang.String) -> c
+    126:126:void log$552c4e01() -> e
+    130:134:void saveCurLang() -> f
+    138:147:com.jbak.JbakKeyboard.IKeyboard$Keybrd getCurQwertyKeybrd() -> g
+    152:153:com.jbak.JbakKeyboard.JbKbd curKbd() -> h
+    158:166:android.content.Context c() -> i
+    215:215:boolean isQwertyKeyboard(com.jbak.JbakKeyboard.IKeyboard$Keybrd) -> a
+    219:225:java.util.Vector getKeybrdArrayByLang(java.lang.String) -> d
+    231:232:void setTextEditKeyboard() -> j
+    236:237:void setSmilesKeyboard() -> k
+    242:244:void setSymbolKeyboard(boolean) -> a
+    248:249:void setQwertyKeyboard() -> l
+    255:262:void setQwertyKeyboard$1385ff() -> m
+    265:277:com.jbak.JbakKeyboard.JbKbd loadKeyboard(com.jbak.JbakKeyboard.IKeyboard$Keybrd) -> b
+    282:287:void setTempEnglishQwerty() -> n
+    290:290:java.lang.String getCurLang() -> o
+    295:295:com.jbak.JbakKeyboard.JbKbdView kv() -> p
+    313:314:java.lang.String[] getLangsArray$33c6ab02() -> q
+    319:326:int searchStr(java.lang.String,java.lang.String[]) -> a
+    331:335:com.jbak.JbakKeyboard.Stor stor() -> r
+    346:357:boolean runAct(java.lang.Class,android.content.Context) -> a
+    362:362:java.lang.String normalizeFileName(java.lang.String) -> e
+    367:392:boolean kbdCommand(int) -> a
+    397:408:int getCmdByLabel(java.lang.String) -> f
+    413:420:android.graphics.Bitmap getBitmapByCmd(int) -> b
+    424:424:android.content.SharedPreferences pref() -> s
+    428:428:android.content.SharedPreferences pref(android.content.Context) -> a
+    432:434:com.jbak.JbakKeyboard.KeyboardPaints paint() -> t
+    437:448:int parseInt$505cff29(java.lang.String) -> g
+    452:452:boolean isLandscape(android.content.Context) -> b
+    456:475:com.jbak.JbakKeyboard.IKeyboard$KbdDesign getSkinByPath(java.lang.String) -> h
+    479:488:java.lang.String getSkinPath(com.jbak.JbakKeyboard.IKeyboard$KbdDesign) -> a
+    493:533:void upgradeSettings(android.content.Context) -> c
+    536:536:java.io.File[] getFilesByExt(java.io.File,java.lang.String) -> a
+    549:552:java.lang.CharSequence[] getGestureEntries(android.content.Context) -> d
+    556:559:java.lang.CharSequence[] getGestureEntryValues() -> u
+    564:572:int getGestureIndexBySetting(java.lang.String) -> i
+    576:576:com.jbak.JbakKeyboard.IKbdSettings$KbdGesture getGesture(java.lang.String,android.content.SharedPreferences) -> a
+com.jbak.JbakKeyboard.st$1 -> com.jbak.JbakKeyboard.bv:
     java.lang.String val$ext -> a
-    532:534:boolean accept(java.io.File,java.lang.String) -> accept
-com.jbak.JbakKeyboard.st$UniObserver -> com.jbak.JbakKeyboard.bs:
+    541:543:boolean accept(java.io.File,java.lang.String) -> accept
+com.jbak.JbakKeyboard.st$UniObserver -> com.jbak.JbakKeyboard.bw:
     java.lang.Object m_param1 -> b
     java.lang.Object m_param2 -> c
     int OnObserver(java.lang.Object,java.lang.Object) -> a
+com.jbak.ctrl.GlobDialog -> com.jbak.ctrl.a:
+    java.lang.String m_text -> a
+    java.lang.String m_ok -> b
+    java.lang.String m_cancel -> c
+    android.content.Context m_c -> d
+    android.view.View m_view -> e
+    com.jbak.JbakKeyboard.st$UniObserver m_obs -> f
+    android.view.View$OnClickListener m_clkListener -> g
+    android.view.View$OnKeyListener m_keyListener -> h
+    86:91:android.widget.Button mkButton(java.lang.String,int) -> a
+    97:111:void showAlert() -> a
+    125:126:void set$4868d30e() -> b
+    129:130:void setObserver(com.jbak.JbakKeyboard.st$UniObserver) -> a
+com.jbak.ctrl.GlobDialog$1 -> com.jbak.ctrl.b:
+    com.jbak.ctrl.GlobDialog this$0 -> a
+    35:37:void onClick(android.view.View) -> onClick
+com.jbak.ctrl.GlobDialog$2 -> com.jbak.ctrl.c:
+    com.jbak.ctrl.GlobDialog this$0 -> a
+    44:44:boolean onKey(android.view.View,int,android.view.KeyEvent) -> onKey
 com.jbak.ctrl.IntEditor -> com.jbak.ctrl.IntEditor:
     android.view.View m_mainView -> a
     int m_minValue -> b
@@ -1195,11 +1253,11 @@ com.jbak.ctrl.IntEditor -> com.jbak.ctrl.IntEditor:
     122:122:int getValue() -> a
     126:127:void setOnChangeValue(com.jbak.ctrl.IntEditor$OnChangeValue) -> a
     131:132:void setSteps(int[]) -> a
-com.jbak.ctrl.IntEditor$1 -> com.jbak.ctrl.a:
+com.jbak.ctrl.IntEditor$1 -> com.jbak.ctrl.d:
     com.jbak.ctrl.IntEditor this$0 -> a
     39:53:void handleMessage(android.os.Message) -> handleMessage
-com.jbak.ctrl.IntEditor$2 -> com.jbak.ctrl.b:
+com.jbak.ctrl.IntEditor$2 -> com.jbak.ctrl.e:
     com.jbak.ctrl.IntEditor this$0 -> a
     67:83:boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
-com.jbak.ctrl.IntEditor$OnChangeValue -> com.jbak.ctrl.c:
+com.jbak.ctrl.IntEditor$OnChangeValue -> com.jbak.ctrl.f:
     void onChangeIntValue(com.jbak.ctrl.IntEditor) -> a

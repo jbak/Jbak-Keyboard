@@ -143,8 +143,8 @@
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="up_sentence"
-                android:summary="@string/set_key_auto_case"
-                android:title="@string/set_key_auto_case_desc" />
+                android:title="@string/set_key_auto_case"
+                android:summary="@string/set_key_auto_case_desc" />
             <PreferenceScreen 
                 android:title="@string/set_key_auto_case_rules"
                 android:summary="@string/set_key_auto_case_rules_desc"

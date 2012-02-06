@@ -139,6 +139,7 @@ com.jbak.JbakKeyboard.CustomKeyboard:
     public static final java.lang.String A_smallLabel
     public static final java.lang.String A_upCode
     public static final java.lang.String A_specKey
+    public static final java.lang.String A_noColor
     public static final byte B_keyWidth
     public static final byte B_keyHeight
     public static final byte B_verticalGap
@@ -157,13 +158,84 @@ com.jbak.JbakKeyboard.CustomKeyboard:
     public static final byte B_upCode
     public static final byte B_specKey
     public static final byte B_smallLabel
+    public static final byte B_noColor
     public static final byte BA_KBD
     public static final byte BA_ROW
     public static final byte BA_KEY
 com.jbak.JbakKeyboard.EditSetActivity:
     public static final java.lang.String EXTRA_PREF_KEY
     public static final java.lang.String EXTRA_DEFAULT_EDIT_SET
-com.jbak.JbakKeyboard.IKbdSettings
+com.jbak.JbakKeyboard.IKbdSettings:
+    public static final java.lang.String PREF_KEY_PREVIEW
+    public static final java.lang.String PREF_KEY_LAST_LANG
+    public static final java.lang.String PREF_KEY_HEIGHT_PORTRAIT
+    public static final java.lang.String PREF_KEY_HEIGHT_PORTRAIT_PERC
+    public static final java.lang.String PREF_KEY_HEIGHT_LANDSCAPE
+    public static final java.lang.String PREF_KEY_HEIGHT_LANDSCAPE_PERC
+    public static final java.lang.String PREF_KEY_DEF_HEIGHT
+    public static final java.lang.String PREF_KEY_LANGS
+    public static final java.lang.String PREF_KEY_VIBRO_SHORT_KEY
+    public static final java.lang.String PREF_KEY_VIBRO_SHORT_TYPE
+    public static final java.lang.String PREF_KEY_VIBRO_LONG_KEY
+    public static final java.lang.String PREF_KEY_SOUND
+    public static final java.lang.String PREF_KEY_LANG_KBD_PORTRAIT
+    public static final java.lang.String PREF_KEY_LANG_KBD_LANDSCAPE
+    public static final java.lang.String PREF_KEY_KBD_SKIN
+    public static final java.lang.String PREF_KEY_KBD_SKIN_PATH
+    public static final java.lang.String PREF_KEY_AUTO_CASE
+    public static final java.lang.String PREF_KEY_UP_AFTER_SYMBOLS
+    public static final java.lang.String PREF_KEY_SENTENCE_ENDS
+    public static final java.lang.String PREF_KEY_UPERCASE_AFTER_SPACE
+    public static final java.lang.String PREF_KEY_SENTENCE_SPACE
+    public static final java.lang.String PREF_KEY_EMPTY_UPPERCASE
+    public static final java.lang.String PREF_KEY_ADD_SPACE_SYMBOLS
+    public static final java.lang.String PREF_KEY_LANSCAPE_TYPE
+    public static final java.lang.String PREF_KEY_PORTRAIT_TYPE
+    public static final java.lang.String PREF_KEY_EDIT_SETTINGS
+    public static final java.lang.String PREF_KEY_MAIN_FONT
+    public static final java.lang.String PREF_KEY_SECOND_FONT
+    public static final java.lang.String PREF_KEY_LABEL_FONT
+    public static final java.lang.String PREF_KEY_SHIFT_STATE
+    public static final java.lang.String PREF_KEY_REPEAT_DELAY
+    public static final java.lang.String PREF_KEY_CLIPBRD_SIZE
+    public static final java.lang.String PREF_KEY_VIBRO_SHORT_DURATION
+    public static final java.lang.String PREF_KEY_VIBRO_LONG_DURATION
+    public static final java.lang.String PREF_KEY_LONG_PRESS_INTERVAL
+    public static final java.lang.String PREF_KEY_REPEAT_FIRST_INTERVAL
+    public static final java.lang.String PREF_KEY_REPEAT_NEXT_INTERVAL
+    public static final java.lang.String PREF_KEY_SAVE
+    public static final java.lang.String PREF_KEY_LOAD
+    public static final java.lang.String PREF_KEY_USE_GESTURES
+    public static final java.lang.String PREF_KEY_GESTURE_LEFT
+    public static final java.lang.String PREF_KEY_GESTURE_RIGHT
+    public static final java.lang.String PREF_KEY_GESTURE_UP
+    public static final java.lang.String PREF_KEY_GESTURE_DOWN
+    public static final java.lang.String EXT_XML
+    public static final java.lang.String SETTINGS_BACKUP_FILE
+    public static final int PREF_VAL_EDIT_TYPE_DEFAULT
+    public static final int PREF_VAL_EDIT_TYPE_FULLSCREEN
+    public static final int PREF_VAL_EDIT_TYPE_NOT_FULLSCREEN
+    public static final int SET_KEY_HEIGHT_PORTRAIT
+    public static final int SET_KEY_HEIGHT_LANDSCAPE
+    public static final int SET_LANGUAGES_SELECTION
+    public static final int SET_KEYS
+    public static final int SET_SELECT_KEYBOARD
+    public static final int SET_SELECT_SKIN
+    public static final int CMD_MAIN_MENU
+    public static final int CMD_VOICE_RECOGNIZER
+    public static final int CMD_TPL
+    public static final int CMD_PREFERENCES
+    public static final int CMD_CLIPBOARD
+    public static final int CMD_TPL_NEW_FOLDER
+    public static final int CMD_TPL_EDITOR
+    public static final int CMD_LANG_CHANGE
+    public static final int CMD_COMPILE_KEYBOARDS
+    public static final java.lang.String SET_INTENT_ACTION
+    public static final java.lang.String SET_INTENT_LANG_NAME
+    public static final java.lang.String DRW_PREFIX
+    public static final java.lang.String TAG
+    public static final java.lang.String ZERO_STRING
+    public static final java.lang.String ONE_STRING
 com.jbak.JbakKeyboard.IKeyboard:
     public static final java.lang.String LANG_SYM_KBD
     public static final java.lang.String LANG_SYM_KBD1
@@ -176,11 +248,11 @@ com.jbak.JbakKeyboard.IKeyboard:
     public static final int LANG_FR
     public static final int LANG_IT
     public static final int LANG_DE
+    public static final int LANG_SV
     public static final int LANG_SYM
     public static final int LANG_SYM1
     public static final int LANG_EDIT
     public static final int LANG_SMIL
-    public static final int MAX_LANG
     public static final int KBD_QWERTY_EN
     public static final int KBD_QWERTY_RU
     public static final int KBD_QWERTY_BE
@@ -197,7 +269,7 @@ com.jbak.JbakKeyboard.IKeyboard:
     public static final int DF_BIG_GAP
     public static final int DEF_COLOR
     public static final int KBD_DESIGN_STANDARD
-    350:356:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
+    354:360:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
 com.jbak.JbakKeyboard.JbCandView
 com.jbak.JbakKeyboard.JbKbd:
     55:56:void setHeightKey(int)
@@ -208,14 +280,13 @@ com.jbak.JbakKeyboard.JbKbdPreference:
 com.jbak.JbakKeyboard.JbKbdReceiver:
     22:24:static android.content.Intent getClipbrdServiceIntent(android.content.Context)
 com.jbak.JbakKeyboard.JbKbdView:
+    static final int INTERVAL_REDRAW
     static final int KEYCODE_OPTIONS
     android.graphics.drawable.Drawable m_PreviewDrawable
     public static final int STATE_TEMP_SHIFT
     public static final int STATE_CAPS_LOCK
-    public static final int STATE_VIBRO_SHORT
-    public static final int STATE_VIBRO_LONG
     public static final int STATE_SOUNDS
-    public static final int STATE_VIBRO_PRESS
+    public static final int STATE_GESTURES
     com.jbak.JbakKeyboard.EditSetActivity$EditSet m_esMainFont
     com.jbak.JbakKeyboard.EditSetActivity$EditSet m_esSecondFont
     com.jbak.JbakKeyboard.EditSetActivity$EditSet m_esLabelFont
@@ -229,11 +300,20 @@ com.jbak.JbakKeyboard.KeyboardGesture$GestureInfo:
     public static final int RIGHT
     public static final int UP
     public static final int DOWN
+com.jbak.JbakKeyboard.KeyboardGesture$KvListener:
+    55:60:final com.jbak.JbakKeyboard.JbKbd$LatinKey getKey(int,int)
+com.jbak.JbakKeyboard.KeyboardPaints:
+    public static final int VAL_KEY_HEIGHT_PORTRAIT
+    public static final int VAL_KEY_HEIGHT_LANDSCAPE
+    public static final int VAL_TEXT_SIZE_MAIN
+    public static final int VAL_TEXT_SIZE_SYMBOL
+    public static final int VAL_TEXT_SIZE_LABEL
 com.jbak.JbakKeyboard.OwnKeyboardHandler:
     public static final int MSG_SHOW_PREVIEW
     public static final int MSG_REMOVE_PREVIEW
     public static final int MSG_REPEAT
     public static final int MSG_LONGPRESS
+    public static final int MSG_INVALIDATE
 com.jbak.JbakKeyboard.R
 com.jbak.JbakKeyboard.R$array
 com.jbak.JbakKeyboard.R$attr
@@ -270,8 +350,8 @@ com.jbak.JbakKeyboard.Stor:
     public static final java.lang.String DB_FILENAME
     private static final java.lang.String KEYS_TABLE_CREATE
     private static final java.lang.String CLIPBOARD_TABLE_CREATE
-    171:175:static byte[] getBytesFromIntent(android.content.Intent)
-    179:186:static android.content.Intent getIntentFromBytes(byte[])
+    175:179:static byte[] getBytesFromIntent(android.content.Intent)
+    183:190:static android.content.Intent getIntentFromBytes(byte[])
 com.jbak.JbakKeyboard.Templates:
     java.io.File m_cd
     public static final java.lang.String TEMPLATE_PATH
@@ -281,6 +361,10 @@ com.jbak.JbakKeyboard.Templates:
     public static final int IB_LINE
     public static final char TPL_SPEC_CHAR
     19:21:static void destroy()
+com.jbak.JbakKeyboard.TplEditorActivity:
+    public static final java.lang.String EXTRA_CLIPBOARD_ENTRY
+com.jbak.JbakKeyboard.VibroThread:
+    30:31:void destroy()
 com.jbak.JbakKeyboard.Words:
     public static final java.lang.String DEF_PATH
     public static final java.lang.String DEF_EXT
@@ -297,10 +381,11 @@ com.jbak.JbakKeyboard.Words:
     53:72:java.util.ArrayList getWords(java.lang.String)
 com.jbak.JbakKeyboard.st:
     public static final boolean DEBUG
-    70:71:public static final int min(int,int)
-    118:118:public static float screenDens(android.content.Context)
+    120:120:public static float screenDens(android.content.Context)
 com.jbak.JbakKeyboard.st$SyncAsycOper
 com.jbak.JbakKeyboard.st$UniObserver:
-    34:38:public st$UniObserver(java.lang.Object,java.lang.Object)
+    36:40:public st$UniObserver(java.lang.Object,java.lang.Object)
+com.jbak.ctrl.GlobDialog:
+    public static final int NO_FINISH
 com.jbak.ctrl.IntEditor:
     118:118:public final boolean isFromUser()

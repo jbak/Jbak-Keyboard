@@ -2,7 +2,6 @@ package com.jbak.JbakKeyboard;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.util.TypedValue;
@@ -15,6 +14,9 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.jbak.ctrl.IntEditor;
+import com.jbak.ctrl.IntEditor.OnChangeValue;
 
 public class EditSetActivity extends Activity
 {
@@ -63,19 +65,6 @@ public class EditSetActivity extends Activity
                     m_es.typeface = EditSet.intToTypeface(pos);
                 }
                 break;
-                case R.id.es_font_size:
-                {
-                    if(pos==0)
-                    {
-                        m_es.fontSize = 0;
-                        m_edit.setTextSize(TypedValue.COMPLEX_UNIT_PX,m_defaultFontSize);
-                        return;
-                    }
-                    else
-                    {
-                        m_es.fontSize = pos-1+10;
-                    }
-                }
             }
             m_es.setToEditor(m_edit);
         }
@@ -110,24 +99,21 @@ public class EditSetActivity extends Activity
         Spinner s = (Spinner)v.findViewById(R.id.es_fonts); 
         s.setOnItemSelectedListener(m_OnSpinnerChange);
         s.setSelection(EditSet.typefaceToInt(m_es.typeface));
-        s=(Spinner)v.findViewById(R.id.es_font_size);
-        s.setOnItemSelectedListener(m_OnSpinnerChange);
-        ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
-        adapt.add(getString(R.string.es_def_font));
-        for(int i=10;i<=48;i++)
-        {
-            adapt.add(""+i);
-        }
-        s.setAdapter(adapt);
+        IntEditor fs=(IntEditor)v.findViewById(R.id.es_font_size);
         if(m_es.fontSize==0)
-            s.setSelection(0);
+            fs.setValue((int)m_defaultFontSize);
         else
+            fs.setValue(m_es.fontSize);
+        fs.setOnChangeValue(new OnChangeValue()
         {
-            int sel = m_es.fontSize-10+1;
-            if(sel>=s.getCount())
-                sel = s.getCount()-1;
-            s.setSelection(sel);
-        }
+            @Override
+            public void onChangeIntValue(IntEditor edit)
+            {
+                m_es.fontSize = edit.getValue();
+                m_es.setToEditor(m_edit);
+                
+            }
+        });
         setContentView(v);
     };
     @Override
@@ -198,32 +184,45 @@ public class EditSetActivity extends Activity
         }
         boolean load(String prefKey)
         {
-            return fromString(st.pref().getString(prefKey, ""));
+            int ret = fromString(st.pref().getString(prefKey, ""));
+            if(ret<0)
+            {
+                save(st.pref(), prefKey);
+            }
+            return ret!=0;
         }
-        boolean fromString(String s)
+        int fromString(String s)
         {
             if(s==null||s.indexOf(';')<0)
-                return false;
+                return 0;
             String ar[] = s.split(";");
             if(ar.length<3)
-                return false;
+                return 0;
             try
             {
                 typeface = intToTypeface(Integer.valueOf(ar[0]));
                 style = Integer.valueOf(ar[1]);
-                fontSize = Integer.valueOf(ar[2]);
+                float fs = Float.valueOf(ar[2]);
+                if(fs<1&&fs>0)
+                {
+                    fontSize = KeyboardPaints.percToPixel(st.c(),true, fs,false);
+                    return 1;
+                }
+                else
+                {
+                    fontSize = (int)fs;
+                    return -1;
+                }
             }
             catch (Throwable e)
-            {
-                return false;
-            }
-            return true;
+            {}
+            return 0;
         }
         public String toString()
         {
             return new StringBuffer().append(typefaceToInt(typeface)).append(';')
                                        .append(style).append(';')
-                                       .append(fontSize).toString();
+                                       .append(KeyboardPaints.pixelToPerc(st.c(),true,fontSize)).toString();
         }
         void save(SharedPreferences pref,String prefKey)
         {

@@ -26,6 +26,7 @@ class KeyDrw extends RectShape
     boolean m_bSmallLabel = false;
     Rect rb;
     boolean m_bFunc = false;
+    boolean m_bNoColorIcon = false;
     public static int GAP = 5;
     public static final int DELIM = 2;
     public static final int DEFAULT_GAP = 5;
@@ -397,12 +398,12 @@ class KeyDrw extends RectShape
         {
 // Рисуем просто картинку, без текста (по центру)
             if(m_bPreview)
-                canvas.drawBitmap(bmp, getWidth()/2-bmp.getWidth()/2,getHeight()/2-bmp.getHeight()/2, st.paint().getBitmapPaint(m_bPreview, m_bFunc));
+                canvas.drawBitmap(bmp, getWidth()/2-bmp.getWidth()/2,getHeight()/2-bmp.getHeight()/2, st.paint().getBitmapPaint(this));
             else
             {
                 canvas.translate(0-rb.width()/2, 0-rb.height()/2);
                 drawFuncBackground(canvas);
-                canvas.drawBitmap(bmp, m_c.m_xMainLower,m_c.m_yMainLower, st.paint().getBitmapPaint(m_bPreview, m_bFunc));
+                canvas.drawBitmap(bmp, m_c.m_xMainLower,m_c.m_yMainLower, st.paint().getBitmapPaint(this));
             }
             return;
         }
@@ -451,9 +452,9 @@ class KeyDrw extends RectShape
         if(bmp!=null)
         {
             if(txtMain==null)
-                canvas.drawBitmap(bmp, m_c.m_xMainLower, m_c.m_yMainLower, st.paint().getBitmapPaint(m_bPreview, m_bFunc));
+                canvas.drawBitmap(bmp, m_c.m_xMainLower, m_c.m_yMainLower, st.paint().getBitmapPaint(this));
             else
-                canvas.drawBitmap(bmp, m_c.m_xSmall, m_c.m_ySmall, st.paint().getBitmapPaint(m_bPreview, m_bFunc));
+                canvas.drawBitmap(bmp, m_c.m_xSmall, m_c.m_ySmall, st.paint().getBitmapPaint(this));
         }
         if(txtSmall!=null&&bmp==null)
         {

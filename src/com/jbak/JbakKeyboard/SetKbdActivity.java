@@ -121,10 +121,8 @@ public class SetKbdActivity extends Activity
         {
             final IntEditor sb = (IntEditor)m_MainView.findViewById(R.id.key_height);
             sb.setSteps(new int[]{2,4,8});
-            String p = m_curAction==st.SET_KEY_HEIGHT_PORTRAIT?st.PREF_KEY_HEIGHT_PORTRAIT:st.PREF_KEY_HEIGHT_LANDSCAPE;
-            sb.setMinAndMax(20, 150);
-            int defHeight = st.getDefaultKeyHeight(inst);
-            int val = st.pref().getInt(p,defHeight);
+            sb.setMinAndMax(20, 200);
+            int val = KeyboardPaints.getValue(this, pref, m_curAction==st.SET_KEY_HEIGHT_PORTRAIT?KeyboardPaints.VAL_KEY_HEIGHT_PORTRAIT:KeyboardPaints.VAL_KEY_HEIGHT_LANDSCAPE);
             sb.setOnChangeValue(new IntEditor.OnChangeValue()
             {
                 @Override
@@ -139,7 +137,8 @@ public class SetKbdActivity extends Activity
                 @Override
                 public void onClick(View v)
                 {
-                    sb.setValue((int) v.getContext().getResources().getDimension(R.dimen.def_key_height));
+                    float def = KeyboardPaints.getDefValue(m_curAction==st.SET_KEY_HEIGHT_PORTRAIT?KeyboardPaints.VAL_KEY_HEIGHT_PORTRAIT:KeyboardPaints.VAL_KEY_HEIGHT_LANDSCAPE);
+                    sb.setValue(KeyboardPaints.percToPixel(inst, true,def, true));
                 }
             });
         }
@@ -168,8 +167,9 @@ public class SetKbdActivity extends Activity
     }
     void changeKeyHeight(int height)
     {
-        String pname = m_curAction==st.SET_KEY_HEIGHT_PORTRAIT?st.PREF_KEY_HEIGHT_PORTRAIT:st.PREF_KEY_HEIGHT_LANDSCAPE;
-        st.pref().edit().putInt(pname, height).commit();
+        boolean bPort = m_curAction==st.SET_KEY_HEIGHT_PORTRAIT;
+        String pname = bPort?st.PREF_KEY_HEIGHT_PORTRAIT_PERC:st.PREF_KEY_HEIGHT_LANDSCAPE_PERC;
+        st.pref().edit().putFloat(pname, KeyboardPaints.pixelToPerc(this,bPort, height)).commit();
         m_kbd.m_KeyHeight = height;
         m_kbd.reload();
     }

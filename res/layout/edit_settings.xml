@@ -32,9 +32,9 @@
 	    android:text="@string/es_font_size"
 	    android:gravity="center_horizontal"
 	    />	
-		<Spinner 
+	    <com.jbak.ctrl.IntEditor
 	    android:id="@+id/es_font_size"
-	    android:layout_width="match_parent"
+	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_gravity="center_horizontal"
 	    />

@@ -37,8 +37,6 @@ public class LangSetActivity extends ListActivity
         for(Lang l:st.arLangs)
             adapt.add(l);
         setListAdapter(adapt);
-        getListView().setCacheColorHint(0);
-        getListView().setBackgroundDrawable(st.getBack());
         super.onCreate(savedInstanceState);
     }
     @Override

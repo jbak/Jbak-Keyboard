@@ -25,12 +25,12 @@ public class IKeyboard
     public static final int LANG_FR = 4;
     public static final int LANG_IT = 5;
     public static final int LANG_DE = 6;
+    public static final int LANG_SV = 7;
     
-    public static final int LANG_SYM = 7;
-    public static final int LANG_SYM1 = 8;
-    public static final int LANG_EDIT = 9;
-    public static final int LANG_SMIL = 10;
-    public static final int MAX_LANG = 3;
+    public static final int LANG_SYM = 1000;
+    public static final int LANG_SYM1 = 1001;
+    public static final int LANG_EDIT = 1002;
+    public static final int LANG_SMIL = 1003;
 //--------------------------------------------------------------------------
     public static Lang[] arLangs = 
     {
@@ -41,6 +41,7 @@ public class IKeyboard
         new Lang(LANG_FR,"fr"),
         new Lang(LANG_IT,"it"),
         new Lang(LANG_DE,"de"),
+        new Lang(LANG_SV,"sv"),
         new Lang(LANG_SYM,LANG_SYM_KBD),
         new Lang(LANG_SYM1,LANG_SYM_KBD1),
         new Lang(LANG_EDIT,LANG_EDITTEXT),
@@ -82,8 +83,11 @@ public class IKeyboard
         new Keybrd("it_wide",          R.string.kbd_name_wide),
         new Keybrd("de_qwerty",        R.string.kbd_name_qwerty),
         new Keybrd("de_wide",          R.string.kbd_name_wide),
+        new Keybrd("sv_qwerty",        R.string.kbd_name_qwerty),
+        new Keybrd("sv_wide",          R.string.kbd_name_wide),
         new Keybrd("ru_qwerty_tablet", R.string.kbd_name_qwerty_tablet),
         new Keybrd("en_qwerty_tablet", R.string.kbd_name_qwerty_tablet),
+        new Keybrd("sv_qwerty_tablet", R.string.kbd_name_qwerty_tablet),
         new Keybrd("symbol_standard",  R.string.lang_symbol),
         new Keybrd("symbol2_standard", R.string.lang_symbol_shift),
         new Keybrd("edittext_standard",R.string.lang_edittext),

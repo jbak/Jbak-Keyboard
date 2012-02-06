@@ -13,10 +13,13 @@ public interface IKbdSettings
     public static final String PREF_KEY_PREVIEW = "ch_preview";
 /** Ключ, int ,хранящий код последней используемой клавиатуры */    
     public static final String PREF_KEY_LAST_LANG = "lastLng";
-/** Ключ, int, хранящий высоту клавиш в портретном режиме */    
+/** @deprecated Ключ, int, хранящий высоту клавиш в портретном режиме */    
     public static final String PREF_KEY_HEIGHT_PORTRAIT = "kh";
-/** Ключ, int, хранящий высоту клавиш в ландшафтном режиме */    
+    /** Ключ, float, хранящий высоту клавиш в портретном режиме */    
+    public static final String PREF_KEY_HEIGHT_PORTRAIT_PERC = "kh_p";
+/** @deprecated Ключ, int, хранящий высоту клавиш в ландшафтном режиме */    
     public static final String PREF_KEY_HEIGHT_LANDSCAPE = "khl";
+    public static final String PREF_KEY_HEIGHT_LANDSCAPE_PERC = "kh_l";
 /** Ключ, int, хранящий высоту клавиш по умолчанию, на всякий случай */    
     public static final String PREF_KEY_DEF_HEIGHT = "dh";
 /** Ключ, String, хранящий порядок переключения языков */    
