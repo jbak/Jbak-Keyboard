@@ -281,7 +281,6 @@ com.jbak.JbakKeyboard.JbKbdReceiver:
     22:24:static android.content.Intent getClipbrdServiceIntent(android.content.Context)
 com.jbak.JbakKeyboard.JbKbdView:
     static final int INTERVAL_REDRAW
-    static final int KEYCODE_OPTIONS
     android.graphics.drawable.Drawable m_PreviewDrawable
     public static final int STATE_TEMP_SHIFT
     public static final int STATE_CAPS_LOCK

@@ -1,5 +1,6 @@
 package com.jbak.JbakKeyboard;
 
+import android.inputmethodservice.Keyboard;
 import android.view.KeyEvent;
 
 /** Константы для настроек клавиатуры */
@@ -189,5 +190,6 @@ public interface IKbdSettings
         new  KbdGesture(R.string.mm_multiclipboard, CMD_CLIPBOARD),
         new  KbdGesture(R.string.mm_templates, CMD_TPL),
         new  KbdGesture(R.string.mm_settings, CMD_PREFERENCES),
+        new  KbdGesture(R.string.cmd_close, Keyboard.KEYCODE_CANCEL),
     };
 }

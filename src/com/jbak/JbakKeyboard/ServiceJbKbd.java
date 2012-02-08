@@ -1014,6 +1014,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         if(!m_bCanAutoInput||m_SelStart!=m_SelEnd||!st.has(m_state, STATE_AUTO_CASE))
             return 0;
         try{
+            if(st.has(st.kv().m_state, JbKbdView.STATE_CAPS_LOCK))
+                return 0;
             CharSequence seq = getCurrentInputConnection().getTextBeforeCursor(10, 0);
             if(seq.length()==0&&st.has(m_state, STATE_EMPTY_UP))
                 return 1;

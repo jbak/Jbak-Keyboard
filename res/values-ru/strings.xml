@@ -125,7 +125,7 @@
         
             <string name="es_title">Настрока полноэкранного редактора</string>
     <string name="es_sample">Образец</string>
-    <string name="es_sample_text">Жизнь - игра, но с классной графикой. Никак не могу пройти уровень, где у меня зарплата 500 баксов...</string>
+    <string name="es_sample_text">Илья Муромец скакал три дня и три ночи, пока у него не отобрали скакалку.</string>
     <string name="es_font">Шрифт</string>
     <string name="es_font_size">Размер шрифта</string>
     <string name="es_font_bold">Жирный</string>
@@ -177,10 +177,11 @@
 	<string name="about_version">Версия:</string>
 	<string name="about_market">Маркет:</string>
 	<string name="about_author">Автор:</string>
-	<string name="about_author_desc">Юрий \"Jbak\" Бакунин \njbak1979@gmail.com\n\nweb: http://jbak.ru/jbakkeyboard</string>
+	<string name="about_author_desc">Юрий \"Jbak\" Бакунин \njbak1979@gmail.com</string>
 	<string name="about_other">Прочее:</string>
 	<string name="about_other_desc">Автор иконок: Али Гамидов (ali.gamidov@mail.ru)</string>
-        
+    <string name="about_web">Сайт: http://jbak.ru/jbakkeyboard</string>
+	    
 <!-- Names for various keyboards -->
     <string name="kbd_name_qwerty">Клавиатура Qwerty</string>    
     <string name="kbd_name_qwerty_tablet">Qwerty для планшетов</string>
@@ -207,5 +208,6 @@
  	<string name="cmd_up">Курсор вверх</string>   
  	<string name="cmd_down">Курсор вниз</string>   
  	<string name="cmd_none">Ничего не делать</string>   
- 	
+ 	<string name="cmd_close">Закрыть клавиатуру</string>   
+ 	    	
 </resources>

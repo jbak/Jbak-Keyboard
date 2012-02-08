@@ -182,7 +182,8 @@
 	<string name="about_version">Version: </string>
 	<string name="about_market">Market:</string>
 	<string name="about_author">Author:</string>
-	<string name="about_author_desc">Juriy Bakunin aka Jbak\njbak1979@gmail.com\nweb: http://jbak.ru/jbakkeyboard/index_en.php</string>
+	<string name="about_web">Web-site: http://jbak.ru/jbakkeyboard/index_en.php</string>
+	<string name="about_author_desc">Juriy Bakunin aka Jbak\njbak1979@gmail.com</string>
 	<string name="about_other">Other:</string>
 	<string name="about_other_desc">Icons by Ali Gamidov (ali.gamidov@mail.ru)</string>
 	    	    	    	    
@@ -215,4 +216,5 @@
  	<string name="cmd_up">Cursor up</string>   
  	<string name="cmd_down">Cursor down</string>   
  	<string name="cmd_none">Do nothing</string>   
+ 	<string name="cmd_close">Close keyboard</string>   
 </resources>

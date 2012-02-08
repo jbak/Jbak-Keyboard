@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -114,7 +115,7 @@ public class ComMenu
         }
     };
     int m_longClicked=-1;
-/** Обработчик длинного нажатия кнопки меню */
+/** Обработчик длинного нажатия элемента меню */
     OnLongClickListener m_longListener = new OnLongClickListener()
     {
         @Override
@@ -210,6 +211,15 @@ public class ComMenu
         }
     };
     Adapt m_adapter;
+    AdapterView.OnItemLongClickListener m_itemLongClickListener = new AdapterView.OnItemLongClickListener()
+    {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View clickedView, int pos, long id)
+        {
+            return true;
+        }
+        
+    };
 /** Показывает меню
  * @param observer Обработчик нажатия */    
     void show(st.UniObserver observer)
@@ -223,6 +233,7 @@ public class ComMenu
 //        {
 //            ll.addView(newView(me));
 //        }
+        lv.setOnItemLongClickListener(m_itemLongClickListener);
         m_MainView.setBackgroundDrawable(st.kv().getBackground());
         View bClose = m_MainView.findViewById(R.id.close);
         if(bClose!=null)
@@ -260,14 +271,16 @@ public class ComMenu
         Cursor c = st.stor().getClipboardCursor();
         if(c==null)
             return false;
-        ComMenu menu = new ComMenu();
+        final ComMenu menu = new ComMenu();
         menu.m_state = STAT_CLIPBOARD;
         int pos = 0;
         do
         {
             String s = c.getString(0);
+            s = s.trim();
             if(s.length()>50)
-                s = s.substring(0, 50);
+                s = s.substring(0, 50)+"...";
+            s.replace('\n', ' ');
             menu.add(s,pos);
             ++pos;
         }while(c.moveToPrevious());
@@ -277,7 +290,18 @@ public class ComMenu
             @Override
             public int OnObserver(Object param1, Object param2)
             {
-                int pos = ((Integer)param1).intValue();
+                int id = ((Integer)param1).intValue();
+                int pos = -1;
+                for(int i=menu.m_arItems.size()-1;i>=0;i--)
+                {
+                    if(menu.m_arItems.get(i).id==id)
+                    {
+                        pos = i;
+                        break;
+                    }
+                }
+                if(pos<0)
+                    return 0;
                 if(((Boolean)param2).booleanValue())
                 {
                     Intent in = new Intent(ServiceJbKbd.inst,TplEditorActivity.class)
@@ -289,7 +313,7 @@ public class ComMenu
                 Cursor c = st.stor().getClipboardCursor();
                 if(c==null)
                     return 0;
-                c.move(0-pos);
+                c.move(0-id);
                 String cp = c.getString(0);
                 ServiceJbKbd.inst.onText(cp);
                 if(ClipbrdService.inst!=null)
@@ -320,6 +344,7 @@ public class ComMenu
             if(convertView!=null)
             {
                 Button b = (Button)convertView;
+                b.setTag(me);
                 b.setId(me.id);
                 b.setText(me.text);
             }
@@ -341,6 +366,9 @@ public class ComMenu
                 break;
             }
         }
-        m_adapter.notifyDataSetChanged();
+        if(m_arItems.size()==0)
+            close();
+        else
+            m_adapter.notifyDataSetChanged();
     }
 }

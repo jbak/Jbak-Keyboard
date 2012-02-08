@@ -34,6 +34,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@android:drawable/toast_frame</item>
 		<item name="android:autoLink">all</item>
+		<item name="android:textColorLink">#ffff0000</item>
+		    
     </style>
     <style name="hw">
         <item name="android:layout_width">fill_parent</item>

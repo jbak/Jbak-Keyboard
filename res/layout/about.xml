@@ -37,7 +37,6 @@
 <TextView 
     android:id="@+id/version"
     style="@style/label_desc"
-    android:text="Application version"
     />
 <TextView 
     style="@style/about_item"

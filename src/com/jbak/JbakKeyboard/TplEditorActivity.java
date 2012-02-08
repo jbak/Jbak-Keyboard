@@ -184,7 +184,11 @@ public class TplEditorActivity extends Activity
             {
                 case  R.id.tpl_save: onSave(); break;
                 case  R.id.tpl_spec_options: onSpecOptions(); break;
-                case  R.id.close: finish(); Templates.inst.onCloseEditor();break;
+                case  R.id.close: 
+                        finish();
+                        if(m_clipbrdDate==null&&Templates.inst!=null)
+                            Templates.inst.onCloseEditor();
+                        break;
                 case R.id.delete:delete();break;
             }
         }
