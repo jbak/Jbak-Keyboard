@@ -46,7 +46,6 @@ import com.jbak.JbakKeyboard.KeyboardGesture.GestureInfo;
 
 public class JbKbdView extends KeyboardView {
     static final int INTERVAL_REDRAW = 100;
-    static final int KEYCODE_OPTIONS = -100;
     KeyDrw m_PreviewDrw = new KeyDrw();
     Drawable m_PreviewDrawable;
     static JbKbdView inst;

@@ -145,13 +145,13 @@ public interface IKbdSettings
     public static final int CMD_CLIPBOARD = -504;
 /** Внутреняя команда - создание папки шаблонов */  
     public static final int CMD_TPL_NEW_FOLDER = -505;
-    /** Внутреняя команда - запуск редактора шаблонов */    
+/** Внутреняя команда - запуск редактора шаблонов */    
     public static final int CMD_TPL_EDITOR = -506;
-    
+/** Внутреняя команда - переключение языка */    
     public static final int CMD_LANG_CHANGE = -20;
-
+/** Внутреняя команда - компиляция клавиатур */    
     public static final int CMD_COMPILE_KEYBOARDS = -10000;
-
+    
   //-------------------------------------------------------------------    
   /// Прочие строковые значения
   //-------------------------------------------------------------------    

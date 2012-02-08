@@ -449,10 +449,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 //        {
 //            getCurrentInputConnection().performEditorAction(getCurrentInputEditorInfo().actionId);
 //        }
-        else if (primaryCode == JbKbdView.KEYCODE_OPTIONS)
-        {
-            onOptions();
-        }
         else if (primaryCode == st.CMD_LANG_CHANGE)
         {
             st.kv().handleLangChange();
