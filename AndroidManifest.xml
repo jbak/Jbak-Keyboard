@@ -12,7 +12,7 @@
       <application 
           android:label="@string/ime_name" 
           android:icon="@drawable/icon"
-          android:debuggable="false"
+          android:debuggable="true"
           >
 <!-- ============================================================================== -->
         <service android:name="ServiceJbKbd"
