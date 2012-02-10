@@ -1,15 +1,11 @@
 package com.jbak.JbakKeyboard;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
 import android.app.ListActivity;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.DialogInterface.OnClickListener;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +14,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageButton;
-import android.widget.TextView;
-
-import com.jbak.CustomGraphics.GradBack;
-import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 import com.jbak.JbakKeyboard.IKeyboard.Lang;
 
 public class LangSetActivity extends ListActivity
@@ -120,6 +111,18 @@ public class LangSetActivity extends ListActivity
                     {
                         canAdd = false;
                         break;
+                    }
+                }
+                if(canAdd)
+                {
+                    canAdd = false;
+                    for(Lang lang:st.arLangs)
+                    {
+                        if(lang.name.equals(l))
+                        {
+                            canAdd = true;
+                            break;
+                        }
                     }
                 }
                 if(canAdd)

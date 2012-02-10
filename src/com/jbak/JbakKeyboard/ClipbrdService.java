@@ -35,6 +35,7 @@ public class ClipbrdService extends Service
     public void onDestroy()
     {
         inst = null;
+        unregisterReceiver(m_recv);
         super.onDestroy();
     }
     void startTimer()

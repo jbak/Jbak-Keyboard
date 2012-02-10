@@ -338,9 +338,9 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
                     int ret = prefBackup(bSave);
                     try{
                     if(ret==0)
-                        Toast.makeText(st.c(), "ERROR", 700).show();
+                        Toast.makeText(getApplicationContext(), "ERROR", 700).show();
                     else if(ret==1)
-                        Toast.makeText(st.c(), R.string.ok, 700).show();
+                        Toast.makeText(getApplicationContext(), R.string.ok, 700).show();
                         if(!bSave)
                         {
                             finish();
@@ -364,7 +364,6 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
             if(ar==null||ar.length==0)
                 return 0;
             File f = new File(path);
-            File bf = ar[0];
             FileInputStream in;
             FileOutputStream out;
             if(bSave)

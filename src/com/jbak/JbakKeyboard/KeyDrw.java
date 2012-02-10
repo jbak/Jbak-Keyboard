@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -34,7 +33,7 @@ class KeyDrw extends RectShape
     DrwCache m_c;
 /** Конструктор
 * @param key Клавиша из которой создаётся рисовалка */
-    public KeyDrw(Keyboard.Key key)
+    public KeyDrw(LatinKey key)
     {
         set(key, false);
     }
@@ -71,10 +70,11 @@ class KeyDrw extends RectShape
 //            st.paint().previewBack.setBounds(new Rect(0,0,(int)width,(int)height));
 //        }
 //    };
-    void set(Keyboard.Key key, boolean bPreview)
+    void set(LatinKey key, boolean bPreview)
     {
         m_c = null;
         m_bPreview = bPreview;
+        m_bNoColorIcon = key.noColorIcon;
         if(key.icon!=null)
         {
             if(key.icon instanceof BitmapDrawable)

@@ -64,7 +64,6 @@ public class Dlg
                 }
             });
             AlertDialog dlg = bd.create();
-            OnButtonListener cl = new OnButtonListener(callback);
             if(title!=null)
                 dlg.setTitle(title);
             dlg.show();

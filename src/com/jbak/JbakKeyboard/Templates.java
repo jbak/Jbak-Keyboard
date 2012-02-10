@@ -6,9 +6,6 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
-
-import android.os.Environment;
 import android.view.inputmethod.InputConnection;
 
 public class Templates
@@ -483,7 +480,6 @@ public class Templates
         {
             seq=ServiceJbKbd.inst.getCurrentInputConnection().getTextAfterCursor(40, 0);
         }
-        int len = seq.length();
         for(int i=0;i<seq.length();i++)
         {
             if(!Character.isLetterOrDigit(seq.charAt(i)))

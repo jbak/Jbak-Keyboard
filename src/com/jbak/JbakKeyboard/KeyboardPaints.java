@@ -11,12 +11,10 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.DisplayMetrics;
 
 import com.jbak.CustomGraphics.CustomButtonDrawable;
-import com.jbak.CustomGraphics.GradBack;
 import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 
@@ -98,12 +96,12 @@ public class KeyboardPaints
     }
     public final Paint getBitmapPaint(KeyDrw d)
     {
+        if(d.m_bNoColorIcon)
+            return bitmapNoColor;
         if(d.m_bPreview)
             return bitmapPreview;
         if(d.m_bFunc)
             return bitmapFunc;
-        if(d.m_bNoColorIcon)
-            return bitmapNoColor;
         return bitmapNormal;
     }
     final EditSet getDefaultMain()

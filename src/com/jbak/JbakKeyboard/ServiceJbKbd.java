@@ -781,7 +781,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     void processTextEditKey(int code)
     {
         InputConnection ic = getCurrentInputConnection();
-        boolean bSel = isSelMode();
         if (code == -310)
         {
             // LatinKey key = st.curKbd().getKeyByCode(-310);

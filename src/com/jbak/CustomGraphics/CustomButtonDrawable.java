@@ -1,7 +1,6 @@
 package com.jbak.CustomGraphics;
 
 import android.R;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;

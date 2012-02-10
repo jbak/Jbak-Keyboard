@@ -6,8 +6,6 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.util.Vector;
 
-import android.os.Environment;
-
 import com.jbak.CustomGraphics.GradBack;
 import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 

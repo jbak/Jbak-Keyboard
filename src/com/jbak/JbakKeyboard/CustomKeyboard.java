@@ -6,23 +6,18 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Vector;
 
 import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 import com.jbak.JbakKeyboard.IKeyboard.Lang;
 
-import android.animation.ArgbEvaluator;
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.inputmethodservice.Keyboard;
 import android.util.DisplayMetrics;
@@ -227,7 +222,6 @@ public class CustomKeyboard extends JbKbd
             postProcessKeyboard();
             if(m_os!=null)
             {
-                int sz = m_os.size();
                 m_os.flush();
                 m_os.close();
             }
@@ -254,7 +248,6 @@ public class CustomKeyboard extends JbKbd
             f.set(this, m_y-getVerticalGap());
             f = Keyboard.class.getDeclaredField(modKeys);
             f.setAccessible(true);
-            List<Key> arMod = (List<Key>)f.get(this);
         }
         catch(Throwable e)
         {
@@ -374,7 +367,6 @@ public class CustomKeyboard extends JbKbd
         String out = "  <Key ";
         LatinKey k = newKey();
         byte b = 0;
-        String val;
         do{
             b = is.readByte();
             switch(b)

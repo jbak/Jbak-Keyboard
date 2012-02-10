@@ -1,10 +1,8 @@
 package com.jbak.JbakKeyboard;
 import android.inputmethodservice.Keyboard.Key;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import com.google.ads.v;
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
 
 

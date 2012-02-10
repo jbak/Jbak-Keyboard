@@ -26,7 +26,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.inputmethodservice.Keyboard;
-import android.preference.PreferenceManager;
 import android.view.inputmethod.EditorInfo;
 
 public class JbKbd extends Keyboard {

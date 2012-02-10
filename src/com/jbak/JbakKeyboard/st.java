@@ -16,12 +16,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.jbak.CustomGraphics.GradBack;
-import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 /** Класс содержит полезные статические переменные */
 public class st extends IKeyboard implements IKbdSettings
 {
@@ -92,7 +90,6 @@ public class st extends IKeyboard implements IKbdSettings
         String pname = isLandscape(c())?st.PREF_KEY_LANG_KBD_LANDSCAPE:st.PREF_KEY_LANG_KBD_PORTRAIT;
         pname+=langName;
         String kbdName = pref().getString(pname, "");
-        Keybrd ret = null;
         for(int i=0;i<3;i++)
         {
             for(Keybrd k:arKbd)
@@ -144,7 +141,25 @@ public class st extends IKeyboard implements IKbdSettings
                 return l;
             return defKbd();
         }
-        return kbdForLangName(p.getString(PREF_KEY_LAST_LANG, defKbd().lang.name));
+        String lang = p.getString(PREF_KEY_LAST_LANG, defKbd().lang.name);
+        String langs[] = getLangsArray(st.c());
+        boolean bExist = false;
+        for(String l:langs)
+        {
+            if(l.equals(lang))
+            {
+                bExist = true;
+                break;
+            }
+        }
+        if(!bExist)
+        {
+            if(langs.length>0)
+                lang = langs[0];
+            else
+                lang = defKbd().lang.name;
+        }
+        return kbdForLangName(lang);
     }
 /** Возвращает текущую клавиатуру или null*/    
     public static JbKbd curKbd()
@@ -252,18 +267,18 @@ public class st extends IKeyboard implements IKbdSettings
     {
 //        CustomKeyboard ck = new CustomKeyboard(JbKbdView.inst.getContext(), "/mnt/sdcard/jbakKeyboard/keyboards/qwerty_ru.xml");
 //        JbKbdView.inst.setKeyboard(ck);
-        JbKbd kb = curKbd();
         Keybrd cur = getCurQwertyKeybrd();
+        JbKbd kb = curKbd();
+        if(!bForce&&!(kb==null||kb.kbd==null||kb.kbd!=cur))
+            return;
 //        if(kb!=null&&!bForce) // Проверить, одинаковы ли клавиатуры
 //            return;
-        JbKbd newKbd = null;
         JbKbdView.inst.setKeyboard(loadKeyboard(cur));
         saveCurLang();
     }
     static JbKbd loadKeyboard(Keybrd k)
     {
         KeySymbol = -201;
-        JbKbd kb;
         CustomKeyboard jk =  new CustomKeyboard(st.c(), k);
         if(!jk.m_bBrokenLoad)
         {

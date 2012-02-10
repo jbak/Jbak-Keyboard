@@ -1,5 +1,4 @@
 package com.jbak.JbakKeyboard;
-import com.google.ads.*;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
@@ -18,12 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
 import com.jbak.ctrl.GlobDialog;
 
 /** Универсальное меню. Используется как для выпадающего, так и для контекстного меню */

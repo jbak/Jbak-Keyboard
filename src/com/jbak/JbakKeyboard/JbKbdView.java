@@ -32,7 +32,6 @@ import android.preference.PreferenceManager;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -319,7 +318,7 @@ public class JbKbdView extends KeyboardView {
             if(index>-1)
             {
                 m_handler.removeMessages(OwnKeyboardHandler.MSG_REMOVE_PREVIEW);
-                m_PreviewDrw.set(key,true);
+                m_PreviewDrw.set((LatinKey)key,true);
                 m_PreviewDrw.m_bLongPreview = true;
                 key.iconPreview = m_PreviewDrw.getDrawable();
                 m_handler.sendMessageDelayed(m_handler.obtainMessage(OwnKeyboardHandler.MSG_SHOW_PREVIEW, index, 0), 10);
