@@ -69,7 +69,7 @@ com.jbak.CustomGraphics.ColorsGradientBack$RotatedColorsBackground
 com.jbak.CustomGraphics.ColorsGradientBack$RotatedColorsBackground$1
 com.jbak.CustomGraphics.ColorsGradientBack$RotatedColorsBackground$1$1
 com.jbak.CustomGraphics.CustomButtonDrawable:
-    30:31:public com.jbak.CustomGraphics.CustomButtonDrawable setCorners(int,int)
+    29:30:public com.jbak.CustomGraphics.CustomButtonDrawable setCorners(int,int)
 com.jbak.CustomGraphics.GradBack:
     public static final int DEFAULT_CORNER_X
     public static final int DEFAULT_CORNER_Y
@@ -77,7 +77,7 @@ com.jbak.CustomGraphics.GradBack:
     public static final int DEFAULT_COLOR
     public static final int GRADIENT_TYPE_LINEAR
     public static final int GRADIENT_TYPE_SWEEP
-    274:275:public void setDependentback(com.jbak.CustomGraphics.GradBack)
+    272:273:public void setDependentback(com.jbak.CustomGraphics.GradBack)
 com.jbak.JbakKeyboard.AdPreference
 com.jbak.JbakKeyboard.CandidateView:
     private static final int OUT_OF_BOUNDS
@@ -111,7 +111,7 @@ com.jbak.JbakKeyboard.CustomKbdDesign:
     public static final byte P_SpecKeyTextColor
     public static final byte P_KeyBackCornerX
     public static final byte P_KeyBackCornerY
-    214:217:java.lang.String getErrString()
+    212:215:java.lang.String getErrString()
 com.jbak.JbakKeyboard.CustomKeyboard:
     public static final java.lang.String KEYBOARD_FOLDER
     public static final java.lang.String A_ANDROID
@@ -269,16 +269,16 @@ com.jbak.JbakKeyboard.IKeyboard:
     public static final int DF_BIG_GAP
     public static final int DEF_COLOR
     public static final int KBD_DESIGN_STANDARD
-    354:360:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
+    352:358:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
 com.jbak.JbakKeyboard.JbCandView
 com.jbak.JbakKeyboard.JbKbd:
-    55:56:void setHeightKey(int)
+    54:55:void setHeightKey(int)
 com.jbak.JbakKeyboard.JbKbdPreference:
     public static final java.lang.String DEF_SIZE_CLIPBRD
     public static final java.lang.String DEF_SHORT_VIBRO
     public static final java.lang.String DEF_LONG_VIBRO
 com.jbak.JbakKeyboard.JbKbdReceiver:
-    22:24:static android.content.Intent getClipbrdServiceIntent(android.content.Context)
+    20:22:static android.content.Intent getClipbrdServiceIntent(android.content.Context)
 com.jbak.JbakKeyboard.JbKbdView:
     static final int INTERVAL_REDRAW
     android.graphics.drawable.Drawable m_PreviewDrawable
@@ -300,7 +300,7 @@ com.jbak.JbakKeyboard.KeyboardGesture$GestureInfo:
     public static final int UP
     public static final int DOWN
 com.jbak.JbakKeyboard.KeyboardGesture$KvListener:
-    55:60:final com.jbak.JbakKeyboard.JbKbd$LatinKey getKey(int,int)
+    53:58:final com.jbak.JbakKeyboard.JbKbd$LatinKey getKey(int,int)
 com.jbak.JbakKeyboard.KeyboardPaints:
     public static final int VAL_KEY_HEIGHT_PORTRAIT
     public static final int VAL_KEY_HEIGHT_LANDSCAPE
@@ -349,8 +349,8 @@ com.jbak.JbakKeyboard.Stor:
     public static final java.lang.String DB_FILENAME
     private static final java.lang.String KEYS_TABLE_CREATE
     private static final java.lang.String CLIPBOARD_TABLE_CREATE
-    175:179:static byte[] getBytesFromIntent(android.content.Intent)
-    183:190:static android.content.Intent getIntentFromBytes(byte[])
+    172:176:static byte[] getBytesFromIntent(android.content.Intent)
+    180:187:static android.content.Intent getIntentFromBytes(byte[])
 com.jbak.JbakKeyboard.Templates:
     java.io.File m_cd
     public static final java.lang.String TEMPLATE_PATH
@@ -359,11 +359,11 @@ com.jbak.JbakKeyboard.Templates:
     public static final int IB_WORD
     public static final int IB_LINE
     public static final char TPL_SPEC_CHAR
-    19:21:static void destroy()
+    16:18:static void destroy()
 com.jbak.JbakKeyboard.TplEditorActivity:
     public static final java.lang.String EXTRA_CLIPBOARD_ENTRY
 com.jbak.JbakKeyboard.VibroThread:
-    30:31:void destroy()
+    29:30:void destroy()
 com.jbak.JbakKeyboard.Words:
     public static final java.lang.String DEF_PATH
     public static final java.lang.String DEF_EXT
@@ -380,10 +380,10 @@ com.jbak.JbakKeyboard.Words:
     53:72:java.util.ArrayList getWords(java.lang.String)
 com.jbak.JbakKeyboard.st:
     public static final boolean DEBUG
-    120:120:public static float screenDens(android.content.Context)
+    117:117:public static float screenDens(android.content.Context)
 com.jbak.JbakKeyboard.st$SyncAsycOper
 com.jbak.JbakKeyboard.st$UniObserver:
-    36:40:public st$UniObserver(java.lang.Object,java.lang.Object)
+    34:38:public st$UniObserver(java.lang.Object,java.lang.Object)
 com.jbak.ctrl.GlobDialog:
     public static final int NO_FINISH
 com.jbak.ctrl.IntEditor:
