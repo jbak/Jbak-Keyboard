@@ -17,19 +17,23 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.jbak.ctrl.IntEditor;
+import com.jbak.words.Words;
 
 public class JbKbdPreference extends PreferenceActivity implements OnSharedPreferenceChangeListener
 {
     public static final String DEF_SIZE_CLIPBRD = "20";
     public static final String DEF_SHORT_VIBRO = "30";
     public static final String DEF_LONG_VIBRO = "15";
+    public static JbKbdPreference inst;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        inst = this;
         st.upgradeSettings(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pref_view);
@@ -79,6 +83,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
     @Override
     protected void onDestroy()
     {
+        inst = null;
         st.pref(this).unregisterOnSharedPreferenceChangeListener(this);
         if(JbKbdView.inst!=null)
             JbKbdView.inst.setPreferences();
@@ -103,7 +108,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) 
     {
         String k = preference.getKey();
-        Context c = preference.getContext();
+        Context c = this;
         if("intervals".equals(k))
         {
             showIntervalsEditor();
@@ -182,6 +187,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         }
         else if("about_app".equals(k))
         {
+            vocabTest();
             st.runAct(AboutActivity.class,c);
             return true;
         }
@@ -401,5 +407,29 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
             st.logEx(e);
         }
         return 0;
+    }
+    void vocabTest()
+    {
+        Words w = new Words();
+        w.open("ru");
+        String test[] = new String[]{"ящ","те"};
+        long times []= new long[test.length];
+        for(int i=0;i<test.length;i++)
+        {
+            long time = System.currentTimeMillis();
+            String s[] = w.getWords(test[i]);
+            time = System.currentTimeMillis()-time;
+            times[i]=time;
+        }
+        long total = 0;
+        String log = "Test words: {";
+        for(int i=0;i<test.length;i++)
+        {
+            long time = times[i];
+            total+=time;
+            log+=test[i]+":"+time;
+        }
+        log+="} total:"+total;
+        Log.w("Words test", log);
     }
 }

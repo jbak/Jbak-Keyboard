@@ -404,7 +404,7 @@ public class Templates
         }
         /** Функция для получения текстов из редактора
          * @param positions
-         *@return Возвращает массив текстов - выделенный текст ({@link #IB_SEL}, строка {@link #IB_LINE}, слово {@link #IB_WORD} */
+         *@return true - инициализация удалась, false - нет */
             boolean init(InputConnection ic)
             {
                 bInited = true;
@@ -459,6 +459,8 @@ public class Templates
         {
             seq = ServiceJbKbd.inst.getCurrentInputConnection().getTextBeforeCursor(40, 0);
         }
+        if(seq==null)
+            return null;
         for(int i=seq.length()-1;i>=0;i--)
         {
             if(!Character.isLetterOrDigit(seq.charAt(i)))
