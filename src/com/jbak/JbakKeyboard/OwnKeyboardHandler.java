@@ -2,6 +2,8 @@ package com.jbak.JbakKeyboard;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import com.jbak.JbakKeyboard.JbKbd.LatinKey;
+
 import android.content.SharedPreferences;
 import android.inputmethodservice.KeyboardView;
 import android.os.Handler;
@@ -13,13 +15,17 @@ import android.widget.TextView;
 public class OwnKeyboardHandler extends Handler
 {
     int repeatInterval = 0;
+    int longPressInterval = 500;
     int deltaLongPress = 0;
     int deltaRepeatStart = 0;
+    int firstRepeatInterval = 400;
     public static final int MSG_SHOW_PREVIEW = 1;
     public static final int MSG_REMOVE_PREVIEW = 2;
     public static final int MSG_REPEAT = 3;
     public static final int MSG_LONGPRESS = 4;
     public static final int MSG_INVALIDATE = 5;
+    public static final int MSG_MY_REPEAT = 6;
+    public static final int MSG_MY_LONG_PRESS = 7;
     Handler m_existHandler;
     TextView m_PreviewText;
     Method m_showKey;
@@ -40,10 +46,10 @@ public class OwnKeyboardHandler extends Handler
     void loadFromSettings()
     {
         SharedPreferences p = st.pref(m_kv.getContext());
-        int dl = p.getInt(st.PREF_KEY_LONG_PRESS_INTERVAL, 500);
-        deltaLongPress = dl>=500?dl-500:0;
-        dl = p.getInt(st.PREF_KEY_REPEAT_FIRST_INTERVAL, 400);
-        deltaRepeatStart = dl>=400?dl-400:0;
+        longPressInterval = p.getInt(st.PREF_KEY_LONG_PRESS_INTERVAL, 500);
+        deltaLongPress = longPressInterval>=500?longPressInterval-500:0;
+        firstRepeatInterval = p.getInt(st.PREF_KEY_REPEAT_FIRST_INTERVAL, 400);
+        deltaRepeatStart = firstRepeatInterval>=400?firstRepeatInterval-400:0;
         repeatInterval =  p.getInt(st.PREF_KEY_REPEAT_NEXT_INTERVAL, 50);
     }
     boolean init()
@@ -94,29 +100,35 @@ public class OwnKeyboardHandler extends Handler
                         m_PreviewText.setVisibility(View.INVISIBLE);
                     break;
                 case MSG_REPEAT:
+                    break;
+                case MSG_MY_REPEAT:
                     {
-                        if(m_repeatKey!=null)
+                        LatinKey lk = (LatinKey)msg.obj;
+                        if(lk!=null)
                         {
-                            try{
-                            m_repeatKey.invoke(m_kv);
-                            }
-                            catch (Throwable e) {
-                                st.logEx(e);
-                            }
+                            m_kv.onKeyRepeat(lk);
+                            sendRepeat(lk, false);
                         }
-                        Message repeat = Message.obtain(this, MSG_REPEAT);
-                        sendMessageDelayed(repeat, repeatInterval);                        
                     }
                     break;
                 case MSG_LONGPRESS:
-                    if(deltaLongPress>0&&msg.arg1==0)
+//                    if(deltaLongPress>0&&msg.arg1==0)
+//                    {
+//                        sendMessageDelayed(obtainMessage(MSG_LONGPRESS,1,1, msg.obj),deltaLongPress);
+//                        return;
+//                    }
+//                    if(m_openPopupIfRequired!=null)
+//                    {
+//                        m_openPopupIfRequired.invoke(m_kv, (MotionEvent) msg.obj);
+//                    }
+                    break;
+                case MSG_MY_LONG_PRESS:
                     {
-                        sendMessageDelayed(obtainMessage(MSG_LONGPRESS,1,1, msg.obj),deltaLongPress);
-                        return;
-                    }
-                    if(m_openPopupIfRequired!=null)
-                    {
-                        m_openPopupIfRequired.invoke(m_kv, (MotionEvent) msg.obj);
+                        LatinKey lk = (LatinKey)msg.obj;
+                        if(lk!=null)
+                        {
+                            m_kv.onLongPress(lk);
+                        }
                     }
                     break;
             }
@@ -125,5 +137,12 @@ public class OwnKeyboardHandler extends Handler
             st.logEx(e);
         }
     }
-        
+    public final void sendRepeat(LatinKey k,boolean bFirst)
+    {
+        sendMessageDelayed(obtainMessage(MSG_MY_REPEAT, k), bFirst?firstRepeatInterval:repeatInterval);
+    }
+    public final void sendLongPress(LatinKey k)
+    {
+        sendMessageDelayed(obtainMessage(MSG_MY_LONG_PRESS, k),longPressInterval);
+    }
 }

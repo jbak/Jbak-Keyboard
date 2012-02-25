@@ -68,8 +68,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     int                        m_state              = 0;
     int                        m_PortraitEditType   = st.PREF_VAL_EDIT_TYPE_DEFAULT;
     int                        m_LandscapeEditType  = st.PREF_VAL_EDIT_TYPE_DEFAULT;
-    /** Вибратор для тактильной отдачи при нажатии и удержании клавиш */
-    VibroThread                m_vibro;
 /** Разрешена автоматическая смена регистра */
     public static final int    STATE_AUTO_CASE      = 0x00000001;
 /** Статус - вставка пробела после конца предложения */
@@ -88,7 +86,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
         inst = this;
         st.upgradeSettings(inst);
-        m_vibro = new VibroThread(this);
         m_words = new Words();
         startService(new Intent(this, ClipbrdService.class));
         // setTheme(R.style.fullscreen_input);
@@ -143,8 +140,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
         m_SelStart = attribute.initialSelStart;
         m_SelEnd = attribute.initialSelEnd;
-        m_LongPressedCode = -10000;
-        m_pressedCode = -10000;
         st.log("onStartInputView " + m_SelStart + " " + m_SelEnd);
 //        getCurrentInputConnection().getExtractedText(new ExtractedTextRequest(), STATE_EMPTY_UP)
         setCandidatesViewShown(false);
@@ -172,7 +167,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             case EditorInfo.TYPE_CLASS_DATETIME:
             case EditorInfo.TYPE_CLASS_PHONE:
                 m_bCanAutoInput = false;
-                st.setSymbolKeyboard(false);
+                st.setNumberKeyboard();
             break;
             default:
                 mPredictionOn = m_bComplete;
@@ -302,7 +297,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     /** Обаботка нажатия BACK */
     public boolean handleBackPress()
     {
-        if (isExtractViewShown()||isInputViewShown())
+        if (isInputViewShown())
         {
             if (ComMenu.inst != null)
             {
@@ -479,19 +474,9 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             handleCharacter(primaryCode);
         }
     }
-    int m_pressedCode = -10000;
     public void onKey(int primaryCode, int[] keyCodes)
     {
-        if(m_LongPressedCode==primaryCode)
-        {
-            m_LongPressedCode = -1000;
-            return;
-        }
         processKey(primaryCode);
-        if(m_pressedCode==primaryCode||m_vibro.m_shortType==1)
-            m_vibro.vibro(false,m_vibro.m_shortType==2);
-        else
-            m_pressedCode = primaryCode;
     }
 /** 
  * Проверка, можно ли использовать автосмену регистра и вставку пробелов    
@@ -677,20 +662,14 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
     }
     public void swipeUp()
-    {
-    }
+    {}
 
     public void onPress(int primaryCode)
     {
-        m_pressedCode = -10000;
-        m_LongPressedCode = -10000;
-        m_vibro.vibro(false,true);
-        st.kv().onKeyPress(primaryCode);
     }
 
     public void onRelease(int primaryCode)
-    {
-    }
+    {}
     public void onOptions()
     {
         ComMenu menu = new ComMenu();
@@ -888,9 +867,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
     {
- 
-        if(m_vibro!=null)
-            m_vibro.readSettings();
         if (st.PREF_KEY_EDIT_SETTINGS.equals(key))
         {
             m_es.load(st.PREF_KEY_EDIT_SETTINGS);
@@ -968,20 +944,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             b = false;
         return b;
     }
-    int m_LongPressedCode = -1000;
-    public void onLongPress(LatinKey key)
-    {
-        try
-        {
-            if(key.codes!=null&&key.codes.length!=0)
-                m_LongPressedCode = key.codes[0];
-            if (key.m_kd.bmp!=null||key.getUpText()!=null||key.longCode!=0)
-                m_vibro.vibro(true,false);
-        }
-        catch (Throwable e)
-        {
-        }
-    }
     void CompiledKbdToXML()
     {
         try{
@@ -1043,6 +1005,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     }
     final void changeCase(boolean bInvalidate)
     {
+        if(st.kv()==null)
+            return;
         int c = getCase();
         boolean bUpperCase = st.kv().isUpperCase();
         if(bUpperCase&&c<0)

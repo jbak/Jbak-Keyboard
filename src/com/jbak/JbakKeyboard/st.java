@@ -178,6 +178,8 @@ public class st extends IKeyboard implements IKbdSettings
             return LangSetActivity.inst;
         if(EditSetActivity.inst!=null)
             return EditSetActivity.inst;
+        if(JbKbdPreference.inst!=null)
+            return JbKbdPreference.inst;
         return ClipbrdService.inst;
     }
   //********************************************************************
@@ -249,6 +251,11 @@ public class st extends IKeyboard implements IKbdSettings
     public static void setSmilesKeyboard()
     {
         JbKbdView.inst.setKeyboard(loadKeyboard(kbdForLangName(LANG_SMILE)));
+    }
+    /** Установка цифровой клавиатуры */
+    public static void setNumberKeyboard()
+    {
+        JbKbdView.inst.setKeyboard(loadKeyboard(kbdForLangName(LANG_NUMBER)));
     }
 /** Установка символьной клавиатуры 
 *@param bShift true - для установки symbol_shift, false - для symbol */
@@ -536,7 +543,7 @@ public class st extends IKeyboard implements IKbdSettings
         {
             boolean bVibroShort = pref.getBoolean(st.PREF_KEY_VIBRO_SHORT_KEY, false);
             String vt = bVibroShort?st.ONE_STRING:st.ZERO_STRING;
-            ped.putString(st.PREF_KEY_VIBRO_SHORT_TYPE,vt);
+            ped.putString(st.PREF_KEY_USE_SHORT_VIBRO,vt);
             ped.remove(st.PREF_KEY_VIBRO_SHORT_KEY);
         }
 // 0.92 - 0.93 Меняем старую автосмену регистра на новую         

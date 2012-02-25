@@ -26,10 +26,14 @@
     <string name="set_key_short_vibro_desc">If enabled - screen vibrates on key press</string>
     <string name="set_key_long_vibro">Vibro on long press</string>
     <string name="set_key_long_vibro_desc">If enabled - screen vibrates on key long press</string>
-    <string name="set_key_short_vibro_duration">Short press duration</string>
-    <string name="set_key_short_vibro_duration_desc">Duration of vibro on short press</string>
-    <string name="set_key_long_vibro_duration">Long press duration</string>
-    <string name="set_key_long_vibro_duration_desc">Duration of vibro on long press</string>
+    <string name="set_key_repeat_vibro">Vibro on repeat</string>
+    <string name="set_key_repeat_vibro_desc">If enabled - screen vibrates on key repeats (for example, when holding backspace)</string>
+    <string name="set_key_repeat_vibro_duration">Repeat interval</string>
+    <string name="set_key_short_vibro_duration">Short press interval</string>
+    <string name="set_key_long_vibro_duration">Long press interval</string>
+    <string name="set_key_vibro_durations">Vibro interval</string>
+    <string name="set_key_vibro_durations_desc">Here you can set vibro intervals (in miliseconds)</string>
+        
     <string name="set_key_sounds">Enable sounds</string>
     <string name="set_key_sounds_desc">If enabled - keys sounds after each press</string>
     <string name="set_key_other">Autoinput</string>
@@ -208,7 +212,8 @@
  	<string name="lang_symbol_shift">Symbol shift keyboard</string>   
  	<string name="lang_edittext">Edit text keyboard</string>   
  	<string name="lang_smiles">Smiles keyboard</string>   
- 
+ 	<string name="lang_numbers">Number keyboard</string>   
+ 	    
  <!-- Names for gestures commands -->
  	<string name="cmd_lang_change">Change language</string>   
  	<string name="cmd_left">Cursor left</string>   

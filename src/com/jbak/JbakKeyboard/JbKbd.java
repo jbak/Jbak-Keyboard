@@ -122,6 +122,7 @@ public class JbKbd extends Keyboard {
         int specKey = -1;
         boolean smallLabel = false;
         boolean noColorIcon = false;
+        boolean trueRepeat = false;
         public LatinKey(Resources res, Keyboard.Row parent, int x, int y, XmlResourceParser parser) {
             super(res, parent, x, y, parser);
             init(parent);
@@ -137,6 +138,8 @@ public class JbKbd extends Keyboard {
                 parent.defaultHeight = JbKbdView.inst.m_KeyHeight; 
                 height = JbKbdView.inst.m_KeyHeight;
             }
+            trueRepeat = repeatable;
+            repeatable = false;
             m_kd = new KeyDrw(this);
             m_kd.m_bNoColorIcon = noColorIcon;
             m_kd.setSmallLabel(smallLabel);

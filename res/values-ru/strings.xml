@@ -24,9 +24,10 @@
     <string name="set_key_long_vibro">Вибрация при удержании</string>
     <string name="set_key_long_vibro_desc">Если включено - экран вибрирует при долгом нажатии клавиши</string>
     <string name="set_key_short_vibro_duration">Интервал для нажатия</string>
-    <string name="set_key_short_vibro_duration_desc">Интервал вибрации при нажатии клавиши (ms)</string>
     <string name="set_key_long_vibro_duration">Интервал для удержания</string>
-    <string name="set_key_long_vibro_duration_desc">Интервал вибрации при удержании клавиши (ms)</string>
+    <string name="set_key_repeat_vibro_duration">Интервал для повтора</string>
+    <string name="set_key_vibro_durations">Настройки вибрации</string>
+    <string name="set_key_vibro_durations_desc">Настройки продолжительности вибрации в милисекундах</string>
         
     <string name="set_key_sounds">Звуковое сопровождение</string>
     <string name="set_key_sounds_desc">Проигрывать системные звуки при нажатии на клавиши</string>
@@ -200,7 +201,8 @@
  	<string name="lang_symbol_shift">Доп. символьная клавиатура</string>   
  	<string name="lang_edittext">Клавиатура правки текста</string>   
  	<string name="lang_smiles">Клавиатура смайликов</string>   
- 
+ 	<string name="lang_numbers">Числовая клавиатура</string>   
+ 	    
  <!-- Names for gestures commands -->
  	<string name="cmd_lang_change">Смена языка</string>   
  	<string name="cmd_left">Курсор влево</string>   

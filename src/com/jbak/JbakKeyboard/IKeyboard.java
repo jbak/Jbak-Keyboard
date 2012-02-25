@@ -15,6 +15,7 @@ public class IKeyboard
     public static final String LANG_SYM_KBD1 = "symbol2";
     public static final String LANG_EDITTEXT = "edittext";
     public static final String LANG_SMILE = "smile";
+    public static final String LANG_NUMBER = "num";
   //--------------------------------------------------------------------------
     public static final int LANG_EN = 0;
     public static final int LANG_RU = 1;
@@ -29,6 +30,7 @@ public class IKeyboard
     public static final int LANG_SYM1 = 1001;
     public static final int LANG_EDIT = 1002;
     public static final int LANG_SMIL = 1003;
+    public static final int LANG_NUM = 1004;
 //--------------------------------------------------------------------------
     public static Lang[] arLangs = 
     {
@@ -44,6 +46,7 @@ public class IKeyboard
         new Lang(LANG_SYM1,LANG_SYM_KBD1),
         new Lang(LANG_EDIT,LANG_EDITTEXT),
         new Lang(LANG_SMIL,LANG_SMILE),
+        new Lang(LANG_NUM,LANG_NUMBER),
     };
 //--------------------------------------------------------------------------
  // Коды клавиатур  
@@ -91,6 +94,7 @@ public class IKeyboard
         new Keybrd("edittext_standard",R.string.lang_edittext),
         new Keybrd("smile_standard",   R.string.lang_smiles),
         new Keybrd("symbol_edtext",    R.string.kbd_name_sym_edit),
+        new Keybrd("num_kbd",          R.string.lang_numbers),
     };
 // Флаги дизайна (Design Flags)
 /** Жирный шрифт */    
@@ -251,6 +255,7 @@ public class IKeyboard
                 case LANG_SYM: strId = R.string.lang_symbol;break;
                 case LANG_SYM1: strId = R.string.lang_symbol_shift;break;
                 case LANG_SMIL: strId = R.string.lang_smiles;break;
+                case LANG_NUM: strId = R.string.lang_numbers;break;
                 default:strId = 0;
             }
                 
@@ -287,7 +292,7 @@ public class IKeyboard
         }
         final boolean isVirtualLang()
         {
-            return lang==LANG_SYM||lang==LANG_SMIL||lang==LANG_SYM1||lang==LANG_EDIT;
+            return lang==LANG_SYM||lang==LANG_SMIL||lang==LANG_SYM1||lang==LANG_EDIT||lang==LANG_NUM;
         }
     }
 //*****************************************************************    

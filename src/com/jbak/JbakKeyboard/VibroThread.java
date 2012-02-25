@@ -10,12 +10,15 @@ import android.provider.Settings;
 public class VibroThread extends ContentObserver
 {
     Vibrator m_vibro;
-    int m_shortVibro = 30;
-    int m_longVibro = 10;
+    public int m_shortVibro = 30;
+    public int m_longVibro = 10;
+    public int m_repeatVibro = 10;
     boolean m_bLongVibro = false;
+    boolean m_bRepeatVibro = false;
     int m_shortType;
     boolean m_bSilent;
     Context m_c;
+    public static VibroThread inst = null;
     public VibroThread(Context c)
     {
         super(null);
@@ -23,6 +26,12 @@ public class VibroThread extends ContentObserver
         m_c.getContentResolver().registerContentObserver(Settings.System.getUriFor(Settings.System.MODE_RINGER), false, this);
         m_vibro = (Vibrator) c.getSystemService(Service.VIBRATOR_SERVICE);
         readSettings();
+    }
+    public static VibroThread getInstance(Context c)
+    {
+        if(inst==null)
+            inst = new VibroThread(c);
+        return inst;
     }
     void destroy()
     {
@@ -36,22 +45,41 @@ public class VibroThread extends ContentObserver
     public void readSettings()
     {
         SharedPreferences p = st.pref();
-        m_shortType = Integer.decode(p.getString(st.PREF_KEY_VIBRO_SHORT_TYPE, st.ZERO_STRING));
-        m_bLongVibro = p.getBoolean(st.PREF_KEY_VIBRO_LONG_KEY, false);
+        m_shortType = Integer.decode(p.getString(st.PREF_KEY_USE_SHORT_VIBRO, st.ZERO_STRING));
+        m_bLongVibro = p.getBoolean(st.PREF_KEY_USE_LONG_VIBRO, false);
         m_shortVibro = Integer.decode(p.getString(st.PREF_KEY_VIBRO_SHORT_DURATION, JbKbdPreference.DEF_SHORT_VIBRO));
         m_longVibro = Integer.decode(p.getString(st.PREF_KEY_VIBRO_LONG_DURATION, JbKbdPreference.DEF_LONG_VIBRO));
+        m_bRepeatVibro = p.getBoolean(st.PREF_KEY_USE_REPEAT_VIBRO, m_bLongVibro);
+        m_repeatVibro = Integer.decode(p.getString(st.PREF_KEY_VIBRO_REPEAT_DURATION, JbKbdPreference.DEF_LONG_VIBRO));
         m_bSilent = isSilent();
     }
-    public void vibro(boolean bLong,boolean bPress)
+    public final boolean hasVibroOnPress()
+    {
+        if(m_bSilent)return false;
+        return m_shortType==2;
+    }
+    final void runVibro(final int interval)
     {
         if(m_bSilent)
             return;
-        if(!bLong)
-        {
-            if(!bPress&&m_shortType!=1||bPress&&m_shortType!=2)
-                return;
-        }
-        new Thread(bLong?m_runLong:m_runShort).run();
+        Runnable r = null;
+        if(interval==m_shortVibro&&m_shortType!=0)
+            r = m_runShort;
+        else if(interval==m_repeatVibro&&m_bRepeatVibro)
+            r = m_runRepeat;
+        else if(interval==m_longVibro&&m_bLongVibro)
+            r = m_runLong;
+        if(r!=null)
+            new Thread(r).run();
+        else
+            new Thread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    m_vibro.vibrate(interval);
+                }
+            }).run();
     }
     final boolean isSilent()
     {
@@ -72,6 +100,14 @@ public class VibroThread extends ContentObserver
         public void run()
         {
             m_vibro.vibrate(m_longVibro);
+        }
+    };
+    Runnable m_runRepeat = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            m_vibro.vibrate(m_repeatVibro);
         }
     };
 }

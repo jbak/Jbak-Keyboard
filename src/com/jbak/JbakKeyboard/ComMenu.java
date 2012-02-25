@@ -115,7 +115,8 @@ public class ComMenu
         @Override
         public boolean onLongClick(View v)
         {
-            v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+            VibroThread vt = VibroThread.getInstance(st.c());
+            vt.runVibro(vt.m_longVibro);
             if(!st.has(m_state, STAT_CLIPBOARD))
                 close();
             MenuEntry me = (MenuEntry)v.getTag();
@@ -162,8 +163,12 @@ public class ComMenu
         inst = null;
         if(ServiceJbKbd.inst!=null)
         {
-            st.kv().setKeyboard(st.curKbd());
-            ServiceJbKbd.inst.setInputView(st.kv());
+            try{
+                st.kv().setKeyboard(st.curKbd());
+                ServiceJbKbd.inst.setInputView(st.kv());
+            }
+            catch (Throwable e) {
+            }
         }
     }
 /** Обработчик короткого нажатия кнопок меню */    
@@ -173,6 +178,8 @@ public class ComMenu
         @Override
         public void onClick(View v)
         {
+            VibroThread vt = VibroThread.getInstance(st.c());
+            vt.runVibro(vt.m_shortVibro);
             close();
             switch (v.getId())
             {

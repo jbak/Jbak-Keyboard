@@ -120,8 +120,7 @@ public class EditSetActivity extends Activity
     {
         String s = m_es.toString();
         SharedPreferences p = st.pref();
-        if(p.getString(m_prefKey, null)!=null||m_defaultEditSet!=null&&!s.equals(m_defaultEditSet))
-            m_es.save(p,m_prefKey);
+        m_es.save(p,m_prefKey);
         inst = null;
         JbKbdView.inst = null;
         super.onDestroy();

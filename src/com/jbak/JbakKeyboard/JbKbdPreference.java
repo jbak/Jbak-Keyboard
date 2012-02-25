@@ -18,6 +18,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jbak.ctrl.IntEditor;
@@ -27,9 +28,11 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
     public static final String DEF_SIZE_CLIPBRD = "20";
     public static final String DEF_SHORT_VIBRO = "30";
     public static final String DEF_LONG_VIBRO = "15";
+    public static JbKbdPreference inst;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        inst = this;
         st.upgradeSettings(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pref_view);
@@ -42,7 +45,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         pr = getPreferenceScreen().findPreference(st.PREF_KEY_LOAD);
         pr.setSummary(pr.getSummary().toString()+'\n'+getBackupPath());
         setSummary(st.PREF_KEY_CLIPBRD_SIZE, R.string.set_key_clipbrd_size_desc, p.getString(st.PREF_KEY_CLIPBRD_SIZE,DEF_SIZE_CLIPBRD ));
-        int index = Integer.decode(p.getString(st.PREF_KEY_VIBRO_SHORT_TYPE, st.ONE_STRING));
+        int index = Integer.decode(p.getString(st.PREF_KEY_USE_SHORT_VIBRO, st.ONE_STRING));
         
         CharSequence entries[] = st.getGestureEntries(this);
         CharSequence entValues[] = st.getGestureEntryValues(); 
@@ -50,9 +53,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         setGestureList(p, st.PREF_KEY_GESTURE_RIGHT, entries, entValues);
         setGestureList(p, st.PREF_KEY_GESTURE_UP, entries, entValues);
         setGestureList(p, st.PREF_KEY_GESTURE_DOWN, entries, entValues);
-        setSummary(st.PREF_KEY_VIBRO_SHORT_TYPE, R.string.set_key_short_vibro_desc, strVal(getResources().getStringArray(R.array.vibro_short_type)[index]));
-        setSummary(st.PREF_KEY_VIBRO_SHORT_DURATION, R.string.set_key_short_vibro_duration_desc, p.getString(st.PREF_KEY_VIBRO_SHORT_DURATION,DEF_SHORT_VIBRO ));
-        setSummary(st.PREF_KEY_VIBRO_LONG_DURATION, R.string.set_key_long_vibro_duration_desc, p.getString(st.PREF_KEY_VIBRO_LONG_DURATION,DEF_LONG_VIBRO));
+        setSummary(st.PREF_KEY_USE_SHORT_VIBRO, R.string.set_key_short_vibro_desc, strVal(getResources().getStringArray(R.array.vibro_short_type)[index]));
         st.pref(this).registerOnSharedPreferenceChangeListener(this);
     }
     void setGestureList(SharedPreferences p,final String set,CharSequence entries[],CharSequence entValues[])
@@ -82,6 +83,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         st.pref(this).unregisterOnSharedPreferenceChangeListener(this);
         if(JbKbdView.inst!=null)
             JbKbdView.inst.setPreferences();
+        inst = null;
         super.onDestroy();
     }
     void runSetKbd(int action)
@@ -104,6 +106,10 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
     {
         String k = preference.getKey();
         Context c = preference.getContext();
+        if("vibro_durations".equals(k))
+        {
+            showVibroDuration();
+        }
         if("intervals".equals(k))
         {
             showIntervalsEditor();
@@ -223,10 +229,10 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
             JbKbdView.inst = null;
         if(st.PREF_KEY_SHIFT_STATE.equals(key))
             setShiftState();
-        if(st.PREF_KEY_VIBRO_SHORT_TYPE.equals(key))
+        if(st.PREF_KEY_USE_SHORT_VIBRO.equals(key))
         {
-            int index = Integer.decode(sharedPreferences.getString(st.PREF_KEY_VIBRO_SHORT_TYPE, st.ONE_STRING));
-            setSummary(st.PREF_KEY_VIBRO_SHORT_TYPE, R.string.set_key_short_vibro_desc, strVal(getResources().getStringArray(R.array.vibro_short_type)[index]));
+            int index = Integer.decode(sharedPreferences.getString(st.PREF_KEY_USE_SHORT_VIBRO, st.ONE_STRING));
+            setSummary(st.PREF_KEY_USE_SHORT_VIBRO, R.string.set_key_short_vibro_desc, strVal(getResources().getStringArray(R.array.vibro_short_type)[index]));
         }
         if(st.PREF_KEY_CLIPBRD_SIZE.equals(key))
         {
@@ -236,20 +242,6 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
                     String v = st.pref(this).getString(key, DEF_SIZE_CLIPBRD);
                     st.stor().CLIPBOARD_LIMIT = Integer.decode(v);
                     setSummary(key, R.string.set_key_clipbrd_size_desc,v);
-                }
-                catch (Throwable e) {
-                }
-            }
-        }
-        if(st.PREF_KEY_VIBRO_LONG_DURATION.equals(key)||st.PREF_KEY_VIBRO_SHORT_DURATION.equals(key))
-        {
-            String def = st.PREF_KEY_VIBRO_LONG_DURATION.equals(key)?DEF_LONG_VIBRO:DEF_SHORT_VIBRO;
-            int desc = st.PREF_KEY_VIBRO_LONG_DURATION.equals(key)?R.string.set_key_long_vibro_duration_desc:R.string.set_key_short_vibro_duration_desc;
-            if(checkIntValue(key,def))
-            {
-                try{
-                    String v = st.pref(this).getString(key, def);
-                    setSummary(key, desc,v);
                 }
                 catch (Throwable e) {
                 }
@@ -275,10 +267,11 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         }
         return bOk;
     }
+/** Настройка интервалов нажатий */    
     void showIntervalsEditor()
     {
         final View v = getLayoutInflater().inflate(R.layout.edit_intervals, null);
-        int max = 5000,min = 500;
+        int max = 5000,min = 50;
         int steps[] = new int[]{50,100,100};
         final SharedPreferences p = st.pref(this);
         IntEditor ie = null;
@@ -288,7 +281,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         ie.setSteps(steps);
         
         ie = (IntEditor)v.findViewById(R.id.first_repeat);
-        min = 400;
+        min = 50;
         ie.setMinAndMax(min, max);
         ie.setValue(p.getInt(st.PREF_KEY_REPEAT_FIRST_INTERVAL, min));
         ie.setSteps(steps);
@@ -316,6 +309,54 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
                     e.commit();
                     if(OwnKeyboardHandler.inst!=null)
                         OwnKeyboardHandler.inst.loadFromSettings();
+                }
+                return 0;
+            }
+        };
+        Dlg.CustomDialog(this, v, getString(R.string.ok), getString(R.string.cancel), null, obs);
+    }
+    void showVibroDuration()
+    {
+        final View v = getLayoutInflater().inflate(R.layout.edit_intervals, null);
+        int max = 5000,min = 10;
+        ((TextView)v.findViewById(R.id.interval1)).setText(R.string.set_key_short_vibro_duration);
+        ((TextView)v.findViewById(R.id.interval2)).setText(R.string.set_key_long_vibro_duration);
+        ((TextView)v.findViewById(R.id.interval3)).setText(R.string.set_key_repeat_vibro_duration);
+        int steps[] = new int[]{5,10,20};
+        final SharedPreferences p = st.pref(this);
+        IntEditor ie = null;
+        ie = (IntEditor)v.findViewById(R.id.long_press);
+        ie.setMinAndMax(min, max);
+        ie.setValue(Integer.decode(p.getString(st.PREF_KEY_VIBRO_SHORT_DURATION, DEF_LONG_VIBRO)));
+        ie.setSteps(steps);
+        
+        ie = (IntEditor)v.findViewById(R.id.first_repeat);
+        ie.setMinAndMax(min, max);
+        ie.setValue(Integer.decode(p.getString(st.PREF_KEY_VIBRO_LONG_DURATION, DEF_LONG_VIBRO)));
+        ie.setSteps(steps);
+
+        ie = (IntEditor)v.findViewById(R.id.next_repeat);
+        ie.setMinAndMax(min, max);
+        ie.setValue(Integer.decode(p.getString(st.PREF_KEY_VIBRO_REPEAT_DURATION, DEF_LONG_VIBRO)));
+        ie.setSteps(steps);
+        st.UniObserver obs = new st.UniObserver()
+        {
+            @Override
+            public int OnObserver(Object param1, Object param2)
+            {
+                if(((Integer)param1).intValue()==AlertDialog.BUTTON_POSITIVE)
+                {
+                    IntEditor ie;
+                    Editor e = p.edit();
+                    ie = (IntEditor)v.findViewById(R.id.long_press);
+                    e.putString(st.PREF_KEY_VIBRO_SHORT_DURATION, ""+ie.getValue());
+                    ie = (IntEditor)v.findViewById(R.id.first_repeat);
+                    e.putString(st.PREF_KEY_VIBRO_LONG_DURATION, ""+ie.getValue());
+                    ie = (IntEditor)v.findViewById(R.id.next_repeat);
+                    e.putString(st.PREF_KEY_VIBRO_REPEAT_DURATION, ""+ie.getValue());
+                    e.commit();
+                    if(VibroThread.inst!=null)
+                        VibroThread.inst.readSettings();
                 }
                 return 0;
             }

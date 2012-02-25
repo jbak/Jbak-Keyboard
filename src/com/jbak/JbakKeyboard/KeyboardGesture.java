@@ -17,6 +17,7 @@ public class KeyboardGesture extends GestureDetector
         JbKbdView m_kv;
         int minGestSize = 100;
         float deltaDelim = (float) 1.5;
+        int minVelocity = 200;
         public KvListener setKeyboardView(JbKbdView kv)
         {
             m_kv = kv;
@@ -32,13 +33,13 @@ public class KeyboardGesture extends GestureDetector
             float mdx = Math.abs(dx);
             float mdy = Math.abs(dy);
             st.log("dx="+dx+"; dy="+dy+";vX="+velocityX+";vY="+velocityY+"|downX="+downX+"; downY="+downY);
-            if(mdx>=minGestSize&&(mdy==0||mdx/mdy>=deltaDelim)&&Math.abs(velocityX)>1000)
+            if(mdx>=minGestSize&&(mdy==0||mdx/mdy>=deltaDelim)&&Math.abs(velocityX)>minVelocity)
             {
                 int type = velocityX>0?GestureInfo.RIGHT:GestureInfo.LEFT;
                 m_kv.gesture(new GestureInfo(null,type));
                 return true;
             }
-            if(mdy>=minGestSize&&(mdx==0||mdy/mdx>=deltaDelim)&&Math.abs(velocityY)>1000&&(velocityX==0||Math.abs(velocityY/velocityX)>=2.5))
+            if(mdy>=minGestSize&&(mdx==0||mdy/mdx>=deltaDelim)&&Math.abs(velocityY)>minVelocity&&(velocityX==0||Math.abs(velocityY/velocityX)>=deltaDelim))
             {
                 int type = velocityY>0?GestureInfo.DOWN:GestureInfo.UP;
                 m_kv.gesture(new GestureInfo(null,type));

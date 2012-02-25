@@ -29,9 +29,17 @@ public interface IKbdSettings
  *  Заменено на PREF_KEY_VIBRO_SHORT_TYPE */
     public static final String PREF_KEY_VIBRO_SHORT_KEY = "vs";
 /** Ключ, String, тип вибро при коротком нажатии. "0" - нет, "1" - при отпускании, "2" - при нажатии*/    
-    public static final String PREF_KEY_VIBRO_SHORT_TYPE = "vibro_short";
+    public static final String PREF_KEY_USE_SHORT_VIBRO = "vibro_short";
 /** Ключ, boolean, хранящий настройку вибро при коротком нажатии */    
-    public static final String PREF_KEY_VIBRO_LONG_KEY = "vl";
+    public static final String PREF_KEY_USE_LONG_VIBRO = "vl";
+/** Ключ, String, интервал вибро для повтора клавиши */
+    public static final String PREF_KEY_USE_REPEAT_VIBRO = "vibro_repeat";
+/** Ключ, String, интервал вибро для короткого нажатия*/
+    public static final String PREF_KEY_VIBRO_SHORT_DURATION = "vibro_short_duration";
+    /** Ключ, String, интервал вибро для удержания*/
+    public static final String PREF_KEY_VIBRO_LONG_DURATION = "vibro_long_duration";
+    /** Ключ, String, интервал вибро для повтора клавиши */
+    public static final String PREF_KEY_VIBRO_REPEAT_DURATION = "vibro_repeat_duration";
 /** Ключ, boolean, хранящий настройку проигрывания звуков */    
     public static final String PREF_KEY_SOUND = "sound";
 /** Ключ, String, хранящий путь к клавиатуре для выбраного языка в портрете
@@ -78,10 +86,6 @@ public interface IKbdSettings
     public static final String PREF_KEY_REPEAT_DELAY = "key_repeat";
     /** Ключ, String, количество записей в буфере обмена (преобразуется в int)*/
     public static final String PREF_KEY_CLIPBRD_SIZE = "clipboard_size";
-    /** Ключ, String, интервал вибро для короткого нажатия*/
-    public static final String PREF_KEY_VIBRO_SHORT_DURATION = "vibro_short_duration";
-    /** Ключ, String, интервал вибро для удержания*/
-    public static final String PREF_KEY_VIBRO_LONG_DURATION = "vibro_long_duration";
     /** Ключ, int, интервал длинного нажатия в ms*/
     public static final String PREF_KEY_LONG_PRESS_INTERVAL = "int_long_press";
     /** Ключ, int, интервал первого повтора в ms*/

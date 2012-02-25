@@ -310,7 +310,6 @@ public class SetKbdActivity extends Activity
         @Override
         public void onPress(int primaryCode)
         {
-            st.kv().onKeyPress(primaryCode);
         }
         @Override
         public void onKey(int primaryCode, int[] keyCodes)
