@@ -175,8 +175,12 @@ com.jbak.JbakKeyboard.IKbdSettings:
     public static final java.lang.String PREF_KEY_DEF_HEIGHT
     public static final java.lang.String PREF_KEY_LANGS
     public static final java.lang.String PREF_KEY_VIBRO_SHORT_KEY
-    public static final java.lang.String PREF_KEY_VIBRO_SHORT_TYPE
-    public static final java.lang.String PREF_KEY_VIBRO_LONG_KEY
+    public static final java.lang.String PREF_KEY_USE_SHORT_VIBRO
+    public static final java.lang.String PREF_KEY_USE_LONG_VIBRO
+    public static final java.lang.String PREF_KEY_USE_REPEAT_VIBRO
+    public static final java.lang.String PREF_KEY_VIBRO_SHORT_DURATION
+    public static final java.lang.String PREF_KEY_VIBRO_LONG_DURATION
+    public static final java.lang.String PREF_KEY_VIBRO_REPEAT_DURATION
     public static final java.lang.String PREF_KEY_SOUND
     public static final java.lang.String PREF_KEY_LANG_KBD_PORTRAIT
     public static final java.lang.String PREF_KEY_LANG_KBD_LANDSCAPE
@@ -198,8 +202,6 @@ com.jbak.JbakKeyboard.IKbdSettings:
     public static final java.lang.String PREF_KEY_SHIFT_STATE
     public static final java.lang.String PREF_KEY_REPEAT_DELAY
     public static final java.lang.String PREF_KEY_CLIPBRD_SIZE
-    public static final java.lang.String PREF_KEY_VIBRO_SHORT_DURATION
-    public static final java.lang.String PREF_KEY_VIBRO_LONG_DURATION
     public static final java.lang.String PREF_KEY_LONG_PRESS_INTERVAL
     public static final java.lang.String PREF_KEY_REPEAT_FIRST_INTERVAL
     public static final java.lang.String PREF_KEY_REPEAT_NEXT_INTERVAL
@@ -241,6 +243,7 @@ com.jbak.JbakKeyboard.IKeyboard:
     public static final java.lang.String LANG_SYM_KBD1
     public static final java.lang.String LANG_EDITTEXT
     public static final java.lang.String LANG_SMILE
+    public static final java.lang.String LANG_NUMBER
     public static final int LANG_EN
     public static final int LANG_RU
     public static final int LANG_UK
@@ -253,6 +256,7 @@ com.jbak.JbakKeyboard.IKeyboard:
     public static final int LANG_SYM1
     public static final int LANG_EDIT
     public static final int LANG_SMIL
+    public static final int LANG_NUM
     public static final int KBD_QWERTY_EN
     public static final int KBD_QWERTY_RU
     public static final int KBD_QWERTY_BE
@@ -269,7 +273,7 @@ com.jbak.JbakKeyboard.IKeyboard:
     public static final int DF_BIG_GAP
     public static final int DEF_COLOR
     public static final int KBD_DESIGN_STANDARD
-    352:358:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
+    357:363:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
 com.jbak.JbakKeyboard.JbCandView
 com.jbak.JbakKeyboard.JbKbd:
     54:55:void setHeightKey(int)
@@ -300,7 +304,7 @@ com.jbak.JbakKeyboard.KeyboardGesture$GestureInfo:
     public static final int UP
     public static final int DOWN
 com.jbak.JbakKeyboard.KeyboardGesture$KvListener:
-    53:58:final com.jbak.JbakKeyboard.JbKbd$LatinKey getKey(int,int)
+    54:59:final com.jbak.JbakKeyboard.JbKbd$LatinKey getKey(int,int)
 com.jbak.JbakKeyboard.KeyboardPaints:
     public static final int VAL_KEY_HEIGHT_PORTRAIT
     public static final int VAL_KEY_HEIGHT_LANDSCAPE
@@ -313,6 +317,8 @@ com.jbak.JbakKeyboard.OwnKeyboardHandler:
     public static final int MSG_REPEAT
     public static final int MSG_LONGPRESS
     public static final int MSG_INVALIDATE
+    public static final int MSG_MY_REPEAT
+    public static final int MSG_MY_LONG_PRESS
 com.jbak.JbakKeyboard.R
 com.jbak.JbakKeyboard.R$array
 com.jbak.JbakKeyboard.R$attr
@@ -362,8 +368,6 @@ com.jbak.JbakKeyboard.Templates:
     16:18:static void destroy()
 com.jbak.JbakKeyboard.TplEditorActivity:
     public static final java.lang.String EXTRA_CLIPBOARD_ENTRY
-com.jbak.JbakKeyboard.VibroThread:
-    29:30:void destroy()
 com.jbak.JbakKeyboard.Words:
     public static final java.lang.String DEF_PATH
     public static final java.lang.String DEF_EXT

@@ -578,6 +578,8 @@ public class JbKbdView extends KeyboardView {
             LatinKey key = getCurKeyboard().getKeyByCode(primaryCode);
             if(key==null)
                 return;
+            if(m_vibro.hasVibroOnPress())
+                m_vibro.runVibro(m_vibro.m_shortVibro);
             if(m_handler!=null)
             {
                 if(key.trueRepeat)

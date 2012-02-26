@@ -23,6 +23,8 @@
     <string name="set_key_short_vibro_desc">Выбор вибрации при коротких нажатиях клавиш</string>
     <string name="set_key_long_vibro">Вибрация при удержании</string>
     <string name="set_key_long_vibro_desc">Если включено - экран вибрирует при долгом нажатии клавиши</string>
+    <string name="set_key_repeat_vibro">Вибрация при повторах</string>
+    <string name="set_key_repeat_vibro_desc">Если включено - вибрирует при повторах клавиш (например, при удержании бэкспейс)</string>
     <string name="set_key_short_vibro_duration">Интервал для нажатия</string>
     <string name="set_key_long_vibro_duration">Интервал для удержания</string>
     <string name="set_key_repeat_vibro_duration">Интервал для повтора</string>

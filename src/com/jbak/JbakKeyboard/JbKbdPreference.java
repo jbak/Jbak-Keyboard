@@ -104,6 +104,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) 
     {
+        inst = this;
         String k = preference.getKey();
         Context c = preference.getContext();
         if("vibro_durations".equals(k))
@@ -325,20 +326,31 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         int steps[] = new int[]{5,10,20};
         final SharedPreferences p = st.pref(this);
         IntEditor ie = null;
+        IntEditor.OnChangeValue cv = new IntEditor.OnChangeValue()
+        {
+            @Override
+            public void onChangeIntValue(IntEditor edit)
+            {
+                VibroThread.getInstance(inst).runForce(edit.getValue());
+            }
+        };
         ie = (IntEditor)v.findViewById(R.id.long_press);
         ie.setMinAndMax(min, max);
         ie.setValue(Integer.decode(p.getString(st.PREF_KEY_VIBRO_SHORT_DURATION, DEF_LONG_VIBRO)));
         ie.setSteps(steps);
-        
+        ie.setOnChangeValue(cv);
+
         ie = (IntEditor)v.findViewById(R.id.first_repeat);
         ie.setMinAndMax(min, max);
         ie.setValue(Integer.decode(p.getString(st.PREF_KEY_VIBRO_LONG_DURATION, DEF_LONG_VIBRO)));
         ie.setSteps(steps);
+        ie.setOnChangeValue(cv);
 
         ie = (IntEditor)v.findViewById(R.id.next_repeat);
         ie.setMinAndMax(min, max);
         ie.setValue(Integer.decode(p.getString(st.PREF_KEY_VIBRO_REPEAT_DURATION, DEF_LONG_VIBRO)));
         ie.setSteps(steps);
+        ie.setOnChangeValue(cv);
         st.UniObserver obs = new st.UniObserver()
         {
             @Override

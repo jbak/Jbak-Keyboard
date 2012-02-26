@@ -105,6 +105,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             ClipbrdService.inst.stopSelf();
         st.pref().unregisterOnSharedPreferenceChangeListener(this);
         KeyboardPaints.inst = null;
+        if(VibroThread.inst!=null)
+            VibroThread.inst.destroy();
         if(st.kv()!=null)
         {
             st.kv().setOnKeyboardActionListener(null);
@@ -867,6 +869,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
     {
+        VibroThread.getInstance(this).readSettings();
         if (st.PREF_KEY_EDIT_SETTINGS.equals(key))
         {
             m_es.load(st.PREF_KEY_EDIT_SETTINGS);

@@ -36,6 +36,8 @@ public class VibroThread extends ContentObserver
     void destroy()
     {
         m_c.getContentResolver().unregisterContentObserver(this);
+        m_c = null;
+        inst = null;
     }
     @Override
     public void onChange(boolean selfChange) 
@@ -71,15 +73,17 @@ public class VibroThread extends ContentObserver
             r = m_runLong;
         if(r!=null)
             new Thread(r).run();
-        else
-            new Thread(new Runnable()
+    }
+    void runForce(final int interval)
+    {
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
             {
-                @Override
-                public void run()
-                {
-                    m_vibro.vibrate(interval);
-                }
-            }).run();
+                m_vibro.vibrate(interval);
+            }
+        }).run();
     }
     final boolean isSilent()
     {
