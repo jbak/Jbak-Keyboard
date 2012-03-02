@@ -119,7 +119,7 @@
             android:title="@string/set_key_long_vibro" />
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="vl"
+            android:key="vibro_repeat"
             android:summary="@string/set_key_repeat_vibro_desc"
             android:title="@string/set_key_repeat_vibro" />
 		<Preference 

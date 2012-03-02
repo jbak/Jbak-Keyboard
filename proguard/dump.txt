@@ -42684,9 +42684,9 @@ Constant Pool (count = 115):
   - Fieldref [com/jbak/JbakKeyboard/ah.iconPreview Landroid/graphics/drawable/Drawable;]
   - Fieldref [com/jbak/JbakKeyboard/ah.label Ljava/lang/CharSequence;]
   - Fieldref [com/jbak/JbakKeyboard/ah.repeatable Z]
-  - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
   - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
-  - Fieldref [com/jbak/JbakKeyboard/an.i Z]
+  - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
+  - Fieldref [com/jbak/JbakKeyboard/an.j Z]
   - Fieldref [com/jbak/JbakKeyboard/ca.d I]
   - Methodref [android/inputmethodservice/Keyboard$Key.<init> (Landroid/content/res/Resources;Landroid/inputmethodservice/Keyboard$Row;IILandroid/content/res/XmlResourceParser;)V]
   - Methodref [android/inputmethodservice/Keyboard$Key.<init> (Landroid/inputmethodservice/Keyboard$Row;)V]
@@ -42708,21 +42708,21 @@ Constant Pool (count = 115):
   + NameAndType [b (Z)V]
   + NameAndType [b I]
   + NameAndType [b Lcom/jbak/JbakKeyboard/JbKbdView;]
-  + NameAndType [b Ljava/lang/String;]
   + NameAndType [c I]
   + NameAndType [c Ljava/lang/String;]
   + NameAndType [charAt (I)C]
   + NameAndType [codes [I]
   + NameAndType [d I]
+  + NameAndType [d Ljava/lang/String;]
   + NameAndType [d Z]
   + NameAndType [defaultHeight I]
   + NameAndType [e Z]
   + NameAndType [f (Ljava/lang/String;)I]
   + NameAndType [f Z]
   + NameAndType [height I]
-  + NameAndType [i Z]
   + NameAndType [icon Landroid/graphics/drawable/Drawable;]
   + NameAndType [iconPreview Landroid/graphics/drawable/Drawable;]
+  + NameAndType [j Z]
   + NameAndType [label Ljava/lang/CharSequence;]
   + NameAndType [length ()I]
   + NameAndType [repeatable Z]
@@ -42767,9 +42767,9 @@ Constant Pool (count = 115):
   + Utf8 [e]
   + Utf8 [f]
   + Utf8 [height]
-  + Utf8 [i]
   + Utf8 [icon]
   + Utf8 [iconPreview]
+  + Utf8 [j]
   + Utf8 [java/lang/String]
   + Utf8 [label]
   + Utf8 [length]
@@ -42935,7 +42935,7 @@ Methods (count = 4):
       [59] getfield #18
         - Fieldref [com/jbak/JbakKeyboard/ah.e Z]
       [62] putfield #27
-        - Fieldref [com/jbak/JbakKeyboard/an.i Z]
+        - Fieldref [com/jbak/JbakKeyboard/an.j Z]
       [65] aload_0 v0
       [66] getfield #13
         - Fieldref [com/jbak/JbakKeyboard/ah.a Lcom/jbak/JbakKeyboard/an;]
@@ -42963,13 +42963,13 @@ Methods (count = 4):
       [101] getfield #13
         - Fieldref [com/jbak/JbakKeyboard/ah.a Lcom/jbak/JbakKeyboard/an;]
       [104] getfield #25
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
       [107] ifnull +60 (target=167)
       [110] aload_0 v0
       [111] getfield #13
         - Fieldref [com/jbak/JbakKeyboard/ah.a Lcom/jbak/JbakKeyboard/an;]
       [114] getfield #25
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
       [117] invokevirtual #38
         - Methodref [java/lang/String.length ()I]
       [120] iconst_1
@@ -42983,7 +42983,7 @@ Methods (count = 4):
       [131] getfield #13
         - Fieldref [com/jbak/JbakKeyboard/ah.a Lcom/jbak/JbakKeyboard/an;]
       [134] getfield #25
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
       [137] iconst_0
       [138] invokevirtual #37
         - Methodref [java/lang/String.charAt (I)C]
@@ -43016,14 +43016,14 @@ Methods (count = 4):
       [177] getfield #13
         - Fieldref [com/jbak/JbakKeyboard/ah.a Lcom/jbak/JbakKeyboard/an;]
       [180] getfield #26
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
       [183] ifnull +17 (target=200)
       [186] aload_0 v0
       [187] aload_0 v0
       [188] getfield #13
         - Fieldref [com/jbak/JbakKeyboard/ah.a Lcom/jbak/JbakKeyboard/an;]
       [191] getfield #26
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
       [194] invokestatic #36
         - Methodref [com/jbak/JbakKeyboard/ca.f (Ljava/lang/String;)I]
       [197] putfield #14
@@ -43122,7 +43122,7 @@ Methods (count = 4):
       [1] getfield #13
         - Fieldref [com/jbak/JbakKeyboard/ah.a Lcom/jbak/JbakKeyboard/an;]
       [4] getfield #25
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
       [7] areturn
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 1):
@@ -46373,7 +46373,7 @@ _____________________________________________________________________
 
 Interfaces (count = 0):
 
-Constant Pool (count = 744):
+Constant Pool (count = 745):
   - Integer [-16777216]
   - Integer [12345678]
   - String [0]
@@ -46507,9 +46507,9 @@ Constant Pool (count = 744):
   - Fieldref [com/jbak/JbakKeyboard/ah.b I]
   - Fieldref [com/jbak/JbakKeyboard/ah.codes [I]
   - Fieldref [com/jbak/JbakKeyboard/ah.popupCharacters Ljava/lang/CharSequence;]
-  - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
-  - Fieldref [com/jbak/JbakKeyboard/an.e Z]
-  - Fieldref [com/jbak/JbakKeyboard/an.j I]
+  - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
+  - Fieldref [com/jbak/JbakKeyboard/an.f Z]
+  - Fieldref [com/jbak/JbakKeyboard/an.k I]
   - Fieldref [com/jbak/JbakKeyboard/aq.b I]
   - Fieldref [com/jbak/JbakKeyboard/as.b Landroid/graphics/Paint;]
   - Fieldref [com/jbak/JbakKeyboard/as.c Landroid/graphics/Paint;]
@@ -46718,16 +46718,17 @@ Constant Pool (count = 744):
   + NameAndType [d I]
   + NameAndType [d Landroid/graphics/Paint;]
   + NameAndType [d Lcom/jbak/JbakKeyboard/d;]
+  + NameAndType [d Ljava/lang/String;]
   + NameAndType [decode (Ljava/lang/String;)Ljava/lang/Integer;]
   + NameAndType [e ()Lcom/jbak/a/b;]
   + NameAndType [e ()Z]
   + NameAndType [e I]
-  + NameAndType [e Z]
   + NameAndType [equals (Ljava/lang/Object;)Z]
   + NameAndType [f ()V]
   + NameAndType [f I]
   + NameAndType [f Landroid/graphics/drawable/StateListDrawable;]
   + NameAndType [f Ljava/lang/String;]
+  + NameAndType [f Z]
   + NameAndType [g ()Lcom/jbak/JbakKeyboard/ae;]
   + NameAndType [g Landroid/graphics/drawable/Drawable;]
   + NameAndType [g Lcom/jbak/a/c;]
@@ -47820,11 +47821,11 @@ Methods (count = 24):
       [528] ifeq +11 (target=539)
       [531] bipush 8
       [533] putstatic #139
-        - Fieldref [com/jbak/JbakKeyboard/an.j I]
+        - Fieldref [com/jbak/JbakKeyboard/an.k I]
       [536] goto +7 (target=543)
       [539] iconst_5
       [540] putstatic #139
-        - Fieldref [com/jbak/JbakKeyboard/an.j I]
+        - Fieldref [com/jbak/JbakKeyboard/an.k I]
       [543] aload_0 v0
       [544] getfield #107
         - Fieldref [com/jbak/JbakKeyboard/JbKbdView.p Lcom/jbak/JbakKeyboard/ad;]
@@ -47872,7 +47873,7 @@ Methods (count = 24):
       [608] iconst_2
       [609] iadd
       [610] putstatic #139
-        - Fieldref [com/jbak/JbakKeyboard/an.j I]
+        - Fieldref [com/jbak/JbakKeyboard/an.k I]
       [613] aload_0 v0
       [614] getfield #107
         - Fieldref [com/jbak/JbakKeyboard/JbKbdView.p Lcom/jbak/JbakKeyboard/ad;]
@@ -48850,7 +48851,7 @@ Methods (count = 24):
         - Fieldref [com/jbak/JbakKeyboard/JbKbdView.a Lcom/jbak/JbakKeyboard/an;]
       [98] iconst_1
       [99] putfield #138
-        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
+        - Fieldref [com/jbak/JbakKeyboard/an.f Z]
       [102] aload_1 v1
       [103] aload_0 v0
       [104] getfield #92
@@ -48969,7 +48970,7 @@ Methods (count = 24):
       [269] getfield #133
         - Fieldref [com/jbak/JbakKeyboard/ah.a Lcom/jbak/JbakKeyboard/an;]
       [272] getfield #137
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
       [275] ifnull +67 (target=342)
       [278] aload_2 v2
       [279] getfield #115
@@ -48981,7 +48982,7 @@ Methods (count = 24):
       [289] getfield #133
         - Fieldref [com/jbak/JbakKeyboard/ah.a Lcom/jbak/JbakKeyboard/an;]
       [292] getfield #137
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
       [295] invokevirtual #265
         - Methodref [java/lang/String.length ()I]
       [298] iconst_1
@@ -48992,7 +48993,7 @@ Methods (count = 24):
       [306] getfield #133
         - Fieldref [com/jbak/JbakKeyboard/ah.a Lcom/jbak/JbakKeyboard/an;]
       [309] getfield #137
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
       [312] iconst_0
       [313] invokevirtual #263
         - Methodref [java/lang/String.charAt (I)C]
@@ -49006,7 +49007,7 @@ Methods (count = 24):
       [327] getfield #133
         - Fieldref [com/jbak/JbakKeyboard/ah.a Lcom/jbak/JbakKeyboard/an;]
       [330] getfield #137
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
       [333] invokeinterface #278
         - InterfaceMethodref [android/inputmethodservice/KeyboardView$OnKeyboardActionListener.onText (Ljava/lang/CharSequence;)V]
       [338] iconst_1
@@ -50096,7 +50097,7 @@ _____________________________________________________________________
 Interfaces (count = 1):
   - Class [android/inputmethodservice/KeyboardView$OnKeyboardActionListener]
 
-Constant Pool (count = 122):
+Constant Pool (count = 120):
   - Class [android/inputmethodservice/KeyboardView]
   - Class [android/inputmethodservice/KeyboardView$OnKeyboardActionListener]
   - Class [com/jbak/JbakKeyboard/JbKbdView]
@@ -50117,7 +50118,7 @@ Constant Pool (count = 122):
   - Fieldref [com/jbak/JbakKeyboard/ah.f Z]
   - Fieldref [com/jbak/JbakKeyboard/ah.iconPreview Landroid/graphics/drawable/Drawable;]
   - Fieldref [com/jbak/JbakKeyboard/am.a Lcom/jbak/JbakKeyboard/JbKbdView;]
-  - Fieldref [com/jbak/JbakKeyboard/an.e Z]
+  - Fieldref [com/jbak/JbakKeyboard/an.f Z]
   - Fieldref [com/jbak/JbakKeyboard/bu.b I]
   - Methodref [com/jbak/JbakKeyboard/JbKbdView.a ()Lcom/jbak/JbakKeyboard/ag;]
   - Methodref [com/jbak/JbakKeyboard/JbKbdView.isPreviewEnabled ()Z]
@@ -50147,7 +50148,6 @@ Constant Pool (count = 122):
   + NameAndType [c ()Z]
   + NameAndType [c Lcom/jbak/JbakKeyboard/bu;]
   + NameAndType [codes [I]
-  + NameAndType [e Z]
   + NameAndType [f Z]
   + NameAndType [iconPreview Landroid/graphics/drawable/Drawable;]
   + NameAndType [isPreviewEnabled ()Z]
@@ -50200,7 +50200,6 @@ Constant Pool (count = 122):
   + Utf8 [com/jbak/JbakKeyboard/an]
   + Utf8 [com/jbak/JbakKeyboard/ax]
   + Utf8 [com/jbak/JbakKeyboard/bu]
-  + Utf8 [e]
   + Utf8 [f]
   + Utf8 [iconPreview]
   + Utf8 [isPreviewEnabled]
@@ -50410,7 +50409,7 @@ Methods (count = 9):
         - Fieldref [com/jbak/JbakKeyboard/JbKbdView.a Lcom/jbak/JbakKeyboard/an;]
       [132] iconst_0
       [133] putfield #21
-        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
+        - Fieldref [com/jbak/JbakKeyboard/an.f Z]
       [136] aload_2 v2
       [137] aload_0 v0
       [138] getfield #20
@@ -50588,7 +50587,7 @@ _____________________________________________________________________
 
 Interfaces (count = 0):
 
-Constant Pool (count = 288):
+Constant Pool (count = 291):
   - Integer [12345678]
   - Class [android/graphics/Bitmap]
   - Class [android/graphics/Canvas]
@@ -50622,16 +50621,17 @@ Constant Pool (count = 288):
   - Fieldref [com/jbak/JbakKeyboard/ah.label Ljava/lang/CharSequence;]
   - Fieldref [com/jbak/JbakKeyboard/ah.width I]
   - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-  - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
+  - Fieldref [com/jbak/JbakKeyboard/an.b Landroid/graphics/Bitmap;]
   - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
-  - Fieldref [com/jbak/JbakKeyboard/an.d Z]
+  - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
   - Fieldref [com/jbak/JbakKeyboard/an.e Z]
   - Fieldref [com/jbak/JbakKeyboard/an.f Z]
-  - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-  - Fieldref [com/jbak/JbakKeyboard/an.h Z]
+  - Fieldref [com/jbak/JbakKeyboard/an.g Z]
+  - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
   - Fieldref [com/jbak/JbakKeyboard/an.i Z]
-  - Fieldref [com/jbak/JbakKeyboard/an.j I]
-  - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
+  - Fieldref [com/jbak/JbakKeyboard/an.j Z]
+  - Fieldref [com/jbak/JbakKeyboard/an.k I]
+  - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
   - Fieldref [com/jbak/JbakKeyboard/ao.a Ljava/lang/String;]
   - Fieldref [com/jbak/JbakKeyboard/ao.b Ljava/lang/String;]
   - Fieldref [com/jbak/JbakKeyboard/ao.c F]
@@ -50701,6 +50701,7 @@ Constant Pool (count = 288):
   + NameAndType [a Ljava/lang/String;]
   + NameAndType [ascent ()F]
   + NameAndType [b (I)Landroid/graphics/Bitmap;]
+  + NameAndType [b Landroid/graphics/Bitmap;]
   + NameAndType [b Landroid/graphics/Paint;]
   + NameAndType [b Lcom/jbak/JbakKeyboard/JbKbdView;]
   + NameAndType [b Ljava/lang/String;]
@@ -50712,7 +50713,7 @@ Constant Pool (count = 288):
   + NameAndType [d (II)I]
   + NameAndType [d F]
   + NameAndType [d Landroid/graphics/Paint;]
-  + NameAndType [d Z]
+  + NameAndType [d Ljava/lang/String;]
   + NameAndType [descent ()F]
   + NameAndType [draw (Landroid/graphics/Canvas;)V]
   + NameAndType [drawBitmap (Landroid/graphics/Bitmap;FFLandroid/graphics/Paint;)V]
@@ -50725,7 +50726,7 @@ Constant Pool (count = 288):
   + NameAndType [f I]
   + NameAndType [f Z]
   + NameAndType [g F]
-  + NameAndType [g Landroid/graphics/Rect;]
+  + NameAndType [g Z]
   + NameAndType [getBitmap ()Landroid/graphics/Bitmap;]
   + NameAndType [getHeight ()F]
   + NameAndType [getHeight ()I]
@@ -50733,17 +50734,17 @@ Constant Pool (count = 288):
   + NameAndType [getWidth ()F]
   + NameAndType [getWidth ()I]
   + NameAndType [h F]
-  + NameAndType [h Z]
+  + NameAndType [h Landroid/graphics/Rect;]
   + NameAndType [height ()I]
   + NameAndType [height I]
   + NameAndType [i Landroid/text/TextPaint;]
   + NameAndType [i Z]
   + NameAndType [icon Landroid/graphics/drawable/Drawable;]
   + NameAndType [indexOf (I)I]
-  + NameAndType [j I]
+  + NameAndType [j Z]
   + NameAndType [k I]
   + NameAndType [k Landroid/graphics/drawable/StateListDrawable;]
-  + NameAndType [k Lcom/jbak/JbakKeyboard/ao;]
+  + NameAndType [l Lcom/jbak/JbakKeyboard/ao;]
   + NameAndType [label Ljava/lang/CharSequence;]
   + NameAndType [left I]
   + NameAndType [length ()I]
@@ -50858,6 +50859,7 @@ Constant Pool (count = 288):
   + Utf8 [java/lang/CharSequence]
   + Utf8 [java/lang/String]
   + Utf8 [k]
+  + Utf8 [l]
   + Utf8 [label]
   + Utf8 [left]
   + Utf8 [length]
@@ -50877,40 +50879,43 @@ Constant Pool (count = 288):
   + Utf8 [translate]
   + Utf8 [width]
 
-Fields (count = 11):
+Fields (count = 12):
   + Field:        a Landroid/graphics/Bitmap;
     Access flags: 0x0
       = android.graphics.Bitmap a
-  + Field:        b Ljava/lang/String;
+  + Field:        b Landroid/graphics/Bitmap;
     Access flags: 0x0
-      = java.lang.String b
+      = android.graphics.Bitmap b
   + Field:        c Ljava/lang/String;
     Access flags: 0x0
       = java.lang.String c
-  + Field:        d Z
+  + Field:        d Ljava/lang/String;
     Access flags: 0x0
-      = boolean d
+      = java.lang.String d
   + Field:        e Z
     Access flags: 0x0
       = boolean e
   + Field:        f Z
     Access flags: 0x0
       = boolean f
-  + Field:        g Landroid/graphics/Rect;
+  + Field:        g Z
     Access flags: 0x0
-      = android.graphics.Rect g
-  + Field:        h Z
+      = boolean g
+  + Field:        h Landroid/graphics/Rect;
     Access flags: 0x0
-      = boolean h
+      = android.graphics.Rect h
   + Field:        i Z
     Access flags: 0x0
       = boolean i
-  + Field:        j I
-    Access flags: 0x9
-      = public static int j
-  + Field:        k Lcom/jbak/JbakKeyboard/ao;
+  + Field:        j Z
     Access flags: 0x0
-      = com.jbak.JbakKeyboard.ao k
+      = boolean j
+  + Field:        k I
+    Access flags: 0x9
+      = public static int k
+  + Field:        l Lcom/jbak/JbakKeyboard/ao;
+    Access flags: 0x0
+      = com.jbak.JbakKeyboard.ao l
 
 Methods (count = 11):
   - Method:       <clinit>()V
@@ -50919,13 +50924,13 @@ Methods (count = 11):
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 5, locals = 0, stack = 1):
       [0] iconst_5
-      [1] putstatic #42
-        - Fieldref [com/jbak/JbakKeyboard/an.j I]
+      [1] putstatic #43
+        - Fieldref [com/jbak/JbakKeyboard/an.k I]
       [4] return
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 1):
       + Line number table attribute (count = 2)
-        [0] -> line 29
+        [0] -> line 30
         [4] -> line 17
   - Method:       <init>(Lcom/jbak/JbakKeyboard/ah;)V
     Access flags: 0x1
@@ -50933,84 +50938,84 @@ Methods (count = 11):
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 36, locals = 2, stack = 3):
       [0] aload_0 v0
-      [1] invokespecial #78
+      [1] invokespecial #79
         - Methodref [android/graphics/drawable/shapes/RectShape.<init> ()V]
       [4] aload_0 v0
       [5] iconst_0
-      [6] putfield #36
-        - Fieldref [com/jbak/JbakKeyboard/an.d Z]
+      [6] putfield #37
+        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
       [9] aload_0 v0
       [10] iconst_0
-      [11] putfield #37
-        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
+      [11] putfield #38
+        - Fieldref [com/jbak/JbakKeyboard/an.f Z]
       [14] aload_0 v0
       [15] iconst_0
-      [16] putfield #38
-        - Fieldref [com/jbak/JbakKeyboard/an.f Z]
+      [16] putfield #39
+        - Fieldref [com/jbak/JbakKeyboard/an.g Z]
       [19] aload_0 v0
       [20] iconst_0
-      [21] putfield #40
-        - Fieldref [com/jbak/JbakKeyboard/an.h Z]
+      [21] putfield #41
+        - Fieldref [com/jbak/JbakKeyboard/an.i Z]
       [24] aload_0 v0
       [25] iconst_0
-      [26] putfield #41
-        - Fieldref [com/jbak/JbakKeyboard/an.i Z]
+      [26] putfield #42
+        - Fieldref [com/jbak/JbakKeyboard/an.j Z]
       [29] aload_0 v0
       [30] aload_1 v1
       [31] iconst_0
-      [32] invokevirtual #83
+      [32] invokevirtual #84
         - Methodref [com/jbak/JbakKeyboard/an.a (Lcom/jbak/JbakKeyboard/ah;Z)V]
       [35] return
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 1):
       + Line number table attribute (count = 8)
-        [0] -> line 36
-        [4] -> line 23
-        [9] -> line 24
-        [14] -> line 25
-        [19] -> line 27
-        [24] -> line 28
-        [29] -> line 38
-        [35] -> line 39
+        [0] -> line 37
+        [4] -> line 24
+        [9] -> line 25
+        [14] -> line 26
+        [19] -> line 28
+        [24] -> line 29
+        [29] -> line 39
+        [35] -> line 40
   - Method:       <init>()V
     Access flags: 0x1
       = public an()
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 30, locals = 1, stack = 2):
       [0] aload_0 v0
-      [1] invokespecial #78
+      [1] invokespecial #79
         - Methodref [android/graphics/drawable/shapes/RectShape.<init> ()V]
       [4] aload_0 v0
       [5] iconst_0
-      [6] putfield #36
-        - Fieldref [com/jbak/JbakKeyboard/an.d Z]
+      [6] putfield #37
+        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
       [9] aload_0 v0
       [10] iconst_0
-      [11] putfield #37
-        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
+      [11] putfield #38
+        - Fieldref [com/jbak/JbakKeyboard/an.f Z]
       [14] aload_0 v0
       [15] iconst_0
-      [16] putfield #38
-        - Fieldref [com/jbak/JbakKeyboard/an.f Z]
+      [16] putfield #39
+        - Fieldref [com/jbak/JbakKeyboard/an.g Z]
       [19] aload_0 v0
       [20] iconst_0
-      [21] putfield #40
-        - Fieldref [com/jbak/JbakKeyboard/an.h Z]
+      [21] putfield #41
+        - Fieldref [com/jbak/JbakKeyboard/an.i Z]
       [24] aload_0 v0
       [25] iconst_0
-      [26] putfield #41
-        - Fieldref [com/jbak/JbakKeyboard/an.i Z]
+      [26] putfield #42
+        - Fieldref [com/jbak/JbakKeyboard/an.j Z]
       [29] return
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 1):
       + Line number table attribute (count = 7)
-        [0] -> line 41
-        [4] -> line 23
-        [9] -> line 24
-        [14] -> line 25
-        [19] -> line 27
-        [24] -> line 28
-        [29] -> line 43
+        [0] -> line 42
+        [4] -> line 24
+        [9] -> line 25
+        [14] -> line 26
+        [19] -> line 28
+        [24] -> line 29
+        [29] -> line 44
   + Method:       a()Landroid/graphics/drawable/Drawable;
     Access flags: 0x11
       = public final android.graphics.drawable.Drawable a()
@@ -51020,23 +51025,23 @@ Methods (count = 11):
         - Class [android/graphics/drawable/ShapeDrawable]
       [3] dup
       [4] aload_0 v0
-      [5] invokespecial #75
+      [5] invokespecial #76
         - Methodref [android/graphics/drawable/ShapeDrawable.<init> (Landroid/graphics/drawable/shapes/Shape;)V]
       [8] dup
       [9] astore_1 v1
       [10] aload_0 v0
-      [11] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [14] invokevirtual #76
+      [11] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [14] invokevirtual #77
         - Methodref [android/graphics/drawable/ShapeDrawable.setBounds (Landroid/graphics/Rect;)V]
       [17] aload_1 v1
       [18] areturn
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 1):
       + Line number table attribute (count = 3)
-        [0] -> line 46
-        [9] -> line 47
-        [17] -> line 48
+        [0] -> line 47
+        [9] -> line 48
+        [17] -> line 49
   + Method:       a(Z)V
     Access flags: 0x11
       = public final void a(boolean)
@@ -51044,14 +51049,14 @@ Methods (count = 11):
     + Code attribute instructions (code length = 6, locals = 2, stack = 2):
       [0] aload_0 v0
       [1] iload_1 v1
-      [2] putfield #38
-        - Fieldref [com/jbak/JbakKeyboard/an.f Z]
+      [2] putfield #39
+        - Fieldref [com/jbak/JbakKeyboard/an.g Z]
       [5] return
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 1):
       + Line number table attribute (count = 2)
-        [0] -> line 52
-        [5] -> line 53
+        [0] -> line 53
+        [5] -> line 54
   + Method:       b(Z)V
     Access flags: 0x11
       = public final void b(boolean)
@@ -51059,31 +51064,31 @@ Methods (count = 11):
     + Code attribute instructions (code length = 6, locals = 2, stack = 2):
       [0] aload_0 v0
       [1] iload_1 v1
-      [2] putfield #40
-        - Fieldref [com/jbak/JbakKeyboard/an.h Z]
+      [2] putfield #41
+        - Fieldref [com/jbak/JbakKeyboard/an.i Z]
       [5] return
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 1):
       + Line number table attribute (count = 2)
-        [0] -> line 56
-        [5] -> line 57
+        [0] -> line 57
+        [5] -> line 58
   + Method:       a(Landroid/graphics/Paint;)V
     Access flags: 0x2
       = private void a(android.graphics.Paint)
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 35, locals = 3, stack = 2):
       [0] aload_0 v0
-      [1] getfield #40
-        - Fieldref [com/jbak/JbakKeyboard/an.h Z]
+      [1] getfield #41
+        - Fieldref [com/jbak/JbakKeyboard/an.i Z]
       [4] ifeq +12 (target=16)
-      [7] invokestatic #92
+      [7] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [10] getfield #56
+      [10] getfield #57
         - Fieldref [com/jbak/JbakKeyboard/as.f I]
       [13] goto +9 (target=22)
-      [16] invokestatic #92
+      [16] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [19] getfield #55
+      [19] getfield #56
         - Fieldref [com/jbak/JbakKeyboard/as.e I]
       [22] dup
       [23] istore_2 v2
@@ -51092,16 +51097,16 @@ Methods (count = 11):
       [26] ificmpeq +8 (target=34)
       [29] aload_1 v1
       [30] iload_2 v2
-      [31] invokevirtual #68
+      [31] invokevirtual #69
         - Methodref [android/graphics/Paint.setColor (I)V]
       [34] return
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 2):
       + Line number table attribute (count = 4)
-        [0] -> line 60
-        [23] -> line 61
-        [29] -> line 62
-        [34] -> line 63
+        [0] -> line 61
+        [23] -> line 62
+        [29] -> line 63
+        [34] -> line 64
       + Stack map table attribute (count = 3):
         - [16] Var: ..., Stack: (empty)
         - [22] Var: ..., Stack: [i]
@@ -51110,21 +51115,21 @@ Methods (count = 11):
     Access flags: 0x10
       = final void a(com.jbak.JbakKeyboard.ah,boolean)
     Class member attributes (count = 1):
-    + Code attribute instructions (code length = 248, locals = 4, stack = 7):
+    + Code attribute instructions (code length = 255, locals = 4, stack = 7):
       [0] aload_0 v0
       [1] aconst_null
-      [2] putfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
+      [2] putfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
       [5] aload_0 v0
       [6] iload_2 v2
-      [7] putfield #36
-        - Fieldref [com/jbak/JbakKeyboard/an.d Z]
+      [7] putfield #37
+        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
       [10] aload_0 v0
       [11] aload_1 v1
       [12] getfield #28
         - Fieldref [com/jbak/JbakKeyboard/ah.e Z]
-      [15] putfield #41
-        - Fieldref [com/jbak/JbakKeyboard/an.i Z]
+      [15] putfield #42
+        - Fieldref [com/jbak/JbakKeyboard/an.j Z]
       [18] aload_1 v1
       [19] getfield #30
         - Fieldref [com/jbak/JbakKeyboard/ah.icon Landroid/graphics/drawable/Drawable;]
@@ -51141,40 +51146,40 @@ Methods (count = 11):
         - Fieldref [com/jbak/JbakKeyboard/ah.icon Landroid/graphics/drawable/Drawable;]
       [40] checkcast #6
         - Class [android/graphics/drawable/BitmapDrawable]
-      [43] invokevirtual #74
+      [43] invokevirtual #75
         - Methodref [android/graphics/drawable/BitmapDrawable.getBitmap ()Landroid/graphics/Bitmap;]
       [46] putfield #33
         - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [49] goto +144 (target=193)
+      [49] goto +50 (target=99)
       [52] aload_1 v1
       [53] getfield #30
         - Fieldref [com/jbak/JbakKeyboard/ah.icon Landroid/graphics/drawable/Drawable;]
       [56] instanceof #7
         - Class [android/graphics/drawable/ShapeDrawable]
-      [59] ifeq +134 (target=193)
+      [59] ifeq +40 (target=99)
       [62] aload_1 v1
       [63] getfield #27
         - Fieldref [com/jbak/JbakKeyboard/ah.a Lcom/jbak/JbakKeyboard/an;]
       [66] astore_2 v2
       [67] aload_0 v0
       [68] aload_2 v2
-      [69] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [72] putfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
+      [69] getfield #35
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+      [72] putfield #35
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
       [75] aload_0 v0
       [76] aload_2 v2
-      [77] getfield #35
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
-      [80] putfield #35
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+      [77] getfield #36
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
+      [80] putfield #36
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
       [83] aload_0 v0
       [84] aload_2 v2
       [85] getfield #33
         - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
       [88] putfield #33
         - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [91] goto +102 (target=193)
+      [91] goto +8 (target=99)
       [94] aload_0 v0
       [95] aconst_null
       [96] putfield #33
@@ -51182,164 +51187,170 @@ Methods (count = 11):
       [99] aload_1 v1
       [100] getfield #31
         - Fieldref [com/jbak/JbakKeyboard/ah.label Ljava/lang/CharSequence;]
-      [103] dup
-      [104] astore_2 v2
-      [105] invokeinterface #99
+      [103] ifnull +97 (target=200)
+      [106] aload_1 v1
+      [107] getfield #31
+        - Fieldref [com/jbak/JbakKeyboard/ah.label Ljava/lang/CharSequence;]
+      [110] dup
+      [111] astore_2 v2
+      [112] invokeinterface #100
         - InterfaceMethodref [java/lang/CharSequence.toString ()Ljava/lang/String;]
-      [110] bipush 10
-      [112] invokevirtual #93
+      [117] bipush 10
+      [119] invokevirtual #94
         - Methodref [java/lang/String.indexOf (I)I]
-      [115] dup
-      [116] istore_3 v3
-      [117] iflt +61 (target=178)
-      [120] aload_0 v0
-      [121] aload_2 v2
-      [122] iconst_0
-      [123] iload_3 v3
-      [124] invokeinterface #98
+      [122] dup
+      [123] istore_3 v3
+      [124] iflt +61 (target=185)
+      [127] aload_0 v0
+      [128] aload_2 v2
+      [129] iconst_0
+      [130] iload_3 v3
+      [131] invokeinterface #99
         - InterfaceMethodref [java/lang/CharSequence.subSequence (II)Ljava/lang/CharSequence;]
-      [129] invokeinterface #99
+      [136] invokeinterface #100
         - InterfaceMethodref [java/lang/CharSequence.toString ()Ljava/lang/String;]
-      [134] putfield #35
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
-      [137] aload_0 v0
-      [138] aload_0 v0
-      [139] getfield #35
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
-      [142] invokestatic #90
+      [141] putfield #36
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
+      [144] aload_0 v0
+      [145] aload_0 v0
+      [146] getfield #36
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
+      [149] invokestatic #91
         - Methodref [com/jbak/JbakKeyboard/ca.f (Ljava/lang/String;)I]
-      [145] invokestatic #88
+      [152] invokestatic #89
         - Methodref [com/jbak/JbakKeyboard/ca.b (I)Landroid/graphics/Bitmap;]
-      [148] putfield #33
-        - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [151] aload_0 v0
-      [152] aload_2 v2
-      [153] iload_3 v3
-      [154] iconst_1
-      [155] iadd
-      [156] aload_2 v2
-      [157] invokeinterface #97
+      [155] putfield #34
+        - Fieldref [com/jbak/JbakKeyboard/an.b Landroid/graphics/Bitmap;]
+      [158] aload_0 v0
+      [159] aload_2 v2
+      [160] iload_3 v3
+      [161] iconst_1
+      [162] iadd
+      [163] aload_2 v2
+      [164] invokeinterface #98
         - InterfaceMethodref [java/lang/CharSequence.length ()I]
-      [162] invokeinterface #98
+      [169] invokeinterface #99
         - InterfaceMethodref [java/lang/CharSequence.subSequence (II)Ljava/lang/CharSequence;]
-      [167] invokeinterface #99
+      [174] invokeinterface #100
         - InterfaceMethodref [java/lang/CharSequence.toString ()Ljava/lang/String;]
-      [172] putfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [175] goto +18 (target=193)
-      [178] aload_0 v0
-      [179] aload_2 v2
-      [180] invokeinterface #99
-        - InterfaceMethodref [java/lang/CharSequence.toString ()Ljava/lang/String;]
-      [185] putfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [188] aload_0 v0
-      [189] aconst_null
-      [190] putfield #35
+      [179] putfield #35
         - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
-      [193] aload_0 v0
-      [194] getfield #36
-        - Fieldref [com/jbak/JbakKeyboard/an.d Z]
-      [197] ifeq +29 (target=226)
+      [182] goto +18 (target=200)
+      [185] aload_0 v0
+      [186] aload_2 v2
+      [187] invokeinterface #100
+        - InterfaceMethodref [java/lang/CharSequence.toString ()Ljava/lang/String;]
+      [192] putfield #35
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+      [195] aload_0 v0
+      [196] aconst_null
+      [197] putfield #36
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
       [200] aload_0 v0
-      [201] new #5
+      [201] getfield #37
+        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
+      [204] ifeq +29 (target=233)
+      [207] aload_0 v0
+      [208] new #5
         - Class [android/graphics/Rect]
-      [204] dup
-      [205] iconst_0
-      [206] iconst_0
-      [207] invokestatic #91
+      [211] dup
+      [212] iconst_0
+      [213] iconst_0
+      [214] invokestatic #92
         - Methodref [com/jbak/JbakKeyboard/ca.p ()Lcom/jbak/JbakKeyboard/JbKbdView;]
-      [210] getfield #26
+      [217] getfield #26
         - Fieldref [com/jbak/JbakKeyboard/JbKbdView.n I]
-      [213] invokestatic #91
+      [220] invokestatic #92
         - Methodref [com/jbak/JbakKeyboard/ca.p ()Lcom/jbak/JbakKeyboard/JbKbdView;]
-      [216] getfield #26
+      [223] getfield #26
         - Fieldref [com/jbak/JbakKeyboard/JbKbdView.n I]
-      [219] invokespecial #71
+      [226] invokespecial #72
         - Methodref [android/graphics/Rect.<init> (IIII)V]
-      [222] putfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [225] return
-      [226] aload_0 v0
-      [227] new #5
+      [229] putfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [232] return
+      [233] aload_0 v0
+      [234] new #5
         - Class [android/graphics/Rect]
-      [230] dup
-      [231] iconst_0
-      [232] iconst_0
-      [233] aload_1 v1
-      [234] getfield #32
+      [237] dup
+      [238] iconst_0
+      [239] iconst_0
+      [240] aload_1 v1
+      [241] getfield #32
         - Fieldref [com/jbak/JbakKeyboard/ah.width I]
-      [237] aload_1 v1
-      [238] getfield #29
+      [244] aload_1 v1
+      [245] getfield #29
         - Fieldref [com/jbak/JbakKeyboard/ah.height I]
-      [241] invokespecial #71
+      [248] invokespecial #72
         - Methodref [android/graphics/Rect.<init> (IIII)V]
-      [244] putfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [247] return
+      [251] putfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [254] return
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 2):
-      + Line number table attribute (count = 24)
-        [0] -> line 75
-        [5] -> line 76
-        [10] -> line 77
-        [18] -> line 78
-        [25] -> line 80
-        [35] -> line 82
-        [52] -> line 84
-        [62] -> line 86
-        [67] -> line 87
-        [75] -> line 88
-        [83] -> line 89
-        [94] -> line 94
-        [99] -> line 95
-        [104] -> line 96
-        [116] -> line 97
-        [120] -> line 99
-        [137] -> line 100
-        [151] -> line 101
-        [178] -> line 105
-        [188] -> line 106
-        [193] -> line 109
-        [200] -> line 110
-        [226] -> line 112
-        [247] -> line 114
-      + Stack map table attribute (count = 7):
+      + Line number table attribute (count = 25)
+        [0] -> line 76
+        [5] -> line 77
+        [10] -> line 78
+        [18] -> line 79
+        [25] -> line 81
+        [35] -> line 83
+        [52] -> line 85
+        [62] -> line 87
+        [67] -> line 88
+        [75] -> line 89
+        [83] -> line 90
+        [94] -> line 95
+        [99] -> line 97
+        [106] -> line 99
+        [111] -> line 100
+        [123] -> line 101
+        [127] -> line 103
+        [144] -> line 104
+        [158] -> line 105
+        [185] -> line 109
+        [195] -> line 110
+        [200] -> line 113
+        [207] -> line 114
+        [233] -> line 116
+        [254] -> line 118
+      + Stack map table attribute (count = 8):
         - [52] Var: ..., Stack: (empty)
         - [91] Var: ..., Stack: (empty)
         - [94] Var: ..., Stack: (empty)
-        - [178] Var: ...[a:java/lang/CharSequence][i], Stack: (empty)
-        - [193] Var: -2, Stack: (empty)
-        - [226] Var: ..., Stack: (empty)
-        - [247] Var: ..., Stack: (empty)
+        - [99] Var: ..., Stack: (empty)
+        - [185] Var: ...[a:java/lang/CharSequence][i], Stack: (empty)
+        - [200] Var: -2, Stack: (empty)
+        - [233] Var: ..., Stack: (empty)
+        - [254] Var: ..., Stack: (empty)
   + Method:       a(Landroid/graphics/Canvas;)V
     Access flags: 0x2
       = private void a(android.graphics.Canvas)
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 27, locals = 2, stack = 2):
       [0] aload_0 v0
-      [1] getfield #40
-        - Fieldref [com/jbak/JbakKeyboard/an.h Z]
+      [1] getfield #41
+        - Fieldref [com/jbak/JbakKeyboard/an.i Z]
       [4] ifeq +22 (target=26)
-      [7] invokestatic #92
+      [7] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [10] getfield #57
+      [10] getfield #58
         - Fieldref [com/jbak/JbakKeyboard/as.k Landroid/graphics/drawable/StateListDrawable;]
       [13] ifnull +13 (target=26)
-      [16] invokestatic #92
+      [16] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [19] getfield #57
+      [19] getfield #58
         - Fieldref [com/jbak/JbakKeyboard/as.k Landroid/graphics/drawable/StateListDrawable;]
       [22] aload_1 v1
-      [23] invokevirtual #77
+      [23] invokevirtual #78
         - Methodref [android/graphics/drawable/StateListDrawable.draw (Landroid/graphics/Canvas;)V]
       [26] return
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 2):
       + Line number table attribute (count = 3)
-        [0] -> line 117
-        [16] -> line 118
-        [26] -> line 119
+        [0] -> line 121
+        [16] -> line 122
+        [26] -> line 123
       + Stack map table attribute (count = 1):
         - [26] Var: ..., Stack: (empty)
   + Method:       a(IIII)I
@@ -51362,35 +51373,35 @@ Methods (count = 11):
       [14] isub
       [15] iconst_2
       [16] isub
-      [17] invokestatic #89
+      [17] invokestatic #90
         - Methodref [com/jbak/JbakKeyboard/ca.d (II)I]
       [20] ireturn
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 2):
       + Line number table attribute (count = 3)
-        [0] -> line 249
-        [9] -> line 250
-        [11] -> line 251
+        [0] -> line 253
+        [9] -> line 254
+        [11] -> line 255
       + Stack map table attribute (count = 1):
         - [11] Var: ..., Stack: (empty)
   + Method:       draw(Landroid/graphics/Canvas;Landroid/graphics/Paint;)V
     Access flags: 0x11
       = public final void draw(android.graphics.Canvas,android.graphics.Paint)
     Class member attributes (count = 1):
-    + Code attribute instructions (code length = 1663, locals = 11, stack = 6):
+    + Code attribute instructions (code length = 1642, locals = 11, stack = 6):
       [0] aload_0 v0
-      [1] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [4] ifnonnull +1069 (target=1073)
+      [1] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [4] ifnonnull +1062 (target=1066)
       [7] aload_0 v0
-      [8] getfield #36
-        - Fieldref [com/jbak/JbakKeyboard/an.d Z]
-      [11] ifne +1062 (target=1073)
+      [8] getfield #37
+        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
+      [11] ifne +1055 (target=1066)
       [14] aload_0 v0
       [15] dup
       [16] astore_2 v2
-      [17] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
+      [17] getfield #35
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
       [20] ifnonnull +10 (target=30)
       [23] aload_2 v2
       [24] getfield #33
@@ -51399,1212 +51410,1200 @@ Methods (count = 11):
       [30] getstatic #23
         - Fieldref [com/jbak/JbakKeyboard/JbKbdView.b Lcom/jbak/JbakKeyboard/JbKbdView;]
       [33] ifnonnull +6 (target=39)
-      [36] goto +1037 (target=1073)
+      [36] goto +1030 (target=1066)
       [39] aload_2 v2
       [40] new #14
         - Class [com/jbak/JbakKeyboard/ao]
       [43] dup
-      [44] invokespecial #86
+      [44] invokespecial #87
         - Methodref [com/jbak/JbakKeyboard/ao.<init> ()V]
-      [47] putfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [50] invokestatic #92
+      [47] putfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [50] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [53] getfield #52
+      [53] getfield #53
         - Fieldref [com/jbak/JbakKeyboard/as.b Landroid/graphics/Paint;]
       [56] astore_3 v3
       [57] aload_2 v2
-      [58] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [61] ifnonnull +125 (target=186)
+      [58] getfield #33
+        - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
+      [61] ifnull +118 (target=179)
       [64] aload_2 v2
-      [65] getfield #33
-        - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [68] ifnull +118 (target=186)
+      [65] getfield #37
+        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
+      [68] ifeq +54 (target=122)
       [71] aload_2 v2
-      [72] getfield #36
-        - Fieldref [com/jbak/JbakKeyboard/an.d Z]
-      [75] ifeq +54 (target=129)
-      [78] aload_2 v2
-      [79] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [82] aload_2 v2
-      [83] invokevirtual #85
+      [72] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [75] aload_2 v2
+      [76] invokevirtual #86
         - Methodref [com/jbak/JbakKeyboard/an.getWidth ()F]
-      [86] fconst_2
-      [87] fdiv
-      [88] aload_2 v2
-      [89] getfield #33
+      [79] fconst_2
+      [80] fdiv
+      [81] aload_2 v2
+      [82] getfield #33
         - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [92] invokevirtual #60
+      [85] invokevirtual #61
         - Methodref [android/graphics/Bitmap.getWidth ()I]
-      [95] iconst_2
-      [96] idiv
-      [97] i2f
-      [98] fsub
-      [99] putfield #46
+      [88] iconst_2
+      [89] idiv
+      [90] i2f
+      [91] fsub
+      [92] putfield #47
         - Fieldref [com/jbak/JbakKeyboard/ao.c F]
-      [102] aload_2 v2
-      [103] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [106] aload_2 v2
-      [107] invokevirtual #84
+      [95] aload_2 v2
+      [96] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [99] aload_2 v2
+      [100] invokevirtual #85
         - Methodref [com/jbak/JbakKeyboard/an.getHeight ()F]
-      [110] fconst_2
-      [111] fdiv
-      [112] aload_2 v2
-      [113] getfield #33
+      [103] fconst_2
+      [104] fdiv
+      [105] aload_2 v2
+      [106] getfield #33
         - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [116] invokevirtual #59
+      [109] invokevirtual #60
         - Methodref [android/graphics/Bitmap.getHeight ()I]
-      [119] iconst_2
-      [120] idiv
-      [121] i2f
-      [122] fsub
-      [123] putfield #47
+      [112] iconst_2
+      [113] idiv
+      [114] i2f
+      [115] fsub
+      [116] putfield #48
         - Fieldref [com/jbak/JbakKeyboard/ao.d F]
-      [126] goto +947 (target=1073)
-      [129] aload_2 v2
-      [130] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [133] aload_2 v2
-      [134] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [137] invokevirtual #73
+      [119] goto +947 (target=1066)
+      [122] aload_2 v2
+      [123] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [126] aload_2 v2
+      [127] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [130] invokevirtual #74
         - Methodref [android/graphics/Rect.width ()I]
-      [140] iconst_2
-      [141] idiv
-      [142] aload_2 v2
-      [143] getfield #33
+      [133] iconst_2
+      [134] idiv
+      [135] aload_2 v2
+      [136] getfield #33
         - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [146] invokevirtual #60
+      [139] invokevirtual #61
         - Methodref [android/graphics/Bitmap.getWidth ()I]
-      [149] iconst_2
-      [150] idiv
-      [151] isub
-      [152] i2f
-      [153] putfield #46
+      [142] iconst_2
+      [143] idiv
+      [144] isub
+      [145] i2f
+      [146] putfield #47
         - Fieldref [com/jbak/JbakKeyboard/ao.c F]
-      [156] aload_2 v2
-      [157] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [160] aload_2 v2
-      [161] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [164] invokevirtual #72
+      [149] aload_2 v2
+      [150] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [153] aload_2 v2
+      [154] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [157] invokevirtual #73
         - Methodref [android/graphics/Rect.height ()I]
-      [167] iconst_2
-      [168] idiv
-      [169] aload_2 v2
-      [170] getfield #33
+      [160] iconst_2
+      [161] idiv
+      [162] aload_2 v2
+      [163] getfield #33
         - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [173] invokevirtual #59
+      [166] invokevirtual #60
         - Methodref [android/graphics/Bitmap.getHeight ()I]
-      [176] iconst_2
-      [177] idiv
-      [178] isub
-      [179] i2f
-      [180] putfield #47
+      [169] iconst_2
+      [170] idiv
+      [171] isub
+      [172] i2f
+      [173] putfield #48
         - Fieldref [com/jbak/JbakKeyboard/ao.d F]
-      [183] goto +890 (target=1073)
+      [176] goto +890 (target=1066)
+      [179] aload_2 v2
+      [180] getfield #37
+        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
+      [183] ifeq +70 (target=253)
       [186] aload_2 v2
-      [187] getfield #36
-        - Fieldref [com/jbak/JbakKeyboard/an.d Z]
-      [190] ifeq +70 (target=260)
-      [193] aload_2 v2
-      [194] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [197] ifnull +60 (target=257)
-      [200] getstatic #23
+      [187] getfield #35
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+      [190] ifnull +60 (target=250)
+      [193] getstatic #23
         - Fieldref [com/jbak/JbakKeyboard/JbKbdView.b Lcom/jbak/JbakKeyboard/JbKbdView;]
-      [203] getfield #24
+      [196] getfield #24
         - Fieldref [com/jbak/JbakKeyboard/JbKbdView.i Landroid/text/TextPaint;]
-      [206] dup
-      [207] astore_3 v3
-      [208] aload_2 v2
-      [209] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [212] invokevirtual #67
+      [199] dup
+      [200] astore_3 v3
+      [201] aload_2 v2
+      [202] getfield #35
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+      [205] invokevirtual #68
         - Methodref [android/graphics/Paint.measureText (Ljava/lang/String;)F]
-      [215] fstore v4
-      [217] aload_2 v2
-      [218] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [221] aload_2 v2
-      [222] invokevirtual #84
+      [208] fstore v4
+      [210] aload_2 v2
+      [211] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [214] aload_2 v2
+      [215] invokevirtual #85
         - Methodref [com/jbak/JbakKeyboard/an.getHeight ()F]
-      [225] fconst_2
-      [226] fdiv
-      [227] fconst_0
-      [228] aload_3 v3
-      [229] invokevirtual #64
+      [218] fconst_2
+      [219] fdiv
+      [220] fconst_0
+      [221] aload_3 v3
+      [222] invokevirtual #65
         - Methodref [android/graphics/Paint.ascent ()F]
-      [232] fsub
-      [233] fconst_2
-      [234] fdiv
-      [235] fadd
-      [236] putfield #47
+      [225] fsub
+      [226] fconst_2
+      [227] fdiv
+      [228] fadd
+      [229] putfield #48
         - Fieldref [com/jbak/JbakKeyboard/ao.d F]
-      [239] aload_2 v2
-      [240] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [243] aload_2 v2
-      [244] invokevirtual #85
+      [232] aload_2 v2
+      [233] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [236] aload_2 v2
+      [237] invokevirtual #86
         - Methodref [com/jbak/JbakKeyboard/an.getWidth ()F]
-      [247] fconst_2
-      [248] fdiv
-      [249] fload v4
-      [251] fconst_2
-      [252] fdiv
-      [253] fsub
-      [254] putfield #46
+      [240] fconst_2
+      [241] fdiv
+      [242] fload v4
+      [244] fconst_2
+      [245] fdiv
+      [246] fsub
+      [247] putfield #47
         - Fieldref [com/jbak/JbakKeyboard/ao.c F]
-      [257] goto +816 (target=1073)
-      [260] aload_2 v2
-      [261] getfield #38
-        - Fieldref [com/jbak/JbakKeyboard/an.f Z]
-      [264] ifeq +13 (target=277)
-      [267] invokestatic #92
+      [250] goto +816 (target=1066)
+      [253] aload_2 v2
+      [254] getfield #39
+        - Fieldref [com/jbak/JbakKeyboard/an.g Z]
+      [257] ifeq +13 (target=270)
+      [260] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [270] getfield #53
+      [263] getfield #54
         - Fieldref [com/jbak/JbakKeyboard/as.c Landroid/graphics/Paint;]
-      [273] astore_3 v3
-      [274] goto +21 (target=295)
-      [277] aload_2 v2
-      [278] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [281] invokevirtual #94
+      [266] astore_3 v3
+      [267] goto +21 (target=288)
+      [270] aload_2 v2
+      [271] getfield #35
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+      [274] invokevirtual #95
         - Methodref [java/lang/String.length ()I]
-      [284] iconst_1
-      [285] ificmple +10 (target=295)
-      [288] invokestatic #92
+      [277] iconst_1
+      [278] ificmple +10 (target=288)
+      [281] invokestatic #93
+        - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
+      [284] getfield #55
+        - Fieldref [com/jbak/JbakKeyboard/as.d Landroid/graphics/Paint;]
+      [287] astore_3 v3
+      [288] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
       [291] getfield #54
-        - Fieldref [com/jbak/JbakKeyboard/as.d Landroid/graphics/Paint;]
-      [294] astore_3 v3
-      [295] invokestatic #92
-        - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [298] getfield #53
         - Fieldref [com/jbak/JbakKeyboard/as.c Landroid/graphics/Paint;]
-      [301] astore v4
-      [303] aload_2 v2
-      [304] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [307] invokevirtual #94
+      [294] astore v4
+      [296] aload_2 v2
+      [297] getfield #35
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+      [300] invokevirtual #95
         - Methodref [java/lang/String.length ()I]
-      [310] iconst_1
-      [311] ificmpne +34 (target=345)
-      [314] aload_2 v2
-      [315] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [318] aload_2 v2
-      [319] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [322] invokevirtual #95
+      [303] iconst_1
+      [304] ificmpne +34 (target=338)
+      [307] aload_2 v2
+      [308] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [311] aload_2 v2
+      [312] getfield #35
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+      [315] invokevirtual #96
         - Methodref [java/lang/String.toLowerCase ()Ljava/lang/String;]
-      [325] putfield #44
+      [318] putfield #45
         - Fieldref [com/jbak/JbakKeyboard/ao.a Ljava/lang/String;]
-      [328] aload_2 v2
-      [329] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [332] aload_2 v2
-      [333] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [336] invokevirtual #96
+      [321] aload_2 v2
+      [322] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [325] aload_2 v2
+      [326] getfield #35
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+      [329] invokevirtual #97
         - Methodref [java/lang/String.toUpperCase ()Ljava/lang/String;]
-      [339] putfield #45
+      [332] putfield #46
         - Fieldref [com/jbak/JbakKeyboard/ao.b Ljava/lang/String;]
-      [342] goto +25 (target=367)
-      [345] aload_2 v2
-      [346] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
+      [335] goto +25 (target=360)
+      [338] aload_2 v2
+      [339] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [342] aload_2 v2
+      [343] getfield #35
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+      [346] putfield #45
+        - Fieldref [com/jbak/JbakKeyboard/ao.a Ljava/lang/String;]
       [349] aload_2 v2
-      [350] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [353] putfield #44
-        - Fieldref [com/jbak/JbakKeyboard/ao.a Ljava/lang/String;]
-      [356] aload_2 v2
-      [357] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [360] aload_2 v2
-      [361] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [364] putfield #45
+      [350] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [353] aload_2 v2
+      [354] getfield #35
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+      [357] putfield #46
         - Fieldref [com/jbak/JbakKeyboard/ao.b Ljava/lang/String;]
-      [367] fconst_0
-      [368] aload_3 v3
-      [369] invokevirtual #64
+      [360] fconst_0
+      [361] aload_3 v3
+      [362] invokevirtual #65
         - Methodref [android/graphics/Paint.ascent ()F]
-      [372] fsub
-      [373] f2i
-      [374] istore v5
-      [376] fconst_0
-      [377] aload v4
-      [379] invokevirtual #64
+      [365] fsub
+      [366] f2i
+      [367] istore v5
+      [369] fconst_0
+      [370] aload v4
+      [372] invokevirtual #65
         - Methodref [android/graphics/Paint.ascent ()F]
-      [382] fsub
+      [375] fsub
+      [376] f2i
+      [377] istore v6
+      [379] aload_3 v3
+      [380] invokevirtual #66
+        - Methodref [android/graphics/Paint.descent ()F]
       [383] f2i
-      [384] istore v6
-      [386] aload_3 v3
-      [387] invokevirtual #65
+      [384] istore v7
+      [386] aload v4
+      [388] invokevirtual #66
         - Methodref [android/graphics/Paint.descent ()F]
-      [390] f2i
-      [391] istore v7
-      [393] aload v4
-      [395] invokevirtual #65
-        - Methodref [android/graphics/Paint.descent ()F]
-      [398] f2i
-      [399] istore v8
-      [401] iload v7
-      [403] iload v5
-      [405] iadd
-      [406] istore v9
+      [391] f2i
+      [392] istore v8
+      [394] iload v7
+      [396] iload v5
+      [398] iadd
+      [399] istore v9
+      [401] aload_2 v2
+      [402] getfield #34
+        - Fieldref [com/jbak/JbakKeyboard/an.b Landroid/graphics/Bitmap;]
+      [405] ifnull +24 (target=429)
       [408] aload_2 v2
-      [409] getfield #33
-        - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [412] ifnull +24 (target=436)
-      [415] aload_2 v2
-      [416] getfield #33
-        - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [419] invokevirtual #59
+      [409] getfield #34
+        - Fieldref [com/jbak/JbakKeyboard/an.b Landroid/graphics/Bitmap;]
+      [412] invokevirtual #60
         - Methodref [android/graphics/Bitmap.getHeight ()I]
-      [422] istore v10
-      [424] aload_2 v2
-      [425] getfield #33
-        - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [428] invokevirtual #60
+      [415] istore v10
+      [417] aload_2 v2
+      [418] getfield #34
+        - Fieldref [com/jbak/JbakKeyboard/an.b Landroid/graphics/Bitmap;]
+      [421] invokevirtual #61
         - Methodref [android/graphics/Bitmap.getWidth ()I]
-      [431] istore v8
-      [433] goto +38 (target=471)
-      [436] aload_2 v2
-      [437] getfield #35
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
-      [440] ifnull +25 (target=465)
-      [443] iload v6
-      [445] iload v8
-      [447] iadd
-      [448] istore v10
-      [450] aload v4
-      [452] aload_2 v2
-      [453] getfield #35
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
-      [456] invokevirtual #67
+      [424] istore v8
+      [426] goto +38 (target=464)
+      [429] aload_2 v2
+      [430] getfield #36
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
+      [433] ifnull +25 (target=458)
+      [436] iload v6
+      [438] iload v8
+      [440] iadd
+      [441] istore v10
+      [443] aload v4
+      [445] aload_2 v2
+      [446] getfield #36
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
+      [449] invokevirtual #68
         - Methodref [android/graphics/Paint.measureText (Ljava/lang/String;)F]
-      [459] f2i
+      [452] f2i
+      [453] istore v8
+      [455] goto +9 (target=464)
+      [458] iconst_0
+      [459] dup
       [460] istore v8
-      [462] goto +9 (target=471)
-      [465] iconst_0
-      [466] dup
-      [467] istore v8
-      [469] istore v10
-      [471] aload_3 v3
-      [472] aload_2 v2
-      [473] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [476] getfield #44
+      [462] istore v10
+      [464] aload_3 v3
+      [465] aload_2 v2
+      [466] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [469] getfield #45
         - Fieldref [com/jbak/JbakKeyboard/ao.a Ljava/lang/String;]
-      [479] invokevirtual #67
+      [472] invokevirtual #68
         - Methodref [android/graphics/Paint.measureText (Ljava/lang/String;)F]
-      [482] f2i
-      [483] istore v4
-      [485] invokestatic #92
+      [475] f2i
+      [476] istore v4
+      [478] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [488] getfield #58
+      [481] getfield #59
         - Fieldref [com/jbak/JbakKeyboard/as.p Landroid/graphics/Rect;]
-      [491] getfield #22
+      [484] getfield #22
         - Fieldref [android/graphics/Rect.top I]
-      [494] invokestatic #92
+      [487] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [497] getfield #58
+      [490] getfield #59
         - Fieldref [com/jbak/JbakKeyboard/as.p Landroid/graphics/Rect;]
-      [500] getfield #20
+      [493] getfield #20
         - Fieldref [android/graphics/Rect.left I]
-      [503] iadd
-      [504] iload v9
-      [506] iadd
-      [507] iload v10
-      [509] iadd
-      [510] iconst_2
-      [511] iadd
-      [512] aload_2 v2
-      [513] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [516] invokevirtual #72
+      [496] iadd
+      [497] iload v9
+      [499] iadd
+      [500] iload v10
+      [502] iadd
+      [503] iconst_2
+      [504] iadd
+      [505] aload_2 v2
+      [506] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [509] invokevirtual #73
         - Methodref [android/graphics/Rect.height ()I]
-      [519] ificmple +301 (target=820)
-      [522] aload_2 v2
-      [523] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [526] invokevirtual #73
+      [512] ificmple +301 (target=813)
+      [515] aload_2 v2
+      [516] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [519] invokevirtual #74
         - Methodref [android/graphics/Rect.width ()I]
-      [529] invokestatic #92
+      [522] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [532] getfield #58
+      [525] getfield #59
         - Fieldref [com/jbak/JbakKeyboard/as.p Landroid/graphics/Rect;]
-      [535] getfield #21
+      [528] getfield #21
         - Fieldref [android/graphics/Rect.right I]
-      [538] isub
-      [539] iload v8
-      [541] isub
-      [542] istore v5
+      [531] isub
+      [532] iload v8
+      [534] isub
+      [535] istore v5
+      [537] aload_2 v2
+      [538] getfield #34
+        - Fieldref [com/jbak/JbakKeyboard/an.b Landroid/graphics/Bitmap;]
+      [541] ifnull +29 (target=570)
       [544] aload_2 v2
-      [545] getfield #33
-        - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [548] ifnull +29 (target=577)
-      [551] aload_2 v2
-      [552] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [555] iload v5
-      [557] i2f
-      [558] putfield #50
+      [545] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [548] iload v5
+      [550] i2f
+      [551] putfield #51
         - Fieldref [com/jbak/JbakKeyboard/ao.g F]
-      [561] aload_2 v2
-      [562] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [565] getstatic #42
-        - Fieldref [com/jbak/JbakKeyboard/an.j I]
-      [568] iconst_3
-      [569] iadd
-      [570] i2f
-      [571] putfield #51
+      [554] aload_2 v2
+      [555] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [558] getstatic #43
+        - Fieldref [com/jbak/JbakKeyboard/an.k I]
+      [561] iconst_3
+      [562] iadd
+      [563] i2f
+      [564] putfield #52
         - Fieldref [com/jbak/JbakKeyboard/ao.h F]
-      [574] goto +34 (target=608)
+      [567] goto +34 (target=601)
+      [570] aload_2 v2
+      [571] getfield #36
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
+      [574] ifnull +27 (target=601)
       [577] aload_2 v2
-      [578] getfield #35
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
-      [581] ifnull +27 (target=608)
-      [584] aload_2 v2
-      [585] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [588] iload v5
-      [590] i2f
-      [591] putfield #50
+      [578] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [581] iload v5
+      [583] i2f
+      [584] putfield #51
         - Fieldref [com/jbak/JbakKeyboard/ao.g F]
-      [594] aload_2 v2
-      [595] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [598] getstatic #42
-        - Fieldref [com/jbak/JbakKeyboard/an.j I]
-      [601] iload v6
-      [603] iadd
-      [604] i2f
-      [605] putfield #51
+      [587] aload_2 v2
+      [588] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [591] getstatic #43
+        - Fieldref [com/jbak/JbakKeyboard/an.k I]
+      [594] iload v6
+      [596] iadd
+      [597] i2f
+      [598] putfield #52
         - Fieldref [com/jbak/JbakKeyboard/ao.h F]
+      [601] aload_2 v2
+      [602] getfield #35
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+      [605] ifnull +461 (target=1066)
       [608] aload_2 v2
-      [609] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [612] ifnull +461 (target=1073)
-      [615] aload_2 v2
-      [616] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [619] invokestatic #92
+      [609] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [612] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [622] getfield #58
+      [615] getfield #59
         - Fieldref [com/jbak/JbakKeyboard/as.p Landroid/graphics/Rect;]
-      [625] getfield #20
+      [618] getfield #20
         - Fieldref [android/graphics/Rect.left I]
-      [628] aload_2 v2
-      [629] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [632] invokevirtual #73
+      [621] aload_2 v2
+      [622] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [625] invokevirtual #74
         - Methodref [android/graphics/Rect.width ()I]
-      [635] iconst_2
-      [636] idiv
-      [637] iload v4
-      [639] iconst_2
-      [640] idiv
-      [641] isub
-      [642] iload v4
-      [644] aload_2 v2
-      [645] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [648] invokevirtual #73
+      [628] iconst_2
+      [629] idiv
+      [630] iload v4
+      [632] iconst_2
+      [633] idiv
+      [634] isub
+      [635] iload v4
+      [637] aload_2 v2
+      [638] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [641] invokevirtual #74
         - Methodref [android/graphics/Rect.width ()I]
-      [651] invokestatic #92
+      [644] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [654] getfield #58
+      [647] getfield #59
         - Fieldref [com/jbak/JbakKeyboard/as.p Landroid/graphics/Rect;]
-      [657] getfield #21
+      [650] getfield #21
         - Fieldref [android/graphics/Rect.right I]
-      [660] isub
-      [661] iload v8
-      [663] isub
-      [664] invokestatic #80
+      [653] isub
+      [654] iload v8
+      [656] isub
+      [657] invokestatic #81
         - Methodref [com/jbak/JbakKeyboard/an.a (IIII)I]
-      [667] i2f
-      [668] putfield #46
+      [660] i2f
+      [661] putfield #47
         - Fieldref [com/jbak/JbakKeyboard/ao.c F]
-      [671] aload_2 v2
-      [672] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [675] aload_2 v2
-      [676] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [679] invokevirtual #72
+      [664] aload_2 v2
+      [665] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [668] aload_2 v2
+      [669] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [672] invokevirtual #73
         - Methodref [android/graphics/Rect.height ()I]
-      [682] invokestatic #92
+      [675] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [685] getfield #58
+      [678] getfield #59
         - Fieldref [com/jbak/JbakKeyboard/as.p Landroid/graphics/Rect;]
-      [688] getfield #19
+      [681] getfield #19
         - Fieldref [android/graphics/Rect.bottom I]
-      [691] isub
-      [692] iload v7
-      [694] isub
-      [695] i2f
-      [696] putfield #47
+      [684] isub
+      [685] iload v7
+      [687] isub
+      [688] i2f
+      [689] putfield #48
         - Fieldref [com/jbak/JbakKeyboard/ao.d F]
+      [692] aload_2 v2
+      [693] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [696] getfield #46
+        - Fieldref [com/jbak/JbakKeyboard/ao.b Ljava/lang/String;]
       [699] aload_2 v2
-      [700] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
+      [700] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
       [703] getfield #45
-        - Fieldref [com/jbak/JbakKeyboard/ao.b Ljava/lang/String;]
-      [706] aload_2 v2
-      [707] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
+        - Fieldref [com/jbak/JbakKeyboard/ao.a Ljava/lang/String;]
+      [706] ifacmpne +20 (target=726)
+      [709] aload_2 v2
       [710] getfield #44
-        - Fieldref [com/jbak/JbakKeyboard/ao.a Ljava/lang/String;]
-      [713] ifacmpne +20 (target=733)
-      [716] aload_2 v2
-      [717] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [720] aload_2 v2
-      [721] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [724] getfield #46
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [713] aload_2 v2
+      [714] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [717] getfield #47
         - Fieldref [com/jbak/JbakKeyboard/ao.c F]
-      [727] putfield #48
+      [720] putfield #49
         - Fieldref [com/jbak/JbakKeyboard/ao.e F]
-      [730] goto +73 (target=803)
-      [733] aload_3 v3
-      [734] aload_2 v2
-      [735] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [738] getfield #45
+      [723] goto +73 (target=796)
+      [726] aload_3 v3
+      [727] aload_2 v2
+      [728] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [731] getfield #46
         - Fieldref [com/jbak/JbakKeyboard/ao.b Ljava/lang/String;]
-      [741] invokevirtual #67
+      [734] invokevirtual #68
         - Methodref [android/graphics/Paint.measureText (Ljava/lang/String;)F]
-      [744] f2i
-      [745] istore v4
-      [747] aload_2 v2
-      [748] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [751] invokestatic #92
+      [737] f2i
+      [738] istore v4
+      [740] aload_2 v2
+      [741] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [744] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [754] getfield #58
+      [747] getfield #59
         - Fieldref [com/jbak/JbakKeyboard/as.p Landroid/graphics/Rect;]
-      [757] getfield #20
+      [750] getfield #20
         - Fieldref [android/graphics/Rect.left I]
-      [760] aload_2 v2
-      [761] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [764] invokevirtual #73
+      [753] aload_2 v2
+      [754] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [757] invokevirtual #74
         - Methodref [android/graphics/Rect.width ()I]
-      [767] iconst_2
-      [768] idiv
-      [769] iload v4
-      [771] iconst_2
-      [772] idiv
-      [773] isub
-      [774] iload v4
-      [776] aload_2 v2
-      [777] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [780] invokevirtual #73
+      [760] iconst_2
+      [761] idiv
+      [762] iload v4
+      [764] iconst_2
+      [765] idiv
+      [766] isub
+      [767] iload v4
+      [769] aload_2 v2
+      [770] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [773] invokevirtual #74
         - Methodref [android/graphics/Rect.width ()I]
-      [783] invokestatic #92
+      [776] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [786] getfield #58
+      [779] getfield #59
         - Fieldref [com/jbak/JbakKeyboard/as.p Landroid/graphics/Rect;]
-      [789] getfield #21
+      [782] getfield #21
         - Fieldref [android/graphics/Rect.right I]
-      [792] isub
-      [793] iload v8
-      [795] isub
-      [796] invokestatic #80
+      [785] isub
+      [786] iload v8
+      [788] isub
+      [789] invokestatic #81
         - Methodref [com/jbak/JbakKeyboard/an.a (IIII)I]
-      [799] i2f
-      [800] putfield #48
+      [792] i2f
+      [793] putfield #49
         - Fieldref [com/jbak/JbakKeyboard/ao.e F]
-      [803] aload_2 v2
-      [804] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [807] aload_2 v2
-      [808] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [811] getfield #47
+      [796] aload_2 v2
+      [797] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [800] aload_2 v2
+      [801] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [804] getfield #48
         - Fieldref [com/jbak/JbakKeyboard/ao.d F]
-      [814] putfield #49
+      [807] putfield #50
         - Fieldref [com/jbak/JbakKeyboard/ao.f F]
-      [817] goto +256 (target=1073)
+      [810] goto +256 (target=1066)
+      [813] aload_2 v2
+      [814] getfield #34
+        - Fieldref [com/jbak/JbakKeyboard/an.b Landroid/graphics/Bitmap;]
+      [817] ifnull +45 (target=862)
       [820] aload_2 v2
-      [821] getfield #33
-        - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [824] ifnull +45 (target=869)
-      [827] aload_2 v2
-      [828] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [831] aload_2 v2
-      [832] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [835] invokevirtual #73
+      [821] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [824] aload_2 v2
+      [825] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [828] invokevirtual #74
         - Methodref [android/graphics/Rect.width ()I]
-      [838] iconst_2
-      [839] idiv
-      [840] iload v8
-      [842] iconst_2
-      [843] idiv
-      [844] isub
-      [845] i2f
-      [846] putfield #50
+      [831] iconst_2
+      [832] idiv
+      [833] iload v8
+      [835] iconst_2
+      [836] idiv
+      [837] isub
+      [838] i2f
+      [839] putfield #51
         - Fieldref [com/jbak/JbakKeyboard/ao.g F]
-      [849] aload_2 v2
-      [850] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [853] invokestatic #92
+      [842] aload_2 v2
+      [843] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [846] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [856] getfield #58
+      [849] getfield #59
         - Fieldref [com/jbak/JbakKeyboard/as.p Landroid/graphics/Rect;]
-      [859] getfield #22
+      [852] getfield #22
         - Fieldref [android/graphics/Rect.top I]
-      [862] i2f
-      [863] putfield #51
+      [855] i2f
+      [856] putfield #52
         - Fieldref [com/jbak/JbakKeyboard/ao.h F]
-      [866] goto +52 (target=918)
+      [859] goto +52 (target=911)
+      [862] aload_2 v2
+      [863] getfield #36
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
+      [866] ifnull +45 (target=911)
       [869] aload_2 v2
-      [870] getfield #35
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
-      [873] ifnull +45 (target=918)
-      [876] aload_2 v2
-      [877] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [880] aload_2 v2
-      [881] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [884] invokevirtual #73
+      [870] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [873] aload_2 v2
+      [874] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [877] invokevirtual #74
         - Methodref [android/graphics/Rect.width ()I]
-      [887] iconst_2
-      [888] idiv
-      [889] iload v8
-      [891] iconst_2
-      [892] idiv
-      [893] isub
-      [894] i2f
-      [895] putfield #50
+      [880] iconst_2
+      [881] idiv
+      [882] iload v8
+      [884] iconst_2
+      [885] idiv
+      [886] isub
+      [887] i2f
+      [888] putfield #51
         - Fieldref [com/jbak/JbakKeyboard/ao.g F]
-      [898] aload_2 v2
-      [899] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [902] invokestatic #92
+      [891] aload_2 v2
+      [892] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [895] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [905] getfield #58
+      [898] getfield #59
         - Fieldref [com/jbak/JbakKeyboard/as.p Landroid/graphics/Rect;]
-      [908] getfield #22
+      [901] getfield #22
         - Fieldref [android/graphics/Rect.top I]
-      [911] iload v6
-      [913] iadd
-      [914] i2f
-      [915] putfield #51
+      [904] iload v6
+      [906] iadd
+      [907] i2f
+      [908] putfield #52
         - Fieldref [com/jbak/JbakKeyboard/ao.h F]
-      [918] iload v10
-      [920] iconst_2
-      [921] iadd
-      [922] iload v5
-      [924] iadd
-      [925] istore v5
-      [927] aload_2 v2
-      [928] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [931] invokevirtual #72
+      [911] iload v10
+      [913] iconst_2
+      [914] iadd
+      [915] iload v5
+      [917] iadd
+      [918] istore v5
+      [920] aload_2 v2
+      [921] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [924] invokevirtual #73
         - Methodref [android/graphics/Rect.height ()I]
-      [934] invokestatic #92
+      [927] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [937] getfield #58
+      [930] getfield #59
         - Fieldref [com/jbak/JbakKeyboard/as.p Landroid/graphics/Rect;]
-      [940] getfield #19
+      [933] getfield #19
         - Fieldref [android/graphics/Rect.bottom I]
-      [943] isub
-      [944] iload v5
-      [946] isub
-      [947] iconst_2
-      [948] idiv
-      [949] dup
+      [936] isub
+      [937] iload v5
+      [939] isub
+      [940] iconst_2
+      [941] idiv
+      [942] dup
+      [943] istore v6
+      [945] iconst_4
+      [946] ificmpge +6 (target=952)
+      [949] iconst_0
       [950] istore v6
-      [952] iconst_4
-      [953] ificmpge +6 (target=959)
-      [956] iconst_0
-      [957] istore v6
-      [959] aload_2 v2
-      [960] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [963] aload_2 v2
-      [964] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [967] invokevirtual #73
+      [952] aload_2 v2
+      [953] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [956] aload_2 v2
+      [957] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [960] invokevirtual #74
         - Methodref [android/graphics/Rect.width ()I]
-      [970] iconst_2
-      [971] idiv
-      [972] iload v4
-      [974] iconst_2
-      [975] idiv
-      [976] isub
-      [977] i2f
-      [978] putfield #46
+      [963] iconst_2
+      [964] idiv
+      [965] iload v4
+      [967] iconst_2
+      [968] idiv
+      [969] isub
+      [970] i2f
+      [971] putfield #47
         - Fieldref [com/jbak/JbakKeyboard/ao.c F]
-      [981] aload_2 v2
-      [982] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [985] iload v5
-      [987] iload v6
-      [989] iadd
-      [990] i2f
-      [991] putfield #47
+      [974] aload_2 v2
+      [975] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [978] iload v5
+      [980] iload v6
+      [982] iadd
+      [983] i2f
+      [984] putfield #48
         - Fieldref [com/jbak/JbakKeyboard/ao.d F]
-      [994] aload_2 v2
-      [995] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [998] aload_2 v2
-      [999] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1002] getfield #47
+      [987] aload_2 v2
+      [988] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [991] aload_2 v2
+      [992] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [995] getfield #48
         - Fieldref [com/jbak/JbakKeyboard/ao.d F]
-      [1005] putfield #49
+      [998] putfield #50
         - Fieldref [com/jbak/JbakKeyboard/ao.f F]
+      [1001] aload_2 v2
+      [1002] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1005] getfield #46
+        - Fieldref [com/jbak/JbakKeyboard/ao.b Ljava/lang/String;]
       [1008] aload_2 v2
-      [1009] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
+      [1009] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
       [1012] getfield #45
-        - Fieldref [com/jbak/JbakKeyboard/ao.b Ljava/lang/String;]
-      [1015] aload_2 v2
-      [1016] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1019] getfield #44
         - Fieldref [com/jbak/JbakKeyboard/ao.a Ljava/lang/String;]
-      [1022] ifacmpeq +37 (target=1059)
-      [1025] aload_2 v2
-      [1026] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1029] aload_2 v2
-      [1030] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [1033] invokevirtual #73
+      [1015] ifacmpeq +37 (target=1052)
+      [1018] aload_2 v2
+      [1019] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1022] aload_2 v2
+      [1023] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [1026] invokevirtual #74
         - Methodref [android/graphics/Rect.width ()I]
-      [1036] iconst_2
-      [1037] idiv
-      [1038] i2f
-      [1039] aload_3 v3
-      [1040] aload_2 v2
-      [1041] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1044] getfield #45
+      [1029] iconst_2
+      [1030] idiv
+      [1031] i2f
+      [1032] aload_3 v3
+      [1033] aload_2 v2
+      [1034] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1037] getfield #46
         - Fieldref [com/jbak/JbakKeyboard/ao.b Ljava/lang/String;]
-      [1047] invokevirtual #67
+      [1040] invokevirtual #68
         - Methodref [android/graphics/Paint.measureText (Ljava/lang/String;)F]
-      [1050] fconst_2
-      [1051] fdiv
-      [1052] fsub
-      [1053] putfield #48
+      [1043] fconst_2
+      [1044] fdiv
+      [1045] fsub
+      [1046] putfield #49
         - Fieldref [com/jbak/JbakKeyboard/ao.e F]
-      [1056] goto +17 (target=1073)
-      [1059] aload_2 v2
-      [1060] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1063] aload_2 v2
-      [1064] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1067] getfield #46
+      [1049] goto +17 (target=1066)
+      [1052] aload_2 v2
+      [1053] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1056] aload_2 v2
+      [1057] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1060] getfield #47
         - Fieldref [com/jbak/JbakKeyboard/ao.c F]
-      [1070] putfield #48
+      [1063] putfield #49
         - Fieldref [com/jbak/JbakKeyboard/ao.e F]
+      [1066] aload_0 v0
+      [1067] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1070] ifnonnull +10 (target=1080)
       [1073] aload_0 v0
-      [1074] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1077] ifnonnull +10 (target=1087)
+      [1074] getfield #37
+        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
+      [1077] ifeq +23 (target=1100)
       [1080] aload_0 v0
-      [1081] getfield #36
-        - Fieldref [com/jbak/JbakKeyboard/an.d Z]
-      [1084] ifeq +23 (target=1107)
+      [1081] getfield #35
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+      [1084] ifnonnull +10 (target=1094)
       [1087] aload_0 v0
-      [1088] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [1091] ifnonnull +10 (target=1101)
-      [1094] aload_0 v0
-      [1095] getfield #33
+      [1088] getfield #33
         - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [1098] ifnull +9 (target=1107)
-      [1101] getstatic #23
+      [1091] ifnull +9 (target=1100)
+      [1094] getstatic #23
         - Fieldref [com/jbak/JbakKeyboard/JbKbdView.b Lcom/jbak/JbakKeyboard/JbKbdView;]
-      [1104] ifnonnull +4 (target=1108)
-      [1107] return
-      [1108] invokestatic #92
+      [1097] ifnonnull +4 (target=1101)
+      [1100] return
+      [1101] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [1111] getfield #52
+      [1104] getfield #53
         - Fieldref [com/jbak/JbakKeyboard/as.b Landroid/graphics/Paint;]
-      [1114] astore_2 v2
+      [1107] astore_2 v2
+      [1108] aload_0 v0
+      [1109] getfield #33
+        - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
+      [1112] ifnull +123 (target=1235)
       [1115] aload_0 v0
-      [1116] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [1119] ifnonnull +130 (target=1249)
-      [1122] aload_0 v0
-      [1123] getfield #33
+      [1116] getfield #37
+        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
+      [1119] ifeq +53 (target=1172)
+      [1122] aload_1 v1
+      [1123] aload_0 v0
+      [1124] getfield #33
         - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [1126] ifnull +123 (target=1249)
-      [1129] aload_0 v0
-      [1130] getfield #36
-        - Fieldref [com/jbak/JbakKeyboard/an.d Z]
-      [1133] ifeq +53 (target=1186)
-      [1136] aload_1 v1
-      [1137] aload_0 v0
-      [1138] getfield #33
-        - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [1141] aload_0 v0
-      [1142] invokevirtual #85
+      [1127] aload_0 v0
+      [1128] invokevirtual #86
         - Methodref [com/jbak/JbakKeyboard/an.getWidth ()F]
-      [1145] fconst_2
-      [1146] fdiv
-      [1147] aload_0 v0
-      [1148] getfield #33
+      [1131] fconst_2
+      [1132] fdiv
+      [1133] aload_0 v0
+      [1134] getfield #33
         - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [1151] invokevirtual #60
+      [1137] invokevirtual #61
         - Methodref [android/graphics/Bitmap.getWidth ()I]
-      [1154] iconst_2
-      [1155] idiv
-      [1156] i2f
-      [1157] fsub
-      [1158] aload_0 v0
-      [1159] invokevirtual #84
+      [1140] iconst_2
+      [1141] idiv
+      [1142] i2f
+      [1143] fsub
+      [1144] aload_0 v0
+      [1145] invokevirtual #85
         - Methodref [com/jbak/JbakKeyboard/an.getHeight ()F]
-      [1162] fconst_2
-      [1163] fdiv
-      [1164] aload_0 v0
-      [1165] getfield #33
+      [1148] fconst_2
+      [1149] fdiv
+      [1150] aload_0 v0
+      [1151] getfield #33
         - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [1168] invokevirtual #59
+      [1154] invokevirtual #60
         - Methodref [android/graphics/Bitmap.getHeight ()I]
-      [1171] iconst_2
-      [1172] idiv
-      [1173] i2f
-      [1174] fsub
-      [1175] invokestatic #92
+      [1157] iconst_2
+      [1158] idiv
+      [1159] i2f
+      [1160] fsub
+      [1161] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [1178] aload_0 v0
-      [1179] invokevirtual #87
+      [1164] aload_0 v0
+      [1165] invokevirtual #88
         - Methodref [com/jbak/JbakKeyboard/as.a (Lcom/jbak/JbakKeyboard/an;)Landroid/graphics/Paint;]
-      [1182] invokevirtual #61
+      [1168] invokevirtual #62
         - Methodref [android/graphics/Canvas.drawBitmap (Landroid/graphics/Bitmap;FFLandroid/graphics/Paint;)V]
-      [1185] return
-      [1186] aload_1 v1
-      [1187] iconst_0
-      [1188] aload_0 v0
-      [1189] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [1192] invokevirtual #73
+      [1171] return
+      [1172] aload_1 v1
+      [1173] iconst_0
+      [1174] aload_0 v0
+      [1175] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [1178] invokevirtual #74
         - Methodref [android/graphics/Rect.width ()I]
-      [1195] iconst_2
-      [1196] idiv
-      [1197] isub
-      [1198] i2f
-      [1199] iconst_0
-      [1200] aload_0 v0
-      [1201] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [1204] invokevirtual #72
+      [1181] iconst_2
+      [1182] idiv
+      [1183] isub
+      [1184] i2f
+      [1185] iconst_0
+      [1186] aload_0 v0
+      [1187] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [1190] invokevirtual #73
         - Methodref [android/graphics/Rect.height ()I]
-      [1207] iconst_2
-      [1208] idiv
-      [1209] isub
-      [1210] i2f
-      [1211] invokevirtual #63
+      [1193] iconst_2
+      [1194] idiv
+      [1195] isub
+      [1196] i2f
+      [1197] invokevirtual #64
         - Methodref [android/graphics/Canvas.translate (FF)V]
-      [1214] aload_0 v0
-      [1215] aload_1 v1
-      [1216] invokespecial #81
+      [1200] aload_0 v0
+      [1201] aload_1 v1
+      [1202] invokespecial #82
         - Methodref [com/jbak/JbakKeyboard/an.a (Landroid/graphics/Canvas;)V]
-      [1219] aload_1 v1
-      [1220] aload_0 v0
-      [1221] getfield #33
+      [1205] aload_1 v1
+      [1206] aload_0 v0
+      [1207] getfield #33
         - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [1224] aload_0 v0
-      [1225] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1228] getfield #46
+      [1210] aload_0 v0
+      [1211] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1214] getfield #47
         - Fieldref [com/jbak/JbakKeyboard/ao.c F]
-      [1231] aload_0 v0
-      [1232] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1235] getfield #47
+      [1217] aload_0 v0
+      [1218] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1221] getfield #48
         - Fieldref [com/jbak/JbakKeyboard/ao.d F]
-      [1238] invokestatic #92
+      [1224] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [1241] aload_0 v0
-      [1242] invokevirtual #87
+      [1227] aload_0 v0
+      [1228] invokevirtual #88
         - Methodref [com/jbak/JbakKeyboard/as.a (Lcom/jbak/JbakKeyboard/an;)Landroid/graphics/Paint;]
-      [1245] invokevirtual #61
+      [1231] invokevirtual #62
         - Methodref [android/graphics/Canvas.drawBitmap (Landroid/graphics/Bitmap;FFLandroid/graphics/Paint;)V]
-      [1248] return
+      [1234] return
+      [1235] aload_0 v0
+      [1236] getfield #37
+        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
+      [1239] ifeq +141 (target=1380)
+      [1242] aload_0 v0
+      [1243] getfield #38
+        - Fieldref [com/jbak/JbakKeyboard/an.f Z]
+      [1246] ifeq +10 (target=1256)
       [1249] aload_0 v0
       [1250] getfield #36
-        - Fieldref [com/jbak/JbakKeyboard/an.d Z]
-      [1253] ifeq +141 (target=1394)
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
+      [1253] goto +7 (target=1260)
       [1256] aload_0 v0
-      [1257] getfield #37
-        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
-      [1260] ifeq +10 (target=1270)
-      [1263] aload_0 v0
-      [1264] getfield #35
+      [1257] getfield #35
         - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
-      [1267] goto +7 (target=1274)
-      [1270] aload_0 v0
-      [1271] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [1274] dup
-      [1275] astore_3 v3
-      [1276] ifnull +117 (target=1393)
-      [1279] getstatic #23
+      [1260] dup
+      [1261] astore_3 v3
+      [1262] ifnull +117 (target=1379)
+      [1265] getstatic #23
         - Fieldref [com/jbak/JbakKeyboard/JbKbdView.b Lcom/jbak/JbakKeyboard/JbKbdView;]
-      [1282] getfield #24
+      [1268] getfield #24
         - Fieldref [com/jbak/JbakKeyboard/JbKbdView.i Landroid/text/TextPaint;]
-      [1285] astore_2 v2
-      [1286] aload_3 v3
-      [1287] invokevirtual #94
+      [1271] astore_2 v2
+      [1272] aload_3 v3
+      [1273] invokevirtual #95
         - Methodref [java/lang/String.length ()I]
-      [1290] iconst_1
-      [1291] ificmple +19 (target=1310)
-      [1294] aload_2 v2
-      [1295] invokestatic #91
+      [1276] iconst_1
+      [1277] ificmple +19 (target=1296)
+      [1280] aload_2 v2
+      [1281] invokestatic #92
         - Methodref [com/jbak/JbakKeyboard/ca.p ()Lcom/jbak/JbakKeyboard/JbKbdView;]
-      [1298] getfield #25
+      [1284] getfield #25
         - Fieldref [com/jbak/JbakKeyboard/JbKbdView.k I]
-      [1301] iconst_2
-      [1302] idiv
+      [1287] iconst_2
+      [1288] idiv
+      [1289] i2f
+      [1290] invokevirtual #70
+        - Methodref [android/graphics/Paint.setTextSize (F)V]
+      [1293] goto +14 (target=1307)
+      [1296] aload_2 v2
+      [1297] invokestatic #92
+        - Methodref [com/jbak/JbakKeyboard/ca.p ()Lcom/jbak/JbakKeyboard/JbKbdView;]
+      [1300] getfield #25
+        - Fieldref [com/jbak/JbakKeyboard/JbKbdView.k I]
       [1303] i2f
-      [1304] invokevirtual #69
+      [1304] invokevirtual #70
         - Methodref [android/graphics/Paint.setTextSize (F)V]
-      [1307] goto +14 (target=1321)
-      [1310] aload_2 v2
-      [1311] invokestatic #91
-        - Methodref [com/jbak/JbakKeyboard/ca.p ()Lcom/jbak/JbakKeyboard/JbKbdView;]
-      [1314] getfield #25
-        - Fieldref [com/jbak/JbakKeyboard/JbKbdView.k I]
-      [1317] i2f
-      [1318] invokevirtual #69
-        - Methodref [android/graphics/Paint.setTextSize (F)V]
-      [1321] new #5
+      [1307] new #5
         - Class [android/graphics/Rect]
-      [1324] dup
-      [1325] invokespecial #70
+      [1310] dup
+      [1311] invokespecial #71
         - Methodref [android/graphics/Rect.<init> ()V]
-      [1328] astore v4
-      [1330] aload_2 v2
-      [1331] aload_3 v3
-      [1332] iconst_0
-      [1333] aload_3 v3
-      [1334] invokevirtual #94
+      [1314] astore v4
+      [1316] aload_2 v2
+      [1317] aload_3 v3
+      [1318] iconst_0
+      [1319] aload_3 v3
+      [1320] invokevirtual #95
         - Methodref [java/lang/String.length ()I]
-      [1337] aload v4
-      [1339] invokevirtual #66
+      [1323] aload v4
+      [1325] invokevirtual #67
         - Methodref [android/graphics/Paint.getTextBounds (Ljava/lang/String;IILandroid/graphics/Rect;)V]
-      [1342] aload_0 v0
-      [1343] invokevirtual #85
+      [1328] aload_0 v0
+      [1329] invokevirtual #86
         - Methodref [com/jbak/JbakKeyboard/an.getWidth ()F]
-      [1346] fconst_2
-      [1347] fdiv
-      [1348] aload v4
-      [1350] invokevirtual #73
+      [1332] fconst_2
+      [1333] fdiv
+      [1334] aload v4
+      [1336] invokevirtual #74
         - Methodref [android/graphics/Rect.width ()I]
-      [1353] iconst_2
-      [1354] idiv
-      [1355] i2f
-      [1356] fsub
-      [1357] fstore v5
-      [1359] aload_0 v0
-      [1360] invokevirtual #84
+      [1339] iconst_2
+      [1340] idiv
+      [1341] i2f
+      [1342] fsub
+      [1343] fstore v5
+      [1345] aload_0 v0
+      [1346] invokevirtual #85
         - Methodref [com/jbak/JbakKeyboard/an.getHeight ()F]
-      [1363] fconst_2
-      [1364] fdiv
-      [1365] aload v4
-      [1367] invokevirtual #72
+      [1349] fconst_2
+      [1350] fdiv
+      [1351] aload v4
+      [1353] invokevirtual #73
         - Methodref [android/graphics/Rect.height ()I]
-      [1370] iconst_2
-      [1371] idiv
-      [1372] i2f
-      [1373] fsub
-      [1374] fstore v4
-      [1376] aload_1 v1
-      [1377] aload_3 v3
-      [1378] fload v5
-      [1380] fload v4
-      [1382] fconst_0
-      [1383] aload_2 v2
-      [1384] invokevirtual #64
+      [1356] iconst_2
+      [1357] idiv
+      [1358] i2f
+      [1359] fsub
+      [1360] fstore v4
+      [1362] aload_1 v1
+      [1363] aload_3 v3
+      [1364] fload v5
+      [1366] fload v4
+      [1368] fconst_0
+      [1369] aload_2 v2
+      [1370] invokevirtual #65
         - Methodref [android/graphics/Paint.ascent ()F]
-      [1387] fsub
-      [1388] fadd
-      [1389] aload_2 v2
-      [1390] invokevirtual #62
+      [1373] fsub
+      [1374] fadd
+      [1375] aload_2 v2
+      [1376] invokevirtual #63
         - Methodref [android/graphics/Canvas.drawText (Ljava/lang/String;FFLandroid/graphics/Paint;)V]
-      [1393] return
-      [1394] getstatic #23
+      [1379] return
+      [1380] getstatic #23
         - Fieldref [com/jbak/JbakKeyboard/JbKbdView.b Lcom/jbak/JbakKeyboard/JbKbdView;]
-      [1397] invokevirtual #79
+      [1383] invokevirtual #80
         - Methodref [com/jbak/JbakKeyboard/JbKbdView.c ()Z]
-      [1400] istore_3 v3
-      [1401] aload_0 v0
-      [1402] getfield #38
-        - Fieldref [com/jbak/JbakKeyboard/an.f Z]
-      [1405] ifeq +15 (target=1420)
-      [1408] iconst_0
-      [1409] istore_3 v3
-      [1410] invokestatic #92
+      [1386] istore_3 v3
+      [1387] aload_0 v0
+      [1388] getfield #39
+        - Fieldref [com/jbak/JbakKeyboard/an.g Z]
+      [1391] ifeq +15 (target=1406)
+      [1394] iconst_0
+      [1395] istore_3 v3
+      [1396] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [1413] getfield #53
+      [1399] getfield #54
         - Fieldref [com/jbak/JbakKeyboard/as.c Landroid/graphics/Paint;]
-      [1416] astore_2 v2
-      [1417] goto +23 (target=1440)
-      [1420] aload_0 v0
-      [1421] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [1424] invokevirtual #94
+      [1402] astore_2 v2
+      [1403] goto +23 (target=1426)
+      [1406] aload_0 v0
+      [1407] getfield #35
+        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
+      [1410] invokevirtual #95
         - Methodref [java/lang/String.length ()I]
-      [1427] iconst_1
-      [1428] ificmple +12 (target=1440)
-      [1431] iconst_0
-      [1432] istore_3 v3
-      [1433] invokestatic #92
+      [1413] iconst_1
+      [1414] ificmple +12 (target=1426)
+      [1417] iconst_0
+      [1418] istore_3 v3
+      [1419] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [1436] getfield #54
+      [1422] getfield #55
         - Fieldref [com/jbak/JbakKeyboard/as.d Landroid/graphics/Paint;]
-      [1439] astore_2 v2
-      [1440] aload_0 v0
-      [1441] aload_2 v2
-      [1442] invokespecial #82
+      [1425] astore_2 v2
+      [1426] aload_0 v0
+      [1427] aload_2 v2
+      [1428] invokespecial #83
         - Methodref [com/jbak/JbakKeyboard/an.a (Landroid/graphics/Paint;)V]
-      [1445] aload_1 v1
-      [1446] iconst_0
-      [1447] aload_0 v0
-      [1448] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [1451] invokevirtual #73
+      [1431] aload_1 v1
+      [1432] iconst_0
+      [1433] aload_0 v0
+      [1434] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [1437] invokevirtual #74
         - Methodref [android/graphics/Rect.width ()I]
-      [1454] iconst_2
-      [1455] idiv
-      [1456] isub
-      [1457] i2f
-      [1458] iconst_0
-      [1459] aload_0 v0
-      [1460] getfield #39
-        - Fieldref [com/jbak/JbakKeyboard/an.g Landroid/graphics/Rect;]
-      [1463] invokevirtual #72
+      [1440] iconst_2
+      [1441] idiv
+      [1442] isub
+      [1443] i2f
+      [1444] iconst_0
+      [1445] aload_0 v0
+      [1446] getfield #40
+        - Fieldref [com/jbak/JbakKeyboard/an.h Landroid/graphics/Rect;]
+      [1449] invokevirtual #73
         - Methodref [android/graphics/Rect.height ()I]
-      [1466] iconst_2
-      [1467] idiv
-      [1468] isub
-      [1469] i2f
-      [1470] invokevirtual #63
+      [1452] iconst_2
+      [1453] idiv
+      [1454] isub
+      [1455] i2f
+      [1456] invokevirtual #64
         - Methodref [android/graphics/Canvas.translate (FF)V]
-      [1473] aload_0 v0
-      [1474] aload_1 v1
-      [1475] invokespecial #81
+      [1459] aload_0 v0
+      [1460] aload_1 v1
+      [1461] invokespecial #82
         - Methodref [com/jbak/JbakKeyboard/an.a (Landroid/graphics/Canvas;)V]
-      [1478] invokestatic #92
+      [1464] invokestatic #93
         - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [1481] getfield #53
+      [1467] getfield #54
         - Fieldref [com/jbak/JbakKeyboard/as.c Landroid/graphics/Paint;]
-      [1484] astore v4
-      [1486] aload_0 v0
-      [1487] aload v4
-      [1489] invokespecial #82
+      [1470] astore v4
+      [1472] aload_0 v0
+      [1473] aload v4
+      [1475] invokespecial #83
         - Methodref [com/jbak/JbakKeyboard/an.a (Landroid/graphics/Paint;)V]
-      [1492] aload_0 v0
-      [1493] getfield #33
+      [1478] aload_0 v0
+      [1479] getfield #33
         - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [1496] ifnull +71 (target=1567)
-      [1499] aload_0 v0
-      [1500] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.b Ljava/lang/String;]
-      [1503] ifnonnull +35 (target=1538)
-      [1506] aload_1 v1
+      [1482] ifnull +32 (target=1514)
+      [1485] aload_1 v1
+      [1486] aload_0 v0
+      [1487] getfield #33
+        - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
+      [1490] aload_0 v0
+      [1491] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1494] getfield #47
+        - Fieldref [com/jbak/JbakKeyboard/ao.c F]
+      [1497] aload_0 v0
+      [1498] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1501] getfield #48
+        - Fieldref [com/jbak/JbakKeyboard/ao.d F]
+      [1504] invokestatic #93
+        - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
       [1507] aload_0 v0
-      [1508] getfield #33
-        - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [1511] aload_0 v0
-      [1512] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1515] getfield #46
-        - Fieldref [com/jbak/JbakKeyboard/ao.c F]
-      [1518] aload_0 v0
-      [1519] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1522] getfield #47
-        - Fieldref [com/jbak/JbakKeyboard/ao.d F]
-      [1525] invokestatic #92
-        - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [1528] aload_0 v0
-      [1529] invokevirtual #87
+      [1508] invokevirtual #88
         - Methodref [com/jbak/JbakKeyboard/as.a (Lcom/jbak/JbakKeyboard/an;)Landroid/graphics/Paint;]
-      [1532] invokevirtual #61
+      [1511] invokevirtual #62
         - Methodref [android/graphics/Canvas.drawBitmap (Landroid/graphics/Bitmap;FFLandroid/graphics/Paint;)V]
-      [1535] goto +32 (target=1567)
-      [1538] aload_1 v1
-      [1539] aload_0 v0
-      [1540] getfield #33
-        - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
+      [1514] aload_0 v0
+      [1515] getfield #34
+        - Fieldref [com/jbak/JbakKeyboard/an.b Landroid/graphics/Bitmap;]
+      [1518] ifnull +35 (target=1553)
+      [1521] aload_1 v1
+      [1522] aload_0 v0
+      [1523] getfield #34
+        - Fieldref [com/jbak/JbakKeyboard/an.b Landroid/graphics/Bitmap;]
+      [1526] aload_0 v0
+      [1527] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1530] getfield #51
+        - Fieldref [com/jbak/JbakKeyboard/ao.g F]
+      [1533] aload_0 v0
+      [1534] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1537] getfield #52
+        - Fieldref [com/jbak/JbakKeyboard/ao.h F]
+      [1540] invokestatic #93
+        - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
       [1543] aload_0 v0
-      [1544] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1547] getfield #50
-        - Fieldref [com/jbak/JbakKeyboard/ao.g F]
-      [1550] aload_0 v0
-      [1551] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1554] getfield #51
-        - Fieldref [com/jbak/JbakKeyboard/ao.h F]
-      [1557] invokestatic #92
-        - Methodref [com/jbak/JbakKeyboard/ca.t ()Lcom/jbak/JbakKeyboard/as;]
-      [1560] aload_0 v0
-      [1561] invokevirtual #87
+      [1544] invokevirtual #88
         - Methodref [com/jbak/JbakKeyboard/as.a (Lcom/jbak/JbakKeyboard/an;)Landroid/graphics/Paint;]
-      [1564] invokevirtual #61
+      [1547] invokevirtual #62
         - Methodref [android/graphics/Canvas.drawBitmap (Landroid/graphics/Bitmap;FFLandroid/graphics/Paint;)V]
-      [1567] aload_0 v0
-      [1568] getfield #35
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
-      [1571] ifnull +34 (target=1605)
-      [1574] aload_0 v0
-      [1575] getfield #33
-        - Fieldref [com/jbak/JbakKeyboard/an.a Landroid/graphics/Bitmap;]
-      [1578] ifnonnull +27 (target=1605)
-      [1581] aload_1 v1
-      [1582] aload_0 v0
-      [1583] getfield #35
-        - Fieldref [com/jbak/JbakKeyboard/an.c Ljava/lang/String;]
-      [1586] aload_0 v0
-      [1587] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1590] getfield #50
+      [1550] goto +34 (target=1584)
+      [1553] aload_0 v0
+      [1554] getfield #36
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
+      [1557] ifnull +27 (target=1584)
+      [1560] aload_1 v1
+      [1561] aload_0 v0
+      [1562] getfield #36
+        - Fieldref [com/jbak/JbakKeyboard/an.d Ljava/lang/String;]
+      [1565] aload_0 v0
+      [1566] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1569] getfield #51
         - Fieldref [com/jbak/JbakKeyboard/ao.g F]
-      [1593] aload_0 v0
-      [1594] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1597] getfield #51
+      [1572] aload_0 v0
+      [1573] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1576] getfield #52
         - Fieldref [com/jbak/JbakKeyboard/ao.h F]
-      [1600] aload v4
-      [1602] invokevirtual #62
+      [1579] aload v4
+      [1581] invokevirtual #63
         - Methodref [android/graphics/Canvas.drawText (Ljava/lang/String;FFLandroid/graphics/Paint;)V]
-      [1605] iload_3 v3
-      [1606] ifeq +30 (target=1636)
-      [1609] aload_1 v1
-      [1610] aload_0 v0
-      [1611] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1614] getfield #45
+      [1584] iload_3 v3
+      [1585] ifeq +30 (target=1615)
+      [1588] aload_1 v1
+      [1589] aload_0 v0
+      [1590] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1593] getfield #46
         - Fieldref [com/jbak/JbakKeyboard/ao.b Ljava/lang/String;]
-      [1617] aload_0 v0
-      [1618] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1621] getfield #48
+      [1596] aload_0 v0
+      [1597] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1600] getfield #49
         - Fieldref [com/jbak/JbakKeyboard/ao.e F]
-      [1624] aload_0 v0
-      [1625] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1628] getfield #49
+      [1603] aload_0 v0
+      [1604] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1607] getfield #50
         - Fieldref [com/jbak/JbakKeyboard/ao.f F]
-      [1631] aload_2 v2
-      [1632] invokevirtual #62
+      [1610] aload_2 v2
+      [1611] invokevirtual #63
         - Methodref [android/graphics/Canvas.drawText (Ljava/lang/String;FFLandroid/graphics/Paint;)V]
-      [1635] return
-      [1636] aload_1 v1
-      [1637] aload_0 v0
-      [1638] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1641] getfield #44
+      [1614] return
+      [1615] aload_1 v1
+      [1616] aload_0 v0
+      [1617] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1620] getfield #45
         - Fieldref [com/jbak/JbakKeyboard/ao.a Ljava/lang/String;]
-      [1644] aload_0 v0
-      [1645] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1648] getfield #46
+      [1623] aload_0 v0
+      [1624] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1627] getfield #47
         - Fieldref [com/jbak/JbakKeyboard/ao.c F]
-      [1651] aload_0 v0
-      [1652] getfield #43
-        - Fieldref [com/jbak/JbakKeyboard/an.k Lcom/jbak/JbakKeyboard/ao;]
-      [1655] getfield #47
+      [1630] aload_0 v0
+      [1631] getfield #44
+        - Fieldref [com/jbak/JbakKeyboard/an.l Lcom/jbak/JbakKeyboard/ao;]
+      [1634] getfield #48
         - Fieldref [com/jbak/JbakKeyboard/ao.d F]
-      [1658] aload_2 v2
-      [1659] invokevirtual #62
+      [1637] aload_2 v2
+      [1638] invokevirtual #63
         - Methodref [android/graphics/Canvas.drawText (Ljava/lang/String;FFLandroid/graphics/Paint;)V]
-      [1662] return
+      [1641] return
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 2):
       + Line number table attribute (count = 47)
-        [0] -> line 392
-        [14] -> line 393
-        [1073] -> line 394
-        [1107] -> line 395
-        [1108] -> line 396
-        [1115] -> line 397
-        [1129] -> line 400
-        [1136] -> line 401
-        [1186] -> line 404
-        [1214] -> line 405
-        [1219] -> line 406
-        [1248] -> line 408
-        [1249] -> line 410
-        [1256] -> line 413
-        [1275] -> line 415
-        [1279] -> line 417
-        [1286] -> line 418
-        [1294] -> line 420
-        [1310] -> line 424
-        [1321] -> line 426
-        [1330] -> line 427
-        [1342] -> line 428
-        [1359] -> line 429
-        [1376] -> line 430
-        [1393] -> line 432
-        [1394] -> line 435
-        [1401] -> line 436
-        [1408] -> line 438
-        [1410] -> line 439
-        [1420] -> line 441
-        [1431] -> line 443
-        [1433] -> line 444
-        [1440] -> line 446
-        [1445] -> line 448
-        [1473] -> line 449
-        [1478] -> line 450
-        [1486] -> line 451
-        [1492] -> line 452
-        [1499] -> line 454
-        [1506] -> line 455
-        [1538] -> line 457
-        [1567] -> line 459
-        [1581] -> line 461
-        [1605] -> line 463
-        [1609] -> line 464
-        [1636] -> line 466
-        [1662] -> line 467
+        [0] -> line 396
+        [14] -> line 397
+        [1066] -> line 398
+        [1100] -> line 399
+        [1101] -> line 400
+        [1108] -> line 401
+        [1115] -> line 404
+        [1122] -> line 405
+        [1172] -> line 408
+        [1200] -> line 409
+        [1205] -> line 410
+        [1234] -> line 412
+        [1235] -> line 414
+        [1242] -> line 417
+        [1261] -> line 419
+        [1265] -> line 421
+        [1272] -> line 422
+        [1280] -> line 424
+        [1296] -> line 428
+        [1307] -> line 430
+        [1316] -> line 431
+        [1328] -> line 432
+        [1345] -> line 433
+        [1362] -> line 434
+        [1379] -> line 436
+        [1380] -> line 439
+        [1387] -> line 440
+        [1394] -> line 442
+        [1396] -> line 443
+        [1406] -> line 445
+        [1417] -> line 447
+        [1419] -> line 448
+        [1426] -> line 450
+        [1431] -> line 452
+        [1459] -> line 453
+        [1464] -> line 454
+        [1472] -> line 455
+        [1478] -> line 456
+        [1485] -> line 458
+        [1514] -> line 460
+        [1521] -> line 461
+        [1553] -> line 462
+        [1560] -> line 464
+        [1584] -> line 466
+        [1588] -> line 467
+        [1615] -> line 469
+        [1641] -> line 470
       + Stack map table attribute (count = 21):
-        - [1073] Var: ..., Stack: (empty)
-        - [1087] Var: ..., Stack: (empty)
+        - [1066] Var: ..., Stack: (empty)
+        - [1080] Var: ..., Stack: (empty)
+        - [1094] Var: ..., Stack: (empty)
+        - [1100] Var: ..., Stack: (empty)
         - [1101] Var: ..., Stack: (empty)
-        - [1107] Var: ..., Stack: (empty)
-        - [1108] Var: ..., Stack: (empty)
-        - [1186] Var: ...[a:android/graphics/Paint], Stack: (empty)
-        - [1248] Var: ..., Stack: (empty)
-        - [1249] Var: ..., Stack: (empty)
-        - [1270] Var: ..., Stack: (empty)
-        - [1274] Var: ..., Stack: [a:java/lang/String]
-        - [1310] Var: ...[a:java/lang/String], Stack: (empty)
-        - [1321] Var: ..., Stack: (empty)
-        - [1393] Var: ..., Stack: (empty)
-        - [1394] Var: -1, Stack: (empty)
-        - [1420] Var: ...[i], Stack: (empty)
-        - [1440] Var: ..., Stack: (empty)
-        - [1538] Var: ...[a:android/graphics/Paint], Stack: (empty)
-        - [1567] Var: ..., Stack: (empty)
-        - [1605] Var: ..., Stack: (empty)
-        - [1636] Var: ..., Stack: (empty)
-        - [1662] Var: ..., Stack: (empty)
+        - [1172] Var: ...[a:android/graphics/Paint], Stack: (empty)
+        - [1234] Var: ..., Stack: (empty)
+        - [1235] Var: ..., Stack: (empty)
+        - [1256] Var: ..., Stack: (empty)
+        - [1260] Var: ..., Stack: [a:java/lang/String]
+        - [1296] Var: ...[a:java/lang/String], Stack: (empty)
+        - [1307] Var: ..., Stack: (empty)
+        - [1379] Var: ..., Stack: (empty)
+        - [1380] Var: -1, Stack: (empty)
+        - [1406] Var: ...[i], Stack: (empty)
+        - [1426] Var: ..., Stack: (empty)
+        - [1514] Var: ...[a:android/graphics/Paint], Stack: (empty)
+        - [1553] Var: ..., Stack: (empty)
+        - [1584] Var: ..., Stack: (empty)
+        - [1615] Var: ..., Stack: (empty)
+        - [1641] Var: ..., Stack: (empty)
 
 Class file attributes (count = 1):
   + Source file attribute:
@@ -52685,7 +52684,7 @@ Methods (count = 1):
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 1):
       + Line number table attribute (count = 1)
-        [0] -> line 236
+        [0] -> line 240
 
 Class file attributes (count = 1):
   + Source file attribute:
@@ -53285,7 +53284,7 @@ _____________________________________________________________________
 
 Interfaces (count = 0):
 
-Constant Pool (count = 217):
+Constant Pool (count = 218):
   - Integer [12345678]
   - Float [0.025]
   - Float [0.03]
@@ -53317,9 +53316,9 @@ Constant Pool (count = 217):
   - Class [java/util/Vector]
   - Fieldref [android/util/DisplayMetrics.heightPixels I]
   - Fieldref [android/util/DisplayMetrics.widthPixels I]
-  - Fieldref [com/jbak/JbakKeyboard/an.d Z]
-  - Fieldref [com/jbak/JbakKeyboard/an.h Z]
+  - Fieldref [com/jbak/JbakKeyboard/an.e Z]
   - Fieldref [com/jbak/JbakKeyboard/an.i Z]
+  - Fieldref [com/jbak/JbakKeyboard/an.j Z]
   - Fieldref [com/jbak/JbakKeyboard/as.a Lcom/jbak/JbakKeyboard/as;]
   - Fieldref [com/jbak/JbakKeyboard/as.e I]
   - Fieldref [com/jbak/JbakKeyboard/as.f I]
@@ -53381,8 +53380,8 @@ Constant Pool (count = 217):
   + NameAndType [c Landroid/graphics/drawable/BitmapDrawable;]
   + NameAndType [createFromPath (Ljava/lang/String;)Landroid/graphics/drawable/Drawable;]
   + NameAndType [d (II)I]
-  + NameAndType [d Z]
   + NameAndType [e I]
+  + NameAndType [e Z]
   + NameAndType [equals (Ljava/lang/Object;)Z]
   + NameAndType [f I]
   + NameAndType [g Landroid/graphics/PorterDuffColorFilter;]
@@ -53398,6 +53397,7 @@ Constant Pool (count = 217):
   + NameAndType [i Z]
   + NameAndType [iterator ()Ljava/util/Iterator;]
   + NameAndType [j I]
+  + NameAndType [j Z]
   + NameAndType [l Landroid/graphics/Paint;]
   + NameAndType [m Landroid/graphics/Paint;]
   + NameAndType [n Landroid/graphics/Paint;]
@@ -53623,7 +53623,7 @@ Methods (count = 13):
     + Code attribute instructions (code length = 41, locals = 2, stack = 1):
       [0] aload_1 v1
       [1] getfield #34
-        - Fieldref [com/jbak/JbakKeyboard/an.i Z]
+        - Fieldref [com/jbak/JbakKeyboard/an.j Z]
       [4] ifeq +8 (target=12)
       [7] aload_0 v0
       [8] getfield #45
@@ -53631,7 +53631,7 @@ Methods (count = 13):
       [11] areturn
       [12] aload_1 v1
       [13] getfield #32
-        - Fieldref [com/jbak/JbakKeyboard/an.d Z]
+        - Fieldref [com/jbak/JbakKeyboard/an.e Z]
       [16] ifeq +8 (target=24)
       [19] aload_0 v0
       [20] getfield #44
@@ -53639,7 +53639,7 @@ Methods (count = 13):
       [23] areturn
       [24] aload_1 v1
       [25] getfield #33
-        - Fieldref [com/jbak/JbakKeyboard/an.h Z]
+        - Fieldref [com/jbak/JbakKeyboard/an.i Z]
       [28] ifeq +8 (target=36)
       [31] aload_0 v0
       [32] getfield #43

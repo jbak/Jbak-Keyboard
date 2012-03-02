@@ -18,6 +18,7 @@ class KeyDrw extends RectShape
 {
     public static final String DRW_PREFIX = "d_"; 
     Bitmap bmp;
+    Bitmap bmpSmall;
     String txtMain;
     String txtSmall;
     boolean m_bPreview = false;
@@ -92,12 +93,15 @@ class KeyDrw extends RectShape
         else
         {
             bmp = null;
+        }
+        if(key.label!=null)
+        {
             CharSequence lab = key.label;
             int f = lab.toString().indexOf('\n');
             if(f>-1)
             {
                 txtSmall = lab.subSequence(0, f).toString();
-                bmp = st.getBitmapByCmd(st.getCmdByLabel(txtSmall));
+                bmpSmall = st.getBitmapByCmd(st.getCmdByLabel(txtSmall));
                 txtMain = lab.subSequence(f+1, lab.length()).toString();
             }
             else
@@ -257,7 +261,7 @@ class KeyDrw extends RectShape
         m_c = new DrwCache();
 //      Rect rb = canvas.getClipBounds();
         Paint p1 = st.paint().main;
-        if(txtMain==null&&bmp!=null)
+        if(bmp!=null)
         {
 // Рисуем просто картинку, без текста (по центру)
             if(m_bPreview)
@@ -310,10 +314,10 @@ class KeyDrw extends RectShape
         int d1 = (int) p1.descent();
         int d2 = (int) p2.descent();
         int w1,h1=d1+a1,w2,h2;
-        if(bmp!=null)
+        if(bmpSmall!=null)
         {
-            h2 = bmp.getHeight();
-            w2 = bmp.getWidth();
+            h2 = bmpSmall.getHeight();
+            w2 = bmpSmall.getWidth();
         }
         else if(txtSmall!=null)
         {
@@ -330,7 +334,7 @@ class KeyDrw extends RectShape
         {
             // Изображение основного текста и доп. символов не умещается в высоту
             int x2 = rb.width()-st.paint().padding.right-w2;
-            if(bmp!=null)
+            if(bmpSmall!=null)
             {
                 m_c.m_xSmall = x2;
                 m_c.m_ySmall = GAP+3;
@@ -359,7 +363,7 @@ class KeyDrw extends RectShape
         else
         {
             // Всё изображение умещается
-            if(bmp!=null)
+            if(bmpSmall!=null)
             {
                 m_c.m_xSmall = rb.width()/2-w2/2;
                 m_c.m_ySmall = st.paint().padding.top;
@@ -394,7 +398,7 @@ class KeyDrw extends RectShape
         if(m_c==null&&!m_bPreview||txtMain==null&&bmp==null||JbKbdView.inst==null)
             return;
         Paint p1 = st.paint().main;
-        if(txtMain==null&&bmp!=null)
+        if(bmp!=null)
         {
 // Рисуем просто картинку, без текста (по центру)
             if(m_bPreview)
@@ -451,12 +455,11 @@ class KeyDrw extends RectShape
         useTextColor(p2);
         if(bmp!=null)
         {
-            if(txtMain==null)
-                canvas.drawBitmap(bmp, m_c.m_xMainLower, m_c.m_yMainLower, st.paint().getBitmapPaint(this));
-            else
-                canvas.drawBitmap(bmp, m_c.m_xSmall, m_c.m_ySmall, st.paint().getBitmapPaint(this));
+            canvas.drawBitmap(bmp, m_c.m_xMainLower, m_c.m_yMainLower, st.paint().getBitmapPaint(this));
         }
-        if(txtSmall!=null&&bmp==null)
+        if(bmpSmall!=null)
+            canvas.drawBitmap(bmpSmall, m_c.m_xSmall, m_c.m_ySmall, st.paint().getBitmapPaint(this));
+        else if(txtSmall!=null)
         {
             canvas.drawText(txtSmall,m_c.m_xSmall, m_c.m_ySmall, p2);
         }

@@ -856,24 +856,25 @@ com.jbak.JbakKeyboard.JbKbdView$1 -> com.jbak.JbakKeyboard.am:
     617:617:void swipeDown() -> swipeDown
 com.jbak.JbakKeyboard.KeyDrw -> com.jbak.JbakKeyboard.an:
     android.graphics.Bitmap bmp -> a
-    java.lang.String txtMain -> b
-    java.lang.String txtSmall -> c
-    boolean m_bPreview -> d
-    boolean m_bLongPreview -> e
-    boolean m_bSmallLabel -> f
-    android.graphics.Rect rb -> g
-    boolean m_bFunc -> h
-    boolean m_bNoColorIcon -> i
-    int GAP -> j
-    com.jbak.JbakKeyboard.KeyDrw$DrwCache m_c -> k
-    46:48:android.graphics.drawable.Drawable getDrawable() -> a
-    52:53:void setSmallLabel(boolean) -> a
-    56:57:void setFuncKey(boolean) -> b
-    60:63:void useTextColor(android.graphics.Paint) -> a
-    75:114:void set(com.jbak.JbakKeyboard.JbKbd$LatinKey,boolean) -> a
-    117:119:void drawFuncBackground(android.graphics.Canvas) -> a
-    249:251:int horzX(int,int,int,int) -> a
-    392:467:void draw(android.graphics.Canvas,android.graphics.Paint) -> draw
+    android.graphics.Bitmap bmpSmall -> b
+    java.lang.String txtMain -> c
+    java.lang.String txtSmall -> d
+    boolean m_bPreview -> e
+    boolean m_bLongPreview -> f
+    boolean m_bSmallLabel -> g
+    android.graphics.Rect rb -> h
+    boolean m_bFunc -> i
+    boolean m_bNoColorIcon -> j
+    int GAP -> k
+    com.jbak.JbakKeyboard.KeyDrw$DrwCache m_c -> l
+    47:49:android.graphics.drawable.Drawable getDrawable() -> a
+    53:54:void setSmallLabel(boolean) -> a
+    57:58:void setFuncKey(boolean) -> b
+    61:64:void useTextColor(android.graphics.Paint) -> a
+    76:118:void set(com.jbak.JbakKeyboard.JbKbd$LatinKey,boolean) -> a
+    121:123:void drawFuncBackground(android.graphics.Canvas) -> a
+    253:255:int horzX(int,int,int,int) -> a
+    396:470:void draw(android.graphics.Canvas,android.graphics.Paint) -> draw
 com.jbak.JbakKeyboard.KeyDrw$DrwCache -> com.jbak.JbakKeyboard.ao:
     java.lang.String mainLower -> a
     java.lang.String mainUpper -> b
