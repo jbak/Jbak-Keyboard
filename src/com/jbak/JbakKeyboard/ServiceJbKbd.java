@@ -180,7 +180,10 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
                 else
                     st.kv().setTempShift(false,false);
                 if (var == EditorInfo.TYPE_TEXT_VARIATION_URI 
-                    ||var == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+                    ||var == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+                    ||var == EditorInfo.TYPE_TEXT_VARIATION_PASSWORD
+                    ||var == EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    )
                     st.setTempEnglishQwerty();
                 else
                     st.setQwertyKeyboard();
@@ -214,6 +217,9 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public void onFinishInputView(boolean finishingInput)
     {
+        JbKbdView kv = st.kv();
+        if(kv!=null)
+            kv.resetPressed();
         super.onFinishInputView(finishingInput);
     };
 
@@ -777,6 +783,14 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             case KeyEvent.KEYCODE_DPAD_RIGHT:
             case KeyEvent.KEYCODE_DPAD_UP: // Up
             case KeyEvent.KEYCODE_DPAD_DOWN: // Down
+                if((code==KeyEvent.KEYCODE_DPAD_LEFT||code==KeyEvent.KEYCODE_DPAD_UP)&&m_SelStart==0)
+                    return;
+                if(code==KeyEvent.KEYCODE_DPAD_RIGHT||code==KeyEvent.KEYCODE_DPAD_DOWN)
+                {
+                    CharSequence s = ic.getTextAfterCursor(1, 0);
+                    if(s==null||s.length()==0)
+                    return;
+                }
                 boolean sel = isSelMode();
                 if (sel)
                     ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT));

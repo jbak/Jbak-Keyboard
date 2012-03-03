@@ -6,6 +6,8 @@ import java.util.Locale;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Environment;
+
+import com.jbak.CustomGraphics.BitmapCachedGradBack;
 import com.jbak.CustomGraphics.GradBack;
 
 
@@ -119,7 +121,7 @@ public class IKeyboard
                       0,
                       DF_BOLD|DF_BIG_GAP)
                     .setKeysBackground(newIPhoneKey())
-                    .setKbdBackground(new GradBack(0xff9199a3,0xff444e5c).setCorners(0, 0).setGap(0))
+                    .setKbdBackground(new BitmapCachedGradBack(0xff9199a3,0xff444e5c).setCorners(0, 0).setGap(0))
                     ,
         // Украина
       new KbdDesign(R.string.kbd_design_ukraine, 
@@ -127,8 +129,8 @@ public class IKeyboard
               		Color.YELLOW,
               		0,
               		DF_BOLD)
-        	.setKeysBackground(new GradBack(0xff060a6c, 0xff1199af).setGradType(GradBack.GRADIENT_TYPE_SWEEP))
-        	.setKbdBackground(new GradBack(Color.CYAN, Color.YELLOW).setGap(0).setCorners(0, 0))
+        	.setKeysBackground(new BitmapCachedGradBack(0xff060a6c, 0xff1199af).setGradType(GradBack.GRADIENT_TYPE_SWEEP))
+        	.setKbdBackground(new BitmapCachedGradBack(Color.CYAN, Color.YELLOW).setGap(0).setCorners(0, 0))
             	,
         // Шоколад
         new KbdDesign(R.string.kbd_design_chokolate, 
@@ -136,8 +138,8 @@ public class IKeyboard
                       0xffffffc0,
                       0,
                       DF_BOLD)
-              .setKeysBackground(new GradBack(0xff75412b, 0xffc16643).setGradType(GradBack.GRADIENT_TYPE_SWEEP))
-              .setKbdBackground(new GradBack(0xff400000, GradBack.DEFAULT_COLOR).setGap(0).setCorners(0, 0))
+              .setKeysBackground(new BitmapCachedGradBack(0xff75412b, 0xffc16643).setGradType(GradBack.GRADIENT_TYPE_SWEEP))
+              .setKbdBackground(new BitmapCachedGradBack(0xff400000, GradBack.DEFAULT_COLOR).setGap(0).setCorners(0, 0))
                   ,
       newHTCDesign(),
         // Рожденный в СССР    	
@@ -146,8 +148,8 @@ public class IKeyboard
                 Color.YELLOW,
                 0,
                 0)
-        .setKeysBackground(new GradBack(0xff800000, 0xffc00000).setGradType(GradBack.GRADIENT_TYPE_SWEEP))
-        .setKbdBackground(new GradBack(0xffff0000,0xfff31c0d).setCorners(0, 0).setGap(0))
+        .setKeysBackground(new BitmapCachedGradBack(0xff800000, 0xffc00000).setGradType(GradBack.GRADIENT_TYPE_SWEEP))
+        .setKbdBackground(new BitmapCachedGradBack(0xffff0000,0xfff31c0d).setCorners(0, 0).setGap(0))
         ,
     };
 //*****************************************************************    
@@ -187,11 +189,15 @@ public class IKeyboard
         KbdDesign setKeysBackground(GradBack bg)
         {
             m_keyBackground = bg;
+            if(bg instanceof BitmapCachedGradBack)
+                ((BitmapCachedGradBack)bg).setCacheSize(20);
             return this;
         }
         KbdDesign setKbdBackground(GradBack bg)
         {
             m_kbdBackground = bg;
+            if(bg instanceof BitmapCachedGradBack)
+                ((BitmapCachedGradBack)bg).setCacheSize(2);
             return this;
         }
         KbdDesign setFuncKeysDesign(KbdDesign fc)
@@ -222,22 +228,21 @@ public class IKeyboard
     }
     static GradBack newIPhoneKey()
     {
-        //new GradBack(Color.WHITE, 0xffE1E1E1).setGap(6).setShadowColor(GradBack.DEFAULT_COLOR).setAbrisColor(0xff848a95)
-        GradBack stroke = new GradBack(0xff8c929a,0xff2c2f32).setGap(4);
-        return new GradBack(Color.WHITE, 0xffC1C1C1)
+        GradBack stroke = new BitmapCachedGradBack(0xff8c929a,0xff2c2f32).setGap(4);
+        return new BitmapCachedGradBack(Color.WHITE, 0xffC1C1C1)
             .setGap(6).setShadowColor(GradBack.DEFAULT_COLOR)
             .setStroke(stroke);
     }
     static KbdDesign newHTCDesign()
     {
         return new KbdDesign(R.string.kbd_design_htc, 0, 0xff000000, 0, 0)
-                    .setKeysBackground(new GradBack(0xfff8f8f8, 0xffd8d4d8).setGap(3)
-                        .setStroke(new GradBack(0xff605960,0xff101418).setGap(2)))
-                    .setKbdBackground(new GradBack(0xffbdbebd, 0xff706e70).setCorners(0, 0).setGap(0))
+                    .setKeysBackground(new BitmapCachedGradBack(0xfff8f8f8, 0xffd8d4d8).setGap(3)
+                        .setStroke(new BitmapCachedGradBack(0xff605960,0xff101418).setGap(2)))
+                    .setKbdBackground(new BitmapCachedGradBack(0xffbdbebd, 0xff706e70).setCorners(0, 0).setGap(0))
                     .setFuncKeysDesign(new KbdDesign(0, 0, Color.WHITE, 0, 0)
                         .setKeysBackground(
-                                new GradBack(0xff686868,0xff404040).setGap(3)
-                                .setStroke(new GradBack(0xff605960,0xff101418).setGap(2))
+                                new BitmapCachedGradBack(0xff686868,0xff404040).setGap(3)
+                                .setStroke(new BitmapCachedGradBack(0xff605960,0xff101418).setGap(2))
                                 ));
     }
     

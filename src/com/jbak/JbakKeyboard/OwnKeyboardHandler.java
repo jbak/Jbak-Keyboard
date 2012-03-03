@@ -106,6 +106,8 @@ public class OwnKeyboardHandler extends Handler
                         LatinKey lk = (LatinKey)msg.obj;
                         if(lk!=null)
                         {
+                            if(!lk.pressed)
+                                return;
                             m_kv.onKeyRepeat(lk);
                             sendRepeat(lk, false);
                         }

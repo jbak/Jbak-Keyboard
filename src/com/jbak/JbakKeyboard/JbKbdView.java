@@ -344,11 +344,7 @@ public class JbKbdView extends KeyboardView {
             m_state|=STATE_TEMP_SHIFT;
         else
             m_state = st.rem(m_state, STATE_TEMP_SHIFT);
-        if(isShifted())
-            setShifted(false);
-        else if(bInvalidate)
-            invalidateAllKeys();
-        
+        checkCapsLock();
     }
     void handleShift()
     {
@@ -386,19 +382,21 @@ public class JbKbdView extends KeyboardView {
                     JbKbdView.inst.m_state|=JbKbdView.STATE_TEMP_SHIFT;
                 }
             }
-            int index = getCurKeyboard().getShiftKeyIndex();
-            List<Key> ar = getCurKeyboard().getKeys();
-            if(index>-1&&index<ar.size())
-            {
-                ar.get(index).on = st.has(m_state, STATE_CAPS_LOCK);
-                invalidateAllKeys();
-            }
+            checkCapsLock();
         }
         else
         {
             st.setSymbolKeyboard(st.LANG_SYM_KBD.equals(kbd.lang.name));
         }
     }
+    private void checkCapsLock()
+    {
+        LatinKey lk= getCurKeyboard().getKeyByCode(Keyboard.KEYCODE_SHIFT);
+        if(lk!=null)
+            lk.on = st.has(m_state, STATE_CAPS_LOCK);
+        invalidateAllKeys();
+    }
+
     boolean isUpperCase()
     {
         boolean bCaps = st.has(m_state, STATE_CAPS_LOCK);
@@ -457,19 +455,11 @@ public class JbKbdView extends KeyboardView {
     @Override
     public void invalidateAllKeys() 
     {
-        if(m_handler!=null)
-            m_handler.removeMessages(OwnKeyboardHandler.MSG_INVALIDATE);
-        if(ComMenu.inst==null)
             super.invalidateAllKeys();
     };
     @Override
     public void invalidateKey(int keyIndex)
     {
-        if(m_handler!=null&&INTERVAL_REDRAW>0)
-        {
-            m_handler.sendMessageDelayed(m_handler.obtainMessage(OwnKeyboardHandler.MSG_INVALIDATE, keyIndex, 0), INTERVAL_REDRAW);
-            return;
-        }
         if(ComMenu.inst==null)
             super.invalidateKey(keyIndex);
     }
@@ -624,4 +614,19 @@ public class JbKbdView extends KeyboardView {
         super.setOnKeyboardActionListener(m_actionListener);
     };
     LatinKey m_repeatedKey = null;
+    @Override
+    public void setKeyboard(Keyboard keyboard)
+    {
+        resetPressed();
+        super.setKeyboard(keyboard);
+    }
+    void resetPressed()
+    {
+        JbKbd kbd = getCurKeyboard();
+        if(kbd!=null)
+        {
+            for(Key k:kbd.getKeys())
+                k.pressed = false;
+        }
+    }
 }

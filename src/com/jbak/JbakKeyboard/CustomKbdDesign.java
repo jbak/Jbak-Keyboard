@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.util.Vector;
 
+import com.jbak.CustomGraphics.BitmapCachedGradBack;
 import com.jbak.CustomGraphics.GradBack;
 import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 
@@ -112,7 +113,7 @@ public class CustomKbdDesign
         int cornerY = getIntValue(P_KeyBackCornerY, GradBack.DEFAULT_CORNER_Y);
         if(startColor!=st.DEF_COLOR)
         {
-            ret.setKeysBackground(new GradBack(startColor, endColor)
+            ret.setKeysBackground(new BitmapCachedGradBack(startColor, endColor)
                                        .setGradType(gradType)
                                        .setGap(gap)
                                        .setCorners(cornerX, cornerY)
@@ -123,7 +124,7 @@ public class CustomKbdDesign
         gradType = getIntValue(P_KeyboardBackgroundGradientType, GradBack.GRADIENT_TYPE_LINEAR);
         if(startColor!=st.DEF_COLOR)
         {
-            ret.setKbdBackground(new GradBack(startColor, endColor)
+            ret.setKbdBackground(new BitmapCachedGradBack(startColor, endColor)
                                        .setGradType(gradType)
                                        .setGap(0)
                                        .setCorners(0, 0)
@@ -148,7 +149,7 @@ public class CustomKbdDesign
         if(startColor!=st.DEF_COLOR)
         {
             int textColor = getIntValue(P_SpecKeyTextColor, st.DEF_COLOR);
-            GradBack gb = new GradBack(startColor, endColor).
+            GradBack gb = new BitmapCachedGradBack(startColor, endColor).
             setGradType(ret.m_kbdBackground.m_gradType)
             .setGap(gap);
             gb.setCorners(cornerX, cornerY);

@@ -111,7 +111,7 @@ com.jbak.JbakKeyboard.CustomKbdDesign:
     public static final byte P_SpecKeyTextColor
     public static final byte P_KeyBackCornerX
     public static final byte P_KeyBackCornerY
-    212:215:java.lang.String getErrString()
+    213:216:java.lang.String getErrString()
 com.jbak.JbakKeyboard.CustomKeyboard:
     public static final java.lang.String KEYBOARD_FOLDER
     public static final java.lang.String A_ANDROID
@@ -273,7 +273,7 @@ com.jbak.JbakKeyboard.IKeyboard:
     public static final int DF_BIG_GAP
     public static final int DEF_COLOR
     public static final int KBD_DESIGN_STANDARD
-    357:363:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
+    362:368:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
 com.jbak.JbakKeyboard.JbCandView
 com.jbak.JbakKeyboard.JbKbd:
     54:55:void setHeightKey(int)

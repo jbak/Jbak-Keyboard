@@ -278,19 +278,19 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         IntEditor ie = null;
         ie = (IntEditor)v.findViewById(R.id.long_press);
         ie.setMinAndMax(min, max);
-        ie.setValue(p.getInt(st.PREF_KEY_LONG_PRESS_INTERVAL, min));
+        ie.setValue(p.getInt(st.PREF_KEY_LONG_PRESS_INTERVAL, 500));
         ie.setSteps(steps);
         
         ie = (IntEditor)v.findViewById(R.id.first_repeat);
         min = 50;
         ie.setMinAndMax(min, max);
-        ie.setValue(p.getInt(st.PREF_KEY_REPEAT_FIRST_INTERVAL, min));
+        ie.setValue(p.getInt(st.PREF_KEY_REPEAT_FIRST_INTERVAL, 400));
         ie.setSteps(steps);
 
         ie = (IntEditor)v.findViewById(R.id.next_repeat);
         min = 50;
         ie.setMinAndMax(min, max);
-        ie.setValue(p.getInt(st.PREF_KEY_REPEAT_NEXT_INTERVAL, min));
+        ie.setValue(p.getInt(st.PREF_KEY_REPEAT_NEXT_INTERVAL, 50));
         ie.setSteps(steps);
         st.UniObserver obs = new st.UniObserver()
         {

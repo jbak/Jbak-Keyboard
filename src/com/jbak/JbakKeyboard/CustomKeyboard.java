@@ -750,5 +750,4 @@ public class CustomKeyboard extends JbKbd
         }
         return false;
     }
-    
 }
