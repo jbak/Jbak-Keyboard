@@ -368,6 +368,10 @@ com.jbak.JbakKeyboard.Templates:
     16:18:static void destroy()
 com.jbak.JbakKeyboard.TplEditorActivity:
     public static final java.lang.String EXTRA_CLIPBOARD_ENTRY
+com.jbak.JbakKeyboard.VibroThread:
+    public static final int VIBRO_SHORT
+    public static final int VIBRO_LONG
+    public static final int VIBRO_REPEAT
 com.jbak.JbakKeyboard.Words:
     public static final java.lang.String DEF_PATH
     public static final java.lang.String DEF_EXT

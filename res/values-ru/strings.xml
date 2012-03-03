@@ -28,8 +28,8 @@
     <string name="set_key_short_vibro_duration">Интервал для нажатия</string>
     <string name="set_key_long_vibro_duration">Интервал для удержания</string>
     <string name="set_key_repeat_vibro_duration">Интервал для повтора</string>
-    <string name="set_key_vibro_durations">Настройки вибрации</string>
-    <string name="set_key_vibro_durations_desc">Настройки продолжительности вибрации в милисекундах</string>
+    <string name="set_key_vibro_durations">Интервалы вибрации</string>
+    <string name="set_key_vibro_durations_desc">Настройки интервалов вибрации в милисекундах</string>
         
     <string name="set_key_sounds">Звуковое сопровождение</string>
     <string name="set_key_sounds_desc">Проигрывать системные звуки при нажатии на клавиши</string>
@@ -58,14 +58,14 @@
     <string name="set_key_space_symbols">Символы добавления пробелов</string>
     <string name="set_key_space_symbols_desc">После ввода одного из этих символов вставляется пробел. Нажмите для редактирования</string>
     <string name="set_key_sentence_space_end">Только после пробелов</string>
-    <string name="set_key_sentence_space_end_desc">Смена регистра после пробела или конца абзаца после одного из символов из предыдущей настройки</string>
+    <string name="set_key_sentence_space_end_desc">Переход в верхний регистр после одного из символов из предыдущей настройки и пробела за ним</string>
     
     <string name="set_key_landscape_input">Полноэкранный режим</string>
     <string name="set_key_landscape_input_desc">Настроки для ввода в полноэкранном режиме</string>
     <string name="set_key_portrait_input_type">В портретном режиме</string>
-    <string name="set_key_portrait_input_type_desc">Настройка позволяет изменить тип редактирования в портретном режиме</string>
+    <string name="set_key_portrait_input_type_desc">Выбор полноэкранного редактора в портретном режиме</string>
         <string name="set_key_landscape_input_type">В ландшафтном режиме</string>
-    <string name="set_key_landscape_input_type_desc">Настройка позволяет изменить тип редактирования в ландшафтном режиме</string>
+    <string name="set_key_landscape_input_type_desc">Выбор полноэкранного редактора в ландшафтном режиме</string>
     <string name="set_key_landscape_input_settings">Настройка редактора</string>
     <string name="set_key_landscape_input_settings_desc">Настройка шрифта для поля ввода в полноэкранном режиме</string>
     <string name="set_key_clipbrd_size">Размер буфера обмена</string>

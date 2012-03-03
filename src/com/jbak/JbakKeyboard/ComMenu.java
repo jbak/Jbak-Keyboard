@@ -116,7 +116,7 @@ public class ComMenu
         public boolean onLongClick(View v)
         {
             VibroThread vt = VibroThread.getInstance(st.c());
-            vt.runVibro(vt.m_longVibro);
+            vt.runVibro(VibroThread.VIBRO_LONG);
             if(!st.has(m_state, STAT_CLIPBOARD))
                 close();
             MenuEntry me = (MenuEntry)v.getTag();
@@ -179,7 +179,7 @@ public class ComMenu
         public void onClick(View v)
         {
             VibroThread vt = VibroThread.getInstance(st.c());
-            vt.runVibro(vt.m_shortVibro);
+            vt.runVibro(VibroThread.VIBRO_SHORT);
             close();
             switch (v.getId())
             {

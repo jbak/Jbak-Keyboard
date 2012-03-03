@@ -10,12 +10,15 @@ import android.provider.Settings;
 public class VibroThread extends ContentObserver
 {
     Vibrator m_vibro;
-    public int m_shortVibro = 30;
-    public int m_longVibro = 10;
-    public int m_repeatVibro = 10;
+    private int m_shortVibro = 30;
+    private int m_longVibro = 10;
+    private int m_repeatVibro = 10;
+    public static final int VIBRO_SHORT = 1;
+    public static final int VIBRO_LONG = 2;
+    public static final int VIBRO_REPEAT = 3;
     boolean m_bLongVibro = false;
     boolean m_bRepeatVibro = false;
-    int m_shortType;
+    int m_shortType = 0;
     boolean m_bSilent;
     Context m_c;
     public static VibroThread inst = null;
@@ -47,12 +50,16 @@ public class VibroThread extends ContentObserver
     public void readSettings()
     {
         SharedPreferences p = st.pref();
-        m_shortType = Integer.decode(p.getString(st.PREF_KEY_USE_SHORT_VIBRO, st.ZERO_STRING));
-        m_bLongVibro = p.getBoolean(st.PREF_KEY_USE_LONG_VIBRO, false);
-        m_shortVibro = Integer.decode(p.getString(st.PREF_KEY_VIBRO_SHORT_DURATION, JbKbdPreference.DEF_SHORT_VIBRO));
-        m_longVibro = Integer.decode(p.getString(st.PREF_KEY_VIBRO_LONG_DURATION, JbKbdPreference.DEF_LONG_VIBRO));
-        m_bRepeatVibro = p.getBoolean(st.PREF_KEY_USE_REPEAT_VIBRO, m_bLongVibro);
-        m_repeatVibro = Integer.decode(p.getString(st.PREF_KEY_VIBRO_REPEAT_DURATION, JbKbdPreference.DEF_LONG_VIBRO));
+        try{
+            m_shortType = Integer.decode(p.getString(st.PREF_KEY_USE_SHORT_VIBRO, st.ZERO_STRING));
+            m_bLongVibro = p.getBoolean(st.PREF_KEY_USE_LONG_VIBRO, false);
+            m_shortVibro = Integer.decode(p.getString(st.PREF_KEY_VIBRO_SHORT_DURATION, JbKbdPreference.DEF_SHORT_VIBRO));
+            m_longVibro = Integer.decode(p.getString(st.PREF_KEY_VIBRO_LONG_DURATION, JbKbdPreference.DEF_LONG_VIBRO));
+            m_bRepeatVibro = p.getBoolean(st.PREF_KEY_USE_REPEAT_VIBRO, m_bLongVibro);
+            m_repeatVibro = Integer.decode(p.getString(st.PREF_KEY_VIBRO_REPEAT_DURATION, JbKbdPreference.DEF_LONG_VIBRO));
+        }
+        catch (Throwable e) {
+        }
         m_bSilent = isSilent();
     }
     public final boolean hasVibroOnPress()
@@ -60,16 +67,16 @@ public class VibroThread extends ContentObserver
         if(m_bSilent)return false;
         return m_shortType==2;
     }
-    final void runVibro(final int interval)
+    final void runVibro(final int vibroType)
     {
         if(m_bSilent)
             return;
         Runnable r = null;
-        if(interval==m_shortVibro&&m_shortType!=0)
+        if(vibroType==VIBRO_SHORT&&m_shortType!=0)
             r = m_runShort;
-        else if(interval==m_repeatVibro&&m_bRepeatVibro)
+        else if(vibroType==VIBRO_REPEAT&&m_bRepeatVibro)
             r = m_runRepeat;
-        else if(interval==m_longVibro&&m_bLongVibro)
+        else if(vibroType==VIBRO_LONG&&m_bLongVibro)
             r = m_runLong;
         if(r!=null)
             new Thread(r).run();

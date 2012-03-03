@@ -229,8 +229,7 @@ public class GradBack extends RectShape
 	    }
 //		if(m_bDrawPressedBack&&hasState(android.R.attr.state_pressed))
 //			canvas.drawRoundRect(m_rect, m_cornerX, m_cornerY, m_ptFillPressed);
-		
-		if(m_bCheckable||m_bChecked)
+		if(m_bCheckable)
 		    onDrawCheckMark(canvas,m_bChecked, m_rect);
 	}
 /** Функция отрисовки метки для состояний checked и checkable.

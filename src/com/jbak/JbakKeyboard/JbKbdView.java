@@ -270,7 +270,7 @@ public class JbKbdView extends KeyboardView {
     int m_LongPressCode = -10000;
     boolean processLongPress(LatinKey key)
     {
-        m_vibro.runVibro(m_vibro.m_longVibro);
+        m_vibro.runVibro(VibroThread.VIBRO_LONG);
         if(key.popupCharacters!=null)
             return false;
         m_LongPressCode = key.codes[0];
@@ -391,7 +391,10 @@ public class JbKbdView extends KeyboardView {
     }
     private void checkCapsLock()
     {
-        LatinKey lk= getCurKeyboard().getKeyByCode(Keyboard.KEYCODE_SHIFT);
+        JbKbd kbd = getCurKeyboard();
+        if(kbd==null)
+            return;
+        LatinKey lk = kbd.getKeyByCode(Keyboard.KEYCODE_SHIFT);
         if(lk!=null)
             lk.on = st.has(m_state, STATE_CAPS_LOCK);
         invalidateAllKeys();
@@ -537,7 +540,7 @@ public class JbKbdView extends KeyboardView {
     }
     public void onKeyRepeat(LatinKey lk)
     {
-        m_vibro.runVibro(m_vibro.m_repeatVibro);
+        m_vibro.runVibro(VibroThread.VIBRO_REPEAT);
         m_repeatedKey = lk;
         if(m_repeatedKey == null||m_extListener==null)
             return;
@@ -569,7 +572,7 @@ public class JbKbdView extends KeyboardView {
             if(key==null)
                 return;
             if(m_vibro.hasVibroOnPress())
-                m_vibro.runVibro(m_vibro.m_shortVibro);
+                m_vibro.runVibro(VibroThread.VIBRO_SHORT);
             if(m_handler!=null)
             {
                 if(key.trueRepeat)
@@ -593,7 +596,7 @@ public class JbKbdView extends KeyboardView {
             if(primaryCode==m_LongPressCode)
                 return;
             if(!m_vibro.hasVibroOnPress())
-                m_vibro.runVibro(m_vibro.m_shortVibro);
+                m_vibro.runVibro(VibroThread.VIBRO_SHORT);
             m_extListener.onKey(primaryCode,keyCodes);
         }
         @Override

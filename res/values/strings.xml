@@ -31,7 +31,7 @@
     <string name="set_key_repeat_vibro_duration">Repeat interval</string>
     <string name="set_key_short_vibro_duration">Short press interval</string>
     <string name="set_key_long_vibro_duration">Long press interval</string>
-    <string name="set_key_vibro_durations">Vibro interval</string>
+    <string name="set_key_vibro_durations">Vibro intervals</string>
     <string name="set_key_vibro_durations_desc">Here you can set vibro intervals (in miliseconds)</string>
         
     <string name="set_key_sounds">Enable sounds</string>

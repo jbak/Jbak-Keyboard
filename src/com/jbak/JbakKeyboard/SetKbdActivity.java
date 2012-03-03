@@ -189,7 +189,7 @@ public class SetKbdActivity extends Activity
     {
         if(m_curAction==st.SET_SELECT_SKIN)
         {
-            st.pref(inst).edit().putString(st.PREF_KEY_KBD_SKIN_PATH, st.getSkinPath(st.arDesign[m_curSkin])).commit();
+            st.pref().edit().putString(st.PREF_KEY_KBD_SKIN_PATH, st.getSkinPath(st.arDesign[m_curSkin])).commit();
         }
         m_kbd.setOnKeyboardActionListener(null);
         JbKbdView.inst = null;

@@ -28,7 +28,9 @@ public class BitmapCachedGradBack extends GradBack
         m_curEntry.w = w;
         m_curEntry.h = h;
         m_curEntry.bmpNormal = Bitmap.createBitmap(w, h,Config.ARGB_8888);
-        boolean p = m_bPressed;
+        boolean press = m_bPressed;
+        boolean ch = m_bCheckable;
+        m_bCheckable = false;
         m_bPressed = false;
         super.draw(new Canvas(m_curEntry.bmpNormal), null);
         m_bPressed = true;
@@ -37,7 +39,8 @@ public class BitmapCachedGradBack extends GradBack
         if(m_cache.size()==m_cacheSize)
             m_cache.remove(0);
         m_cache.add(m_curEntry);
-        m_bPressed = p;
+        m_bPressed = press;
+        m_bCheckable = ch;
     }
     @Override
     public void draw(Canvas canvas, Paint paint) 
