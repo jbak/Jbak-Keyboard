@@ -445,7 +445,7 @@ public class JbKbdView extends KeyboardView {
                 bSet = true;
             }
         }
-        if(!bSet&&st.isLandscape(st.c()))
+        if(!bSet&&st.isLandscape(getContext()))
             bPortrait = false;
         m_KeyHeight = KeyboardPaints.getValue(getContext(), pref, bPortrait?KeyboardPaints.VAL_KEY_HEIGHT_PORTRAIT:KeyboardPaints.VAL_KEY_HEIGHT_LANDSCAPE);
     }
@@ -453,7 +453,10 @@ public class JbKbdView extends KeyboardView {
     public void onDraw(android.graphics.Canvas canvas) 
     {
         m_bStopInvalidate = false;
-        super.onDraw(canvas);
+        try{
+            super.onDraw(canvas);
+        }
+        catch(Throwable e){}
     };
     @Override
     public void invalidateAllKeys() 

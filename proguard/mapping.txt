@@ -470,9 +470,9 @@ com.jbak.CustomGraphics.BitmapCachedGradBack -> com.jbak.a.a:
     int m_cacheSize -> a
     java.util.Vector m_cache -> b
     com.jbak.CustomGraphics.BitmapCachedGradBack$BmpCacheEntry m_curEntry -> c
-    22:41:void onResize(float,float) -> onResize
-    45:49:void draw(android.graphics.Canvas,android.graphics.Paint) -> draw
-    61:62:com.jbak.CustomGraphics.BitmapCachedGradBack setCacheSize(int) -> a
+    22:44:void onResize(float,float) -> onResize
+    48:52:void draw(android.graphics.Canvas,android.graphics.Paint) -> draw
+    64:65:com.jbak.CustomGraphics.BitmapCachedGradBack setCacheSize(int) -> a
 com.jbak.CustomGraphics.BitmapCachedGradBack$BmpCacheEntry -> com.jbak.a.b:
     int w -> a
     int h -> b
@@ -524,12 +524,12 @@ com.jbak.CustomGraphics.GradBack -> com.jbak.a.e:
     162:162:com.jbak.CustomGraphics.CustomButtonDrawable getStateDrawable() -> e
     166:182:android.graphics.Paint makeBackground(float,float) -> a
     188:216:void onResize(float,float) -> onResize
-    221:235:void draw(android.graphics.Canvas,android.graphics.Paint) -> draw
-    243:245:void onDrawCheckMark$42527c55(android.graphics.Canvas,boolean) -> a
-    249:254:void changeState(int[]) -> a
-    257:258:com.jbak.CustomGraphics.GradBack setShadowColor$425331ae() -> f
-    267:268:com.jbak.CustomGraphics.GradBack setStroke(com.jbak.CustomGraphics.GradBack) -> a
-    279:284:boolean hasState(int,int[]) -> a
+    221:234:void draw(android.graphics.Canvas,android.graphics.Paint) -> draw
+    242:244:void onDrawCheckMark$42527c55(android.graphics.Canvas,boolean) -> a
+    248:253:void changeState(int[]) -> a
+    256:257:com.jbak.CustomGraphics.GradBack setShadowColor$425331ae() -> f
+    266:267:com.jbak.CustomGraphics.GradBack setStroke(com.jbak.CustomGraphics.GradBack) -> a
+    278:283:boolean hasState(int,int[]) -> a
     1:1:android.graphics.drawable.shapes.RectShape clone() -> clone
 com.jbak.CustomGraphics.GradBack$PaintEntry -> com.jbak.a.f:
     float w -> a
@@ -861,7 +861,7 @@ com.jbak.JbakKeyboard.JbKbdView -> com.jbak.JbakKeyboard.JbKbdView:
     543:548:void onKeyRepeat(com.jbak.JbakKeyboard.JbKbd$LatinKey) -> a
     616:618:void setOnKeyboardActionListener(android.inputmethodservice.KeyboardView$OnKeyboardActionListener) -> setOnKeyboardActionListener
     623:625:void setKeyboard(android.inputmethodservice.Keyboard) -> setKeyboard
-    628:634:void resetPressed() -> j
+    628:637:void resetPressed() -> j
 com.jbak.JbakKeyboard.JbKbdView$1 -> com.jbak.JbakKeyboard.am:
     com.jbak.JbakKeyboard.JbKbdView this$0 -> a
     554:555:void onText(java.lang.CharSequence) -> onText

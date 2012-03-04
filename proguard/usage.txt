@@ -77,7 +77,7 @@ com.jbak.CustomGraphics.GradBack:
     public static final int DEFAULT_COLOR
     public static final int GRADIENT_TYPE_LINEAR
     public static final int GRADIENT_TYPE_SWEEP
-    272:273:public void setDependentback(com.jbak.CustomGraphics.GradBack)
+    271:272:public void setDependentback(com.jbak.CustomGraphics.GradBack)
 com.jbak.JbakKeyboard.AdPreference
 com.jbak.JbakKeyboard.CandidateView:
     private static final int OUT_OF_BOUNDS

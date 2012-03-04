@@ -17,11 +17,13 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jbak.ctrl.IntEditor;
+import com.jbak.words.Words;
 
 public class JbKbdPreference extends PreferenceActivity implements OnSharedPreferenceChangeListener
 {
@@ -85,6 +87,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
     @Override
     protected void onDestroy()
     {
+        inst = null;
         st.pref(this).unregisterOnSharedPreferenceChangeListener(this);
         if(JbKbdView.inst!=null)
             JbKbdView.inst.setPreferences();
@@ -111,7 +114,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
     {
         inst = this;
         String k = preference.getKey();
-        Context c = preference.getContext();
+        Context c = this;
         if("vibro_durations".equals(k))
         {
             showVibroDuration();
@@ -194,6 +197,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         }
         else if("about_app".equals(k))
         {
+            vocabTest();
             st.runAct(AboutActivity.class,c);
             return true;
         }
@@ -283,7 +287,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         }
         return bOk;
     }
-/** РќР°СЃС‚СЂРѕР№РєР° РёРЅС‚РµСЂРІР°Р»РѕРІ РЅР°Р¶Р°С‚РёР№ */    
+/** Настройка интервалов нажатий */    
     void showIntervalsEditor()
     {
         final View v = getLayoutInflater().inflate(R.layout.edit_intervals, null);
@@ -469,5 +473,29 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
             st.logEx(e);
         }
         return 0;
+    }
+    void vocabTest()
+    {
+        Words w = new Words();
+        w.open("ru");
+        String test[] = new String[]{"ящ","те"};
+        long times []= new long[test.length];
+        for(int i=0;i<test.length;i++)
+        {
+            long time = System.currentTimeMillis();
+            String s[] = w.getWords(test[i]);
+            time = System.currentTimeMillis()-time;
+            times[i]=time;
+        }
+        long total = 0;
+        String log = "Test words: {";
+        for(int i=0;i<test.length;i++)
+        {
+            long time = times[i];
+            total+=time;
+            log+=test[i]+":"+time;
+        }
+        log+="} total:"+total;
+        Log.w("Words test", log);
     }
 }

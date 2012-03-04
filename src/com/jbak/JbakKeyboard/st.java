@@ -23,7 +23,7 @@ import com.jbak.CustomGraphics.GradBack;
 /** Класс содержит полезные статические переменные */
 public class st extends IKeyboard implements IKbdSettings
 {
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 /** Код, который используется, если основной текст клавиши из нескольких букв*/    
     public static int KeySymbol = -201;
 //--------------------------------------------------------------------------

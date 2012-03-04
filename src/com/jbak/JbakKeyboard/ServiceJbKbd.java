@@ -42,6 +42,7 @@ import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
 import com.jbak.JbakKeyboard.Templates.CurInput;
+import com.jbak.words.Words;
 
 /** Example of writing an input method for a soft keyboard. This code is focused
  * on simplicity over completeness, so it should in no way be considered to be a
@@ -129,12 +130,11 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public View onCreateCandidatesView()
     {
-        /* if(!m_bComplete) return null; */
+         if(!m_bComplete) return null;
         // return getLayoutInflater().inflate(R.layout.candidates, null);
-        /* mCandidateView = new CandidateView(this);
-         * mCandidateView.setService(this); return mCandidateView; */// return
-                                                                     // null;
-        return null;
+         mCandidateView = new CandidateView(this);
+         mCandidateView.setService(this); 
+         return mCandidateView; 
     }
 
     @Override
@@ -151,9 +151,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             setInputView(st.kv());
             JbKbdView.inst.setOnKeyboardActionListener(this);
         }
-        mComposing.setLength(0);
-        updateCandidates();
-
         if (!restarting)
         {
             mMetaState = 0;
@@ -196,11 +193,17 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 
     final void openWords()
     {
-        // Lang l = st.langForId(st.curKbd().resId);
-        // if(l!=null)
-        // m_words.open(l.name);
-        // else
-        // m_words.close();
+        if(!m_bComplete)
+            return;
+        JbKbd k = st.curKbd();
+        if(k==null||!st.isQwertyKeyboard(k.kbd)||k.kbd.lang==null)
+        {
+            m_words.close();
+            return;
+        }
+        if(m_words.open(k.kbd.lang.name))
+        {
+        }
     }
 
     @Override
@@ -238,7 +241,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         super.onFinishInput();
         // Clear current composing text and candidates.
         mComposing.setLength(0);
-        updateCandidates();
         // We only hide the candidates window when finishing input on
         // a particular editor, to avoid popping the underlying application
         // up and down if the user is entering text into the bottom of
@@ -253,6 +255,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 
     int m_SelStart;
     int m_SelEnd;
+    CharSequence m_textBeforeCursor;
+    CharSequence m_textAfterCursor;
     /** Изменение выделения в редакторе */
     @Override
     public void onUpdateSelection(int oldSelStart, int oldSelEnd, int newSelStart, int newSelEnd, int candidatesStart, int candidatesEnd)
@@ -263,16 +267,33 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         m_SelEnd = newSelEnd;
         if (m_SelStart == m_SelEnd)
         {
-            changeCase(true);
-        }
-        if (mComposing.length() > 0 && (newSelStart != candidatesEnd || newSelEnd != candidatesEnd))
-        {
-            mComposing.setLength(0);
-            updateCandidates();
-            InputConnection ic = getCurrentInputConnection();
-            if (ic != null)
+            if(m_bCanAutoInput)
+                changeCase(true);
+            if(m_words.canGiveWords())
             {
-                ic.finishComposingText();
+                m_textBeforeCursor = getCurrentInputConnection().getTextBeforeCursor(40, 0);
+                m_textAfterCursor = getCurrentInputConnection().getTextAfterCursor(40, 0);
+                String wstart = Templates.getCurWordStart(m_textBeforeCursor, false);
+                String wend = Templates.getCurWordEnd(m_textAfterCursor, false);
+                if(wstart!=null&&wend!=null)
+                {
+                    String word = wstart+wend;
+                    String[] s = m_words.getWords(word);
+                    if(s!=null)
+                    {
+                        ArrayList<String> ar = new ArrayList<String>();
+                        for(String str:s)
+                        {
+                            if(str==null)
+                                break;
+                            ar.add(str);
+                        }
+                        mCandidateView.setSuggestions(ar, true, true);
+                        setCandidatesViewShown(true);
+                        
+                    }
+                }
+                    
             }
         }
     }
@@ -283,7 +304,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public void onDisplayCompletions(CompletionInfo[] completions)
     {
         // if (mCompletionOn) {
-        return;
 //        mCompletions = completions;
 //        if (completions == null)
 //        {
@@ -359,7 +379,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         {
             inputConnection.commitText(mComposing, mComposing.length());
             mComposing.setLength(0);
-            updateCandidates();
         }
     }
 
@@ -548,60 +567,9 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         ic.endBatchEdit();
     }
 
-    /** Update the list of available candidates from the current composing text.
-     * This will need to be filled in by however you are determining candidates. */
-    private void updateCandidates()
-    {
-        if (!mCompletionOn)
-        {
-            if (mComposing.length() > 0)
-            {
-                ArrayList<String> list = new ArrayList<String>();
-                list.add(mComposing.toString());
-                setSuggestions(list, true, true);
-            }
-            else
-            {
-                setSuggestions(null, false, false);
-            }
-        }
-    }
-
-    public void setSuggestions(List<String> suggestions, boolean completions, boolean typedWordValid)
-    {
-        if (suggestions != null && suggestions.size() > 0)
-        {
-            setCandidatesViewShown(true);
-        }
-        else if (isExtractViewShown())
-        {
-            setCandidatesViewShown(true);
-        }
-        if (mCandidateView != null)
-        {
-            mCandidateView.setSuggestions(suggestions, completions, typedWordValid);
-        }
-    }
-
     private void handleBackspace()
     {
-        final int length = mComposing.length();
-        if (length > 1)
-        {
-            mComposing.delete(length - 1, length);
-            getCurrentInputConnection().setComposingText(mComposing, 1);
-            updateCandidates();
-        }
-        else if (length > 0)
-        {
-            mComposing.setLength(0);
-            getCurrentInputConnection().commitText("", 0);
-            updateCandidates();
-        }
-        else
-        {
-            keyDownUp(KeyEvent.KEYCODE_DEL);
-        }
+        keyDownUp(KeyEvent.KEYCODE_DEL);
     }
 
     public void handleCharacter(int primaryCode)
@@ -614,19 +582,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
                 primaryCode = Character.toUpperCase(primaryCode);
             }
         }
-        if (isAlphabet(primaryCode) && mPredictionOn)
-        {
-            mComposing.append((char) primaryCode);
-            ic.setComposingText(mComposing, 1);
-            updateCandidates();
-        }
-        else
-        {
-            sendKeyChar((char) primaryCode);
-            // onText(String.valueOf((char) primaryCode));
-            // ic.commitText(, 1);
-            // updateFullscreenMode();
-        }
+        sendKeyChar((char) primaryCode);
         if (st.has(JbKbdView.inst.m_state, JbKbdView.STATE_TEMP_SHIFT))
         {
             JbKbdView.inst.m_state = st.rem(JbKbdView.inst.m_state, JbKbdView.STATE_TEMP_SHIFT);
@@ -1025,10 +981,12 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         if(st.kv()==null)
             return;
         int c = getCase();
-        boolean bUpperCase = st.kv().isUpperCase();
+        JbKbdView kv = st.kv();
+        if(kv==null)return;
+        boolean bUpperCase = kv.isUpperCase();
         if(bUpperCase&&c<0)
-            st.kv().setTempShift(false,bInvalidate);
+            kv.setTempShift(false,bInvalidate);
         else if(!bUpperCase&&c>0)
-            st.kv().setTempShift(true,bInvalidate);
+            kv.setTempShift(true,bInvalidate);
     }
 }
