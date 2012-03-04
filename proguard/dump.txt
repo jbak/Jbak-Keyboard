@@ -25876,7 +25876,7 @@ Methods (count = 4):
     Access flags: 0x14
       = protected final void onResize(float,float)
     Class member attributes (count = 1):
-    + Code attribute instructions (code length = 233, locals = 5, stack = 4):
+    + Code attribute instructions (code length = 250, locals = 5, stack = 4):
       [0] fload_1 v1
       [1] f2i
       [2] istore_1 v1
@@ -25966,85 +25966,97 @@ Methods (count = 4):
         - Fieldref [com/jbak/a/a.v Z]
       [128] istore_3 v3
       [129] aload_0 v0
-      [130] iconst_0
-      [131] putfield #15
+      [130] getfield #14
+        - Fieldref [com/jbak/a/a.u Z]
+      [133] istore v4
+      [135] aload_0 v0
+      [136] iconst_0
+      [137] putfield #14
+        - Fieldref [com/jbak/a/a.u Z]
+      [140] aload_0 v0
+      [141] iconst_0
+      [142] putfield #15
         - Fieldref [com/jbak/a/a.v Z]
-      [134] aload_0 v0
-      [135] new #3
+      [145] aload_0 v0
+      [146] new #3
         - Class [android/graphics/Canvas]
-      [138] dup
-      [139] aload_0 v0
-      [140] getfield #12
+      [149] dup
+      [150] aload_0 v0
+      [151] getfield #12
         - Fieldref [com/jbak/a/a.c Lcom/jbak/a/b;]
-      [143] getfield #19
+      [154] getfield #19
         - Fieldref [com/jbak/a/b.c Landroid/graphics/Bitmap;]
-      [146] invokespecial #22
+      [157] invokespecial #22
         - Methodref [android/graphics/Canvas.<init> (Landroid/graphics/Bitmap;)V]
-      [149] aconst_null
-      [150] invokespecial #27
+      [160] aconst_null
+      [161] invokespecial #27
         - Methodref [com/jbak/a/e.draw (Landroid/graphics/Canvas;Landroid/graphics/Paint;)V]
-      [153] aload_0 v0
-      [154] iconst_1
-      [155] putfield #15
+      [164] aload_0 v0
+      [165] iconst_1
+      [166] putfield #15
         - Fieldref [com/jbak/a/a.v Z]
-      [158] aload_0 v0
-      [159] getfield #12
+      [169] aload_0 v0
+      [170] getfield #12
         - Fieldref [com/jbak/a/a.c Lcom/jbak/a/b;]
-      [162] iload_1 v1
-      [163] iload_2 v2
-      [164] getstatic #9
+      [173] iload_1 v1
+      [174] iload_2 v2
+      [175] getstatic #9
         - Fieldref [android/graphics/Bitmap$Config.ARGB_8888 Landroid/graphics/Bitmap$Config;]
-      [167] invokestatic #21
+      [178] invokestatic #21
         - Methodref [android/graphics/Bitmap.createBitmap (IILandroid/graphics/Bitmap$Config;)Landroid/graphics/Bitmap;]
-      [170] putfield #20
+      [181] putfield #20
         - Fieldref [com/jbak/a/b.d Landroid/graphics/Bitmap;]
-      [173] aload_0 v0
-      [174] new #3
+      [184] aload_0 v0
+      [185] new #3
         - Class [android/graphics/Canvas]
-      [177] dup
-      [178] aload_0 v0
-      [179] getfield #12
+      [188] dup
+      [189] aload_0 v0
+      [190] getfield #12
         - Fieldref [com/jbak/a/a.c Lcom/jbak/a/b;]
-      [182] getfield #20
+      [193] getfield #20
         - Fieldref [com/jbak/a/b.d Landroid/graphics/Bitmap;]
-      [185] invokespecial #22
+      [196] invokespecial #22
         - Methodref [android/graphics/Canvas.<init> (Landroid/graphics/Bitmap;)V]
-      [188] aconst_null
-      [189] invokespecial #27
+      [199] aconst_null
+      [200] invokespecial #27
         - Methodref [com/jbak/a/e.draw (Landroid/graphics/Canvas;Landroid/graphics/Paint;)V]
-      [192] aload_0 v0
-      [193] getfield #11
+      [203] aload_0 v0
+      [204] getfield #11
         - Fieldref [com/jbak/a/a.b Ljava/util/Vector;]
-      [196] invokevirtual #33
+      [207] invokevirtual #33
         - Methodref [java/util/Vector.size ()I]
-      [199] aload_0 v0
-      [200] getfield #10
+      [210] aload_0 v0
+      [211] getfield #10
         - Fieldref [com/jbak/a/a.a I]
-      [203] ificmpne +12 (target=215)
-      [206] aload_0 v0
-      [207] getfield #11
+      [214] ificmpne +12 (target=226)
+      [217] aload_0 v0
+      [218] getfield #11
         - Fieldref [com/jbak/a/a.b Ljava/util/Vector;]
-      [210] iconst_0
-      [211] invokevirtual #32
+      [221] iconst_0
+      [222] invokevirtual #32
         - Methodref [java/util/Vector.remove (I)Ljava/lang/Object;]
-      [214] pop
-      [215] aload_0 v0
-      [216] getfield #11
+      [225] pop
+      [226] aload_0 v0
+      [227] getfield #11
         - Fieldref [com/jbak/a/a.b Ljava/util/Vector;]
-      [219] aload_0 v0
-      [220] getfield #12
+      [230] aload_0 v0
+      [231] getfield #12
         - Fieldref [com/jbak/a/a.c Lcom/jbak/a/b;]
-      [223] invokevirtual #30
+      [234] invokevirtual #30
         - Methodref [java/util/Vector.add (Ljava/lang/Object;)Z]
-      [226] pop
-      [227] aload_0 v0
-      [228] iload_3 v3
-      [229] putfield #15
+      [237] pop
+      [238] aload_0 v0
+      [239] iload_3 v3
+      [240] putfield #15
         - Fieldref [com/jbak/a/a.v Z]
-      [232] return
+      [243] aload_0 v0
+      [244] iload v4
+      [246] putfield #14
+        - Fieldref [com/jbak/a/a.u Z]
+      [249] return
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 2):
-      + Line number table attribute (count = 20)
+      + Line number table attribute (count = 23)
         [0] -> line 22
         [6] -> line 23
         [66] -> line 24
@@ -26056,18 +26068,21 @@ Methods (count = 4):
         [109] -> line 30
         [124] -> line 31
         [129] -> line 32
-        [134] -> line 33
-        [153] -> line 34
-        [158] -> line 35
-        [173] -> line 36
-        [192] -> line 37
-        [206] -> line 38
-        [215] -> line 39
-        [227] -> line 40
-        [232] -> line 41
+        [135] -> line 33
+        [140] -> line 34
+        [145] -> line 35
+        [164] -> line 36
+        [169] -> line 37
+        [184] -> line 38
+        [203] -> line 39
+        [217] -> line 40
+        [226] -> line 41
+        [238] -> line 42
+        [243] -> line 43
+        [249] -> line 44
       + Stack map table attribute (count = 2):
         - [74] Var: ...[i][i], Stack: (empty)
-        - [215] Var: ...[i], Stack: (empty)
+        - [226] Var: ...[i][i], Stack: (empty)
   + Method:       draw(Landroid/graphics/Canvas;Landroid/graphics/Paint;)V
     Access flags: 0x11
       = public final void draw(android.graphics.Canvas,android.graphics.Paint)
@@ -26119,11 +26134,11 @@ Methods (count = 4):
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 2):
       + Line number table attribute (count = 5)
-        [0] -> line 45
-        [25] -> line 46
-        [33] -> line 47
-        [47] -> line 48
-        [61] -> line 49
+        [0] -> line 48
+        [25] -> line 49
+        [33] -> line 50
+        [47] -> line 51
+        [61] -> line 52
       + Stack map table attribute (count = 4):
         - [17] Var: ..., Stack: (empty)
         - [24] Var: ..., Stack: [a:android/graphics/Bitmap]
@@ -26143,8 +26158,8 @@ Methods (count = 4):
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 1):
       + Line number table attribute (count = 2)
-        [0] -> line 61
-        [5] -> line 62
+        [0] -> line 64
+        [5] -> line 65
 
 Class file attributes (count = 1):
   + Source file attribute:
@@ -26209,7 +26224,7 @@ Methods (count = 1):
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 1):
       + Line number table attribute (count = 1)
-        [0] -> line 64
+        [0] -> line 67
 
 Class file attributes (count = 1):
   + Source file attribute:
@@ -27803,7 +27818,7 @@ Methods (count = 21):
     Access flags: 0x1
       = public void draw(android.graphics.Canvas,android.graphics.Paint)
     Class member attributes (count = 1):
-    + Code attribute instructions (code length = 103, locals = 3, stack = 5):
+    + Code attribute instructions (code length = 96, locals = 3, stack = 5):
       [0] aload_0 v0
       [1] getfield #53
         - Fieldref [com/jbak/a/e.r Lcom/jbak/a/e;]
@@ -27857,23 +27872,19 @@ Methods (count = 21):
       [74] aload_0 v0
       [75] getfield #56
         - Fieldref [com/jbak/a/e.u Z]
-      [78] ifne +10 (target=88)
+      [78] ifeq +17 (target=95)
       [81] aload_0 v0
-      [82] getfield #58
+      [82] aload_1 v1
+      [83] aload_0 v0
+      [84] getfield #58
         - Fieldref [com/jbak/a/e.w Z]
-      [85] ifeq +17 (target=102)
-      [88] aload_0 v0
-      [89] aload_1 v1
-      [90] aload_0 v0
-      [91] getfield #58
-        - Fieldref [com/jbak/a/e.w Z]
-      [94] aload_0 v0
-      [95] getfield #39
+      [87] aload_0 v0
+      [88] getfield #39
         - Fieldref [com/jbak/a/e.d Landroid/graphics/RectF;]
-      [98] pop
-      [99] invokevirtual #93
+      [91] pop
+      [92] invokevirtual #93
         - Methodref [com/jbak/a/e.a (Landroid/graphics/Canvas;Z)V]
-      [102] return
+      [95] return
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 2):
       + Line number table attribute (count = 8)
@@ -27882,16 +27893,15 @@ Methods (count = 21):
         [16] -> line 225
         [23] -> line 227
         [52] -> line 228
-        [74] -> line 233
-        [88] -> line 234
-        [102] -> line 235
-      + Stack map table attribute (count = 6):
+        [74] -> line 232
+        [81] -> line 233
+        [95] -> line 234
+      + Stack map table attribute (count = 5):
         - [16] Var: ..., Stack: (empty)
         - [47] Var: ..., Stack: [a:android/graphics/Paint]
         - [48] Var: [a:com/jbak/a/e][a:android/graphics/Canvas][a:android/graphics/Paint], Stack: [a:android/graphics/Paint][a:android/graphics/ColorFilter]
         - [74] Var: ..., Stack: (empty)
-        - [88] Var: ..., Stack: (empty)
-        - [102] Var: ..., Stack: (empty)
+        - [95] Var: ..., Stack: (empty)
   + Method:       a(Landroid/graphics/Canvas;Z)V
     Access flags: 0x11
       = public final void a(android.graphics.Canvas,boolean)
@@ -27956,9 +27966,9 @@ Methods (count = 21):
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 2):
       + Line number table attribute (count = 3)
-        [0] -> line 243
-        [48] -> line 244
-        [72] -> line 245
+        [0] -> line 242
+        [48] -> line 243
+        [72] -> line 244
       + Stack map table attribute (count = 2):
         - [65] Var: [a:com/jbak/a/e][a:android/graphics/Canvas][i][a:android/graphics/RectF][a:android/graphics/RectF], Stack: [a:android/graphics/Canvas][a:android/graphics/RectF][f][f][i]
         - [69] Var: [a:com/jbak/a/e][a:android/graphics/Canvas][i][a:android/graphics/RectF][a:android/graphics/RectF], Stack: [a:android/graphics/Canvas][a:android/graphics/RectF][f][f][i][a:android/graphics/Paint]
@@ -28005,12 +28015,12 @@ Methods (count = 21):
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 2):
       + Line number table attribute (count = 6)
-        [0] -> line 249
-        [7] -> line 250
-        [15] -> line 251
-        [25] -> line 252
-        [35] -> line 253
-        [45] -> line 254
+        [0] -> line 248
+        [7] -> line 249
+        [15] -> line 250
+        [25] -> line 251
+        [35] -> line 252
+        [45] -> line 253
       + Stack map table attribute (count = 1):
         - [15] Var: ..., Stack: (empty)
   + Method:       f()Lcom/jbak/a/e;
@@ -28028,8 +28038,8 @@ Methods (count = 21):
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 1):
       + Line number table attribute (count = 2)
-        [0] -> line 257
-        [6] -> line 258
+        [0] -> line 256
+        [6] -> line 257
   + Method:       a(Lcom/jbak/a/e;)Lcom/jbak/a/e;
     Access flags: 0x11
       = public final com.jbak.a.e a(com.jbak.a.e)
@@ -28044,8 +28054,8 @@ Methods (count = 21):
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 1):
       + Line number table attribute (count = 2)
-        [0] -> line 267
-        [5] -> line 268
+        [0] -> line 266
+        [5] -> line 267
   + Method:       a(I[I)Z
     Access flags: 0xa
       = private static boolean a(int,int[])
@@ -28075,11 +28085,11 @@ Methods (count = 21):
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 2):
       + Line number table attribute (count = 5)
-        [0] -> line 279
-        [13] -> line 281
-        [17] -> line 282
-        [19] -> line 279
-        [27] -> line 284
+        [0] -> line 278
+        [13] -> line 280
+        [17] -> line 281
+        [19] -> line 278
+        [27] -> line 283
       + Stack map table attribute (count = 3):
         - [10] Var: [a:com/jbak/a/e][i][a:[I][T][i][i][a:[I], Stack: 
         - [19] Var: ..., Stack: (empty)
@@ -50730,7 +50740,7 @@ Methods (count = 27):
     Access flags: 0x10
       = final void j()
     Class member attributes (count = 1):
-    + Code attribute instructions (code length = 48, locals = 2, stack = 2):
+    + Code attribute instructions (code length = 54, locals = 3, stack = 2):
       [0] aload_0 v0
       [1] invokevirtual #188
         - Methodref [com/jbak/JbakKeyboard/JbKbdView.getKeyboard ()Landroid/inputmethodservice/Keyboard;]
@@ -50738,40 +50748,45 @@ Methods (count = 27):
         - Class [com/jbak/JbakKeyboard/ag]
       [7] dup
       [8] astore_1 v1
-      [9] ifnull +38 (target=47)
+      [9] ifnull +44 (target=53)
       [12] aload_1 v1
       [13] invokevirtual #204
         - Methodref [com/jbak/JbakKeyboard/ag.getKeys ()Ljava/util/List;]
       [16] invokeinterface #283
         - InterfaceMethodref [java/util/List.iterator ()Ljava/util/Iterator;]
-      [21] astore_1 v1
-      [22] goto +16 (target=38)
-      [25] aload_1 v1
+      [21] astore_2 v2
+      [22] goto +22 (target=44)
+      [25] aload_2 v2
       [26] invokeinterface #282
         - InterfaceMethodref [java/util/Iterator.next ()Ljava/lang/Object;]
       [31] checkcast #40
         - Class [android/inputmethodservice/Keyboard$Key]
-      [34] iconst_0
-      [35] putfield #89
+      [34] dup
+      [35] astore_1 v1
+      [36] ifnull +8 (target=44)
+      [39] aload_1 v1
+      [40] iconst_0
+      [41] putfield #89
         - Fieldref [android/inputmethodservice/Keyboard$Key.pressed Z]
-      [38] aload_1 v1
-      [39] invokeinterface #281
+      [44] aload_2 v2
+      [45] invokeinterface #281
         - InterfaceMethodref [java/util/Iterator.hasNext ()Z]
-      [44] ifne -19 (target=25)
-      [47] return
+      [50] ifne -25 (target=25)
+      [53] return
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 2):
-      + Line number table attribute (count = 6)
+      + Line number table attribute (count = 7)
         [0] -> line 628
         [8] -> line 629
         [12] -> line 631
-        [34] -> line 632
-        [38] -> line 631
-        [47] -> line 634
+        [35] -> line 633
+        [39] -> line 634
+        [44] -> line 631
+        [53] -> line 637
       + Stack map table attribute (count = 3):
         - [25] Var: [a:com/jbak/JbakKeyboard/JbKbdView][a:com/jbak/JbakKeyboard/ag][T][a:java/util/Iterator], Stack: 
-        - [38] Var: ..., Stack: (empty)
-        - [47] Var: [a:com/jbak/JbakKeyboard/JbKbdView][a:com/jbak/JbakKeyboard/ag], Stack: 
+        - [44] Var: ..., Stack: (empty)
+        - [53] Var: [a:com/jbak/JbakKeyboard/JbKbdView][a:com/jbak/JbakKeyboard/ag], Stack: 
 
 Class file attributes (count = 1):
   + Source file attribute:
@@ -56796,11 +56811,11 @@ Methods (count = 6):
     Access flags: 0x11
       = public final void handleMessage(android.os.Message)
     Class member attributes (count = 1):
-    + Code attribute instructions (code length = 183, locals = 3, stack = 6):
+    + Code attribute instructions (code length = 190, locals = 3, stack = 6):
       [0] aload_1 v1
       [1] getfield #29
         - Fieldref [android/os/Message.what I]
-      [4] tableswitch (7 offsets, default=173) (target=177)
+      [4] tableswitch (7 offsets, default=180) (target=184)
         1: offset = 56, target = 60
         2: offset = 99, target = 103
         3: offset = 115, target = 119
@@ -56808,7 +56823,7 @@ Methods (count = 6):
         5: offset = 44, target = 48
         6: offset = 116, target = 120
         7: offset = 152, target = 156
-        default: offset = 173, target = 177
+        default: offset = 180, target = 184
       [48] aload_0 v0
       [49] getfield #41
         - Fieldref [com/jbak/JbakKeyboard/ax.k Lcom/jbak/JbakKeyboard/JbKbdView;]
@@ -56854,7 +56869,7 @@ Methods (count = 6):
       [103] aload_0 v0
       [104] getfield #37
         - Fieldref [com/jbak/JbakKeyboard/ax.g Landroid/widget/TextView;]
-      [107] ifnull +75 (target=182)
+      [107] ifnull +82 (target=189)
       [110] aload_0 v0
       [111] getfield #37
         - Fieldref [com/jbak/JbakKeyboard/ax.g Landroid/widget/TextView;]
@@ -56870,7 +56885,7 @@ Methods (count = 6):
         - Class [com/jbak/JbakKeyboard/ah]
       [127] dup
       [128] astore_1 v1
-      [129] ifnull +53 (target=182)
+      [129] ifnull +60 (target=189)
       [132] aload_1 v1
       [133] getfield #30
         - Fieldref [com/jbak/JbakKeyboard/ah.pressed Z]
@@ -56896,25 +56911,29 @@ Methods (count = 6):
         - Class [com/jbak/JbakKeyboard/ah]
       [163] dup
       [164] astore_1 v1
-      [165] ifnull +17 (target=182)
-      [168] aload_0 v0
-      [169] getfield #41
+      [165] ifnull +24 (target=189)
+      [168] aload_1 v1
+      [169] getfield #30
+        - Fieldref [com/jbak/JbakKeyboard/ah.pressed Z]
+      [172] ifeq +17 (target=189)
+      [175] aload_0 v0
+      [176] getfield #41
         - Fieldref [com/jbak/JbakKeyboard/ax.k Lcom/jbak/JbakKeyboard/JbKbdView;]
-      [172] aload_1 v1
-      [173] invokevirtual #50
+      [179] aload_1 v1
+      [180] invokevirtual #50
         - Methodref [com/jbak/JbakKeyboard/JbKbdView.onLongPress (Landroid/inputmethodservice/Keyboard$Key;)Z]
-      [176] pop
-      [177] return
-      [178] pop
-      [179] invokestatic #57
+      [183] pop
+      [184] return
+      [185] pop
+      [186] invokestatic #57
         - Methodref [com/jbak/JbakKeyboard/ca.d ()V]
-      [182] return
+      [189] return
       Code attribute exceptions (count = 3):
       - ExceptionInfo (67 -> 97: 98):
       - Class [java/lang/Throwable]
-      - ExceptionInfo (0 -> 139: 178):
+      - ExceptionInfo (0 -> 139: 185):
       - Class [java/lang/Throwable]
-      - ExceptionInfo (140 -> 177: 178):
+      - ExceptionInfo (140 -> 184: 185):
       - Class [java/lang/Throwable]
       Code attribute attributes (attribute count = 2):
       + Line number table attribute (count = 24)
@@ -56937,11 +56956,11 @@ Methods (count = 6):
         [155] -> line 126
         [156] -> line 129
         [164] -> line 130
-        [168] -> line 132
-        [177] -> line 136
-        [178] -> line 138
-        [179] -> line 139
-        [182] -> line 141
+        [175] -> line 132
+        [184] -> line 136
+        [185] -> line 138
+        [186] -> line 139
+        [189] -> line 141
       + Stack map table attribute (count = 13):
         - [48] Var: ..., Stack: (empty)
         - [60] Var: ..., Stack: (empty)
@@ -56953,9 +56972,9 @@ Methods (count = 6):
         - [154] Var: -1, Stack: (empty)
         - [155] Var: ..., Stack: (empty)
         - [156] Var: ..., Stack: (empty)
-        - [177] Var: ..., Stack: (empty)
-        - [178] Var: ..., Stack: [a:java/lang/Throwable]
-        - [182] Var: ..., Stack: (empty)
+        - [184] Var: ..., Stack: (empty)
+        - [185] Var: ..., Stack: [a:java/lang/Throwable]
+        - [189] Var: ..., Stack: (empty)
   + Method:       a(Lcom/jbak/JbakKeyboard/ah;Z)V
     Access flags: 0x11
       = public final void a(com.jbak.JbakKeyboard.ah,boolean)

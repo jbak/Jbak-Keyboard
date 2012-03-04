@@ -629,7 +629,10 @@ public class JbKbdView extends KeyboardView {
         if(kbd!=null)
         {
             for(Key k:kbd.getKeys())
-                k.pressed = false;
+            {
+                if(k!=null)
+                    k.pressed = false;
+            }
         }
     }
 }

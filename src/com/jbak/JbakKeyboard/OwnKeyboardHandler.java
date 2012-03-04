@@ -127,7 +127,7 @@ public class OwnKeyboardHandler extends Handler
                 case MSG_MY_LONG_PRESS:
                     {
                         LatinKey lk = (LatinKey)msg.obj;
-                        if(lk!=null)
+                        if(lk!=null&&lk.pressed)
                         {
                             m_kv.onLongPress(lk);
                         }
