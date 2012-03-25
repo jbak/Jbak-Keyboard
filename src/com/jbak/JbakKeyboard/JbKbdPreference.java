@@ -287,7 +287,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         }
         return bOk;
     }
-/** Настройка интервалов нажатий */    
+/** пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ */    
     void showIntervalsEditor()
     {
         final View v = getLayoutInflater().inflate(R.layout.edit_intervals, null);
@@ -476,26 +476,26 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
     }
     void vocabTest()
     {
-        Words w = new Words();
-        w.open("ru");
-        String test[] = new String[]{"ящ","те"};
-        long times []= new long[test.length];
-        for(int i=0;i<test.length;i++)
-        {
-            long time = System.currentTimeMillis();
-            String s[] = w.getWords(test[i]);
-            time = System.currentTimeMillis()-time;
-            times[i]=time;
-        }
-        long total = 0;
-        String log = "Test words: {";
-        for(int i=0;i<test.length;i++)
-        {
-            long time = times[i];
-            total+=time;
-            log+=test[i]+":"+time;
-        }
-        log+="} total:"+total;
-        Log.w("Words test", log);
+//        Words w = new Words();
+//        w.open("ru");
+//        String test[] = new String[]{"пїЅпїЅ","пїЅпїЅ"};
+//        long times []= new long[test.length];
+//        for(int i=0;i<test.length;i++)
+//        {
+//            long time = System.currentTimeMillis();
+//            String s[] = w.getWords(test[i]);
+//            time = System.currentTimeMillis()-time;
+//            times[i]=time;
+//        }
+//        long total = 0;
+//        String log = "Test words: {";
+//        for(int i=0;i<test.length;i++)
+//        {
+//            long time = times[i];
+//            total+=time;
+//            log+=test[i]+":"+time;
+//        }
+//        log+="} total:"+total;
+//        Log.w("Words test", log);
     }
 }

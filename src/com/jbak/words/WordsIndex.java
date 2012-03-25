@@ -89,8 +89,8 @@ public class WordsIndex
     {
         if(cb.limit()<2)
             return false;
-        char c1 = cb.get();
-        char c2 = cb.get();
+        char c1 = Character.toLowerCase(cb.get());
+        char c2 = Character.toLowerCase(cb.get());
         if(c1<'A')
             return false;
         if(c1!=m_curEnt.first)
@@ -172,8 +172,9 @@ public class WordsIndex
                 setSizes(e);
                 return true;
             }
-            else if(ch>e.first||ch==e.first&&ch2>e.second)
-                return false;
+// По идее, если буква больше - то выходим, но тут всё наламывает буква ё            
+//            else if(ch>e.first||ch==e.first&&ch2>e.second)
+//                return false;
             pos = m_index.position()+4;
         }
         return false;

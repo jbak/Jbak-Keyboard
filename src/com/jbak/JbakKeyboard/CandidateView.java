@@ -236,8 +236,7 @@ public class CandidateView extends View {
         invalidate();
     }
     
-    public void setSuggestions(List<String> suggestions, boolean completions,
-            boolean typedWordValid) {
+    public void setSuggestions(List<String> suggestions, boolean completions,boolean typedWordValid) {
         clear();
         if (suggestions != null) {
             mSuggestions = new ArrayList<String>(suggestions);
@@ -279,7 +278,7 @@ public class CandidateView extends View {
             if (y <= 0) {
                 // Fling up!?
                 if (mSelectedIndex >= 0) {
-                	mService.SetWord(mSuggestions.get(mSelectedIndex));
+                	mService.setWord(mSuggestions.get(mSelectedIndex));
                     mSelectedIndex = -1;
                 }
             }
@@ -288,7 +287,7 @@ public class CandidateView extends View {
         case MotionEvent.ACTION_UP:
             if (!mScrolled) {
                 if (mSelectedIndex >= 0) {
-                	mService.SetWord(mSuggestions.get(mSelectedIndex));
+                	mService.setWord(mSuggestions.get(mSelectedIndex));
                 }
             }
             mSelectedIndex = -1;
@@ -309,7 +308,7 @@ public class CandidateView extends View {
         // To detect candidate
         onDraw(null);
         if (mSelectedIndex >= 0) {
-        	mService.SetWord(mSuggestions.get(mSelectedIndex));
+        	mService.setWord(mSuggestions.get(mSelectedIndex));
         }
         invalidate();
     }

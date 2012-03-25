@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import android.view.inputmethod.InputConnection;
-
+/** Класс для операций с шаблонами - создание, листинг, обработка */
 public class Templates
 {
+/** Статический объект для доступа к экземпляру класса */    
     static Templates inst;
+/** Обнуляет текущий объект */    
     static void destroy()
     {
         if(inst!=null)
@@ -29,6 +31,7 @@ public class Templates
         }
         m_curDir = m_rootDir;
     }
+/** Устанавливает редактирования папки шаблонов - для запуска {@link TplEditorActivity}*/    
     void setEditFolder(boolean bSet)
     {
         if(bSet)
@@ -349,7 +352,8 @@ public class Templates
         }
         return s;
     }
-/** Класс для получения информации о текущем выделении, текущем слове и текущей строке */   
+/** Класс для получения информации о текущем выделении, текущем слове и текущей строке 
+ * А также для операций с ними */   
     static class CurInput
     {
         String wordStart;

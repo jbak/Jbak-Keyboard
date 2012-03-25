@@ -1,10 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.jbak.JbakKeyboard.JbCandView
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
-  <Spinner 
-  	android:id="@android:id/candidatesArea"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent"/>
+<com.jbak.JbakKeyboard.JbCandView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" 
+    android:background="#aaaaaa"
+    >
+<TextView
+    android:id="@+id/cand_left"
+    android:layout_height="25dp"
+    android:layout_width="wrap_content"
+    android:drawableLeft="@drawable/cand_plus_icon"
+    android:background="@drawable/cand_add_vocab_background"
+    style="@style/cand_item"
+    android:layout_alignParentLeft="true"
+    android:drawablePadding="2dp"
+    android:visibility="gone"
+    />
+<LinearLayout android:id="@+id/completions"
+    android:layout_width="wrap_content"
+    android:layout_height="25dp"
+    android:gravity="left"
+    android:clipChildren="false"
+    android:background="#00ff00"
+	android:layout_toRightOf="@id/cand_left"
+    />
+<ImageView
+    android:id="@+id/cand_right"
+    android:layout_width="40dp"
+    android:layout_height="25dp"
+    android:src="@drawable/cand_arrow_icon"
+    android:background="@drawable/cand_add_vocab_background"
+    android:gravity="center"
+    android:visibility="gone"
+    android:layout_alignParentRight="true"
+    />
+
 </com.jbak.JbakKeyboard.JbCandView>

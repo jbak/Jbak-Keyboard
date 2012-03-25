@@ -194,12 +194,12 @@ public class st extends IKeyboard implements IKbdSettings
             m_obs = obs;
         }
     /** Синхронно стартует операцию {@link #makeOper(UniObserver)}*/
-        void startSync()
+        public void startSync()
         {
             makeOper(m_obs);
         }
     /** Асинхронно стартует операцию {@link #makeOper(UniObserver)}*/
-        void startAsync()
+        public void startAsync()
         {
             execute();
         }
@@ -223,7 +223,7 @@ public class st extends IKeyboard implements IKbdSettings
             return null;
         }
     /** Выполняемая операция  */
-        abstract void makeOper(UniObserver obs);
+        public abstract void makeOper(UniObserver obs);
     /** Обработчик операции */  
         UniObserver m_obs;
     }

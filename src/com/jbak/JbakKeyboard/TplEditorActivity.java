@@ -11,11 +11,36 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
-
+/** Редактирование шаблонов и просмотр элементов буфера обмена*/
 public class TplEditorActivity extends Activity
 {
+/** Если эта EXTRA есть в стартовом Intent'е - значит нужно показать вхождение буфера обмена  */    
     public static final String EXTRA_CLIPBOARD_ENTRY = "e_clp";
+/** Дата элемента буфера обмена*/    
     Long m_clipbrdDate=null;
+/** Поле ввода имени */    
+    EditText m_edName;
+/** Поле ввода текста */
+    EditText m_edText;
+/** Обработчик нажатия кнопок в окне*/    
+    View.OnClickListener m_clkListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            switch(v.getId())
+            {
+                case  R.id.tpl_save: onSave(); break;
+                case  R.id.tpl_spec_options: onSpecOptions(); break;
+                case  R.id.close: 
+                        finish();
+                        if(m_clipbrdDate==null&&Templates.inst!=null)
+                            Templates.inst.onCloseEditor();
+                        break;
+                case R.id.delete:delete();break;
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -93,6 +118,7 @@ public class TplEditorActivity extends Activity
             Templates.inst.onCloseEditor();
         super.onDestroy();
     }
+/** Обработка нажатия на кнопку "Сохранить". Только для шаблона */    
     void onSave()
     {
         if(Templates.inst==null)
@@ -122,6 +148,7 @@ public class TplEditorActivity extends Activity
         }
         Templates.inst.onCloseEditor();
     }
+/** Удаление элемента, открытого в редакторе (шаблона, папки шаблонов, элемента буфера обмена)*/    
     void delete()
     {
         if(m_clipbrdDate!=null)
@@ -147,6 +174,7 @@ public class TplEditorActivity extends Activity
     {
         finish();
     };
+/** Меню специальных инструкций для добавления в шаблон */    
     void onSpecOptions()
     {
         int rlist = R.layout.tpl_instr_list;
@@ -175,24 +203,4 @@ public class TplEditorActivity extends Activity
         });
         
     }
-    View.OnClickListener m_clkListener = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(View v)
-        {
-            switch(v.getId())
-            {
-                case  R.id.tpl_save: onSave(); break;
-                case  R.id.tpl_spec_options: onSpecOptions(); break;
-                case  R.id.close: 
-                        finish();
-                        if(m_clipbrdDate==null&&Templates.inst!=null)
-                            Templates.inst.onCloseEditor();
-                        break;
-                case R.id.delete:delete();break;
-            }
-        }
-    };
-    EditText m_edName;
-    EditText m_edText;
 }

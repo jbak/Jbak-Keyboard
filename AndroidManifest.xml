@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" 
         package="com.jbak.JbakKeyboard"
-        android:versionName="0.94"
+        android:versionName="0.95"
         android:versionCode="20"
         >
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -24,6 +24,8 @@
         </service>
 <!-- ============================================================================== -->
         <service android:name="ClipbrdService">
+        </service>
+        <service android:name="com.jbak.words.WordsService">
         </service>
 <!-- ============================================================================== -->
         <activity android:name="JbKbdPreference" 
