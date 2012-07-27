@@ -360,6 +360,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         m_SelEnd = newSelEnd;
         if (m_SelStart == m_SelEnd)
         {
+            // Буферы не заполняются в том случае, если введена одна буква - сильно ускоряет на тормознутых редакторах при быстром вводе
             if(oldSelStart==oldSelEnd&&m_SelStart-oldSelStart==1)
             {
             }
