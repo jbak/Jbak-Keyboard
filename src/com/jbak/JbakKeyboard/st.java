@@ -277,9 +277,10 @@ public class st extends IKeyboard implements IKbdSettings
         Keybrd cur = getCurQwertyKeybrd();
         JbKbd kb = curKbd();
         if(!bForce&&!(kb==null||kb.kbd==null||kb.kbd!=cur))
+        {
+            JbKbdView.inst.setKeyboard(kb);
             return;
-//        if(kb!=null&&!bForce) // Проверить, одинаковы ли клавиатуры
-//            return;
+        }
         JbKbdView.inst.setKeyboard(loadKeyboard(cur));
         saveCurLang();
     }
@@ -551,6 +552,11 @@ public class st extends IKeyboard implements IKbdSettings
         {
             ped.putBoolean(PREF_KEY_AUTO_CASE, pref.getBoolean(PREF_KEY_UP_AFTER_SYMBOLS, false));
         }
+ // 0.94 - 0.95 Меняем настройку "показ просмотра клавиш" на трёхпозиционную настройку PREF_KEY_PREVIEW_TYPE
+        if(!pref.contains(PREF_KEY_PREVIEW_TYPE))
+        {
+            ped.putString(PREF_KEY_PREVIEW_TYPE, pref.getBoolean(PREF_KEY_PREVIEW, true)?ONE_STRING:ZERO_STRING);
+        }
         ped.commit();
     }
     public static File[] getFilesByExt(File dir,final String ext)
@@ -562,7 +568,9 @@ public class st extends IKeyboard implements IKbdSettings
             {
                 int pos = filename.lastIndexOf('.');
                 if(pos<0)return false;
-                return filename.substring(pos+1).compareTo(ext)==0;
+                if(ext.length()>0&&ext.charAt(0)!='.')
+                    pos++;
+                return filename.substring(pos).compareTo(ext)==0;
             }
         });
     }

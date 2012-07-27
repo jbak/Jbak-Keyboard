@@ -69,7 +69,7 @@ public class TextTools
 /** Сравнивает строку str c буфером cb
 *@param str Исходная строка для сравнения в нижнем регистре
 *@param cb Буфер для сравнения из словаря, после слова идет пробельный символ
-*@return Возвращает одно из значений {@link #COMPARE_TYPE_NONE},{@link #COMPARE_TYPE_COMPLETION},{@link #COMPARE_TYPE_CORRECTION} 
+*@return Возвращает одно из значений COMPARE_TYPE
 **/
     public static final int compare(String str,CharBuffer cb)
     {
@@ -110,6 +110,37 @@ public class TextTools
         }
         else if(corr==0&&ds>0)
             return COMPARE_TYPE_COMPLETION;
+        return COMPARE_TYPE_NONE;
+    }
+    /** Сравнивает строку str c буфером str1.
+    *@param str Исходная строка для сравнения в нижнем регистре
+    *@param str1 Слово для сравнения
+    *@return Возвращает одно из значений COMPARE_TYPE
+    */
+    public static final int compare(String str,String str1)
+    {
+        int len = str.length();
+        int len1 = str1.length();
+        int corr = 0;
+        for(int i=0;i<len&&i<len1;i++)
+        {
+            char c = str.charAt(i);
+            char c1 = Character.toLowerCase(str1.charAt(i));
+            if(!isCharEqual(c, c1))
+            {
+                corr++;
+                if(corr>CORRECT_SIZE)
+                {
+                    return COMPARE_TYPE_NONE;
+                }
+            }
+        }
+        if(corr==0)
+        {
+            if(len1==len) return COMPARE_TYPE_EQUAL;
+            else if(len1>len) return COMPARE_TYPE_COMPLETION;
+        }
+        if(len-len1<=CORRECT_SIZE&&corr<=CORRECT_SIZE) return COMPARE_TYPE_CORRECTION;
         return COMPARE_TYPE_NONE;
     }
 }

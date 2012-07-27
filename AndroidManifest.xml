@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" 
         package="com.jbak.JbakKeyboard"
         android:versionName="0.95"
-        android:versionCode="20"
+        android:versionCode="21"
         >
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.VIBRATE"/>
@@ -35,6 +35,12 @@
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
         </activity> 
+        
+<!-- ============================================================================== -->
+            <activity android:name="UpdVocabActivity"
+        		  android:excludeFromRecents="true"
+        		  android:label="@string/set_key_ac_load_vocab"
+        	/>
 <!-- ============================================================================== -->
         <activity android:name="SetKbdActivity"
         		  android:excludeFromRecents="true"
@@ -49,6 +55,7 @@
         			android:label="@string/tpl_editor"
         			android:finishOnTaskLaunch="true"
         			android:excludeFromRecents="true"
+        			android:configChanges="keyboardHidden|orientation"
         			>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

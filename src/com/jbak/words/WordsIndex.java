@@ -15,42 +15,14 @@ import com.jbak.JbakKeyboard.st;
 
 public class WordsIndex
 {
-    static class IndexEntry
-    {
-        public IndexEntry()
-        {
-            first = 0;
-            second = 0;
-            filepos = 0;
-        }
-        public IndexEntry(IndexEntry e)
-        {
-            first = e.first;
-            second = e.second;
-            filepos = e.filepos;
-            endpos = e.endpos;
-        }
-        public IndexEntry(char f,char s,int fp)
-        {
-            first = f;
-            second = s;
-            filepos = fp;
-        }
-        static final int sz = 8;
-/** Первый символ*/        
-        char first;
-/** Второй символ */        
-        char second;
-/** Начальная позиция в файле */        
-        int  filepos;
-/** Конечная позиция в файле */        
-        int endpos;
-    }
-
+    public static final int BUF_HEADER_SIZE = 18;
+    public static final byte INDEX_VERSION = 1;    
     int                m_startBytes = 0;
     byte               m_delimSize  = 0;
-    IndexEntry m_curEnt = new IndexEntry();
+    public IndexEntry m_curEnt = new IndexEntry();
     ByteBuffer m_index;
+    public long m_filesize;
+    long m_lastModified;
     final boolean testFile(String path)
     {
         try
@@ -127,15 +99,17 @@ public class WordsIndex
         }
         return false;
     }
-    boolean makeIndexFromVocab(String path)
+    public boolean makeIndexFromVocab(String path)
     {
         if(!testFile(path))
             return false;
         try
         {
             long time = System.currentTimeMillis();
+            m_lastModified = new File(path).lastModified();
             LineFileReader fr = new LineFileReader();
             fr.open(path, "r");
+            m_filesize = fr.m_fileSize;
             fr.seek(m_startBytes);
             Vector<IndexEntry> entries = new Vector<IndexEntry>();
             while (fr.nextLine())
@@ -147,7 +121,7 @@ public class WordsIndex
                     entries.add(new IndexEntry(m_curEnt));
                 }
             }
-            m_index = getBytes(entries, new File(path).length());
+            m_index = getBytes(entries);
             time = System.currentTimeMillis()-time;
             Log.w("JbakKeyboard", "Index takes: "+time+" milliseconds");
             return true;
@@ -160,28 +134,49 @@ public class WordsIndex
     }
     boolean getIndexes(IndexEntry e)
     {
-        int pos = 9;
+        int pos = BUF_HEADER_SIZE;
         int len = m_index.capacity();
+        int cnt = 0;
+        e.filepos = -1;
+        e.endpos = -1;
         while(pos<len)
         {
             m_index.position(pos);
             char ch = m_index.getChar();
             char ch2 = m_index.getChar();
-            if(ch==e.first&&ch2==e.second)
+            if(ch==e.first)
             {
-                setSizes(e);
-                return true;
+                if(e.second==0)
+                {
+                    if(cnt>3)
+                        return true;
+                    setSizes(e);
+                    ++cnt;
+                }
+                else if(ch2==e.second)
+                {
+                    setSizes(e);
+                    return true;
+                }
             }
-// По идее, если буква больше - то выходим, но тут всё наламывает буква ё            
-//            else if(ch>e.first||ch==e.first&&ch2>e.second)
-//                return false;
+            else
+            {
+                if(cnt>0)
+                    return true;
+            }
+                
             pos = m_index.position()+4;
         }
         return false;
     }
     final void setSizes(IndexEntry e)
     {
-        e.filepos = m_index.getInt();
+        int p = m_index.position();
+        if(e.second!=0||e.filepos<0)
+            e.filepos = m_index.getInt();
+        else
+            m_index.getInt();
+        
         int pos = m_index.position();
         if(m_index.capacity()-pos<IndexEntry.sz)
             e.endpos = (int)getFileSize();
@@ -190,13 +185,36 @@ public class WordsIndex
             m_index.position(pos+4);
             e.endpos = m_index.getInt();
         }
+        m_index.position(p);
     }
-    ByteBuffer getBytes(Vector<IndexEntry> ent,long filesize)
+    final byte getDelimSize()
     {
-        int sz = IndexEntry.sz*ent.size()+8+1;
-        ByteBuffer ret = ByteBuffer.allocate(sz);
-        ret.putLong(filesize);
+        return m_index.get(8);
+    }
+    final long getFileLastModified()
+    {
+        return m_index.getLong(10);
+    }
+    final long getFileSize()
+    {
+        return m_index.getLong(0);
+    }
+    final byte getFileVersion()
+    {
+        return m_index.get(9);
+    }
+    void writeHeader(ByteBuffer ret)
+    {
+        ret.putLong(m_filesize);
         ret.put(m_delimSize);
+        ret.put(INDEX_VERSION);
+        ret.putLong(m_lastModified);
+    }
+    ByteBuffer getBytes(Vector<IndexEntry> ent)
+    {
+        int sz = IndexEntry.sz*ent.size()+BUF_HEADER_SIZE;
+        ByteBuffer ret = ByteBuffer.allocate(sz);
+        writeHeader(ret);
         for(IndexEntry e:ent)
         {
             ret.putChar(e.first);
@@ -205,19 +223,35 @@ public class WordsIndex
         }
         return ret;
     }
-    final byte getDelimSize()
+/** Возвращает 1, если загрузка успешна, -1 - если необходимо перестроить индекс и 0 - в случае неудачи (без перестроения индекса)*/    
+    final int openByFile(String indexPath,String vocabPath)
     {
-        return m_index.get(8);
+        File fi = new File(indexPath);
+        File fv = new File(vocabPath);
+        if(!fv.exists())
+            return 0;
+        if(!fi.exists())
+            return -1;
+        boolean bLoad = load(fi);
+        if(bLoad)
+        {
+            long fs = getFileSize();
+            long lm = getFileLastModified();
+            byte v = getFileVersion();
+            if(fv.length()!=fs||fv.lastModified()!=lm||v!=INDEX_VERSION)
+                bLoad = false;
+        }
+        if(bLoad)
+            return 1;
+        if(fi.delete())
+            return -1;
+        return 0;
     }
-    final long getFileSize()
-    {
-        return m_index.getLong(0);
-    }
-    final boolean load(String filePath)
+    private final boolean load(File f)
     {
         try{
-            FileInputStream is = new FileInputStream(filePath);
-            byte buf[] = new byte[(int) new File(filePath).length()];
+            FileInputStream is = new FileInputStream(f);
+            byte buf[] = new byte[(int) f.length()];
             is.read(buf);
             m_index = ByteBuffer.wrap(buf);
             return true;
@@ -226,7 +260,7 @@ public class WordsIndex
         }
         return false;
     }
-    final boolean save(String filePath)
+    public final boolean save(String filePath)
     {
         try{
             FileOutputStream fs = new FileOutputStream(filePath);
@@ -238,5 +272,36 @@ public class WordsIndex
         {
         }
         return false;
+    }
+    public static class IndexEntry
+    {
+        public IndexEntry()
+        {
+            first = 0;
+            second = 0;
+            filepos = 0;
+        }
+        public IndexEntry(IndexEntry e)
+        {
+            first = e.first;
+            second = e.second;
+            filepos = e.filepos;
+            endpos = e.endpos;
+        }
+        public IndexEntry(char f,char s,int fp)
+        {
+            first = f;
+            second = s;
+            filepos = fp;
+        }
+        public static final int sz = 8;
+/** Первый символ*/        
+        public char first;
+/** Второй символ */        
+        public char second;
+/** Начальная позиция в файле */        
+        public int  filepos;
+/** Конечная позиция в файле */        
+        public int endpos;
     }
 }

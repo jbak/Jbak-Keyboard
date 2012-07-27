@@ -7,7 +7,7 @@
     >
 <TextView
     android:id="@+id/cand_left"
-    android:layout_height="25dp"
+    android:layout_height="@dimen/cand_height"
     android:layout_width="wrap_content"
     android:drawableLeft="@drawable/cand_plus_icon"
     android:background="@drawable/cand_add_vocab_background"
@@ -18,16 +18,15 @@
     />
 <LinearLayout android:id="@+id/completions"
     android:layout_width="wrap_content"
-    android:layout_height="25dp"
+    android:layout_height="@dimen/cand_height"
     android:gravity="left"
     android:clipChildren="false"
-    android:background="#00ff00"
 	android:layout_toRightOf="@id/cand_left"
     />
 <ImageView
     android:id="@+id/cand_right"
     android:layout_width="40dp"
-    android:layout_height="25dp"
+    android:layout_height="@dimen/cand_height"
     android:src="@drawable/cand_arrow_icon"
     android:background="@drawable/cand_add_vocab_background"
     android:gravity="center"

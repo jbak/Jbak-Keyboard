@@ -2,38 +2,62 @@ package com.jbak.JbakKeyboard;
 
 import java.util.Vector;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import com.jbak.JbakKeyboard.IKeyboard.Lang;
 
-public class LangSetActivity extends ListActivity
+public class LangSetActivity extends Activity
 {
     static LangSetActivity inst;
+    LangAdapter m_adapt;
+    ListView m_list;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         inst = this;
         CustomKeyboard.loadCustomKeyboards(false);
-        LangAdapter adapt = new LangAdapter(this, R.layout.lang_list_item);
+        m_adapt = new LangAdapter(this, R.layout.lang_list_item);
         for(Lang l:st.arLangs)
-            adapt.add(l);
-        setListAdapter(adapt);
+            m_adapt.add(l);
+        View v = getLayoutInflater().inflate(R.layout.pref_view, null);
+        m_list = (ListView)v.findViewById(android.R.id.list);
+        m_list.setAdapter(m_adapt);
+        View topView = v.findViewById(R.id.top_item);
+        topView.setVisibility(View.VISIBLE);
+        TextView tw = (TextView)topView.findViewById(R.id.text);
+        tw.setText(R.string.set_key_ac_load_vocab);
+        tw.setTextColor(0xff0000ff);
+        tw.setBackgroundResource(android.R.drawable.btn_default);
+        ((TextView)topView.findViewById(R.id.desc)).setText(" ");
+        topView.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                st.runAct(UpdVocabActivity.class);
+            }
+        });
+        setContentView(v);
         super.onCreate(savedInstanceState);
     }
     @Override
     protected void onDestroy()
     {
-        String langs = ((LangAdapter)getListAdapter()).getLangString();
+        String langs = m_adapt.getLangString();
         st.pref().edit().putString(st.PREF_KEY_LANGS, langs).commit();
         inst = null;
         super.onDestroy();
@@ -73,6 +97,17 @@ public class LangSetActivity extends ListActivity
             }
             return ret;
         }
+        int searchLang(String lang)
+        {
+            int pos = 0;
+            for(String lng:m_arLangs)
+            {
+                if(lang.equals(lng))
+                    return pos;
+                pos++;
+            }
+            return -1;
+        }
         OnCheckedChangeListener m_chkListener = new OnCheckedChangeListener()
         {
             @Override
@@ -80,18 +115,14 @@ public class LangSetActivity extends ListActivity
             {
                 Lang l = (Lang)buttonView.getTag();
                 if(isChecked)
-                    m_arLangs.add(l.name);
+                {
+                    int f = searchLang(l.name);
+                    if(f<0)
+                        m_arLangs.add(l.name);
+                }
                 else
                 {
-                    int f = -1;
-                    for(int i=0;i<m_arLangs.size();i++)
-                    {
-                        if(m_arLangs.get(i).equals(l.name))
-                        {
-                            f = i;
-                            break;
-                        }
-                    }
+                    int f = searchLang(l.name);
                     if(f>-1)
                         m_arLangs.remove(f);
                 }
@@ -104,18 +135,9 @@ public class LangSetActivity extends ListActivity
             m_arLangs = new Vector<String>();
             for(String l:st.getLangsArray(context))
             {
-                boolean canAdd = true;
-                for(String lng:m_arLangs)
+                boolean canAdd = false;
+                if(searchLang(l)==-1)
                 {
-                    if(lng.equals(l))
-                    {
-                        canAdd = false;
-                        break;
-                    }
-                }
-                if(canAdd)
-                {
-                    canAdd = false;
                     for(Lang lang:st.arLangs)
                     {
                         if(lang.name.equals(l))

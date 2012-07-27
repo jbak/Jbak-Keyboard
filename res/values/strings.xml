@@ -12,8 +12,8 @@
     <string name="label_next_key">Next</string>
     <string name="label_send_key">Send</string>
     <string name="set_ch_keys_preview">Show keys preview</string>
-
     <string name="set_ch_keys_preview_desc">Disable this, if you don\'t want see popup previews of pressed keys</string>
+    
     <string name="set_key_height_portrait">Key height portrait</string>
     <string name="set_key_height_portrait_desc">Change key height for qwerty-keyboard in portrait mode </string>
     <string name="set_key_height_landscape">Key height landscape</string>
@@ -33,6 +33,8 @@
     <string name="set_key_long_vibro_duration">Long press interval</string>
     <string name="set_key_vibro_durations">Vibro intervals</string>
     <string name="set_key_vibro_durations_desc">Here you can set vibro intervals (in miliseconds)</string>
+    <string name="set_key_vibro_in_silent">Vibro in silent mode</string>
+    <string name="set_key_vibro_in_silent_desc">Check this for enable vibro in silent mode</string>
         
     <string name="set_key_sounds">Enable sounds</string>
     <string name="set_key_sounds_desc">If enabled - keys sounds after each press</string>
@@ -90,6 +92,18 @@
     <string name="set_key_save_pref_desc">Into file:</string>
     <string name="set_key_load_pref">Load settings</string>
     <string name="set_key_load_pref_desc">From file:</string>
+
+    <string name="set_key_ac">Autocomplete</string>
+    <string name="set_key_ac_desc">Settings for word autocompletions</string>
+    <string name="set_key_ac_place">Show autocompletions</string>
+    <string name="set_key_ac_place_desc">Where you want to see autocompletions?</string>
+    <string name="set_key_ac_place_0">Disable</string>
+    <string name="set_key_ac_place_1">On top of keyboard</string>
+    <string name="set_key_ac_place_2">In system status-bar</string>
+    <string name="set_key_ac_load_vocab">Dictionary downloads</string>
+    <string name="set_key_ac_load_vocab_desc">You need dictionary for autocompletions and autocorrections</string>
+    <string name="set_key_ac_autocorrect">Autocorrection</string>
+    <string name="set_key_ac_autocorrect_desc">Apply current suggestion by space or another punctuations</string>
         
     <string name="set_key_gestures">Gestures</string>
     <string name="set_key_gestures_desc">Settings for gestures</string>
@@ -100,7 +114,10 @@
     <string name="set_key_gesture_right">Right</string>
     <string name="set_key_gesture_up">Up</string>
     <string name="set_key_gesture_down">Down</string>
-        
+	<string name="preview_show_0">Not show</string>
+	<string name="preview_show_1">Show under keys</string>
+	<string name="preview_show_2">Show on center</string>
+	    	    
     <string name="interval_long_press">Long-press delay (ms)</string>
     <string name="interval_first_repeat">First repeat delay (ms)</string>
     <string name="interval_next_repeat">Next repeats delay (ms)</string>
@@ -180,6 +197,16 @@
         <item><b>$$</b> - dollar symbol</item>
     </string-array>
 
+<!-- Update strings -->
+	<string name="upd_new_vocab">New dictionary</string>
+	<string name="upd_vocab_version_update">Update to version </string>
+	<string name="upd_check">Checking updates...</string>
+	<string name="upd_download">Download...</string>
+	<string name="upd_unzip">Unzip...</string>
+	<string name="upd_index">Index...</string>
+	<string name="upd_no_updates">No new files on server</string>
+	<string name="upd_get_error">Error while checking updates</string>
+
 <!-- Strings for about dialog -->
 	<string name="about">About</string>
 	<string name="about_app">Application:</string>
@@ -197,7 +224,8 @@
 	<string name="kbd_name_wide">Wide keys</string>
 	<string name="kbd_name_qwerty_tablet">Qwerty for tablet</string>
 	<string name="kbd_name_sym_edit">Symbols and edit</string>
-	    	    
+	<string name="kbd_name_5_rows">5 rows</string>
+	    	    	    
  <!-- Names for keyboards designs -->
 	<string name="kbd_design_standard">Standard</string>    
 	<string name="kbd_design_iphone">Pseudo iPhone</string>

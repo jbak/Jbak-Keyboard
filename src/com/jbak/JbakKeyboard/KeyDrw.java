@@ -111,7 +111,7 @@ class KeyDrw extends RectShape
             }
         }
         if(m_bPreview)
-            rb = new Rect(0, 0, st.kv().m_PreviewHeight, st.kv().m_PreviewHeight);
+            rb = new Rect(0, 0, /*st.kv().m_PreviewHeight*/KeyboardPopup.m_w, /*st.kv().m_PreviewHeight*/KeyboardPopup.m_h);
         else    
             rb = new Rect(0,0,key.width,key.height);
 
@@ -431,7 +431,7 @@ class KeyDrw extends RectShape
                 p1.getTextBounds(text, 0, text.length(), bb);
                 float x = getWidth()/2-bb.width()/2;
                 float y = getHeight()/2-bb.height()/2;
-                canvas.drawText(text, x, y+(0-p1.ascent()), p1);
+                canvas.drawText(text, x, y+bb.height(), p1);
             }
             return;
         }

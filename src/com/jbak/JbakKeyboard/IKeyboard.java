@@ -97,6 +97,8 @@ public class IKeyboard
         new Keybrd("smile_standard",   R.string.lang_smiles),
         new Keybrd("symbol_edtext",    R.string.kbd_name_sym_edit),
         new Keybrd("num_kbd",          R.string.lang_numbers),
+        new Keybrd("en_qwerty_5_row",  R.string.kbd_name_5_rows),
+        new Keybrd("symbol_wide",      R.string.kbd_name_wide),
     };
 // Флаги дизайна (Design Flags)
 /** Жирный шрифт */    

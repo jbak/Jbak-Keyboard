@@ -17,8 +17,6 @@ public class Words
     public String m_name;
     public int m_wordsLimit = 20;
     
-    public static final String DEF_PATH              = "vocab/";
-    public static final String DEF_EXT               = ".dic";
     public static final String INDEX_EXT               = ".index";
 /** Сообщение, которое получает Handler. В этом сообщении объект - Vector&lt;WordEntry&gt;*/    
     public static final int MSG_GET_WORDS    = 0xfeded;
@@ -28,15 +26,35 @@ public class Words
     LineFileReader m_file;
 /** Обработчик, получающий сообщения о процессе обработки */    
     Handler m_handler;
+    UserWords m_userWords;
+    VocabFile m_vocabFile;
+    public String m_vocabDir;
+    public Words(String vocabDir)
+    {
+        m_vocabDir = vocabDir;
+        m_vocabFile = new VocabFile();
+        m_userWords = new UserWords();
+        m_userWords.open(m_vocabDir+UserWords.FILENAME);
+    }
+    UserWords getUserWords()
+    {
+        return m_userWords;
+    }
     public boolean open(String name)
     {
         if(name.equals(m_name)&&canGiveWords())
             return true;
-        String path = st.getSettingsPath()+DEF_PATH+name+DEF_EXT;
+        m_userWords.setCurTable(name);
         m_name = name;
+        String path = m_vocabFile.processDir(m_vocabDir, name);
         String indexPath = path+INDEX_EXT;
+        if(path==null)
+            return false;
         m_index = new WordsIndex();
-        if(!new File(indexPath).exists())
+        int ret = m_index.openByFile(indexPath, path);
+        if(ret==0)
+            return false;
+        if(ret<0)
         {
             if(!m_index.makeIndexFromVocab(path))
             {
@@ -44,11 +62,6 @@ public class Words
                 return false;
             }
             m_index.save(indexPath);
-        }
-        else
-        {
-            if(!m_index.load(indexPath))
-                m_index = null;
         }
         try{
             m_file = new LineFileReader();
@@ -60,9 +73,9 @@ public class Words
         }
         return canGiveWords();
     }
-
     public void close()
     {
+        m_name = null;
         m_index = null;
     }
 /** Возвращает true, если возможно получить слова (словарь открыт на чтение и есть индекс) */
@@ -78,14 +91,12 @@ public class Words
      */
     public void getWordsSync(String word,Handler handler)
     {
-        if(word==null||word.length()<2||!canGiveWords())
+        if(word==null||word.length()<1||!canGiveWords())
             return;
         m_handler = handler;
         m_word = word;
         m_ie.first = Character.toLowerCase(m_word.charAt(0));
-        m_ie.second = Character.toLowerCase(m_word.charAt(1));
-        if(!m_index.getIndexes(m_ie))
-            return;
+        m_ie.second = word.length()>1?Character.toLowerCase(m_word.charAt(1)):0;
         Vector<WordEntry> ar = readWords(m_word);
         if(ar==null)
             return;
@@ -162,35 +173,51 @@ public class Words
         try{
             int cs = TextTools.getTextCase(word);
             String lc = word.toLowerCase();
-            IWords.TextFileWords wi = new IWords.TextFileWords();
-            wi.open(m_file, m_ie, lc);
             Vector<WordEntry> ar = new Vector<WordEntry>(m_wordsLimit); 
             int minF = 0;
             boolean bFull = false;
-            while(!m_bCancel)
+            for(int i=0;i<2;i++)
             {
-                WordEntry we = wi.getNextWordEntry(minF, bFull);
-                if(we==null)
+                IWords wi = null;
+                if(i==0)
                 {
-                    if(wi.m_bHasNext)
-                        continue;
-                    else
+                    wi = m_userWords.getWordsReader(lc);
+                }
+                else
+                {
+                    if(/*m_ie.second==0||*/!m_index.getIndexes(m_ie))
                         break;
+                    IWords.TextFileWords tfv = new IWords.TextFileWords();
+                    tfv.open(m_file, m_ie, lc);                    
+                    wi = tfv;
                 }
-                if(!bFull)
+                while(!m_bCancel)
                 {
-                    ar.add(we);
-                    bFull = ar.size()==m_wordsLimit;
-                    if(bFull)
-                        minF = getMinFreq(ar);
+                    WordEntry we = wi.getNextWordEntry(minF, bFull);
+                    if(we==null)
+                    {
+                        if(wi.m_bHasNext)
+                            continue;
+                        else
+                            break;
+                    }
+                    if(!bFull)
+                    {
+                        ar.add(we);
+                        bFull = ar.size()==m_wordsLimit;
+                        if(bFull)
+                            minF = getMinFreq(ar);
+                    }
+                    else if(we.freq>minF)
+                    {
+                        setAtMinFreq(ar, we);
+                    }
                 }
-                else if(we.freq>minF)
-                {
-                    setAtMinFreq(ar, we);
-                }
+                if(m_bCancel)
+                    return null;
+                if(bFull)
+                    break;
             }
-            if(m_bCancel)
-                return null;
             return postProcessWords(ar,cs);
         }
         catch (Throwable e) 

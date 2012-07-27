@@ -13,14 +13,20 @@
                          android:layout_alignParentBottom="true"
 				        android:layout_alignParentLeft="true"
 				        android:layout_alignParentRight="true"
-                         
                          />
+    <include layout="@layout/two_line_item"
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"
+       	android:id="@+id/top_item"
+        android:layout_alignParentTop="true"
+        android:visibility="gone"
+        />
     <ListView android:id="@android:id/list" 
         android:layout_width="fill_parent" 
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/top_item"
         android:layout_above="@id/adView"
         />
     

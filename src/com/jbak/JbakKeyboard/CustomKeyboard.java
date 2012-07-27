@@ -47,6 +47,7 @@ public class CustomKeyboard extends JbKbd
     public static final String A_keyIcon="keyIcon";     
     public static final String A_keyLabel="keyLabel";       
     public static final String A_keyOutputText="keyOutputText"; 
+    public static final String A_longKeyOutputText="longKeyOutputText"; 
     public static final String A_popupCharacters="popupCharacters"; 
     public static final String A_popupKeyboard="popupKeyboard";
 /** Текстовая метка, рисующаяся мелким шрифтом по центру клавиши с разбиением на строки */    
@@ -55,7 +56,10 @@ public class CustomKeyboard extends JbKbd
     public static final String A_upCode="longCode";   
 /** Аттрибут, bool. Если true - на заднем плане клавиши рисуется фон 2, иначе - 1 */    
     public static final String A_specKey="specKey";   
+/** Аттрибут, bool. Если true - иконка не окрашивается в цвет текста скина */    
     public static final String A_noColor="noColor";   
+/** Аттрибут, bool. Если true - по нажатию клавиши происходит переход к qwerty-клавиатуре, false - переход не происходит*/
+    public static final String A_goQwerty="goQwerty";   
 
     public static final  byte B_keyWidth   = 1;
     public static final  byte B_keyHeight  = 2;
@@ -76,23 +80,35 @@ public class CustomKeyboard extends JbKbd
     public static final  byte B_specKey=17;
     public static final  byte B_smallLabel=18;
     public static final  byte B_noColor=19;
-
+    public static final  byte B_longKeyOutputText=20;
+    public static final  byte B_goQwerty=21;
+    
     public static final  byte BA_KBD=(byte)'|';
-    public static final  byte BA_ROW=(byte)':';
+    public static final  byte BA_ROW=58;//(byte)':'
     public static final  byte BA_KEY=(byte)'k';
     int m_displayWidth;
     int m_displayHeight;
     int m_x = 0;
     int m_y = 0;
+    int m_rowHeight;
     List<Key> m_keys;
     Row m_row = null;
     Context m_context;
     boolean m_bBrokenLoad = false;
     DisplayMetrics m_dm;
+    Field m_totalHeight;
     static DataOutputStream m_os = null;
     public CustomKeyboard(Context context,Keybrd kbd)
     {
         super(context, kbd);
+        try{
+            String totalHeight = "mTotalHeight";
+            m_totalHeight = Keyboard.class.getDeclaredField(totalHeight);
+            m_totalHeight.setAccessible(true);
+        }
+        catch (Throwable e) {
+            m_totalHeight = null;
+        }
         m_context = context;
         m_dm = context.getResources().getDisplayMetrics();
         m_displayWidth = m_dm.widthPixels;
@@ -146,7 +162,7 @@ public class CustomKeyboard extends JbKbd
                             m_row = new Row(this); 
                         }
                         else
-                            parseRow();
+                            parseRow(null);
                             
                         b = is.readByte();
                     break;
@@ -193,7 +209,7 @@ public class CustomKeyboard extends JbKbd
                         if(name.equals(TAG_KEYBOARD))
                             parseKeyboard(parser);
                         else if(name.equals(TAG_ROW))
-                            parseRow();
+                            parseRow(parser);
                         else if(name.equals(TAG_KEY))
                             parseKey(parser, keys);
                         break;
@@ -236,16 +252,13 @@ public class CustomKeyboard extends JbKbd
     void postProcessKeyboard()
     {
         try{
-            String totalHeight = "mTotalHeight";
             String totalWidth = "mTotalWidth";
             String modKeys = "mModifierKeys";
             Field f;
             f = Keyboard.class.getDeclaredField(totalWidth);
             f.setAccessible(true);
             f.set(this, m_displayWidth);
-            f = Keyboard.class.getDeclaredField(totalHeight);
-            f.setAccessible(true);
-            f.set(this, m_y-getVerticalGap());
+            m_totalHeight.set(this, m_y-getVerticalGap());
             f = Keyboard.class.getDeclaredField(modKeys);
             f.setAccessible(true);
         }
@@ -321,7 +334,7 @@ public class CustomKeyboard extends JbKbd
         }
         return true;
     }
-    final boolean parseRow() throws IOException
+    final boolean parseRow(XmlPullParser p) throws IOException
     {
         m_x = 0;
         if(m_os!=null)
@@ -333,16 +346,31 @@ public class CustomKeyboard extends JbKbd
         m_row.defaultHorizontalGap = 0;
         m_row.verticalGap = 0;
         m_row.defaultHeight = getKeyHeight();
+        if(p!=null)
+        {
+            for(int i=p.getAttributeCount()-1;i>=0;i--)
+            {
+                String name = p.getAttributeName(i);
+                if(A_keyHeight.equals(name))
+                {
+                    m_row.defaultHeight = getSize(p.getAttributeValue(i), m_row.defaultHeight, m_row.defaultHeight, B_keyHeight);
+                }
+                if(A_verticalGap.equals(name))
+                {
+                    m_row.verticalGap = getSize(p.getAttributeValue(i), m_displayHeight, m_row.verticalGap, B_verticalGap);
+                }
+            }
+        }
         return true;
     }
     LatinKey newKey()
     {
         LatinKey k = new LatinKey(m_row);
         k.width = getKeyWidth();
-        k.height = getKeyHeight();
+        k.height = m_row.defaultHeight;
         k.gap = getHorizontalGap();
         k.x = m_x;
-        k.y = m_y;
+        k.y = m_y+m_row.verticalGap;
         k.pressed = false;
         k.on = false;
         return k;
@@ -451,6 +479,12 @@ public class CustomKeyboard extends JbKbd
                 case B_smallLabel:
                     k.smallLabel = is.readBoolean();
                     break;
+                case B_goQwerty:
+                    if(is.readBoolean())
+                        k.flags|=LatinKey.FLAG_GO_QWERTY;
+                    else    
+                        k.flags|=LatinKey.FLAG_NOT_GO_QWERTY;
+                    break;
                 case B_keyIcon:
                     k.icon = getDrawable(is.readUTF(),true);
                     break;
@@ -465,6 +499,12 @@ public class CustomKeyboard extends JbKbd
                     break;
                 case B_horizontalGap:    
                     k.gap = getPercentSize(is);
+                    break;
+                case B_keyOutputText:    
+                    k.text = is.readUTF();
+                    break;
+                case B_longKeyOutputText:    
+                    k.longText = is.readUTF();
                     break;
             }
         }
@@ -483,11 +523,11 @@ public class CustomKeyboard extends JbKbd
             String name = attName(p, i);
             if(name.equals(A_keyWidth))
                 k.width = getSize(p.getAttributeValue(i), m_displayWidth, getKeyWidth(),B_keyWidth);
-            if(name.equals(A_keyHeight))
+            else if(name.equals(A_keyHeight))
                 k.height = getSize(p.getAttributeValue(i), m_displayHeight, getKeyWidth(),B_keyHeight);
-            if(name.equals(A_codes))
+            else if(name.equals(A_codes))
                 k.codes = parseCodes(p.getAttributeValue(i));
-            if(name.equals(A_upCode))
+            else if(name.equals(A_upCode))
             {
                 k.longCode = Integer.decode(p.getAttributeValue(i));
                 if(m_os!=null)
@@ -496,31 +536,33 @@ public class CustomKeyboard extends JbKbd
                     m_os.writeInt(k.longCode);
                 }
             }
-            if(name.equals(A_keyLabel))
+            else if(name.equals(A_keyLabel))
                 k.label = processLabel(p.getAttributeValue(i));
-            if(name.equals(A_noColor))
+            else if(name.equals(A_noColor))
                 k.noColorIcon = getBoolean(p.getAttributeValue(i), B_noColor);
-            if(name.equals(A_horizontalGap))
+            else if(name.equals(A_horizontalGap))
                 k.gap = getSize(p.getAttributeValue(i), m_displayWidth, getHorizontalGap(),B_horizontalGap);
-            if(name.equals(A_keyIcon))
+            else if(name.equals(A_keyIcon))
                 k.icon = getDrawable(p.getAttributeValue(i),false);
-            if(name.equals(A_isSticky))
+            else if(name.equals(A_isSticky))
                 k.sticky = getBoolean(p.getAttributeValue(i),B_isSticky);
-            if(name.equals(A_smallLabel))
+            else if(name.equals(A_smallLabel))
                 k.smallLabel = getBoolean(p.getAttributeValue(i),B_smallLabel);
-            if(name.equals(A_isRepeatable))
+            else if(name.equals(A_isRepeatable))
                 k.repeatable = getBoolean(p.getAttributeValue(i),B_isRepeatable);
-            if(name.equals(A_specKey))
+            else if(name.equals(A_specKey))
                 k.specKey = getBoolean(p.getAttributeValue(i),B_specKey)?1:0;
-            if(name.equals(A_popupCharacters))
+            else if(name.equals(A_popupCharacters))
             {
                 k.popupResId = R.xml.kbd_empty;
                 k.popupCharacters =p.getAttributeValue(i);
             } 
-            if(name.equals(A_keyOutputText))
-            {
-                k.text = p.getAttributeValue(i);
-            } 
+            else if(name.equals(A_keyOutputText))
+                k.mainText = getString(p.getAttributeValue(i),B_keyOutputText);
+            else if(name.equals(A_longKeyOutputText))
+                k.longText = getString(p.getAttributeValue(i),B_longKeyOutputText);
+            else if(name.equals(A_goQwerty))
+                k.setGoQwerty(getBoolean(p.getAttributeValue(i),B_goQwerty));
         }
         processKey(k);
         return true;
@@ -608,6 +650,15 @@ public class CustomKeyboard extends JbKbd
             m_os.writeBoolean(b);
         }
         return b;
+    }
+    final String getString(String att,byte type) throws IOException
+    {
+        if(m_os!=null)
+        {
+            m_os.writeByte(type);
+            m_os.writeUTF(att);
+        }
+        return att;
     }
     final Drawable getDrawable(String att,boolean bCompiled) throws IOException
     {
@@ -750,4 +801,21 @@ public class CustomKeyboard extends JbKbd
         }
         return false;
     }
+    boolean setTopSpace(int space)
+    {
+        int diff = space-m_gap;
+        if(diff==0)
+            return false;
+        m_gap = space;
+        try{
+            m_totalHeight.setInt(this, getHeight()+diff);
+            for(Key k:getKeys())
+                k.y+=diff;
+            return true;
+        }
+        catch (Throwable e) {
+        }
+        return false;
+    }
+    int m_gap=0;
 }

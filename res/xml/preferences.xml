@@ -3,9 +3,11 @@
 
     <!-- 0 - предпросмотр -->
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="ch_preview"
+    <ListPreference
+        android:defaultValue="1"
+        android:key="key_preview"
+        android:entries="@array/pv_place"
+        android:entryValues="@array/integer_vals"
         android:summary="@string/set_ch_keys_preview_desc"
         android:title="@string/set_ch_keys_preview" />
     <!-- 1 - высота клавиш, портрет -->
@@ -26,6 +28,91 @@
         android:key="pref_languages"
         android:summary="@string/set_languages_desc"
         android:title="@string/set_languages" />
+    <!-- Автоввод -->
+
+    <PreferenceScreen
+        android:summary="@string/set_key_other_desc"
+        android:title="@string/set_key_other" >
+
+        <PreferenceCategory android:title="@string/set_key_ac" >
+
+      <!-- Автодополнение -->
+            <Preference
+                android:key="ac_load_vocab"
+                android:summary="@string/set_key_ac_load_vocab_desc"
+                android:title="@string/set_key_ac_load_vocab" />
+            <ListPreference
+                android:defaultValue="1"
+                android:entries="@array/ac_place"
+                android:entryValues="@array/integer_vals"
+                android:key="ac_place"
+                android:summary="@string/set_key_ac_place_desc"
+                android:title="@string/set_key_ac_place" />
+            <CheckBoxPreference
+                android:defaultValue="0"
+                android:key="ac_autocorrect"
+                android:title="@string/set_key_ac_autocorrect" 
+                android:summary="@string/set_key_ac_autocorrect_desc"
+                />
+            
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="@string/set_key_register" >
+
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="up_sentence"
+                android:summary="@string/set_key_auto_case_desc"
+                android:title="@string/set_key_auto_case" />
+
+            <PreferenceScreen
+                android:summary="@string/set_key_auto_case_rules_desc"
+                android:title="@string/set_key_auto_case_rules" >
+
+                <PreferenceCategory android:title="@string/set_key_register" >
+
+                    <CheckBoxPreference
+                        android:defaultValue="true"
+                        android:key="up_empty"
+                        android:summary="@string/set_key_empty_uppercase_desc"
+                        android:title="@string/set_key_empty_uppercase" />
+
+                    <CheckBoxPreference
+                        android:defaultValue="true"
+                        android:key="up_sentence"
+                        android:summary="@string/set_key_sentence_upper_desc"
+                        android:title="@string/set_key_sentence_upper" />
+
+                    <EditTextPreference
+                        android:defaultValue=".!?"
+                        android:key="sentence_ends"
+                        android:summary="@string/set_key_sentence_ends_desc"
+                        android:title="@string/set_key_sentence_ends" />
+
+                    <CheckBoxPreference
+                        android:defaultValue="true"
+                        android:key="space_after_sentence"
+                        android:summary="@string/set_key_sentence_space_end_desc"
+                        android:title="@string/set_key_sentence_space_end" />
+                </PreferenceCategory>
+            </PreferenceScreen>
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="@string/set_key_spaces" >
+
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="space_sentence"
+                android:summary="@string/set_key_space_sentence_end_desc"
+                android:title="@string/set_key_space_sentence_end" />
+
+            <EditTextPreference
+                android:defaultValue=".,!?"
+                android:key="space_symbols"
+                android:summary="@string/set_key_space_symbols_desc"
+                android:title="@string/set_key_space_symbols" />
+        </PreferenceCategory>
+    </PreferenceScreen>
     <!-- Внешний вид -->
 
     <PreferenceScreen
@@ -117,106 +204,52 @@
             android:key="vl"
             android:summary="@string/set_key_long_vibro_desc"
             android:title="@string/set_key_long_vibro" />
+
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="vibro_repeat"
             android:summary="@string/set_key_repeat_vibro_desc"
             android:title="@string/set_key_repeat_vibro" />
-		<Preference 
-		    android:key="vibro_durations"
+
+        <Preference
+            android:key="vibro_durations"
             android:summary="@string/set_key_vibro_durations_desc"
             android:title="@string/set_key_vibro_durations" />
-		    />        
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="vibro_silent"
+            android:summary="@string/set_key_vibro_in_silent_desc"
+            android:title="@string/set_key_vibro_in_silent" />
+    
     </PreferenceScreen>
-    <!-- Автоввод -->
+    <!-- Жесты -->
 
     <PreferenceScreen
-        android:summary="@string/set_key_other_desc"
-        android:title="@string/set_key_other" >
+        android:summary="@string/set_key_gestures_desc"
+        android:title="@string/set_key_gestures" >
 
-        <PreferenceCategory android:title="@string/set_key_register" >
-
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="up_sentence"
-                android:title="@string/set_key_auto_case"
-                android:summary="@string/set_key_auto_case_desc" />
-            <PreferenceScreen 
-                android:title="@string/set_key_auto_case_rules"
-                android:summary="@string/set_key_auto_case_rules_desc"
-                >
-        	<PreferenceCategory android:title="@string/set_key_register" >
-                <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="up_empty"
-                android:summary="@string/set_key_empty_uppercase_desc"
-                android:title="@string/set_key_empty_uppercase" />
-            
-			<CheckBoxPreference
-                android:defaultValue="true"
-                android:key="up_sentence"
-                android:summary="@string/set_key_sentence_upper_desc"
-                android:title="@string/set_key_sentence_upper" />
-            
-
-            <EditTextPreference
-                android:defaultValue=".!?"
-                android:key="sentence_ends"
-                android:summary="@string/set_key_sentence_ends_desc"
-                android:title="@string/set_key_sentence_ends" />
-
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="space_after_sentence"
-                android:summary="@string/set_key_sentence_space_end_desc"
-                android:title="@string/set_key_sentence_space_end" />
-            </PreferenceCategory>
-            </PreferenceScreen>
-            </PreferenceCategory>
-        	    
-        <PreferenceCategory android:title="@string/set_key_spaces" >
-
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="space_sentence"
-                android:summary="@string/set_key_space_sentence_end_desc"
-                android:title="@string/set_key_space_sentence_end" />
-
-            <EditTextPreference
-                android:defaultValue=".,!?"
-                android:key="space_symbols"
-                android:summary="@string/set_key_space_symbols_desc"
-                android:title="@string/set_key_space_symbols" />
-        </PreferenceCategory>
-    </PreferenceScreen>
-    <!-- Жесты  -->
-    <PreferenceScreen 
-	        android:title="@string/set_key_gestures"
-	        android:summary="@string/set_key_gestures_desc"
-        >
         <CheckBoxPreference
-	        android:title="@string/set_key_use_gestures"
-	        android:summary="@string/set_key_use_gestures_desc"
-			android:key="use_gestures"
-			android:defaultValue="false"            
-            />
+            android:defaultValue="false"
+            android:key="use_gestures"
+            android:summary="@string/set_key_use_gestures_desc"
+            android:title="@string/set_key_use_gestures" />
+
         <ListPreference
-	        android:title="@string/set_key_gesture_left"
-			android:key="g_left"
-            />
+            android:key="g_left"
+            android:title="@string/set_key_gesture_left" />
+
         <ListPreference
-	        android:title="@string/set_key_gesture_right"
-			android:key="g_right"
-            />
-             <ListPreference
-		        android:title="@string/set_key_gesture_up"
-				android:key="g_up"
-            />
-            <ListPreference
-		        android:title="@string/set_key_gesture_down"
-				android:key="g_down"
-            />
-        </PreferenceScreen>
+            android:key="g_right"
+            android:title="@string/set_key_gesture_right" />
+
+        <ListPreference
+            android:key="g_up"
+            android:title="@string/set_key_gesture_up" />
+
+        <ListPreference
+            android:key="g_down"
+            android:title="@string/set_key_gesture_down" />
+    </PreferenceScreen>
     <!-- прочие настройки -->
 
     <PreferenceScreen
@@ -241,16 +274,19 @@
             android:key="intervals"
             android:summary="@string/set_key_intervals_desc"
             android:title="@string/set_key_intervals" />
+
         <Preference
             android:key="save"
-            android:title="@string/set_key_save_pref"
-            android:summary="@string/set_key_save_pref_desc" />
+            android:summary="@string/set_key_save_pref_desc"
+            android:title="@string/set_key_save_pref" />
+
         <Preference
             android:key="load"
-            android:title="@string/set_key_load_pref"
-            android:summary="@string/set_key_load_pref_desc" />
-</PreferenceScreen>
+            android:summary="@string/set_key_load_pref_desc"
+            android:title="@string/set_key_load_pref" />
+    </PreferenceScreen>
     <!-- о программе -->
+
     <Preference
         android:key="about_app"
         android:title="@string/about" />

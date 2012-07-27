@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string-array name="integer_vals">
         <item>0</item>
         <item>1</item>
         <item>2</item>
+        <item>3</item>
+        </string-array>
+    <string-array name="ac_place">
+        <item>@string/set_key_ac_place_0</item>
+        <item>@string/set_key_ac_place_1</item>
+        <item>@string/set_key_ac_place_2</item>
+        <!-- >item>@string/set_key_ac_place_3</item -->
+        </string-array>
+    <string-array name="pv_place">
+        <item>@string/preview_show_0</item>
+        <item>@string/preview_show_1</item>
+        <item>@string/preview_show_2</item>
     </string-array>
-        
+
 </resources>

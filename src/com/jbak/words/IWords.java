@@ -7,11 +7,25 @@ import com.jbak.words.WordsIndex.IndexEntry;
 /** Интерфейс для получения слов */
 public abstract class IWords
 {
+    /** Класс, содержащий информацию об одном слове */
     public static class WordEntry
     {
+        public static final int FLAG_FROM_USER_VOCAB = 0x001;
+        public WordEntry()
+        {}
+        public WordEntry(String w,int f,int ct)
+        {
+            word = w;
+            freq = f;
+            compareType = ct;
+        }
+/** Текст слова */        
         public String word;
+/** Частота */        
         public int freq;
+/** Тип совпадения с исходным словом*/        
         public int compareType;
+        public int flags=0;
     }
     
     public boolean m_bHasNext = true;

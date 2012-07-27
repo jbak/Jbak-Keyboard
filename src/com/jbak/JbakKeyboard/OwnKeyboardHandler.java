@@ -92,25 +92,22 @@ public class OwnKeyboardHandler extends Handler
                 case MSG_INVALIDATE:
                     m_kv.trueInvalidateKey(msg.arg1);
                     break;
-                case MSG_SHOW_PREVIEW:
-                    invokeShowKey(msg.arg1);
-                    break;
-                case MSG_REMOVE_PREVIEW:
-                    if(m_PreviewText!=null)
-                        m_PreviewText.setVisibility(View.INVISIBLE);
-                    break;
+//                case MSG_SHOW_PREVIEW:
+//                    invokeShowKey(msg.arg1);
+//                    break;
+//                case MSG_REMOVE_PREVIEW:
+//                    if(m_PreviewText!=null)
+//                        m_PreviewText.setVisibility(View.INVISIBLE);
+//                    break;
                 case MSG_REPEAT:
                     break;
                 case MSG_MY_REPEAT:
                     {
                         LatinKey lk = (LatinKey)msg.obj;
-                        if(lk!=null)
-                        {
-                            if(!lk.pressed)
-                                return;
-                            m_kv.onKeyRepeat(lk);
-                            sendRepeat(lk, false);
-                        }
+                        if(lk==null||!lk.pressed||!m_kv.getCurKeyboard().hasKey(lk))
+                            return;
+                        m_kv.onKeyRepeat(lk);
+                        sendRepeat(lk, false);
                     }
                     break;
                 case MSG_LONGPRESS:

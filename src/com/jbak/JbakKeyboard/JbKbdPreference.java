@@ -57,10 +57,15 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         setGestureList(p, st.PREF_KEY_GESTURE_DOWN, entries, entValues);
         setSummary(st.PREF_KEY_USE_SHORT_VIBRO, R.string.set_key_short_vibro_desc, strVal(getResources().getStringArray(R.array.vibro_short_type)[index]));
 
+        index = Integer.decode(p.getString(st.PREF_KEY_AC_PLACE, st.ZERO_STRING));
+        setSummary(st.PREF_KEY_AC_PLACE, R.string.set_key_ac_place_desc, strVal(getResources().getStringArray(R.array.ac_place)[index]));
         index = Integer.decode(p.getString(st.PREF_KEY_PORTRAIT_TYPE, st.ZERO_STRING));
         setSummary(st.PREF_KEY_PORTRAIT_TYPE, R.string.set_key_portrait_input_type_desc, strVal(getResources().getStringArray(R.array.array_input_type)[index]));
         index = Integer.decode(p.getString(st.PREF_KEY_LANSCAPE_TYPE, st.ZERO_STRING));
         setSummary(st.PREF_KEY_LANSCAPE_TYPE, R.string.set_key_landscape_input_type_desc, strVal(getResources().getStringArray(R.array.array_input_type)[index]));
+        index = Integer.decode(p.getString(st.PREF_KEY_PREVIEW_TYPE, st.ONE_STRING));
+        setSummary(st.PREF_KEY_PREVIEW_TYPE, R.string.set_ch_keys_preview_desc, strVal(getResources().getStringArray(R.array.pv_place)[index]));
+
         st.pref(this).registerOnSharedPreferenceChangeListener(this);
     }
     void setGestureList(SharedPreferences p,final String set,CharSequence entries[],CharSequence entValues[])
@@ -115,6 +120,10 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         inst = this;
         String k = preference.getKey();
         Context c = this;
+        if("ac_load_vocab".equals(k))
+        {
+            st.runAct(UpdVocabActivity.class,c);
+        }
         if("vibro_durations".equals(k))
         {
             showVibroDuration();
@@ -239,6 +248,11 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
             JbKbdView.inst = null;
         if(st.PREF_KEY_SHIFT_STATE.equals(key))
             setShiftState();
+        if(st.PREF_KEY_AC_PLACE.equals(key))
+        {
+            int index = Integer.decode(sharedPreferences.getString(key, st.ZERO_STRING));
+            setSummary(key, R.string.set_key_ac_place_desc, strVal(getResources().getStringArray(R.array.ac_place)[index]));
+        }
         if(st.PREF_KEY_PORTRAIT_TYPE.equals(key))
         {
             int index = Integer.decode(sharedPreferences.getString(st.PREF_KEY_PORTRAIT_TYPE, st.ZERO_STRING));
@@ -253,6 +267,11 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         {
             int index = Integer.decode(sharedPreferences.getString(st.PREF_KEY_USE_SHORT_VIBRO, st.ONE_STRING));
             setSummary(st.PREF_KEY_USE_SHORT_VIBRO, R.string.set_key_short_vibro_desc, strVal(getResources().getStringArray(R.array.vibro_short_type)[index]));
+        }
+        if(st.PREF_KEY_PREVIEW_TYPE.equals(key))
+        {
+            int index = Integer.decode(sharedPreferences.getString(st.PREF_KEY_PREVIEW_TYPE, st.ONE_STRING));
+            setSummary(st.PREF_KEY_PREVIEW_TYPE, R.string.set_ch_keys_preview_desc, strVal(getResources().getStringArray(R.array.pv_place)[index]));
         }
         if(st.PREF_KEY_CLIPBRD_SIZE.equals(key))
         {

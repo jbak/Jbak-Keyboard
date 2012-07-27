@@ -2,14 +2,15 @@ package com.jbak.JbakKeyboard;
 
 import java.util.Vector;
 
-import com.jbak.words.IWords.WordEntry;
-import com.jbak.words.TextTools;
-
 import android.app.Service;
 import android.content.Context;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.IBinder;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.CompletionInfo;
@@ -19,13 +20,25 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jbak.words.IWords.WordEntry;
+import com.jbak.words.TextTools;
+import com.jbak.words.WordsService;
+
 public class JbCandView extends RelativeLayout
 {
+    public static final int AC_PLACE_NONE = 0;
+    public static final int AC_PLACE_KEYBOARD = 1;
+    public static final int AC_PLACE_TITLE = 2;
+    public static final int AC_PLACE_CURSOR_POS = 3;
+    int m_place = AC_PLACE_NONE;
     String m_texts[] = DEF_WORDS;
     LayoutInflater m_inflater;
     TextView m_addVocab;
     ImageView m_rightView;
     LinearLayout.LayoutParams m_lp;
+    boolean m_bCanCorrect = false;
+    boolean m_bBlockClickOnce = false;
+    CompletionInfo m_completions[];
     public static final String[] DEF_WORDS = new String[]
     {
         ",",
@@ -36,13 +49,25 @@ public class JbCandView extends RelativeLayout
         ";",
         "@",
     };
+    public int getPlace()
+    {
+        return m_place;
+    }
+    public void setPlace(int place)
+    {
+        this.m_place = place;
+    }
     public JbCandView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+        m_height = context.getResources().getDimensionPixelSize(R.dimen.cand_height);
+        wm = (WindowManager) getContext().getSystemService(Service.WINDOW_SERVICE);
         m_lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
         m_inflater = (LayoutInflater)context.getSystemService(Service.LAYOUT_INFLATER_SERVICE);
         setTexts(null);
     }
+    int m_height;
+    WindowManager wm;
     LinearLayout m_ll;
     @Override
     protected void onFinishInflate() 
@@ -63,21 +88,32 @@ public class JbCandView extends RelativeLayout
             @Override
             public void onClick(View v)
             {
+                if(m_bBlockClickOnce)
+                {
+                    m_bBlockClickOnce = true;
+                    return;
+                }
                 if(m_popupWnd!=null)
+                {
                     hideFullView();
+                }
                 else
+                {
                     showFullView();
+                }
             }
         });
     }
     public void setCompletions(CompletionInfo[] completions)
     {
+        m_bCanCorrect = false;
         m_addVocab.setVisibility(GONE);
         if (completions == null)
         {
             setTexts(null);
             return;
         }
+        m_completions = completions;
         String texts[] = new String[completions.length];
         int pos = 0;
         for (CompletionInfo ci : completions)
@@ -89,8 +125,12 @@ public class JbCandView extends RelativeLayout
     }
     public void setTexts(Vector<WordEntry> ar)
     {
+        m_completions = null;
+        m_bCanCorrect = false;
         if(ar==null||ar.size()==0)
         {
+            if(m_addVocab!=null)
+                m_addVocab.setVisibility(GONE);
             setTexts(null, null);
             return;
         }
@@ -107,6 +147,7 @@ public class JbCandView extends RelativeLayout
             m_addVocab.setVisibility(GONE);
         }
         String words[] = new String[sz];
+        m_bCanCorrect = sz>0;
         int pos = 0;
         for(WordEntry we:ar)
         {
@@ -140,8 +181,7 @@ public class JbCandView extends RelativeLayout
                 m_ll.addView(tv,m_lp);
             }
             tv.setText(s);
-            if(completions!=null)
-                tv.setTag(completions[pos]);
+            tv.setTag(completions!=null?completions[pos]:null);
             pos++;
         }
         while(pos<cc)
@@ -180,18 +220,65 @@ public class JbCandView extends RelativeLayout
     {
         if(m_popupWnd!=null)
         {
+            m_rightView.setImageResource(R.drawable.cand_arrow_icon);
             m_popupWnd.dismiss();
             m_popupWnd = null;
         }
     }
     void showFullView()
     {
-        View v = m_inflater.inflate(R.layout.candidates_full, null);
-        LinearLayout ll = (LinearLayout)v.findViewById(R.id.cand_view);
+        m_rightView.setImageResource(R.drawable.cand_arrow_up_icon);
+        final View v = m_inflater.inflate(R.layout.candidates_full, null);
+        final LinearLayout ll = (LinearLayout)v.findViewById(R.id.cand_view);
         int width = getWidth();
         addFullViewPart(ll, width, 0);
-        m_popupWnd = new PopupWindow(v, m_ll.getWidth(), st.kv().getHeight());
-        m_popupWnd.showAtLocation(st.kv(), Gravity.LEFT|Gravity.TOP, 0, m_ll.getHeight());
+        int h = st.kv().getHeight();
+        if(m_place==AC_PLACE_KEYBOARD)
+            h-=m_height;
+        m_popupWnd = new PopupWindow(v, getWidth(), h);
+        m_popupWnd.setBackgroundDrawable(new BitmapDrawable());
+        m_popupWnd.setTouchable(true);
+        m_popupWnd.setOutsideTouchable(true);
+        m_popupWnd.setTouchInterceptor(new OnTouchListener()
+        {
+            
+            @Override
+            public boolean onTouch(View view, MotionEvent event)
+            {
+                int act = event.getAction();
+                boolean bHide = false;
+                if(act==MotionEvent.ACTION_OUTSIDE)
+                {
+//                    Rect r = new Rect(),rf = new Rect();
+//                    m_rightView.getGlobalVisibleRect(r);
+//                    m_rightView.getWindowVisibleDisplayFrame(rf);
+//                    int x = (int)event.getRawX(),y = (int)event.getRawY();
+//                    y-=rf.top;
+//                    if(r.contains(x,y))
+//                        m_bBlockClickOnce = true;
+                    if(m_rightView.dispatchTouchEvent(event))
+                        return false;
+                    bHide = true;
+                }
+                else if(act==MotionEvent.ACTION_DOWN)
+                {
+                    int r = ll.getRight();
+                    int b = ll.getBottom();
+                    float x = event.getX();
+                    float y = event.getY();
+                    if(x>r||y>b)
+                        bHide = true;
+                }
+                if(bHide)
+                    hideFullView();
+                return bHide;
+            }
+        });
+        int yoff = 0-st.kv().getCurKeyboard().getHeight();
+        if(m_place==AC_PLACE_KEYBOARD)
+            yoff+=m_height;
+        m_popupWnd.showAsDropDown(st.kv(), 0, yoff);
+//        m_popupWnd.showAtLocation(st.kv(), Gravity.LEFT|Gravity.TOP, 0, m_height);
 //        ServiceJbKbd.inst.setInputView(v);
 //        m_bShownFull = true;
     }
@@ -199,6 +286,7 @@ public class JbCandView extends RelativeLayout
     void addFullViewPart(LinearLayout parent,int width,int pos)
     {
         LinearLayout ll = new LinearLayout(getContext());
+        
         parent.addView(ll);
         int w = 0;
         while (pos<m_texts.length)
@@ -215,13 +303,67 @@ public class JbCandView extends RelativeLayout
                 addFullViewPart(parent, width, pos);
                 return;
             }
+            if(m_completions!=null&&m_completions.length>pos)
+                tv.setTag(m_completions[pos]);
             tv.setOnClickListener(m_textClickListener);
             ll.addView(tv,m_lp);
             pos++;
         }
     }
-    public void setAsTitle()
+    public void remove()
     {
+        hideFullView();
+        try{
+            if(m_place==AC_PLACE_KEYBOARD&&st.kv()!=null)
+            {
+                CustomKeyboard kbd = (CustomKeyboard)st.kv().getCurKeyboard();
+                kbd.setTopSpace(0);
+            }
+            m_place = AC_PLACE_NONE;
+            wm.removeViewImmediate(this);
+        }
+        catch (Throwable e) {
+        }
+    }
+    int getFixedHeight()
+    {
+        return m_height;
+    }
+    int getYCursor()
+    {
+        if(ServiceJbKbd.inst!=null&&ServiceJbKbd.inst.m_cursorRect!=null)
+        {
+            
+            int ret = ServiceJbKbd.inst.m_cursorRect.top-m_height;
+//            if(ServiceJbKbd.inst.isFullscreenMode())
+//                ret-=ServiceJbKbd.inst.m_extraText.getHeight();
+            return ret;
+        }
+        return 0;
+    }
+    public void show(JbKbdView kv,int place)
+    {
+        if(place==AC_PLACE_CURSOR_POS&&place==m_place&&getYCursor()==m_yPos)
+            return;
+        if(m_place!=AC_PLACE_NONE)
+            remove();
+        if(!ServiceJbKbd.inst.isInputViewShown())
+            return;
+        CustomKeyboard kbd = (CustomKeyboard)kv.getCurKeyboard();
+        m_place = place;
+        kbd.setTopSpace(place==AC_PLACE_KEYBOARD?m_height:0);
+        
+        int ypos = place==AC_PLACE_KEYBOARD?getContext().getResources().getDisplayMetrics().heightPixels-kbd.getHeight():0;
+        if(place==AC_PLACE_CURSOR_POS)
+        {
+            ypos = getYCursor();
+        }
+        showInView(ypos,place==AC_PLACE_TITLE);
+    }
+    int m_yPos = -10000;
+    public void showInView(int yPos,boolean bSystemAlert)
+    {
+        m_yPos = yPos;
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -231,10 +373,24 @@ public class JbCandView extends RelativeLayout
                     |WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR
                     ;
         lp.gravity = Gravity.LEFT|Gravity.TOP;
-        lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        IBinder tok = st.kv().getWindowToken();
+        lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
+        if(tok!=null&&!bSystemAlert)
+        {
+            lp.type = WindowManager.LayoutParams.TYPE_APPLICATION_PANEL;
+            lp.token = tok;
+        }
         lp.x = 0;
-        lp.y = 0;
-        WindowManager wm = (WindowManager) getContext().getSystemService(Service.WINDOW_SERVICE);
+        lp.y = yPos;
         wm.addView(this, lp);
+    }
+    public boolean applyCorrection(int code)
+    {
+        if(!m_bCanCorrect||m_ll.getChildCount()<1||WordsService.isSelectNow())
+            return false;
+        TextView tv = (TextView)m_ll.getChildAt(0);
+        String text = tv.getText().toString()+(char)code;
+        ServiceJbKbd.inst.setWord(text);
+        return true;
     }
 }

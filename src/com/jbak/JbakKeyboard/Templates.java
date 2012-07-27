@@ -465,11 +465,18 @@ public class Templates
         }
         if(seq==null)
             return null;
+        int apostr = -1;
         for(int i=seq.length()-1;i>=0;i--)
         {
-            if(!Character.isLetterOrDigit(seq.charAt(i)))
+            char ch = seq.charAt(i);
+            if(ch=='\'')
             {
-                return seq.subSequence(i+1, seq.length()).toString();
+                apostr=i;
+                continue;
+            }
+            if(!Character.isLetterOrDigit(ch))
+            {
+                return seq.subSequence(apostr>-1&&i==apostr-1?apostr+1:i+1, seq.length()).toString();
             }
         }
         if(bRetEmptyIfNotDelimiter)
@@ -486,11 +493,20 @@ public class Templates
         {
             seq=ServiceJbKbd.inst.getCurrentInputConnection().getTextAfterCursor(40, 0);
         }
+        if(seq==null)
+            return bRetEmptyIfNotDelimiter?null:"";
+        int apostr = -1;
         for(int i=0;i<seq.length();i++)
         {
-            if(!Character.isLetterOrDigit(seq.charAt(i)))
+            char ch = seq.charAt(i);
+            if(ch=='\'')
             {
-                return seq.subSequence(0, i).toString();
+                apostr = i;
+                continue;
+            }
+            if(!Character.isLetterOrDigit(ch))
+            {
+                return seq.subSequence(0, apostr>-1&&i==apostr+1?apostr:i).toString();
             }
         }
         if(bRetEmptyIfNotDelimiter)

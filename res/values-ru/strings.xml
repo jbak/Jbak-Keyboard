@@ -25,7 +25,9 @@
     <string name="set_key_long_vibro_desc">Если включено - экран вибрирует при долгом нажатии клавиши</string>
     <string name="set_key_repeat_vibro">Вибрация при повторах</string>
     <string name="set_key_repeat_vibro_desc">Если включено - вибрирует при повторах клавиш (например, при удержании бэкспейс)</string>
-    <string name="set_key_short_vibro_duration">Интервал для нажатия</string>
+    <string name="set_key_vibro_in_silent">Вибро в режиме \"Без звука\"</string>
+    <string name="set_key_vibro_in_silent_desc">Если включено - клавиши вибрируют в беззвучном режиме</string>
+        <string name="set_key_short_vibro_duration">Интервал для нажатия</string>
     <string name="set_key_long_vibro_duration">Интервал для удержания</string>
     <string name="set_key_repeat_vibro_duration">Интервал для повтора</string>
     <string name="set_key_vibro_durations">Интервалы вибрации</string>
@@ -96,7 +98,25 @@
     <string name="set_key_load_pref">Загрузить настройки</string>
     <string name="set_key_load_pref_desc">Из файла:</string>
 
-        <string name="set_key_gestures">Жесты</string>
+    <string name="set_key_ac">Автодополнение</string>
+    <string name="set_key_ac_desc">Настройки для автодополнения слов</string>
+    <string name="set_key_ac_place">Окно автодополнения</string>
+    <string name="set_key_ac_place_desc">Где показывать окно автодополнений?</string>
+    <string name="set_key_ac_place_0">Не показывать</string>
+    <string name="set_key_ac_place_1">В верху клавиатуры</string>
+    <string name="set_key_ac_place_2">В системном статус-баре</string>
+    <string name="set_key_ac_place_3">В позиции курсора</string>
+        
+    <string name="set_key_ac_load_vocab">Загрузка словарей</string>
+    <string name="set_key_ac_load_vocab_desc">Для автодополнений и автоисправлений необходимо загрузить словарь для нужного языка</string>
+    <string name="set_key_ac_autocorrect">Автоисправление</string>
+    <string name="set_key_ac_autocorrect_desc">После ввода пробела или другого знака препинания - вставляет текущее исправление</string>
+        
+	<string name="preview_show_0">Не показывать</string>
+	<string name="preview_show_1">Над нажатыми клавишами</string>
+	<string name="preview_show_2">По центру</string>
+        
+    <string name="set_key_gestures">Жесты</string>
     <string name="set_key_gestures_desc">Настройки для жестов</string>
     
     <string name="set_key_use_gestures">Включить жесты</string>
@@ -173,7 +193,16 @@
         <item><b>$selline</b> - если ничего не выбрано - заменяется на текст текущего абзаца, иначе - на текст выделения</item>
         <item><b>$$</b> - символ $ </item>
     </string-array>
-
+<!-- Update strings -->
+	<string name="upd_new_vocab">Новый словарь</string>
+	<string name="upd_vocab_version_update">Обновление до версии </string>
+	<string name="upd_check">Проверка обновлений ...</string>
+	<string name="upd_download">Загрузка...</string>
+	<string name="upd_unzip">Распаковка...</string>
+	<string name="upd_index">Индексация...</string>
+	<string name="upd_no_updates">На сервере нет обновлений</string>
+	<string name="upd_get_error">Ошибка при проверке обновлений</string>
+        
     <!-- Strings for about dialog -->
 	<string name="about">О программе</string>
 	<string name="about_app">Программа:</string>
@@ -190,7 +219,8 @@
     <string name="kbd_name_qwerty_tablet">Qwerty для планшетов</string>
 	<string name="kbd_name_wide">Широкие клавиши</string>
 	<string name="kbd_name_sym_edit">Символы и редактирование</string>
-	    
+	<string name="kbd_name_5_rows">5 строк</string>
+	    	    
 <!-- Names for keyboards designs -->
 	<string name="kbd_design_standard">Стандартный</string>    
 	<string name="kbd_design_iphone">Псевдо iPhone</string>

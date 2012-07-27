@@ -19,6 +19,7 @@ package com.jbak.JbakKeyboard;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.ads.f;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 
 import android.content.Context;
@@ -26,6 +27,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.inputmethodservice.Keyboard;
+import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 
 public class JbKbd extends Keyboard {
@@ -35,16 +37,16 @@ public class JbKbd extends Keyboard {
     public JbKbd(Context context, Keybrd kbd) {
         super(context, kbd.resId);
         this.kbd = kbd;
-        init();
     }
-    void init()
+    @Override
+    public int getKeyHeight() 
     {
-        SharedPreferences sp = st.pref();
-        if(!sp.contains(st.PREF_KEY_DEF_HEIGHT))
+        if(JbKbdView.inst.m_KeyHeight>0)
         {
-            sp.edit().putInt(st.PREF_KEY_DEF_HEIGHT, getHeightKey()).commit();
+            return JbKbdView.inst.m_KeyHeight; 
         }
-    }
+        return super.getKeyHeight();
+    };
     public int getHeightKey()
     {
         return super.getKeyHeight();
@@ -52,6 +54,15 @@ public class JbKbd extends Keyboard {
     void setHeightKey(int height)
     {
         super.setKeyHeight(height);
+    }
+    public boolean hasKey(Key k)
+    {
+        for(Key key:getKeys())
+        {
+            if(key==k)
+                return true;
+        }
+        return false;
     }
     @Override
     protected Key createKeyFromXml(Resources res, Row parent, int x, int y, 
@@ -101,6 +112,22 @@ public class JbKbd extends Keyboard {
         mEnterKey.icon = mEnterKey.m_kd.getDrawable();
         mEnterKey.label = null;
     }
+    public final boolean resetPressed()
+    {
+        boolean ret = false;
+        for(Key k:getKeys())
+        {
+            if(k!=null)
+            {
+                if(k.pressed)
+                {
+                    ret = true;
+                    k.pressed = false;
+                }
+            }
+        }
+        return ret;
+    }
     LatinKey getKeyByCode(int code)
     {
         List<Key> ar = getKeys();
@@ -112,17 +139,34 @@ public class JbKbd extends Keyboard {
         }
         return null;
     }
+    public final int getKeyIndex(Key key)
+    {
+        int pos = 0;
+        for(Key k:getKeys())
+        {
+            if(k==key)
+                return pos;
+            ++pos;
+        }
+        return -1;
+    }
+
 /** Собственный класс клавиш. Отнаследован от системного. <br>
  * При создании клавиши, если метка содержит разделитель \n - рисуется собственная картинка через {@link KeyDrw} 
  */
     static class LatinKey extends Keyboard.Key {
         
+        public static final int FLAG_GO_QWERTY     = 0x000001;
+        public static final int FLAG_NOT_GO_QWERTY = 0x000002;
         KeyDrw m_kd;
         int longCode = 0;
         int specKey = -1;
+        public int flags = 0;
         boolean smallLabel = false;
         boolean noColorIcon = false;
         boolean trueRepeat = false;
+        String mainText;
+        String longText;
         public LatinKey(Resources res, Keyboard.Row parent, int x, int y, XmlResourceParser parser) {
             super(res, parent, x, y, parser);
             init(parent);
@@ -133,11 +177,11 @@ public class JbKbd extends Keyboard {
         }
         void init(Row parent)
         {
-            if(JbKbdView.inst.m_KeyHeight>0)
-            {
-                parent.defaultHeight = JbKbdView.inst.m_KeyHeight; 
-                height = JbKbdView.inst.m_KeyHeight;
-            }
+//            if(JbKbdView.inst.m_KeyHeight>0)
+//            {
+//                parent.defaultHeight = JbKbdView.inst.m_KeyHeight; 
+//                height = JbKbdView.inst.m_KeyHeight;
+//            }
             trueRepeat = repeatable;
             repeatable = false;
             m_kd = new KeyDrw(this);
@@ -145,7 +189,7 @@ public class JbKbd extends Keyboard {
             m_kd.setSmallLabel(smallLabel);
             if((codes==null||codes.length>0&&codes[0]==0)&&m_kd.txtMain!=null)
             {
-                if(m_kd.txtMain.length()==1)
+                if(m_kd.txtMain.length()==1&&mainText==null)
                     codes = new int[]{(int)m_kd.txtMain.charAt(0)};
                 else
                     codes = new int[]{st.KeySymbol--};
@@ -159,12 +203,25 @@ public class JbKbd extends Keyboard {
             label = null;
             iconPreview = icon;
         }
+        public final void setGoQwerty(boolean go)
+        {
+            if(go)flags|=FLAG_GO_QWERTY;
+            else flags|=FLAG_NOT_GO_QWERTY;
+        }
+        public final boolean isGoQwerty()
+        {
+            return st.has(flags, FLAG_GO_QWERTY);
+        }
         public final String getMainText()
         {
+            if(mainText!=null)
+                return mainText.toString();
             return m_kd.txtMain;
         }
         public final String getUpText()
         {
+            if(longText!=null)
+                return longText.toString();
             return m_kd.txtSmall;
         }
         boolean isFuncKey()
@@ -176,6 +233,10 @@ public class JbKbd extends Keyboard {
             if(codes==null)return false;
             int c = codes[0];
             return c<0||c==10;
+        }
+        boolean hasLongPress()
+        {
+            return longCode!=0||getUpText()!=null||codes[0]==10||codes[0]==Keyboard.KEYCODE_SHIFT;
         }
     }    
 }

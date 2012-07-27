@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
@@ -16,6 +17,7 @@ public class UserWords
     public static final String CRT_TABLE = "CREATE TABLE %s ("+
                                            C_WORD+" text PRIMARY KEY,"+ 
                                            C_FREQ+" tinyint)";
+    SQLiteStatement m_getWordsStat;
     public static Vector<String> getTables(SQLiteDatabase db)
     {
         Vector<String> ar = new Vector<String>();
@@ -93,9 +95,23 @@ public class UserWords
     }
     public boolean setCurTable(String lang)
     {
+        if(m_db==null)
+            return false;
+        if(m_tables==null)
+            m_tables = getTables(m_db);
         if(!isTableExist(lang))
             addTable(lang);
         m_curTable = lang;
+//        String sql = "SELECT * FROM "+lang+" WHERE "+C_WORD+" LIKE ?";
+//        try
+//        {
+//            m_getWordsStat = m_db.compileStatement(sql);
+//            return true;
+//        }
+//        catch (Throwable e) 
+//        {
+//            e.printStackTrace();
+//        }
         return true;
     }
     public void close()
@@ -107,5 +123,66 @@ public class UserWords
     public boolean isTableOpen()
     {
         return m_curTable!=null;
+    }
+    String m_sel[] = new String[1];
+    public WordsReader getWordsReader(String word)
+    {
+        if(m_db==null)
+        {
+            open(WordsService.getVocabDir()+FILENAME);
+        }
+        String sel = "%";
+        if(word.length()>0)
+            sel=word.charAt(0)+"%";
+        m_sel[0]=sel;
+        try{
+            Cursor c = m_db.query(m_curTable, null, C_WORD+" LIKE ?", m_sel, null,null,null);
+            return new WordsReader(c,word);
+        }
+        catch (Throwable e) {
+        }
+        return null;
+    }
+    public static class WordsReader extends IWords
+    {
+        public WordsReader(Cursor c,String word)
+        {
+            m_cursor = c;
+            m_word = word;
+        }
+        final boolean next()
+        {
+            if(m_cursor==null)
+            {
+                m_bHasNext = false;
+                return false;
+            }
+            m_bHasNext = m_cursor.isBeforeFirst()?m_cursor.moveToFirst():m_cursor.moveToNext();
+            if(!m_bHasNext)
+            {
+                m_cursor.close();
+                m_cursor = null;
+                return false;
+            }
+            return true;    
+        }
+        public Cursor m_cursor;
+        public String m_word;
+        @Override
+        public WordEntry getNextWordEntry(int minFreq, boolean bFull)
+        {
+            if(!next())
+                return null;
+            String word = m_cursor.getString(0);
+            int freq = m_cursor.getInt(1);
+            if(freq<minFreq&&!bFull)
+                return null;
+            int ct = TextTools.compare(m_word, word);
+            if(ct==TextTools.COMPARE_TYPE_NONE)
+                return null;
+            WordEntry we = new WordEntry(word, freq*100, ct);
+            we.flags+=WordEntry.FLAG_FROM_USER_VOCAB;
+            return we;
+        }
     }
 }

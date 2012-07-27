@@ -30,5 +30,7 @@ com.jbak.JbakKeyboard.LangSetActivity
 com.jbak.JbakKeyboard.ServiceJbKbd
 com.jbak.JbakKeyboard.SetKbdActivity
 com.jbak.JbakKeyboard.TplEditorActivity
+com.jbak.JbakKeyboard.UpdVocabActivity
 com.jbak.ctrl.IntEditor
 com.jbak.ctrl.IntEditor: IntEditor(android.content.Context,android.util.AttributeSet)
+com.jbak.words.WordsService

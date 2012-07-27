@@ -10,8 +10,10 @@ public interface IKbdSettings
 	/// Ключи для SharedPreferences
 	//-------------------------------------------------------------------    
 
-/** Ключ, boolean, хранящий значение "включить/отключить просмотр клавиш" */    
+/** @deprecated Ключ, boolean, хранящий значение "включить/отключить просмотр клавиш" */    
     public static final String PREF_KEY_PREVIEW = "ch_preview";
+/** Ключ, String, хранящий тип показа предпросмотра клавиши (0-нет, 1- над клавишами, 2 - над клавиатурой)*/    
+    public static final String PREF_KEY_PREVIEW_TYPE = "key_preview";
 /** Ключ, int ,хранящий код последней используемой клавиатуры */    
     public static final String PREF_KEY_LAST_LANG = "lastLng";
 /** @deprecated Ключ, int, хранящий высоту клавиш в портретном режиме */    
@@ -40,6 +42,9 @@ public interface IKbdSettings
     public static final String PREF_KEY_VIBRO_LONG_DURATION = "vibro_long_duration";
     /** Ключ, String, интервал вибро для повтора клавиши */
     public static final String PREF_KEY_VIBRO_REPEAT_DURATION = "vibro_repeat_duration";
+    /** Ключ, boolean, вибрация клавиш в тихом режиме */
+    public static final String PREF_KEY_VIBRO_IN_SILENT_MODE="vibro_silent";
+
 /** Ключ, boolean, хранящий настройку проигрывания звуков */    
     public static final String PREF_KEY_SOUND = "sound";
 /** Ключ, String, хранящий путь к клавиатуре для выбраного языка в портрете
@@ -108,7 +113,10 @@ public interface IKbdSettings
     public static final String PREF_KEY_GESTURE_UP = "g_up";
     /** Ключ, String, команда для жеста вниз (код команды)*/
     public static final String PREF_KEY_GESTURE_DOWN = "g_down";
-    
+    /** Ключ, String, где показывать автодополнения */
+    public static final String PREF_KEY_AC_PLACE = "ac_place";
+    /** Ключ, boolean, true - использовать автоисправление */
+    public static final String PREF_KEY_AC_AUTOCORRECT = "ac_autocorrect";
     
     public static final String EXT_XML = "xml";
     public static final String SETTINGS_BACKUP_FILE= "settings_backup"+'.'+EXT_XML;
@@ -133,7 +141,29 @@ public interface IKbdSettings
     public static final int SET_SELECT_KEYBOARD = 5;
 /** Вызывает настройку внешнего вида клавиатуры (стандартный, айфон..)*/    
     public static final int SET_SELECT_SKIN= 6;
-    
+    //-------------------------------------------------------------------    
+    /// Список клавиш редактирования текста
+    //-------------------------------------------------------------------    
+    public static final int TXT_ED_FIRST = -300;
+/** Команда текстовой клавиатуры - переход в начало текста */    
+    public static final int TXT_ED_START = -303;
+/** Команда текстовой клавиатуры - переход в конец текста */    
+    public static final int TXT_ED_FINISH = -304;
+/** Команда текстовой клавиатуры - переход в начало абзаца */    
+    public static final int TXT_ED_HOME = -305;
+/** Команда текстовой клавиатуры - переход в конец абзаца */    
+    public static final int TXT_ED_END = -306;
+/** Команда текстовой клавиатуры - включение/отключение режима выделения */    
+    public static final int TXT_ED_SELECT = -310;
+/** Команда текстовой клавиатуры - копирование выбранного текста */    
+    public static final int TXT_ED_COPY = -320;
+/** Команда текстовой клавиатуры - вставка */
+    public static final int TXT_ED_PASTE = -321;
+/** Команда текстовой клавиатуры - вырезать */
+    public static final int TXT_ED_CUT = -322;
+/** Команда текстовой клавиатуры - выделить всё*/
+    public static final int TXT_ED_SELECT_ALL = -323;
+    public static final int TXT_ED_LAST = -399;
 	//-------------------------------------------------------------------    
 	/// Список команд 
 	//-------------------------------------------------------------------    

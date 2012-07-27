@@ -260,6 +260,7 @@ public class ComMenu
             else
                 v.setVisibility(View.GONE);
         }
+        ServiceJbKbd.inst.showCandView(false);
         ServiceJbKbd.inst.setInputView(m_MainView);
         ViewGroup.LayoutParams lp = m_MainView.getLayoutParams();
         lp.width= st.kv().getWidth();

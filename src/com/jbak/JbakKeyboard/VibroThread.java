@@ -20,6 +20,7 @@ public class VibroThread extends ContentObserver
     boolean m_bRepeatVibro = false;
     int m_shortType = 0;
     boolean m_bSilent;
+    boolean m_bSilentVibro = false;
     Context m_c;
     public static VibroThread inst = null;
     public VibroThread(Context c)
@@ -57,6 +58,7 @@ public class VibroThread extends ContentObserver
             m_longVibro = Integer.decode(p.getString(st.PREF_KEY_VIBRO_LONG_DURATION, JbKbdPreference.DEF_LONG_VIBRO));
             m_bRepeatVibro = p.getBoolean(st.PREF_KEY_USE_REPEAT_VIBRO, m_bLongVibro);
             m_repeatVibro = Integer.decode(p.getString(st.PREF_KEY_VIBRO_REPEAT_DURATION, JbKbdPreference.DEF_LONG_VIBRO));
+            m_bSilentVibro = p.getBoolean(st.PREF_KEY_VIBRO_IN_SILENT_MODE, false);
         }
         catch (Throwable e) {
         }
@@ -64,12 +66,12 @@ public class VibroThread extends ContentObserver
     }
     public final boolean hasVibroOnPress()
     {
-        if(m_bSilent)return false;
+        if(m_bSilent&&!m_bSilentVibro)return false;
         return m_shortType==2;
     }
     final void runVibro(final int vibroType)
     {
-        if(m_bSilent)
+        if(m_bSilent&&!m_bSilentVibro)
             return;
         Runnable r = null;
         if(vibroType==VIBRO_SHORT&&m_shortType!=0)
