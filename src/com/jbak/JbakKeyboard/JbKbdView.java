@@ -74,7 +74,8 @@ public class JbKbdView extends KeyboardView {
     int m_state = 0;
     int m_PreviewHeight=0;
     KeyboardGesture m_gd;
-    KbdDesign m_curDesign = st.arDesign[st.KBD_DESIGN_STANDARD];
+    static KbdDesign g_lastLoadedDesign=st.arDesign[st.KBD_DESIGN_STANDARD];
+    KbdDesign m_curDesign = g_lastLoadedDesign;
     public JbKbdView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
@@ -114,10 +115,10 @@ public class JbKbdView extends KeyboardView {
         m_vibro = VibroThread.getInstance(getContext());
         String path = st.pref().getString(st.PREF_KEY_KBD_SKIN_PATH, st.ZERO_STRING);
         KbdDesign d = st.getSkinByPath(path);
-        path = st.getSkinPath(m_curDesign);
-        if(!path.equals(m_designPath))
+        if(d!=g_lastLoadedDesign)
         {
-            m_curDesign = d.getDesign();
+            g_lastLoadedDesign = d.getDesign();
+            m_curDesign = g_lastLoadedDesign;
         }
         setPreferences();
         int clr = Color.WHITE;
@@ -154,6 +155,7 @@ public class JbKbdView extends KeyboardView {
         String shadowRadius = "mShadowRadius";
         String handler = "mHandler";
         String gd = "mGestureDetector";
+        m_gd = new KeyboardGesture(this);
         for(int i=0;i<af.length;i++)
         {
             Field f = af[i];
@@ -221,16 +223,16 @@ public class JbKbdView extends KeyboardView {
             {
                 m_LabelTextSize = getFieldInt(f, this, 12);
             }
-            else if(f.getName().equals(gd)&&st.has(m_state, STATE_GESTURES))
-            {
-                try{
-                    m_gd = new KeyboardGesture(this);
-                    f.setAccessible(true);
-                    f.set(this, m_gd);
-                }
-                catch (Throwable e) {
-                }
-            }
+//            else if(f.getName().equals(gd)&&st.has(m_state, STATE_GESTURES))
+//            {
+//                try{
+//                    m_gd = new KeyboardGesture(this);
+//                    f.setAccessible(true);
+//                    f.set(this, m_gd);
+//                }
+//                catch (Throwable e) {
+//                }
+//            }
             else if(f.getName().equals(ph)&&m_PreviewHeight==0)
             {
                 m_PreviewHeight = getFieldInt(f, this, 80);
@@ -507,6 +509,7 @@ public class JbKbdView extends KeyboardView {
     void reloadSkin()
     {
         m_designPath = null;
+        g_lastLoadedDesign = null;
         init();
         invalidateAllKeys();
     }
@@ -518,7 +521,7 @@ public class JbKbdView extends KeyboardView {
     public boolean onTouchEvent(MotionEvent me)
     {
         try{
-            if(m_gd.onTouchEvent(me))
+            if(m_gd!=null&&m_gd.onTouchEvent(me))
             {
                 resetPressed();
                 invalidateAllKeys();
@@ -579,10 +582,15 @@ public class JbKbdView extends KeyboardView {
         @Override
         public void onRelease(int primaryCode)
         {
+            if(m_handler!=null)
+            {
+                m_handler.removeMessages(OwnKeyboardHandler.MSG_MY_REPEAT);
+                m_handler.removeMessages(OwnKeyboardHandler.MSG_MY_LONG_PRESS);
+            }
             LatinKey key = getCurKeyboard().getKeyByCode(primaryCode);
             if(m_pressed.getPress(primaryCode)==0)
             {
-                if(key.pressed&&(key.trueRepeat||key.hasLongPress()))
+                if(key.pressed/*&&(key.trueRepeat||key.hasLongPress())*/)
                     onKey(primaryCode, null);
             }
             key.pressed = false;
@@ -591,12 +599,6 @@ public class JbKbdView extends KeyboardView {
                 invalidateKey(pos);
             else
                 invalidateAllKeys();
-            m_repeatedKey = null;
-            if(m_handler!=null)
-            {
-                m_handler.removeMessages(OwnKeyboardHandler.MSG_MY_REPEAT);
-                m_handler.removeMessages(OwnKeyboardHandler.MSG_MY_LONG_PRESS);
-            }
             m_extListener.onRelease(primaryCode);
         }
         
@@ -627,8 +629,8 @@ public class JbKbdView extends KeyboardView {
                     m_handler.sendRepeat(key,true);
                 else if(key.hasLongPress())
                     m_handler.sendLongPress(key);
-                else
-                    onKey(primaryCode, null);
+//                else
+                    //onKey(primaryCode, null);
             }
             if(m_previewType>0)
             {
@@ -667,7 +669,6 @@ public class JbKbdView extends KeyboardView {
         m_extListener = listener;
         super.setOnKeyboardActionListener(m_actionListener);
     };
-    LatinKey m_repeatedKey = null;
     public void setTopSpace(int space)
     {
         CustomKeyboard kbd = (CustomKeyboard)getCurKeyboard();

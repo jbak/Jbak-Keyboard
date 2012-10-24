@@ -1,3 +1,5 @@
+android.annotation.SuppressLint
+android.annotation.TargetApi
 com.google.ads.Ad:
     public abstract boolean isReady()
     public abstract void loadAd(com.google.ads.AdRequest)
@@ -24,7 +26,6 @@ com.google.ads.AdRequest:
 com.google.ads.AdSize:
     38:39:public AdSize(int,int)
 com.google.ads.AdView:
-    78:87:public AdView(android.app.Activity,com.google.ads.AdSize,java.lang.String)
     237:238:public void destroy()
     478:482:public boolean isReady()
     523:524:public void setAdListener(com.google.ads.AdListener)
@@ -42,6 +43,10 @@ com.google.ads.R
 com.google.ads.R$attr
 com.google.ads.R$id
 com.google.ads.R$layout
+com.google.ads.a:
+    79:81:private a()
+com.google.ads.aa:
+    18:18:public aa()
 com.google.ads.c:
     371:387:final void a()
 com.google.ads.d:
@@ -62,6 +67,16 @@ com.google.ads.searchads.SearchAdRequest:
     184:185:public void setBorderColor(int)
     192:193:public void setBorderType(com.google.ads.searchads.SearchAdRequest$BorderType)
     202:203:public void setBorderThickness(int)
+com.google.ads.util.AdUtil:
+    152:154:private AdUtil()
+com.google.ads.util.a:
+    19:21:private a()
+com.google.ads.util.c:
+    26:28:private c()
+com.google.ads.y:
+    11:11:public y()
+com.google.ads.z:
+    156:158:private z()
 com.jbak.CustomGraphics.ColorsGradientBack:
     25:27:public com.jbak.CustomGraphics.ColorsGradientBack set(int[])
     31:32:public void refresh()
@@ -78,7 +93,11 @@ com.jbak.CustomGraphics.GradBack:
     public static final int GRADIENT_TYPE_LINEAR
     public static final int GRADIENT_TYPE_SWEEP
     271:272:public void setDependentback(com.jbak.CustomGraphics.GradBack)
-com.jbak.JbakKeyboard.AdPreference
+com.jbak.JbakKeyboard.AdPreference:
+    17:17:public AdPreference(android.content.Context,android.util.AttributeSet,int)
+    18:18:public AdPreference(android.content.Context,android.util.AttributeSet)
+    19:19:public AdPreference(android.content.Context)
+com.jbak.JbakKeyboard.BuildConfig
 com.jbak.JbakKeyboard.CandidateView
 com.jbak.JbakKeyboard.CandidateView$1
 com.jbak.JbakKeyboard.ClipbrdService:
@@ -162,6 +181,8 @@ com.jbak.JbakKeyboard.CustomKeyboard:
     public static final byte BA_ROW
     public static final byte BA_KEY
     int m_rowHeight
+com.jbak.JbakKeyboard.Dlg:
+    13:13:public Dlg()
 com.jbak.JbakKeyboard.EditSetActivity:
     public static final java.lang.String EXTRA_PREF_KEY
     public static final java.lang.String EXTRA_DEFAULT_EDIT_SET
@@ -288,22 +309,23 @@ com.jbak.JbakKeyboard.IKeyboard:
     public static final int DF_BIG_GAP
     public static final int DEF_COLOR
     public static final int KBD_DESIGN_STANDARD
-    362:368:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
+    14:14:public IKeyboard()
+    364:370:public static com.jbak.JbakKeyboard.IKeyboard$Keybrd kbdForCode(int)
 com.jbak.JbakKeyboard.JbCandView:
     public static final int AC_PLACE_NONE
     public static final int AC_PLACE_KEYBOARD
     public static final int AC_PLACE_TITLE
     public static final int AC_PLACE_CURSOR_POS
-    53:53:public int getPlace()
-    57:58:public void setPlace(int)
-    324:324:int getFixedHeight()
+    54:54:public int getPlace()
+    58:59:public void setPlace(int)
+    330:330:int getFixedHeight()
 com.jbak.JbakKeyboard.JbKbd:
     52:52:public int getHeightKey()
     56:57:void setHeightKey(int)
 com.jbak.JbakKeyboard.JbKbd$LatinKey:
     public static final int FLAG_GO_QWERTY
     public static final int FLAG_NOT_GO_QWERTY
-    201:201:public final boolean isGoQwerty()
+    213:213:public final boolean isGoQwerty()
 com.jbak.JbakKeyboard.JbKbdPreference:
     public static final java.lang.String DEF_SIZE_CLIPBRD
     public static final java.lang.String DEF_SHORT_VIBRO
@@ -317,7 +339,7 @@ com.jbak.JbakKeyboard.JbKbdView:
     public static final int STATE_CAPS_LOCK
     public static final int STATE_SOUNDS
     public static final int STATE_GESTURES
-    644:647:public void setTopSpace(int)
+    672:675:public void setTopSpace(int)
 com.jbak.JbakKeyboard.KeyDrw:
     public static final java.lang.String DRW_PREFIX
     public static final int DELIM
@@ -347,6 +369,13 @@ com.jbak.JbakKeyboard.OwnKeyboardHandler:
     public static final int MSG_MY_REPEAT
     public static final int MSG_MY_LONG_PRESS
     76:85:void invokeShowKey(int)
+com.jbak.JbakKeyboard.PressArray:
+    public static final int TYPE_LONG
+    public static final int TYPE_REPEAT
+    public static final int TYPE_CANCEL
+    static final java.lang.String TAG
+    87:92:public com.jbak.JbakKeyboard.PressArray$PressInfo pointerOver(int,int)
+    96:105:public boolean resetPress(int,int)
 com.jbak.JbakKeyboard.R
 com.jbak.JbakKeyboard.R$array
 com.jbak.JbakKeyboard.R$attr
@@ -371,8 +400,8 @@ com.jbak.JbakKeyboard.ServiceJbKbd:
     public static final int STATE_SPACE_SENTENCE_UP
     public static final int STATE_UP_AFTER_SYMBOLS
     public static final int STATE_GO_END
-    458:464:private boolean isAlphabet(int)
-    1159:1159:public final boolean canGiveVocabWords()
+    478:484:private boolean isAlphabet(int)
+    1194:1194:public final boolean canGiveVocabWords()
 com.jbak.JbakKeyboard.Stor:
     public static final int DATABASE_VERSION
     public static final java.lang.String TABLE_CLIPBOARD
@@ -420,6 +449,7 @@ com.jbak.JbakKeyboard.VibroThread:
 com.jbak.JbakKeyboard.Words
 com.jbak.JbakKeyboard.st:
     public static final boolean DEBUG
+    24:24:public st()
     117:117:public static float screenDens(android.content.Context)
 com.jbak.JbakKeyboard.st$SyncAsycOper:
     199:200:public void startSync()
@@ -448,12 +478,13 @@ com.jbak.words.TextTools:
     public static final int COMPARE_TYPE_COMPLETION
     public static final int COMPARE_TYPE_CORRECTION
     public static final int COMPARE_TYPE_NONE
+    8:8:public TextTools()
 com.jbak.words.UserWords:
     public static final java.lang.String C_WORD
     public static final java.lang.String C_FREQ
     public static final java.lang.String CRT_TABLE
     android.database.sqlite.SQLiteStatement m_getWordsStat
-    119:122:public void close()
+    120:123:public void close()
 com.jbak.words.VocabFile:
     public static final java.lang.String DEF_EXT
 com.jbak.words.Words:

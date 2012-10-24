@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- Title for Latin keyboard  -->
     <string name="ime_name">Jbak Keyboard</string>
     <string name="ime_settings">Jbak Keyboard settings</string>
 
-    <!-- Symbols that are commonly considered word separators in this language -->
-    <string name="word_separators">\u0020.,;:!?\n()[]*&amp;@{}/&lt;&gt;_+=|&quot;</string>
     
     <!-- Labels on soft keys -->
     <string name="label_go_key">Go</string>
@@ -153,7 +151,7 @@
         <item>Monospace</item>
     </string-array>
         
-    <string-array name="array_input_type">
+    <string-array name="array_input_type" tools:ignore="MissingTranslation">
         <item>Default</item>
         <item>Fullscreen</item>
         <item>Not fullscreen</item>

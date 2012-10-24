@@ -191,6 +191,9 @@ public class Words
                     tfv.open(m_file, m_ie, lc);                    
                     wi = tfv;
                 }
+                if(wi==null&&i==0)
+                    continue;
+                    
                 while(!m_bCancel)
                 {
                     WordEntry we = wi.getNextWordEntry(minF, bFull);

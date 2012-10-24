@@ -83,8 +83,9 @@ public class UserWords
     {
         if(!isTableExist(lang)&&!addTable(lang))
             return false;
+        
         ContentValues cv = new ContentValues(2);
-        cv.put(C_WORD, word);
+        cv.put(C_WORD, word.toLowerCase());
         cv.put(C_FREQ, 1);
         long ri = m_db.insert(lang, null, cv);
         if(ri<0)

@@ -10,6 +10,7 @@ import com.jbak.JbakKeyboard.JbKbd.LatinKey;
 public class PressArray
 {
     JbKbdView m_kv;
+
     public static final int TYPE_LONG = 1;
     public static final int TYPE_REPEAT = 2;
     public static final int TYPE_CANCEL = 3;
@@ -144,10 +145,9 @@ public class PressArray
             ptindex = 1;
         else if(ptcnt>2&&(action==MotionEvent.ACTION_POINTER_3_DOWN||action==MotionEvent.ACTION_POINTER_3_UP))
             ptindex = 2;
-        int pointerId = me.getPointerId(ptindex);
+        int pointerId = ptindex;//me.getPointerId(ptindex);
         int x = (int) me.getX(ptindex);
         int y = (int) me.getY(ptindex);
-            
         LatinKey lk = null;
         for(Key k:kbd.getKeys())
         {

@@ -181,8 +181,11 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public void onStartInputView(EditorInfo attribute, boolean restarting)
     {
         super.onStartInputView(attribute, restarting);
+        if(!restarting)
+        {
         m_SelStart = attribute.initialSelStart;
         m_SelEnd = attribute.initialSelEnd;
+        }
         m_textAfterCursor = null;
         m_textBeforeCursor = null;
         if (JbKbdView.inst == null)
@@ -1178,8 +1181,13 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public void onConfigurationChanged(Configuration newConfig)
     {
-        // TODO Auto-generated method stub
+        try{
         super.onConfigurationChanged(newConfig);
+        }
+        catch(Throwable e)
+        {
+            
+        }
     }
     public final boolean canGiveVocabWords()
     {

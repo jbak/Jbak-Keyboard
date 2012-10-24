@@ -10,6 +10,7 @@ import android.graphics.Paint;
 public class BitmapCachedGradBack extends GradBack
 {
     int m_cacheSize = 20;
+    static Vector<Vector<BmpCacheEntry>> caches = new Vector<Vector<BmpCacheEntry>>();
     Vector<BmpCacheEntry> m_cache = new Vector<BitmapCachedGradBack.BmpCacheEntry>();
     BmpCacheEntry m_curEntry;
     public BitmapCachedGradBack(int startColor, int endColor)
@@ -22,8 +23,14 @@ public class BitmapCachedGradBack extends GradBack
         int w = (int)width,h = (int)height;
         m_curEntry = searchEntry((int)width, (int)height);
         if(m_curEntry!=null)
-            return;
+        {
+            if(m_curEntry.isValid())
+                return;
+            m_cache.remove(m_curEntry);
+        }
         super.onResize((int)width, (int)height);
+        if(m_cache.size()==0)
+            caches.add(m_cache);
         m_curEntry = new BmpCacheEntry();
         m_curEntry.w = w;
         m_curEntry.h = h;
@@ -45,6 +52,10 @@ public class BitmapCachedGradBack extends GradBack
     @Override
     public void draw(Canvas canvas, Paint paint) 
     {
+        if(!m_curEntry.isValid())
+        {
+            onResize(m_curEntry.w, m_curEntry.h);
+        }
         Bitmap bmp = m_bPressed?m_curEntry.bmpPress:m_curEntry.bmpNormal;
         canvas.drawBitmap(bmp,0,0,null);
         if(m_bCheckable||m_bChecked)
@@ -64,11 +75,42 @@ public class BitmapCachedGradBack extends GradBack
         m_cacheSize = size;
         return this;
     }
+    public void recycle()
+    {
+        for(BmpCacheEntry ce:m_cache)
+        {
+            ce.recycle();
+        }
+        m_cache.clear();
+    }
     public static class BmpCacheEntry
     {
         int w;
         int h;
         Bitmap bmpNormal;
         Bitmap bmpPress;
+        void recycle()
+        {
+            if(bmpNormal!=null&&!bmpNormal.isRecycled())
+                bmpNormal.recycle();
+            if(bmpPress!=null&&!bmpPress.isRecycled())
+                bmpPress.recycle();
+        }
+        boolean isValid()
+        {
+            return bmpNormal!=null&&!bmpNormal.isRecycled()&&bmpPress!=null&&!bmpPress.isRecycled();
+        }
+    }
+    public static void clearAllCache()
+    {
+        for(Vector<BmpCacheEntry> cache:caches)
+        {
+            for(BmpCacheEntry be:cache)
+            {
+                be.recycle();
+            }
+            cache.clear();
+        }
+        caches.clear();
     }
 }

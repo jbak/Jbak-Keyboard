@@ -209,6 +209,7 @@ public class IKeyboard
         }
         public KbdDesign getDesign()
         {
+            BitmapCachedGradBack.clearAllCache();
             if(path==null)
                 return this;
             CustomKbdDesign d = new CustomKbdDesign();

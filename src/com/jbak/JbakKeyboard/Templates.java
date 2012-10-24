@@ -98,7 +98,7 @@ public class Templates
             }
             File f = new File(fpath);
             FileOutputStream os = new FileOutputStream(f);
-            os.write(new byte[]{(byte)0xef,(byte)0xbb,(byte)0xbf});
+//            os.write(new byte[]{(byte)0xef,(byte)0xbb,(byte)0xbf});
             os.write(text.getBytes());
             os.close();
         }
