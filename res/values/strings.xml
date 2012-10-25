@@ -112,7 +112,13 @@
     <string name="set_key_gesture_right">Right</string>
     <string name="set_key_gesture_up">Up</string>
     <string name="set_key_gesture_down">Down</string>
-	<string name="preview_show_0">Not show</string>
+    
+    <string name="set_key_use_volumeKeys">Use volume keys</string>
+    <string name="set_key_use_volumeKeys_desc">Use volume keys for cursor movement</string>
+    <string name="vk_use_1">+ left, - right</string>
+    <string name="vk_use_2">- left, + right</string>
+
+    <string name="preview_show_0">Not show</string>
 	<string name="preview_show_1">Show under keys</string>
 	<string name="preview_show_2">Show on center</string>
 	    	    

@@ -274,7 +274,15 @@
             android:key="intervals"
             android:summary="@string/set_key_intervals_desc"
             android:title="@string/set_key_intervals" />
-
+        
+        <ListPreference
+            android:defaultValue="0"
+            android:key="use_volume_keys"
+            android:entries="@array/vk_use"
+            android:entryValues="@array/integer_vals"
+            android:summary="@string/set_key_use_volumeKeys_desc"
+            android:title="@string/set_key_use_volumeKeys" />
+        
         <Preference
             android:key="save"
             android:summary="@string/set_key_save_pref_desc"

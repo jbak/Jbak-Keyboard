@@ -106,6 +106,7 @@ public class OwnKeyboardHandler extends Handler
                         LatinKey lk = (LatinKey)msg.obj;
                         if(lk==null||!lk.pressed||!m_kv.getCurKeyboard().hasKey(lk))
                             return;
+                        lk.processed = true;
                         m_kv.onKeyRepeat(lk);
                         sendRepeat(lk, false);
                     }
@@ -126,6 +127,7 @@ public class OwnKeyboardHandler extends Handler
                         LatinKey lk = (LatinKey)msg.obj;
                         if(lk!=null&&lk.pressed)
                         {
+                            lk.processed = true;
                             m_kv.onLongPress(lk);
                         }
                     }

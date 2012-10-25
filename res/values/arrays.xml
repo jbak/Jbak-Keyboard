@@ -18,5 +18,10 @@
         <item>@string/preview_show_1</item>
         <item>@string/preview_show_2</item>
     </string-array>
-
+    <string-array name="vk_use">
+        <item>@string/no</item>
+        <item>@string/vk_use_1</item>
+        <item>@string/vk_use_2</item>
+    </string-array>
+    
 </resources>

@@ -65,6 +65,8 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         setSummary(st.PREF_KEY_LANSCAPE_TYPE, R.string.set_key_landscape_input_type_desc, strVal(getResources().getStringArray(R.array.array_input_type)[index]));
         index = Integer.decode(p.getString(st.PREF_KEY_PREVIEW_TYPE, st.ONE_STRING));
         setSummary(st.PREF_KEY_PREVIEW_TYPE, R.string.set_ch_keys_preview_desc, strVal(getResources().getStringArray(R.array.pv_place)[index]));
+        index = Integer.decode(p.getString(st.PREF_KEY_USE_VOLUME_KEYS, st.ZERO_STRING));
+        setSummary(st.PREF_KEY_USE_VOLUME_KEYS, R.string.set_key_use_volumeKeys_desc, strVal(getResources().getStringArray(R.array.vk_use)[index]));
 
         st.pref(this).registerOnSharedPreferenceChangeListener(this);
     }
@@ -248,6 +250,11 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
             JbKbdView.inst = null;
         if(st.PREF_KEY_SHIFT_STATE.equals(key))
             setShiftState();
+        if(st.PREF_KEY_USE_VOLUME_KEYS.equals(key))
+        {
+            int index = Integer.decode(sharedPreferences.getString(key, st.ZERO_STRING));
+            setSummary(key, R.string.set_key_use_volumeKeys_desc, strVal(getResources().getStringArray(R.array.vk_use)[index]));
+        }
         if(st.PREF_KEY_AC_PLACE.equals(key))
         {
             int index = Integer.decode(sharedPreferences.getString(key, st.ZERO_STRING));

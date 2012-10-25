@@ -8,7 +8,6 @@ import android.os.Handler;
 /** Таймер, который запускается всегда в том же потоке, в котором он был создан*/
 public abstract class SameThreadTimer
 {
-    Timer m_timer;
     public int m_delay;
     public int m_period;
     Handler m_h = new Handler()
@@ -19,38 +18,26 @@ public abstract class SameThreadTimer
             callTimer();
         };
     };
-    TimerTask m_tt = new TimerTask()
-    {
-        @Override
-        public void run()
-        {
-            m_h.sendEmptyMessage(0);
-        }
-    };
     final void callTimer()
     {
         onTimer(this);
+        if(m_period!=0)
+        {
+            m_h.sendMessageDelayed(m_h.obtainMessage(1), m_period);
+        }
     }
     public SameThreadTimer(int delay,int period)
     {
         m_delay = delay;
         m_period = period;
-        m_timer = new Timer();
     }
     public void start()
     {
-        if(m_period==0)
-            m_timer.schedule(m_tt, m_delay);
-        else
-            m_timer.schedule(m_tt, m_delay, m_period);
+        m_h.sendMessageDelayed(m_h.obtainMessage(1), m_delay);
     }
     public void cancel()
     {
-        if(m_timer!=null)
-        {
-            m_timer.cancel();
-            m_timer = null;
-        }
+        m_h.removeMessages(1);
     }
     public abstract void onTimer(SameThreadTimer timer);
 }

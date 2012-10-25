@@ -117,6 +117,8 @@ public interface IKbdSettings
     public static final String PREF_KEY_AC_PLACE = "ac_place";
     /** Ключ, boolean, true - использовать автоисправление */
     public static final String PREF_KEY_AC_AUTOCORRECT = "ac_autocorrect";
+    /** Ключ, int, использование клавиш громкости для управления курсором. 0:нет, 1:+ влево, - вправо, 2: - влево, + вправо*/
+    public static final String PREF_KEY_USE_VOLUME_KEYS = "use_volume_keys";
     
     public static final String EXT_XML = "xml";
     public static final String SETTINGS_BACKUP_FILE= "settings_backup"+'.'+EXT_XML;

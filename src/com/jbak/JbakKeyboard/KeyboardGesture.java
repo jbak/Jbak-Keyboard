@@ -32,7 +32,7 @@ public class KeyboardGesture extends GestureDetector
             float dy = e2.getY()-e1.getY();
             float mdx = Math.abs(dx);
             float mdy = Math.abs(dy);
-            st.log("dx="+dx+"; dy="+dy+";vX="+velocityX+";vY="+velocityY+"|downX="+downX+"; downY="+downY);
+//            st.log("dx="+dx+"; dy="+dy+";vX="+velocityX+";vY="+velocityY+"|downX="+downX+"; downY="+downY);
             if(mdx>=minGestSize&&(mdy==0||mdx/mdy>=deltaDelim)&&Math.abs(velocityX)>minVelocity)
             {
                 int type = velocityX>0?GestureInfo.RIGHT:GestureInfo.LEFT;

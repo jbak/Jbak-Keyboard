@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -31,6 +32,7 @@ import android.inputmethodservice.ExtractEditText;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
+import android.media.AudioManager;
 import android.os.Debug;
 import android.os.Handler;
 import android.util.Log;
@@ -51,6 +53,7 @@ import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
 import com.jbak.JbakKeyboard.Templates.CurInput;
+import com.jbak.ctrl.SameThreadTimer;
 import com.jbak.words.IWords.WordEntry;
 import com.jbak.words.Words;
 import com.jbak.words.WordsService;
@@ -62,8 +65,10 @@ import com.jbak.words.WordsService;
  * out as appropriate. */
 public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnKeyboardActionListener, OnSharedPreferenceChangeListener
 {
+    AudioManager m_audio;
     String                     m_defaultWords          = ".,?!@/";
     static final boolean       PROCESS_HARD_KEYS       = true;
+    boolean       PROCESS_VOLUME_KEYS       = true;
     /** Автодополнение отсутствует */
     public static final int    SUGGEST_NONE            = 0;
     /** Автодополнение из словаря */
@@ -107,6 +112,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     Rect m_cursorRect;
     EditSet                    m_es                    = new EditSet();
     boolean                    m_bCanAutoInput         = false;
+    int m_volumeKeys = 0;
     Handler                    m_autoCompleteHandler   = new Handler()
    {
        @Override
@@ -123,6 +129,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public void onCreate()
     {
         super.onCreate();
+        m_audio = (AudioManager)getSystemService(Service.AUDIO_SERVICE);
         inst = this;
         m_wm = (WindowManager)getSystemService(WINDOW_SERVICE);
         WordsService.g_serviceHandler = m_autoCompleteHandler;
@@ -431,6 +438,21 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         }
         return false;
     }
+    @Override
+    public boolean onKeyMultiple(int keyCode, int count, KeyEvent event)
+    {
+        if(keyCode==KeyEvent.KEYCODE_VOLUME_UP)
+        {
+            processTextEditKey(KeyEvent.KEYCODE_DPAD_LEFT);
+            return true;
+        }
+        if(keyCode==KeyEvent.KEYCODE_VOLUME_DOWN)
+        {
+            processTextEditKey(KeyEvent.KEYCODE_DPAD_RIGHT);
+            return true;
+        }
+        return super.onKeyMultiple(keyCode, count, event);
+    }
     /** key down */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
@@ -443,9 +465,13 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             }
             return m_bBackProcessed;
         }
+        if(isInputViewShown()&&m_volumeKeys>0&&(keyCode==KeyEvent.KEYCODE_VOLUME_DOWN||keyCode==KeyEvent.KEYCODE_VOLUME_UP))
+        {
+            processVolumeKey(keyCode, true);
+            return true;
+        }
         return super.onKeyDown(keyCode, event);
     }
-
     /** Ловим keyUp */
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event)
@@ -455,6 +481,11 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             boolean ret = m_bBackProcessed;
             m_bBackProcessed = false;
             return ret;
+        }
+        if((isInputViewShown()||m_volumeKeyTimer!=null)&&m_volumeKeys>0&&(keyCode==KeyEvent.KEYCODE_VOLUME_DOWN||keyCode==KeyEvent.KEYCODE_VOLUME_UP))
+        {
+            processVolumeKey(keyCode, false);
+            return true;
         }
         return super.onKeyUp(keyCode, event);
     }
@@ -526,16 +557,22 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         // st.kv().performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
         if (st.has(st.kv().m_state, JbKbdView.STATE_SOUNDS))
         {
-            int sound = SoundEffectConstants.CLICK;
-            if (primaryCode == KeyEvent.KEYCODE_DPAD_LEFT)
-                sound = SoundEffectConstants.NAVIGATION_LEFT;
-            if (primaryCode == KeyEvent.KEYCODE_DPAD_RIGHT)
-                sound = SoundEffectConstants.NAVIGATION_RIGHT;
-            if (primaryCode == KeyEvent.KEYCODE_DPAD_UP)
-                sound = SoundEffectConstants.NAVIGATION_UP;
-            if (primaryCode == KeyEvent.KEYCODE_DPAD_DOWN)
-                sound = SoundEffectConstants.NAVIGATION_DOWN;
-            st.kv().playSoundEffect(sound);
+            int sound = AudioManager.FX_KEY_CLICK;
+            switch(primaryCode)
+            {
+                case KeyEvent.KEYCODE_DPAD_LEFT:sound = AudioManager.FX_FOCUS_NAVIGATION_LEFT; break;
+                case KeyEvent.KEYCODE_DPAD_RIGHT:sound = AudioManager.FX_FOCUS_NAVIGATION_RIGHT; break;
+                case KeyEvent.KEYCODE_DPAD_UP:sound = AudioManager.FX_FOCUS_NAVIGATION_UP; break;
+                case KeyEvent.KEYCODE_DPAD_DOWN:sound = AudioManager.FX_FOCUS_NAVIGATION_DOWN; break;
+                case KeyEvent.KEYCODE_SPACE:sound = AudioManager.FX_KEYPRESS_SPACEBAR; break;
+                case Keyboard.KEYCODE_DELETE:sound = AudioManager.FX_KEYPRESS_DELETE; break;
+                case 10:sound = AudioManager.FX_KEYPRESS_RETURN; break;
+            }
+            try{
+                m_audio.playSoundEffect(sound, 0.2f);
+            }
+            catch(Throwable e)
+            {}
         }
 
         if (primaryCode < -200 && primaryCode > -300)
@@ -992,6 +1029,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         }
         if (st.PREF_KEY_SENTENCE_ENDS.equals(key) || key == null)
             m_SentenceEnds = sharedPreferences.getString(st.PREF_KEY_SENTENCE_ENDS, "?!.");
+        if (st.PREF_KEY_USE_VOLUME_KEYS.equals(key) || key == null)
+            m_volumeKeys = Integer.valueOf(sharedPreferences.getString(st.PREF_KEY_USE_VOLUME_KEYS, st.ZERO_STRING));    
         if (st.PREF_KEY_AC_PLACE.equals(key) || key == null)
             m_acPlace= Integer.valueOf(sharedPreferences.getString(st.PREF_KEY_AC_PLACE, st.ONE_STRING));
         if (st.PREF_KEY_ADD_SPACE_SYMBOLS.equals(key) || key == null)
@@ -1290,5 +1329,28 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public void onKeyboardWindowFocus(boolean bFocus)
     {
         showCandView(bFocus);
+    }
+    SameThreadTimer m_volumeKeyTimer;
+    void processVolumeKey(int code,boolean down)
+    {
+        if(m_volumeKeyTimer!=null)
+        {
+            m_volumeKeyTimer.cancel();
+            m_volumeKeyTimer = null;
+        }
+        if(down)
+        {
+            boolean left = m_volumeKeys==1&&code==KeyEvent.KEYCODE_VOLUME_UP||m_volumeKeys==2&&code==KeyEvent.KEYCODE_VOLUME_DOWN;
+            final int key = left?KeyEvent.KEYCODE_DPAD_LEFT:KeyEvent.KEYCODE_DPAD_RIGHT;
+            m_volumeKeyTimer = new SameThreadTimer(0,500)
+            {
+                @Override
+                public void onTimer(SameThreadTimer timer)
+                {
+                    processKey(key);
+                }
+            };
+            m_volumeKeyTimer.start();
+        }
     }
 }

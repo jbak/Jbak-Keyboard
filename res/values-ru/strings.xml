@@ -115,7 +115,12 @@
 	<string name="preview_show_0">Не показывать</string>
 	<string name="preview_show_1">Над нажатыми клавишами</string>
 	<string name="preview_show_2">По центру</string>
-        
+    
+    <string name="set_key_use_volumeKeys">Клавиши громкости</string>
+    <string name="set_key_use_volumeKeys_desc">Использовать клавиши громкости для перемещения курсора</string>
+    <string name="vk_use_1">+ влево, - вправо</string>
+    <string name="vk_use_2">- влево, + вправо</string>
+	
     <string name="set_key_gestures">Жесты</string>
     <string name="set_key_gestures_desc">Настройки для жестов</string>
     

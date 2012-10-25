@@ -281,13 +281,12 @@ public class JbKbdView extends KeyboardView {
         m_vibro.runVibro(VibroThread.VIBRO_LONG);
         if(key.popupCharacters!=null)
             return false;
-        m_pressed.setPress(key.codes[0], PressArray.TYPE_LONG);
+        //m_pressed.setPress(key.codes[0], PressArray.TYPE_LONG);
+//        key.pressed=false;
         if(key.longCode!=0)
         {
             if(isUserInput())
-            {
                 ServiceJbKbd.inst.processKey(key.longCode);
-            }
             return true;
         }
         else if(key.codes[0] == 10)
@@ -317,29 +316,13 @@ public class JbKbdView extends KeyboardView {
     }
     @Override
     protected boolean onLongPress(Key key) {
-        if(m_previewType>0&&m_handler!=null)
+        if(m_previewType>0&&m_handler!=null&&hasKey(key))
         {
-            int pos = 0;
-            int index = -1;
-            for(Key k:getCurKeyboard().getKeys())
-            {
-                if(k==key)
-                {
-                    index = pos;
-                    break;
-                }
-                ++pos;
-            }
-            if(index>-1)
-            {
-                m_handler.removeMessages(OwnKeyboardHandler.MSG_REMOVE_PREVIEW);
-                m_PreviewDrw.set((LatinKey)key,true);
-                m_PreviewDrw.m_bLongPreview = true;
-                key.iconPreview = m_PreviewDrw.getDrawable();
-                m_popup.show(inst, (LatinKey)key, true);
-//                m_handler.sendMessageDelayed(m_handler.obtainMessage(OwnKeyboardHandler.MSG_SHOW_PREVIEW, index, 0), 10);
-//                m_handler.sendMessageDelayed(m_handler.obtainMessage(OwnKeyboardHandler.MSG_REMOVE_PREVIEW), 400);
-            }
+            m_handler.removeMessages(OwnKeyboardHandler.MSG_REMOVE_PREVIEW);
+            m_PreviewDrw.set((LatinKey)key,true);
+            m_PreviewDrw.m_bLongPreview = true;
+            key.iconPreview = m_PreviewDrw.getDrawable();
+            m_popup.show(inst, (LatinKey)key, true);
         }
         if(processLongPress((LatinKey)key))
         {
@@ -468,11 +451,6 @@ public class JbKbdView extends KeyboardView {
         catch(Throwable e){}
     };
     @Override
-    public void invalidateAllKeys() 
-    {
-        super.invalidateAllKeys();
-    };
-    @Override
     public void invalidateKey(int keyIndex)
     {
         if(ComMenu.inst==null)
@@ -521,19 +499,22 @@ public class JbKbdView extends KeyboardView {
     public boolean onTouchEvent(MotionEvent me)
     {
         try{
-            if(m_gd!=null&&m_gd.onTouchEvent(me))
+            boolean ret = false;
+            if(m_gd!=null)
+                ret = m_gd.onTouchEvent(me);
+            boolean sup = super.onTouchEvent(me);
+            if(ret)
             {
                 resetPressed();
                 invalidateAllKeys();
-                return true;
             }
-            return m_pressed.onTouchEvent(me, getCurKeyboard(), m_actionListener);
-//        return super.onTouchEvent(me);
+            return sup;
         }
         catch (Throwable e) {
         }
         return true;
     }
+    boolean gestureProcessed = false;
     public void gesture(GestureInfo gest)
     {
         if(!isUserInput())
@@ -545,6 +526,9 @@ public class JbKbdView extends KeyboardView {
             m_handler.removeMessages(OwnKeyboardHandler.MSG_MY_LONG_PRESS);
             m_handler.sendMessage(m_handler.obtainMessage(OwnKeyboardHandler.MSG_REMOVE_PREVIEW, null));
         }
+//        resetPressed();
+        gestureProcessed = true;
+ //       invalidateAllKeys();
         KbdGesture g = m_gestures[gest.dir];
         if(g.code!=0)
             st.kbdCommand(g.code);
@@ -558,6 +542,7 @@ public class JbKbdView extends KeyboardView {
     {
         super.invalidateKey(index);
     }
+    LatinKey m_repeatedKey;
     public void onKeyRepeat(LatinKey lk)
     {
 //        if(m_previewType>0)
@@ -565,10 +550,10 @@ public class JbKbdView extends KeyboardView {
 //            m_popup.show(inst, lk, false);
 //        }
         m_vibro.runVibro(VibroThread.VIBRO_REPEAT);
-        m_pressed.setPress(lk.codes[0], PressArray.TYPE_REPEAT);
-//        m_repeatedKey = lk;
-//        if(m_repeatedKey == null||m_extListener==null)
-//            return;
+//        m_pressed.setPress(lk.codes[0], PressArray.TYPE_REPEAT);
+        m_repeatedKey = lk;
+        if(m_repeatedKey == null||m_extListener==null)
+            return;
         m_extListener.onKey(lk.codes[0], null);
     }
     public static int NOT_A_KEY = 0;
@@ -587,50 +572,42 @@ public class JbKbdView extends KeyboardView {
                 m_handler.removeMessages(OwnKeyboardHandler.MSG_MY_REPEAT);
                 m_handler.removeMessages(OwnKeyboardHandler.MSG_MY_LONG_PRESS);
             }
-            LatinKey key = getCurKeyboard().getKeyByCode(primaryCode);
-            if(m_pressed.getPress(primaryCode)==0)
-            {
-                if(key.pressed/*&&(key.trueRepeat||key.hasLongPress())*/)
-                    onKey(primaryCode, null);
-            }
-            key.pressed = false;
-            int pos = getCurKeyboard().getKeyIndex(key);
-            if(pos>-1)
-                invalidateKey(pos);
-            else
-                invalidateAllKeys();
+            LatinKey key = getKeyByCode(primaryCode);
+            if(key==null)
+                return;
+            Log.d("JKB", "release: "+key.getMainText());
+            key.processed = false;
+//            if(!key.processed)
+//                onKey(primaryCode, null);
+//            if(m_pressed.getPress(primaryCode)==0)
+//            {
+//            }
+//            if(getKeyIndex(key)>-1)
+//                invalidateKey(pos);
+//            else
+//                invalidateAllKeys();
             m_extListener.onRelease(primaryCode);
         }
         
         @Override
         public void onPress(int primaryCode)
         {
-//            if(m_pressedCode!=NOT_A_KEY)
-//                m_pressedCode2 = primaryCode;
-//            else
-//                m_pressedCode = primaryCode;
+            gestureProcessed = false;
             LatinKey key = getCurKeyboard().getKeyByCode(primaryCode);
             if(key==null)
                 return;
-            key.pressed = true;
-            if(key.sticky)
-                key.on = !key.on;
-            int pos = getCurKeyboard().getKeyIndex(key);
-            if(pos>-1)
-                invalidateKey(pos);
-            else
-                invalidateAllKeys();
-//            invalidateAllKeys();
+            Log.d("JKB", "press: "+key.getMainText());
             if(m_vibro.hasVibroOnPress())
                 m_vibro.runVibro(VibroThread.VIBRO_SHORT);
             if(m_handler!=null)
             {
                 if(key.trueRepeat)
+                {
+                    m_repeatedKey = key;
                     m_handler.sendRepeat(key,true);
+                }
                 else if(key.hasLongPress())
                     m_handler.sendLongPress(key);
-//                else
-                    //onKey(primaryCode, null);
             }
             if(m_previewType>0)
             {
@@ -646,7 +623,12 @@ public class JbKbdView extends KeyboardView {
         {
 //            if(m_repeatedKey!=null&&m_repeatedKey.codes[0]==primaryCode||m_pressedCode!=primaryCode&&m_pressedCode2!=primaryCode)
 //                return;
-            if(m_pressed.getPress(primaryCode)>0)
+//            if(m_pressed.getPress(primaryCode)>0)
+//                return;
+            if(gestureProcessed)
+                return;
+            LatinKey k = getKeyByCode(primaryCode);
+            if(k==null||k.processed)
                 return;
             if(!m_vibro.hasVibroOnPress())
                 m_vibro.runVibro(VibroThread.VIBRO_SHORT);
@@ -662,6 +644,28 @@ public class JbKbdView extends KeyboardView {
         public void swipeDown()
         {}
     };
+    final boolean hasKey(Key k)
+    {
+        JbKbd kbd = getCurKeyboard();
+        if(kbd==null)
+            return false;
+        return kbd.hasKey(k);
+    }
+    final int getKeyIndex(Key k)
+    {
+        JbKbd kbd = getCurKeyboard();
+        if(kbd==null)
+            return -1;
+        return kbd.getKeyIndex(k);
+    }
+    final LatinKey getKeyByCode(int code)
+    {
+        JbKbd kbd = getCurKeyboard();
+        if(kbd==null)
+            return null;
+        return kbd.getKeyByCode(code);
+    }
+    
     OnKeyboardActionListener m_extListener;
     @Override
     public void setOnKeyboardActionListener(OnKeyboardActionListener listener) 

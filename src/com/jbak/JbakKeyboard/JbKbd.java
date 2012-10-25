@@ -119,11 +119,8 @@ public class JbKbd extends Keyboard {
         {
             if(k!=null)
             {
-                if(k.pressed)
-                {
-                    ret = true;
-                    k.pressed = false;
-                }
+                k.pressed = false;
+                ((LatinKey)k).processed = false;
             }
         }
         return ret;
@@ -165,6 +162,8 @@ public class JbKbd extends Keyboard {
         boolean smallLabel = false;
         boolean noColorIcon = false;
         boolean trueRepeat = false;
+/** Клавиша обработана по longPress или repeat */        
+        boolean processed = false;
         String mainText;
         String longText;
         public LatinKey(Resources res, Keyboard.Row parent, int x, int y, XmlResourceParser parser) {
