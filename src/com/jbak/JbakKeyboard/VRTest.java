@@ -41,6 +41,9 @@ public class VRTest
         voiceIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                                 |Intent.FLAG_ACTIVITY_NO_USER_ACTION
                                 |Intent.FLAG_ACTIVITY_NO_HISTORY
+                                |Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
+                                |Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+                                |Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP
                                 );
         voiceIntent.putExtra(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT, resultsPendingIntent);
         voiceIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);

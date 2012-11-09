@@ -131,6 +131,8 @@ public class TplEditorActivity extends Activity
             return;
         }
         finish();
+        if(Templates.inst==null)
+            return;
         n = st.normalizeFileName(n);
         if(Templates.inst.isEditFolder())
         {

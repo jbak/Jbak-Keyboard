@@ -3,22 +3,32 @@ package com.jbak.JbakKeyboard;
 import java.util.Vector;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
+import com.jbak.JbakKeyboard.JbKbd.LatinKey;
 import com.jbak.ctrl.IntEditor;
+import com.jbak.ctrl.IntEditor.OnChangeValue;
 /** Класс для настроек различных значений клавиатуры, требующих просмотра qwerty-слоя */
 public class SetKbdActivity extends Activity
 {
@@ -30,13 +40,20 @@ public class SetKbdActivity extends Activity
     View m_MainView;
     JbKbdView m_kbd;
     int m_curSkin;
+    boolean m_calibrateAuto = true;
 /** Текущий тип экрана, для которого выбирается клава. 0- оба типа, 1 - портрет, 2 - ландшафт*/    
     int m_screenType;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        super.onCreate(savedInstanceState);
         inst = this;
         m_curAction = getIntent().getIntExtra(st.SET_INTENT_ACTION, st.SET_KEY_HEIGHT_PORTRAIT);
+        if(m_curAction==st.SET_KEY_CALIBRATE_PORTRAIT||m_curAction==st.SET_KEY_CALIBRATE_LANDSCAPE)
+        {
+            initCalibrate();
+            return;
+        }
         m_MainView = getLayoutInflater().inflate(R.layout.kbd_set, null);
         m_MainView.setBackgroundDrawable(st.getBack());
         SharedPreferences pref = st.pref();
@@ -80,8 +97,12 @@ public class SetKbdActivity extends Activity
                 public void onClick(View v)
                 {
                     m_curSkin = m_curKbd;
-                    Toast.makeText(inst, R.string.settings_saved, 700).show();
-                    finish();
+                    try{
+                        Toast.makeText(inst, R.string.settings_saved, 700).show();
+                        finish();
+                        }
+                    catch (Throwable e) {
+                    }
                 }
             });
             m_kbd.reload();
@@ -142,7 +163,6 @@ public class SetKbdActivity extends Activity
             });
         }
         setContentView(m_MainView);
-        super.onCreate(savedInstanceState);
     }
     void showScreenTypes()
     {
@@ -344,4 +364,215 @@ public class SetKbdActivity extends Activity
 			}
 		}
     };
+    void setCalibrate(boolean auto)
+    {
+        m_calibrateAuto = auto;
+        if(auto)
+        {
+            m_calibrToggle.setText(R.string.calibr_toggle_manual);
+            m_MainView.findViewById(R.id.calibr_input).setVisibility(View.VISIBLE);
+            m_MainView.findViewById(R.id.calibr_test).setVisibility(View.VISIBLE);
+            m_MainView.findViewById(R.id.calibr_edit_test).setVisibility(View.GONE);
+            m_MainView.findViewById(R.id.calibr_size).setVisibility(View.GONE);
+        }
+        else
+        {
+            m_calibrToggle.setText(R.string.calibr_toggle_auto);
+            m_MainView.findViewById(R.id.calibr_input).setVisibility(View.GONE);
+            m_MainView.findViewById(R.id.calibr_test).setVisibility(View.GONE);
+            m_MainView.findViewById(R.id.calibr_edit_test).setVisibility(View.VISIBLE);
+            m_MainView.findViewById(R.id.calibr_size).setVisibility(View.VISIBLE);
+        }
+    }
+    EditText m_calibrateEdit;
+    TextView m_calibrateTest;
+    Button m_calibrToggle;
+    IntEditor m_calibrManual;
+    void setCalibrateListeners()
+    {
+        m_calibrManual.setMinAndMax(-100, 100);
+        String calibrSet = m_curAction==st.SET_KEY_CALIBRATE_PORTRAIT?st.PREF_KEY_CORR_PORTRAIT:st.PREF_KEY_CORR_LANDSCAPE;
+        int val = st.pref(inst).getInt(calibrSet, JbKbdView.defaultVertCorr);
+        m_calibrManual.setValue(val);
+        m_MainView.findViewById(R.id.save).setOnClickListener(new OnClickListener()
+        {
+            
+            @Override
+            public void onClick(View v)
+            {
+                if(!m_calibrateAuto)
+                    calibrateSave(true, m_calibrManual.getValue());
+                else
+                    calibrateSave(true, m_autoY);
+            }
+        });
+        m_calibrManual.setOnChangeValue(new OnChangeValue()
+        {
+            
+            @Override
+            public void onChangeIntValue(IntEditor edit)
+            {
+                m_kbd.setVerticalCorrection(edit.getValue());
+            }
+        });
+        OnKeyboardActionListener calibrateListener = new OnKeyboardActionListener()
+        {
+            
+            @Override
+            public void swipeUp()
+            {}
+            @Override
+            public void swipeRight()
+            {}
+            @Override
+            public void swipeLeft()
+            {}
+            @Override
+            public void swipeDown()
+            {}
+            @Override
+            public void onText(CharSequence text)
+            {}
+            @Override
+            public void onRelease(int primaryCode)
+            {
+            }
+            @Override
+            public void onPress(int primaryCode)
+            {
+            }
+            @Override
+            public void onKey(int primaryCode, int[] keyCodes)
+            {
+                LatinKey lk = m_kbd.getKeyByCode(primaryCode);
+                onCalibrationKey(lk);
+                
+            }
+        };
+        OnTouchListener touchListener = new OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if(event.getAction()==MotionEvent.ACTION_DOWN)
+                    m_lastY = (int) event.getY();
+                return false;
+            }
+        };
+        m_kbd.setOnKeyboardActionListener(calibrateListener);
+        m_kbd.setOnTouchListener(touchListener);
+    }
+    int m_lastY=-1;
+    int m_autoY = 0;
+    void onCalibrationKey(LatinKey k)
+    {
+        String t = k.getMainText();
+        if(t==null&&k.codes.length>0)
+            t=st.NULL_STRING+(char)k.codes[0];
+        if(!m_calibrateAuto)
+        {
+            if(t!=null)
+                m_calibrateEdit.setText(m_calibrateEdit.getText().toString()+t);
+        }
+        else
+        {
+            
+            if(m_calibrPos>=m_calibrTest.length()||TextUtils.isEmpty(t)||t.length()>1)
+                return;
+            char ch = Character.toLowerCase(m_calibrTest.charAt(m_calibrPos));
+            if(Character.toLowerCase(t.charAt(0))!=ch)
+                return;
+            int yc = k.y+k.height/2+m_kbd.getPaddingTop();
+            m_autoY= (yc-m_lastY+m_autoY)/2;
+            ++m_calibrPos;
+            m_calibrTest.removeSpan(m_autoSpan);
+            if(ch==' ')
+                m_calibrTest.setSpan(m_backSpan, m_calibrPos-1, m_calibrPos, 0);
+            else
+                m_calibrTest.removeSpan(m_backSpan);
+            m_calibrTest.removeSpan(m_autoSpan);
+
+            m_calibrTest.setSpan(m_autoSpan, 0, m_calibrPos, 0);
+            m_calibrateTest.setText(m_calibrTest);
+            if(m_calibrPos==m_calibrTest.length())
+            {
+                calibrateSave(true,m_autoY);
+            }
+        }
+    }
+    SpannableString m_calibrTest;
+    int m_calibrPos=0;
+    ForegroundColorSpan m_autoSpan;
+    BackgroundColorSpan m_backSpan;
+    SpannableString m_testSpan;
+    void initCalibrate()
+    {
+        setRequestedOrientation(m_curAction==st.SET_KEY_CALIBRATE_PORTRAIT?ActivityInfo.SCREEN_ORIENTATION_PORTRAIT:ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        m_MainView = getLayoutInflater().inflate(R.layout.kbd_calibrate, null);
+        m_calibrateEdit = (EditText) m_MainView.findViewById(R.id.calibr_edit_test);
+        m_calibrateTest = (TextView) m_MainView.findViewById(R.id.calibr_test);
+        m_calibrTest = new SpannableString( m_calibrateTest.getText().toString());
+        m_calibrToggle = (Button)m_MainView.findViewById(R.id.toggle_calibr);
+        m_calibrManual = (IntEditor)m_MainView.findViewById(R.id.calibr_size);
+        m_MainView.setBackgroundDrawable(st.getBack());
+        m_kbd = (JbKbdView)m_MainView.findViewById(R.id.keyboard);
+        
+        setCalibrateListeners();
+        st.setTempEnglishQwerty();
+        m_autoSpan = new ForegroundColorSpan(0xff00ff00);
+        m_backSpan = new BackgroundColorSpan(0xff00ff00);
+        m_calibrToggle.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                setCalibrate(!m_calibrateAuto);
+            }
+        });
+        setCalibrate(true);
+        setContentView(m_MainView);
+    }
+    void calibrateSave(boolean confirm,final int value)
+    {
+        if(!confirm)
+        {
+            if(m_curAction==st.SET_KEY_CALIBRATE_PORTRAIT)
+                st.pref().edit().putInt(st.PREF_KEY_CORR_PORTRAIT, value).commit();
+            else
+                st.pref().edit().putInt(st.PREF_KEY_CORR_LANDSCAPE, value).commit();
+            finish();
+            return;
+        }
+        String alert = String.format(getString(R.string.calibr_save), value,JbKbdView.defaultVertCorr);
+        Dlg.yesNoDialog(inst, alert, new st.UniObserver()
+        {
+            
+            @Override
+            public int OnObserver(Object param1, Object param2)
+            {
+                if(((Integer)param1).intValue()==DialogInterface.BUTTON_POSITIVE)
+                {
+                   calibrateSave(false,value); 
+                }
+                else
+                {
+                    if(m_calibrateAuto)
+                        resetCalibrate();
+                    else
+                        finish();
+                }
+                return 0;
+            }
+        });
+    }
+    void resetCalibrate()
+    {
+        if(m_calibrateAuto)
+        {
+            m_calibrTest.removeSpan(m_autoSpan);
+            m_calibrTest.removeSpan(m_backSpan);
+            m_calibrPos=0;
+            m_calibrateTest.setText(m_calibrTest);
+        }
+    }
 }

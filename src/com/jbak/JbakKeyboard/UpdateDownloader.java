@@ -186,7 +186,10 @@ public class UpdateDownloader
                 if(wi.m_curEnt!=null)
                 {
                     long prog = wi.m_curEnt.filepos;
-                    prog=prog*100/wi.m_filesize;
+                    if(wi.m_filesize==0)
+                        prog = 0;
+                    else
+                        prog=prog*100/wi.m_filesize;
                     m_progress.setProgress((int)prog);
                 }
             }

@@ -19,7 +19,7 @@
 <LinearLayout android:id="@+id/completions"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/cand_height"
-    android:gravity="left"
+    android:gravity="left|center_vertical"
     android:clipChildren="false"
 	android:layout_toRightOf="@id/cand_left"
     />

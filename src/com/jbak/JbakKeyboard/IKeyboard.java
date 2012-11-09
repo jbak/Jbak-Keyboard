@@ -107,7 +107,7 @@ public class IKeyboard
     public static final int DF_BIG_GAP = 0x0002;
 
     public static final int DEF_COLOR = GradBack.DEFAULT_COLOR;
-    public static final int KBD_DESIGN_STANDARD = 0;
+    public static final int KBD_DESIGN_STANDARD = 4;
     public static KbdDesign[] arDesign=
     {
         // Стандартный дизайн 
@@ -164,6 +164,9 @@ public class IKeyboard
         public int nameResId;
 /** Цвет текста */      
         public int textColor;
+        public int secondColor = st.DEF_COLOR;
+        public int textColorPressed = st.DEF_COLOR;
+        public int secondColorPressed = st.DEF_COLOR;
 /** drawable-ресурс для рисования фона клавиатуры*/        
         public int backDrawableRes;
 /** Флаги*/        
@@ -202,6 +205,14 @@ public class IKeyboard
                 ((BitmapCachedGradBack)bg).setCacheSize(2);
             return this;
         }
+        KbdDesign setColors(int text,int second,int textPressed,int secondPressed)
+        {
+            textColor = text;
+            textColorPressed = textPressed;
+            secondColor = second;
+            secondColorPressed = secondPressed;
+            return this;
+        }
         KbdDesign setFuncKeysDesign(KbdDesign fc)
         {
             m_kbdFuncKeys = fc;
@@ -238,7 +249,7 @@ public class IKeyboard
     }
     static KbdDesign newHTCDesign()
     {
-        return new KbdDesign(R.string.kbd_design_htc, 0, 0xff000000, 0, 0)
+        return new KbdDesign(R.string.kbd_design_htc, 0, 0xff000000, 0, DF_BOLD)
                     .setKeysBackground(new BitmapCachedGradBack(0xfff8f8f8, 0xffd8d4d8).setGap(3)
                         .setStroke(new BitmapCachedGradBack(0xff605960,0xff101418).setGap(2)))
                     .setKbdBackground(new BitmapCachedGradBack(0xffbdbebd, 0xff706e70).setCorners(0, 0).setGap(0))
@@ -307,6 +318,17 @@ public class IKeyboard
 /** Класс для хранения сведений о конкретной клавиатуре */    
     public static class Keybrd
     {
+/** Язык клавиатуры, один из элементов массива arLangs*/        
+        public Lang lang;
+/** XML-ресурс клавиатуры (из R.xml) */     
+        public int resId;
+/** Код клавиатуры, одна из констант KBD_*/     
+        public int kbdCode;
+/** Строка из ресурсов с названием клавиатуры  */       
+        public int resName;
+        public String path = null;
+        public boolean isWide = false;
+        public static final String WIDE_SUFFIX = "_wide";
 /** Конструктор
  * @param kbdCode Код клавиатуры, одна из констант KBD_
  * @param lang  Язык клавиатуры, один из элементов массива arLangs
@@ -319,6 +341,7 @@ public class IKeyboard
             this.lang = getLangByName(asset.substring(0,asset.indexOf('_')));
             this.resId = R.xml.kbd_empty;
             path = asset;
+            isWide = asset.endsWith(WIDE_SUFFIX);
             this.resName = resName;
         }
         Keybrd(int kbdCode,Lang lang, int resId,int resName)
@@ -329,15 +352,6 @@ public class IKeyboard
             this.resId = resId;
             this.resName = resName;
         }
-/** Язык клавиатуры, один из элементов массива arLangs*/        
-        public Lang lang;
-/** XML-ресурс клавиатуры (из R.xml) */     
-        public int resId;
-/** Код клавиатуры, одна из констант KBD_*/     
-        public int kbdCode;
-/** Строка из ресурсов с названием клавиатуры  */       
-        public int resName;
-        public String path = null;
         String getName(Context c)
         {
             if(resName!=0)

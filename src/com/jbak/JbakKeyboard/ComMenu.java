@@ -72,6 +72,7 @@ public class ComMenu
     View newView(MenuEntry ent)
     {
         Button btn = new Button(st.c());
+        int pad = (int) st.floatDp(10, st.c());
         if(st.kv().isDefaultDesign())
         {
             btn.setBackgroundDrawable(st.kv().m_drwKeyBack.mutate());
@@ -91,6 +92,7 @@ public class ComMenu
         }
         btn.setMaxLines(1);
         btn.setEllipsize(TruncateAt.MARQUEE);
+        btn.setPadding(pad, pad, pad, pad);
         btn.setTag(ent);
         btn.setText(ent.text);
         btn.setOnClickListener(m_listener);
@@ -315,11 +317,15 @@ public class ComMenu
                 Cursor c = st.stor().getClipboardCursor();
                 if(c==null)
                     return 0;
-                c.move(0-id);
-                String cp = c.getString(0);
-                ServiceJbKbd.inst.onText(cp);
-                if(ClipbrdService.inst!=null)
-                    ClipbrdService.inst.checkString(cp);
+                try{
+                    c.move(0-id);
+                    String cp = c.getString(0);
+                    ServiceJbKbd.inst.onText(cp);
+                    if(ClipbrdService.inst!=null)
+                        ClipbrdService.inst.checkString(cp);
+                }
+                catch (Throwable e) {
+                }
                 return 0;
             }
         };

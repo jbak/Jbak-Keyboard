@@ -3,7 +3,12 @@
     <!-- Title for Latin keyboard  -->
     <string name="ime_name">Jbak Keyboard</string>
     <string name="ime_settings">Настройки Jbak Keyboard</string>
-
+	<string name="pref_keys">Настройки клавиш</string>    
+	<string name="pref_keys_desc">Высота клавиш и вертикальная коррекция</string>    
+    <string name="helper_1">Клавиатура отключена!</string>   
+    <string name="helper_1_desc">Нажмите это сообщение и выберите  </string>   
+    <string name="helper_2">Клавиатура не активна!</string>   
+	
     <!-- Labels on soft keys -->
     <string name="label_go_key">Go</string>
     <string name="label_next_key">След</string>
@@ -35,6 +40,22 @@
         
     <string name="set_key_sounds">Звуковое сопровождение</string>
     <string name="set_key_sounds_desc">Проигрывать системные звуки при нажатии на клавиши</string>
+    <string name="set_key_sounds_volume">Громкость звуков</string>
+    <string name="set_key_sounds_volume_desc">Громкость всех звуков</string>
+    
+    <string name="calibr_portrait">Верт. коррекция - портрет</string>
+    <string name="calibr_landscape">Верт. коррекция - ландшафт</string>
+    <string name="calibr_desc">Верткиальная коррекция клавиш - для более точного нажатия клавиш</string>
+    <string name="calibr_input">Введите текст:</string>
+    <string name="calibr_toggle_auto">Авто</string>
+    <string name="calibr_toggle_manual">Вручную</string>
+    <string name="calibr_save">Ваша вертикальная коррекция: %1$d.\n Системное значение: %2$d\n\n Вы хотите сохранить?</string>
+    <string name="calibr_label">Вертикальная коррекция:</string>
+    <string name="calibr_test_hint">Тест ввода</string>
+    
+    <string name="set_ac_font">Шрифт автодополнения</string>
+    <string name="set_ac_font_desc">Шрифт панели автодополнения слов</string>
+    
     <string name="set_select_keyboard">Выбор клавиатуры</string>
     <string name="set_key_skins">Скины</string>
     <string name="set_key_skins_desc">Различные варианты оформления для клавиатуры</string>
@@ -130,7 +151,9 @@
     <string name="set_key_gesture_right">Вправо</string>
     <string name="set_key_gesture_up">Вверх</string>
     <string name="set_key_gesture_down">Вниз</string>
-        
+    <string name="set_key_gesture_space_left">Влево от пробела</string>
+    <string name="set_key_gesture_space_right">Вправо от пробела</string>
+    
     <string name="interval_long_press">Задержка удержания клавиши  (ms)</string>
     <string name="interval_first_repeat">Задержка первого повтора клавиши (ms)</string>
     <string name="interval_next_repeat">Задержка следующего повтора клавиши(ms)</string>
@@ -248,5 +271,6 @@
  	<string name="cmd_down">Курсор вниз</string>   
  	<string name="cmd_none">Ничего не делать</string>   
  	<string name="cmd_close">Закрыть клавиатуру</string>   
- 	    	
+ 	<string name="cmd_space">Пробел</string>   
+ 		    	
 </resources>

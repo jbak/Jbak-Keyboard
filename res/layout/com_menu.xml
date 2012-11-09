@@ -43,6 +43,8 @@
   android:layout_height="fill_parent"
   android:orientation="vertical"
   android:layout_alignParentTop="true"
+  android:dividerHeight="0px"
+  android:divider="#00ffffff"
   android:layout_alignParentBottom="true"
   android:layout_alignParentLeft="true"
   android:layout_toLeftOf="@id/com_menu_buttons"

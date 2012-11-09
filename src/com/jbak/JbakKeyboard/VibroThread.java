@@ -52,8 +52,8 @@ public class VibroThread extends ContentObserver
     {
         SharedPreferences p = st.pref();
         try{
-            m_shortType = Integer.decode(p.getString(st.PREF_KEY_USE_SHORT_VIBRO, st.ZERO_STRING));
-            m_bLongVibro = p.getBoolean(st.PREF_KEY_USE_LONG_VIBRO, false);
+            m_shortType = Integer.decode(p.getString(st.PREF_KEY_USE_SHORT_VIBRO, st.ONE_STRING));
+            m_bLongVibro = p.getBoolean(st.PREF_KEY_USE_LONG_VIBRO, true);
             m_shortVibro = Integer.decode(p.getString(st.PREF_KEY_VIBRO_SHORT_DURATION, JbKbdPreference.DEF_SHORT_VIBRO));
             m_longVibro = Integer.decode(p.getString(st.PREF_KEY_VIBRO_LONG_DURATION, JbKbdPreference.DEF_LONG_VIBRO));
             m_bRepeatVibro = p.getBoolean(st.PREF_KEY_USE_REPEAT_VIBRO, m_bLongVibro);

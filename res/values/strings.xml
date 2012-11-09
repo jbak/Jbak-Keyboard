@@ -4,8 +4,9 @@
     <string name="ime_name">Jbak Keyboard</string>
     <string name="ime_settings">Jbak Keyboard settings</string>
 
-    
-    <!-- Labels on soft keys -->
+	<string name="pref_keys">Key settings</string>    
+	<string name="pref_keys_desc">Key heights and vertical corrections</string>    
+	<!-- Labels on soft keys -->
     <string name="label_go_key">Go</string>
     <string name="label_next_key">Next</string>
     <string name="label_send_key">Send</string>
@@ -36,6 +37,23 @@
         
     <string name="set_key_sounds">Enable sounds</string>
     <string name="set_key_sounds_desc">If enabled - keys sounds after each press</string>
+    <string name="set_key_sounds_volume">Sounds volume</string>
+    <string name="set_key_sounds_volume_desc">Volume of all sounds</string>
+    
+    <string name="calibr_portrait">Vert. correction portrait</string>
+    <string name="calibr_landscape">Vert. correction landscape</string>
+    <string name="calibr_desc">Vertical keys correction for better key presses</string>
+    <string name="calibr_input">Input text:</string>
+    <string name="calibr_test">the five boxing wizards jump quickly</string>
+    <string name="calibr_toggle_auto">Auto</string>
+    <string name="calibr_toggle_manual">Manual</string>
+    <string name="calibr_save">Your vertical correction is: %1$d.\n System value is: %2$d\n\n Do you want to save?</string>
+    <string name="calibr_label">Vertical correction:</string>
+    <string name="calibr_test_hint">Test input</string>
+    
+    <string name="set_ac_font">Autocomplete panel font</string>
+    <string name="set_ac_font_desc">Font for autoocomplete panel</string>
+    
     <string name="set_key_other">Autoinput</string>
     <string name="set_key_other_desc">Some settings for automatic input</string>
     <string name="set_key_register">Upper case on keyboard</string>
@@ -98,6 +116,8 @@
     <string name="set_key_ac_place_0">Disable</string>
     <string name="set_key_ac_place_1">On top of keyboard</string>
     <string name="set_key_ac_place_2">In system status-bar</string>
+    <string name="set_key_ac_place_3">In cursor position</string>
+    
     <string name="set_key_ac_load_vocab">Dictionary downloads</string>
     <string name="set_key_ac_load_vocab_desc">You need dictionary for autocompletions and autocorrections</string>
     <string name="set_key_ac_autocorrect">Autocorrection</string>
@@ -112,6 +132,8 @@
     <string name="set_key_gesture_right">Right</string>
     <string name="set_key_gesture_up">Up</string>
     <string name="set_key_gesture_down">Down</string>
+    <string name="set_key_gesture_space_left">Left from spacebar</string>
+    <string name="set_key_gesture_space_right">Right from spacebar</string>
     
     <string name="set_key_use_volumeKeys">Use volume keys</string>
     <string name="set_key_use_volumeKeys_desc">Use volume keys for cursor movement</string>
@@ -200,6 +222,10 @@
         <item><b>$selline</b> - if nothing selected - instruction will replaced with current paragraph, otherwise - with selection</item>
         <item><b>$$</b> - dollar symbol</item>
     </string-array>
+    <string name="helper_1">Keyboard disabled!</string>   
+    <string name="helper_1_desc">Press this and select </string>   
+    <string name="helper_2">Keyboard not active!</string>   
+    
 
 <!-- Update strings -->
 	<string name="upd_new_vocab">New dictionary</string>
@@ -254,4 +280,7 @@
  	<string name="cmd_down">Cursor down</string>   
  	<string name="cmd_none">Do nothing</string>   
  	<string name="cmd_close">Close keyboard</string>   
+ 	<string name="cmd_space">Space</string>   
+ 	<string name="cmd_bs">Backspace</string>   
+ 	<string name="cmd_shift">Shift</string>   
 </resources>

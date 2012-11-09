@@ -19,6 +19,8 @@ package com.jbak.JbakKeyboard;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -59,7 +61,6 @@ public class CandidateView extends View {
     private Paint mPaint;
     private boolean mScrolled;
     private int mTargetScrollX;
-    
     private int mTotalWidth;
     
     private GestureDetector mGestureDetector;

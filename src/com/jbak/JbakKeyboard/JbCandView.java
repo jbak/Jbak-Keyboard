@@ -20,6 +20,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 import com.jbak.words.IWords.WordEntry;
 import com.jbak.words.TextTools;
 import com.jbak.words.WordsService;
@@ -39,6 +40,7 @@ public class JbCandView extends RelativeLayout
     boolean m_bCanCorrect = false;
     boolean m_bBlockClickOnce = false;
     CompletionInfo m_completions[];
+    EditSet m_es;
     public static final String[] DEF_WORDS = new String[]
     {
         ",",
@@ -60,20 +62,33 @@ public class JbCandView extends RelativeLayout
     public JbCandView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        m_height = context.getResources().getDimensionPixelSize(R.dimen.cand_height);
-        wm = (WindowManager) getContext().getSystemService(Service.WINDOW_SERVICE);
-        m_lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        m_inflater = (LayoutInflater)context.getSystemService(Service.LAYOUT_INFLATER_SERVICE);
-        setTexts(null);
+        init(context);
     }
     int m_height;
     WindowManager wm;
     LinearLayout m_ll;
+    void init(Context context)
+    {
+        m_height = context.getResources().getDimensionPixelSize(R.dimen.cand_height);
+        if(st.pref(context).contains(st.PREF_KEY_FONT_PANEL_AUTOCOMPLETE))
+        {
+            m_es = new EditSet();
+            m_es.load(st.PREF_KEY_FONT_PANEL_AUTOCOMPLETE);
+            calcEditSet();
+        }
+        wm = (WindowManager) getContext().getSystemService(Service.WINDOW_SERVICE);
+        m_lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        m_inflater = (LayoutInflater)context.getSystemService(Service.LAYOUT_INFLATER_SERVICE);
+        setTexts(null);
+
+    }
     @Override
     protected void onFinishInflate() 
     {
         m_ll = (LinearLayout)findViewById(R.id.completions);
         m_addVocab = (TextView)findViewById(R.id.cand_left);
+        if(m_es!=null)
+            m_es.setToEditor(m_addVocab);
         m_addVocab.setOnClickListener(new OnClickListener()
         {
             @Override
@@ -118,7 +133,14 @@ public class JbCandView extends RelativeLayout
         int pos = 0;
         for (CompletionInfo ci : completions)
         {
-            texts[pos] = ci.getText().toString();
+            if(ci==null)
+                texts[pos] = st.NULL_STRING;
+            if(ci.getText()!=null)
+                texts[pos] = ci.getText().toString();
+            else if(ci.getLabel()!=null)
+                texts[pos] = ci.getLabel().toString();
+            else
+                texts[pos] = st.NULL_STRING;
             pos++;
         }
         setTexts(texts,completions);
@@ -176,10 +198,11 @@ public class JbCandView extends RelativeLayout
             }
             else
             {
-                tv = (TextView)m_inflater.inflate(R.layout.candidate_item, null);
-                tv.setOnClickListener(m_textClickListener);
+                tv = newTextView(false);
                 m_ll.addView(tv,m_lp);
             }
+            if(m_es!=null)
+                m_es.setToEditor(tv);
             tv.setText(s);
             tv.setTag(completions!=null?completions[pos]:null);
             pos++;
@@ -294,7 +317,7 @@ public class JbCandView extends RelativeLayout
             String txt = m_texts[pos];
             if(txt==null)
                 return;
-            TextView tv = (TextView)m_inflater.inflate(R.layout.candidate_item, null);
+            TextView tv = newTextView(true);
             tv.setText(txt);
             tv.measure(0, 0);
             w+=tv.getMeasuredWidth();
@@ -352,7 +375,6 @@ public class JbCandView extends RelativeLayout
         CustomKeyboard kbd = (CustomKeyboard)kv.getCurKeyboard();
         m_place = place;
         kbd.setTopSpace(place==AC_PLACE_KEYBOARD?m_height:0);
-        
         int ypos = place==AC_PLACE_KEYBOARD?getContext().getResources().getDisplayMetrics().heightPixels-kbd.getHeight():0;
         if(place==AC_PLACE_CURSOR_POS)
         {
@@ -384,6 +406,30 @@ public class JbCandView extends RelativeLayout
         lp.y = yPos;
         wm.addView(this, lp);
     }
+    int m_lines=2;
+    void calcEditSet()
+    {
+        int dp2 = (int)st.floatDp(2, getContext());
+        int fh = m_es.fontSize*2+dp2*2;
+        if(fh>=m_height)
+        {
+            m_lines = 2;
+        }
+        else
+        {
+            m_lines = 1;
+        }
+    }
+    public TextView newTextView(boolean fullView)
+    {
+        TextView tv = (TextView)m_inflater.inflate(R.layout.candidate_item, null);
+        tv.setIncludeFontPadding(fullView);
+        tv.setMaxLines(m_lines);
+        tv.setOnClickListener(m_textClickListener);
+        if(m_es!=null)
+            m_es.setToEditor(tv);
+        return tv;
+    }
     public boolean applyCorrection(int code)
     {
         if(!m_bCanCorrect||m_ll.getChildCount()<1||WordsService.isSelectNow())
@@ -392,5 +438,11 @@ public class JbCandView extends RelativeLayout
         String text = tv.getText().toString()+(char)code;
         ServiceJbKbd.inst.setWord(text);
         return true;
+    }
+    static EditSet getDefaultEditSet(Context c)
+    {
+        EditSet es = new EditSet();
+        es.fontSize = (int)st.floatDp(10, c);
+        return es;
     }
 }

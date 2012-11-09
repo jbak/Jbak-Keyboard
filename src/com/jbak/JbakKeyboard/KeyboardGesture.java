@@ -26,8 +26,8 @@ public class KeyboardGesture extends GestureDetector
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
-            float downX = e1.getX();
-            float downY = e1.getY();
+            int downX = (int)e1.getX();
+            int downY = (int)e1.getY();
             float dx = e2.getX()-e1.getX();
             float dy = e2.getY()-e1.getY();
             float mdx = Math.abs(dx);
@@ -36,13 +36,13 @@ public class KeyboardGesture extends GestureDetector
             if(mdx>=minGestSize&&(mdy==0||mdx/mdy>=deltaDelim)&&Math.abs(velocityX)>minVelocity)
             {
                 int type = velocityX>0?GestureInfo.RIGHT:GestureInfo.LEFT;
-                m_kv.gesture(new GestureInfo(null,type));
+                m_kv.gesture(new GestureInfo(getKey(downX, m_kv.m_vertCorr+downY),type));
                 return true;
             }
             if(mdy>=minGestSize&&(mdx==0||mdy/mdx>=deltaDelim)&&Math.abs(velocityY)>minVelocity&&(velocityX==0||Math.abs(velocityY/velocityX)>=deltaDelim))
             {
                 int type = velocityY>0?GestureInfo.DOWN:GestureInfo.UP;
-                m_kv.gesture(new GestureInfo(null,type));
+                m_kv.gesture(new GestureInfo(getKey(downX, m_kv.m_vertCorr+downY),type));
                 return true;
             }
             if(mdx>=minGestSize||mdy>=minGestSize)

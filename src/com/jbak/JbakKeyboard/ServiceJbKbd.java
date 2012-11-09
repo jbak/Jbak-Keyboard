@@ -58,11 +58,7 @@ import com.jbak.words.IWords.WordEntry;
 import com.jbak.words.Words;
 import com.jbak.words.WordsService;
 
-/** Example of writing an input method for a soft keyboard. This code is focused
- * on simplicity over completeness, so it should in no way be considered to be a
- * complete soft keyboard implementation. Its purpose is to provide a basic
- * example for how you would get started writing an input method, to be fleshed
- * out as appropriate. */
+/** Основной сервис клавиатуры */
 public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnKeyboardActionListener, OnSharedPreferenceChangeListener
 {
     AudioManager m_audio;
@@ -87,7 +83,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 /** Просмотр кандидатов, прикрепленный к клавиатуре*/    
     JbCandView                 m_kbdCandView;
     WindowManager m_wm;
-    private StringBuilder      mComposing              = new StringBuilder();
     static ServiceJbKbd        inst;
     /** Символы концов предложений */
     String                     m_SentenceEnds          = "";
@@ -102,7 +97,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public static final int    STATE_SENTENCE_SPACE    = 0x0000002;
     /** Статус - верхний регистр в пустом поле */
     public static final int    STATE_EMPTY_UP          = 0x0000004;
-    /** Статус - верхний регистр в пустом поле */
+    /** Статус - верхний регистр только после пробела */
     public static final int    STATE_SPACE_SENTENCE_UP = 0x0000008;
     /** Статус - предложения с большой буквы после символов из строки
      * {@link #m_SentenceEnds} */
@@ -112,7 +107,10 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     Rect m_cursorRect;
     EditSet                    m_es                    = new EditSet();
     boolean                    m_bCanAutoInput         = false;
+/** Обработка клавиш громкости. 0:нет, 1:+ влево, - вправо, 2: - влево, + вправо */
     int m_volumeKeys = 0;
+    float m_soundVolume = 5;
+    final static int MSG_SHOW_PANEL = 0x11;
     Handler                    m_autoCompleteHandler   = new Handler()
    {
        @Override
@@ -122,6 +120,11 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
            {
                onWords((Vector<WordEntry>) msg.obj);
            }
+           else if (msg.what == MSG_SHOW_PANEL)
+           {
+               if(isInputViewShown()&&ComMenu.inst==null)
+                   m_candView.show(st.kv(), m_acPlace);
+           }
        };
    };
 
@@ -129,6 +132,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public void onCreate()
     {
         super.onCreate();
+        if(JbKbdPreference.inst!=null)
+            JbKbdPreference.inst.onStartService();
         m_audio = (AudioManager)getSystemService(Service.AUDIO_SERVICE);
         inst = this;
         m_wm = (WindowManager)getSystemService(WINDOW_SERVICE);
@@ -245,17 +250,20 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
         if(bShow)
         {
-            Rect r= new Rect();
-            Window win= getWindow().getWindow();
-            View dw = win.getDecorView();
-            dw.getWindowVisibleDisplayFrame(r);
-            int h = r.top;
-            boolean cantBeAtTop = Math.abs(h)<10;
+            if(ComMenu.inst!=null)
+                return;
+//            Rect r= new Rect();
+//            Window win= getWindow().getWindow();
+//            View dw = win.getDecorView();
+//            dw.getWindowVisibleDisplayFrame(r);
+//            int h = r.top;
+//            boolean cantBeAtTop = Math.abs(h)<10;
             if(m_suggestType==SUGGEST_NONE||m_acPlace==JbCandView.AC_PLACE_NONE)
                 return;
 //            m_candView = createNewCandView();
 //            boolean bAtTop = m_acPlace==JbCandView.AC_PLACE_KEYBOARD||cantBeAtTop;
             m_candView.show(st.kv(), m_acPlace);
+//            m_autoCompleteHandler.sendMessageDelayed(m_autoCompleteHandler.obtainMessage(MSG_SHOW_PANEL), 100);
         }
         else
         {
@@ -289,7 +297,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         if(m_candView!=null)
             showCandView(false);
         st.log("onStartInput " + attribute.packageName);
-        if (attribute.initialSelStart < 0 && attribute.initialSelEnd < 0)
+        if (attribute.initialSelStart < 0 && attribute.initialSelEnd < 0&&attribute.imeOptions==0)
         {
             requestHideSelf(0);
         }
@@ -320,7 +328,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 //        st.saveCurLang();
         super.onFinishInput();
         // Clear current composing text and candidates.
-        mComposing.setLength(0);
         // We only hide the candidates window when finishing input on
         // a particular editor, to avoid popping the underlying application
         // up and down if the user is entering text into the bottom of
@@ -341,7 +348,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public void onUpdateSelection(int oldSelStart, int oldSelEnd, int newSelStart, int newSelEnd, int candidatesStart, int candidatesEnd)
     {
-        long ms = System.currentTimeMillis();
 
 //        super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd);
         final ExtractEditText eet = m_extraText;
@@ -376,42 +382,49 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             }
             else
             {
-                m_textBeforeCursor = new StringBuffer(getCurrentInputConnection().getTextBeforeCursor(40, 0)); 
-                if(m_suggestType==SUGGEST_VOCAB)
+                getTextBeforeCursor();
+                if(m_bCanAutoInput&&m_suggestType==SUGGEST_VOCAB)
                     m_textAfterCursor = getCurrentInputConnection().getTextAfterCursor(40, 0);
+                processCaseAndCandidates();
             }
-            if (m_bCanAutoInput)
-                changeCase(true);
-            if(m_suggestType==SUGGEST_VOCAB)
-                getCandidates();
         }
-        ms = System.currentTimeMillis()-ms;
 //        Log.d(PressArray.TAG, "sendKey "+ms);
+    }
+    void processCaseAndCandidates()
+    {
+        if (m_bCanAutoInput)
+            changeCase(true);
+        if(m_suggestType==SUGGEST_VOCAB)
+            getCandidates();
     }
     void getCandidates()
     {
-//      if(m_words.canGiveWords())
-//      {
-      if(m_textBeforeCursor==null)  
-          m_textBeforeCursor = new StringBuffer(getCurrentInputConnection().getTextBeforeCursor(40, 0)); 
-      if(m_textAfterCursor==null)
-          m_textAfterCursor = getCurrentInputConnection().getTextAfterCursor(40, 0);
-      String wstart = Templates.getCurWordStart(m_textBeforeCursor, false);
-      String wend = Templates.getCurWordEnd(m_textAfterCursor, false);
-      if (wstart != null && wend != null)
-      {
-          String word = wstart + wend;
-          if (word.length() < 1)
+      try{  
+          if(m_acPlace==JbCandView.AC_PLACE_NONE)
+              return;
+          if(m_textBeforeCursor==null)  
+              getTextBeforeCursor();
+          if(m_textAfterCursor==null)
+              m_textAfterCursor = getCurrentInputConnection().getTextAfterCursor(40, 0);
+          String wstart = Templates.getCurWordStart(m_textBeforeCursor, false);
+          String wend = Templates.getCurWordEnd(m_textAfterCursor, false);
+          if (wstart != null && wend != null)
           {
-              WordsService.command(WordsService.CMD_CANCEL_VOCAB, null, inst);
-              onWords(null);
+              String word = wstart + wend;
+              if (word.length() < 1)
+              {
+                  WordsService.command(WordsService.CMD_CANCEL_VOCAB, null, inst);
+                  onWords(null);
+              }
+              else
+              {
+                  WordsService.command(WordsService.CMD_GET_WORDS, word, inst);
+              }
           }
-          else
+          }
+          catch(Throwable e)
           {
-              WordsService.command(WordsService.CMD_GET_WORDS, word, inst);
           }
-      }
-//      }
     }
     /** Предлагает юзеру набор автодополнений. В браузере - показывает какой-то
      * набор из закладок и посещенных ссылок */
@@ -490,32 +503,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         return super.onKeyUp(keyCode, event);
     }
 
-    /* @Override public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-     * if(m_kp!=null) return m_kp.onLongPress(); return
-     * super.onKeyLongPress(keyCode, event); }; *//** Helper function to commit
-     * any text being composed in to the editor. */
-    private void commitTyped(InputConnection inputConnection)
-    {
-        if (mComposing.length() > 0)
-        {
-            inputConnection.commitText(mComposing, mComposing.length());
-            mComposing.setLength(0);
-        }
-    }
-
-    /** Helper to determine if a given character code is alphabetic. */
-    private boolean isAlphabet(int code)
-    {
-        if (Character.isLetter(code))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     /** Helper to send a key down / key up pair to the current editor. */
     private void keyDownUp(int keyEventCode)
     {
@@ -529,6 +516,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         m_textBeforeCursor.append(ch);
         if(m_textBeforeCursor.length()>40)
             m_textBeforeCursor.deleteCharAt(0);
+        processCaseAndCandidates();
     }
     /** Helper to send a character to the editor as raw key events. */
     private void sendKey(int keyCode)
@@ -569,7 +557,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
                 case 10:sound = AudioManager.FX_KEYPRESS_RETURN; break;
             }
             try{
-                m_audio.playSoundEffect(sound, 0.2f);
+                m_audio.playSoundEffect(sound, m_soundVolume);
             }
             catch(Throwable e)
             {}
@@ -715,10 +703,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         if (ic == null)
             return;
         ic.beginBatchEdit();
-        if (mComposing.length() > 0)
-        {
-            commitTyped(ic);
-        }
         ic.commitText(text, 0);
         ic.endBatchEdit();
     }
@@ -726,10 +710,10 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     private void handleBackspace()
     {
         keyDownUp(KeyEvent.KEYCODE_DEL);
+        processCaseAndCandidates();
     }
     public void handleCharacter(int primaryCode)
     {
-        InputConnection ic = getCurrentInputConnection();
         if (isInputViewShown())
         {
             if (JbKbdView.inst.isUpperCase())
@@ -749,7 +733,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 
     private void handleClose()
     {
-        commitTyped(getCurrentInputConnection());
         JbKbdView.inst.closing();
         forceHide();
     }
@@ -1027,6 +1010,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
                 }
             }
         }
+        if (st.PREF_KEY_FONT_PANEL_AUTOCOMPLETE.equals(key)&&m_candView!=null)
+            m_candView = createNewCandView();
         if (st.PREF_KEY_SENTENCE_ENDS.equals(key) || key == null)
             m_SentenceEnds = sharedPreferences.getString(st.PREF_KEY_SENTENCE_ENDS, "?!.");
         if (st.PREF_KEY_USE_VOLUME_KEYS.equals(key) || key == null)
@@ -1035,6 +1020,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             m_acPlace= Integer.valueOf(sharedPreferences.getString(st.PREF_KEY_AC_PLACE, st.ONE_STRING));
         if (st.PREF_KEY_ADD_SPACE_SYMBOLS.equals(key) || key == null)
             m_SpaceSymbols = sharedPreferences.getString(st.PREF_KEY_ADD_SPACE_SYMBOLS, ",?!.");
+        m_soundVolume  = Integer.valueOf(sharedPreferences.getString(st.PREF_KEY_SOUND_VOLUME, "5"));
+        m_soundVolume/=10f;
         m_LandscapeEditType = Integer.valueOf(sharedPreferences.getString(st.PREF_KEY_LANSCAPE_TYPE, "0"));
         m_PortraitEditType = Integer.valueOf(sharedPreferences.getString(st.PREF_KEY_PORTRAIT_TYPE, "0"));
         if (sharedPreferences.getBoolean(st.PREF_KEY_AUTO_CASE, false))
@@ -1055,7 +1042,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             m_state |= STATE_EMPTY_UP;
         else
             m_state = st.rem(m_state, STATE_EMPTY_UP);
-        boolean bSpaceUp = sharedPreferences.getBoolean(st.PREF_KEY_UPERCASE_AFTER_SPACE, true);
+        boolean bSpaceUp = sharedPreferences.getBoolean(st.PREF_KEY_UPERCASE_AFTER_SPACE, false);
         if (bSpaceUp)
             m_state |= STATE_SPACE_SENTENCE_UP;
         else
@@ -1352,5 +1339,10 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             };
             m_volumeKeyTimer.start();
         }
+    }
+    void getTextBeforeCursor()
+    {
+        CharSequence seq = getCurrentInputConnection().getTextBeforeCursor(40, 0);
+        m_textBeforeCursor = new StringBuffer(seq==null?"":seq);
     }
 }

@@ -24,6 +24,9 @@ class KeyDrw extends RectShape
     boolean m_bPreview = false;
     boolean m_bLongPreview = false;
     boolean m_bSmallLabel = false;
+    boolean m_bPressed = false;
+/** true, если на клавише несколько кодов, которые перебираются последовательно (codes.length>1)*/    
+    boolean m_bMultiCode = false;
     Rect rb;
     boolean m_bFunc = false;
     boolean m_bNoColorIcon = false;
@@ -56,9 +59,9 @@ class KeyDrw extends RectShape
     {
         m_bFunc = func;
     }
-    final void useTextColor(Paint pt)
+    final void useTextColor(Paint pt,boolean second)
     {
-        int c = m_bFunc?st.paint().secondColor:st.paint().mainColor;
+        int c = st.paint().getColor(this, second);
         if(c!=st.DEF_COLOR)
             pt.setColor(c);
     }
@@ -71,11 +74,17 @@ class KeyDrw extends RectShape
 //            st.paint().previewBack.setBounds(new Rect(0,0,(int)width,(int)height));
 //        }
 //    };
-    void set(LatinKey key, boolean bPreview)
+    final void set(LatinKey key, boolean bPreview)
+    {
+        set(key,bPreview,0);
+    }
+    void set(LatinKey key, boolean bPreview,int primaryCode)
     {
         m_c = null;
         m_bPreview = bPreview;
+        m_bPressed = key.pressed;
         m_bNoColorIcon = key.noColorIcon;
+        m_bMultiCode = (key.codes!=null&&key.codes.length>1);
         if(key.icon!=null)
         {
             if(key.icon instanceof BitmapDrawable)
@@ -85,7 +94,7 @@ class KeyDrw extends RectShape
             else if(key.icon instanceof ShapeDrawable)
             {
                 KeyDrw kd = ((LatinKey)key).m_kd;
-                txtMain = kd.txtMain;
+                txtMain = primaryCode==0?kd.txtMain:st.NULL_STRING+(char)primaryCode;
                 txtSmall = kd.txtSmall;
                 bmp = kd.bmp;
             }
@@ -109,6 +118,8 @@ class KeyDrw extends RectShape
                 txtMain = lab.toString();
                 txtSmall = null;
             }
+            if(primaryCode!=0)
+                txtMain = st.NULL_STRING+(char)primaryCode;
         }
         if(m_bPreview)
             rb = new Rect(0, 0, /*st.kv().m_PreviewHeight*/KeyboardPopup.m_w, /*st.kv().m_PreviewHeight*/KeyboardPopup.m_h);
@@ -288,18 +299,18 @@ class KeyDrw extends RectShape
             }
             return;
         }
-//Если текст длинее 1 символа - считаем меткой и рисуем с помощью JbKbdView.m_tpLabel 
         if(m_bSmallLabel)
         {
             p1 = st.paint().second;
         }
+//Если текст длинее 1 символа - считаем меткой и рисуем с помощью JbKbdView.m_tpLabel 
         else if(txtMain.length()>1)
         {
             p1 = st.paint().label;
         }
 //canvas сдвинут к середине, вернём его в позицию 0,0           
         Paint p2 = st.paint().second;
-        if(txtMain.length()==1)
+        if(txtMain.length()==1||m_bMultiCode)
         {
             m_c.mainLower = txtMain.toLowerCase();
             m_c.mainUpper = txtMain.toUpperCase();
@@ -444,21 +455,22 @@ class KeyDrw extends RectShape
         }
         else if(txtMain.length()>1)
         {
-            bUp = false;
+            if(!m_bMultiCode)
+                bUp = false;
             p1 = st.paint().label;
         }
-        useTextColor(p1);
+        useTextColor(p1,false);
 //canvas сдвинут к середине, вернём его в позицию 0,0           
         canvas.translate(0-rb.width()/2, 0-rb.height()/2);
         drawFuncBackground(canvas);
         Paint p2 = st.paint().second;
-        useTextColor(p2);
+        useTextColor(p2,true);
         if(bmp!=null)
         {
             canvas.drawBitmap(bmp, m_c.m_xMainLower, m_c.m_yMainLower, st.paint().getBitmapPaint(this));
         }
         if(bmpSmall!=null)
-            canvas.drawBitmap(bmpSmall, m_c.m_xSmall, m_c.m_ySmall, st.paint().getBitmapPaint(this));
+            canvas.drawBitmap(bmpSmall, m_c.m_xSmall, m_c.m_ySmall, st.paint().getBitmapPaint(this,true));
         else if(txtSmall!=null)
         {
             canvas.drawText(txtSmall,m_c.m_xSmall, m_c.m_ySmall, p2);
@@ -468,6 +480,5 @@ class KeyDrw extends RectShape
         else
             canvas.drawText(m_c.mainLower, m_c.m_xMainLower, m_c.m_yMainLower, p1);
     }
-
 }
 

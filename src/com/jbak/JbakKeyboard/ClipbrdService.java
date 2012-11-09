@@ -55,6 +55,12 @@ public class ClipbrdService extends Service
     {
         m_timer.cancel();
     }
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId)
+    {
+        
+        return START_STICKY;
+    }
     void checkClipboardString()
     {
         if(!m_cm.hasText())
@@ -65,12 +71,18 @@ public class ClipbrdService extends Service
     }
     void checkString(String str)
     {
-        if(str.equals(m_sLastClipStr))
-        {
-            return;
+        try{
+            if(str.equals(m_sLastClipStr))
+            {
+                return;
+            }
+            st.stor().checkClipboardString(str);
+            m_sLastClipStr = str;
         }
-        st.stor().checkClipboardString(str);
-        m_sLastClipStr = str;
+        catch(Throwable e)
+        {
+            
+        }
     }
     BroadcastReceiver m_recv = new BroadcastReceiver()
     {

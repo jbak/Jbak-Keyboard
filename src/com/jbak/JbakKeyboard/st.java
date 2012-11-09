@@ -87,7 +87,8 @@ public class st extends IKeyboard implements IKbdSettings
 /** Возвращает клавиатуру для языка с именем langName */    
     public static Keybrd kbdForLangName(String langName)
     {
-        String pname = isLandscape(c())?st.PREF_KEY_LANG_KBD_LANDSCAPE:st.PREF_KEY_LANG_KBD_PORTRAIT;
+        boolean isLandscape = isLandscape(c());
+        String pname = isLandscape?st.PREF_KEY_LANG_KBD_LANDSCAPE:st.PREF_KEY_LANG_KBD_PORTRAIT;
         pname+=langName;
         String kbdName = pref().getString(pname, "");
         for(int i=0;i<3;i++)
@@ -96,9 +97,11 @@ public class st extends IKeyboard implements IKbdSettings
             {
                 if(k.isLang(langName))
                 {
-                    // если не настроено - вернем первую в списке клаву с тем же языком
-                    if(kbdName.length()==0||kbdName.equals(k.path))
-                            return k;
+                    if(kbdName.length()==0&&(isLandscape||i>0||k.isWide)||kbdName.equals(k.path))
+                    {
+                        // если не настроено - вернем первую в списке клаву с тем же языком
+                        return k;
+                    }
                 }
             }
             // Теперь попробуем перезагрузить клавиатуры...
@@ -115,6 +118,10 @@ public class st extends IKeyboard implements IKbdSettings
     public static float screenDens(Context c)
     {
         return c.getResources().getDisplayMetrics().density;
+    }
+    public static float floatDp(float value,Context c)
+    {
+        return value*screenDens(c);
     }
     static void log(String txt)
     {
@@ -267,6 +274,7 @@ public class st extends IKeyboard implements IKbdSettings
 /** Установка qwerty-клавиатуры с учётом последнего использования */    
     public static void setQwertyKeyboard()
     {
+        tempEnglishQwerty = false;
         setQwertyKeyboard(false);
     }
 /** Установка qwerty-клавиатуры с учётом последнего использования */    
@@ -299,9 +307,11 @@ public class st extends IKeyboard implements IKbdSettings
         }
         return loadKeyboard(arKbd[0]);
     }
+    public static boolean tempEnglishQwerty = false;
 /** Временно устанавливает английскую клавиатуру без запоминания языка */    
     public static void setTempEnglishQwerty()
     {
+        tempEnglishQwerty = true;
         JbKbd kb = curKbd();
         Keybrd k = kbdForLangName(arLangs[LANG_EN].name);
 //        if(kb!=null&&kb.resId==k.resId)
@@ -397,7 +407,8 @@ public class st extends IKeyboard implements IKbdSettings
                 {
                     ServiceJbKbd.inst.onOptions();
                 }break;
-            case CMD_VOICE_RECOGNIZER: new VRTest().startVoice(); return true;//return runAct(VRActivity.class);
+            case CMD_VOICE_RECOGNIZER: 
+                new VRTest().startVoice(); return true;//return runAct(VRActivity.class);
             case CMD_TPL_EDITOR: return runAct(TplEditorActivity.class);
             case CMD_TPL_NEW_FOLDER: 
                 if(Templates.inst==null)
@@ -405,7 +416,10 @@ public class st extends IKeyboard implements IKbdSettings
                 Templates.inst.setEditFolder(true);
                 return runAct(TplEditorActivity.class);
             case CMD_TPL: new Templates().makeCommonMenu(); return true;
-            case CMD_PREFERENCES: return runAct(JbKbdPreference.class);
+            case CMD_PREFERENCES: 
+                if(ServiceJbKbd.inst!=null)
+                    ServiceJbKbd.inst.forceHide();
+                return runAct(JbKbdPreference.class);
             case CMD_CLIPBOARD: return ComMenu.showClipboard();
             default: 
                 if(ServiceJbKbd.inst!=null)
@@ -495,7 +509,7 @@ public class st extends IKeyboard implements IKbdSettings
         }
         catch (Throwable e) {
         }
-        return arDesign[0];
+        return arDesign[KBD_DESIGN_STANDARD];
     }
     public static String getSkinPath(KbdDesign kd)
     {
@@ -603,6 +617,10 @@ public class st extends IKeyboard implements IKbdSettings
     }
     public static KbdGesture getGesture(String prefName,SharedPreferences p)
     {
-        return arGestures[getGestureIndexBySetting(p.getString(prefName, ZERO_STRING))];
+        return arGestures[getGestureIndexBySetting(p.getString(prefName, getGestureDefault(prefName)))];
+    }
+    public static String getGestureDefault(String prefName)
+    {
+        return PREF_KEY_GESTURE_DOWN.equals(prefName)?NULL_STRING+arGestures[9].code:ZERO_STRING;
     }
 }

@@ -32,17 +32,25 @@ public class KeyboardPaints
     public Paint second;
 /** Шрифт клавиатуры для меток */    
     public Paint label;
-/** Основной цвет*/    
+    Paint mainBitmapPaints[]=new Paint[]{null,null,null,null};
+    Paint funcBitmapPaints[]=new Paint[]{null,null,null,null};
+/** Цвета текстов. 0 - основной текст, 1 - текст доп символов, 2 - основной текст в нажатом состоянии, 3 - доп. символы в нажатом состоянии*/    
+    int mainColors[]=new int[]{Color.WHITE,st.DEF_COLOR,st.DEF_COLOR,st.DEF_COLOR};
+    int funcColors[]=new int[]{st.DEF_COLOR,st.DEF_COLOR,st.DEF_COLOR,st.DEF_COLOR};
+/** Основной дизайн - цвет основного текста */
     public int mainColor = Color.WHITE;
-/** Дополнительный цвет*/    
-    public int secondColor = st.DEF_COLOR;
+/** Основной дизайн - цвет основного текста в нажатом состоянии*/
+    public int mainColorPressed = Color.WHITE;
+/** Основной дизайн - цвет текста символов*/
+    public int mainSecondColor = Color.WHITE;
+/** Основной дизайн - цвет текста символов в нажатом состоянии*/
+    public int mainSecondColorPressed = Color.WHITE;
+    
     public PorterDuffColorFilter bmpColorFilter = null;
-    boolean m_bMainBold = false;
+    boolean m_bMainBold = true;
     Vector <BitmapCache> m_arBitmaps = new Vector<BitmapCache>();
     int BitmapCacheSize = 120;
     StateListDrawable funcBackDrawable;
-    Paint bitmapNormal;
-    Paint bitmapFunc;
     Paint bitmapPreview;
     Paint bitmapNoColor;
     Rect padding = new Rect();
@@ -50,13 +58,30 @@ public class KeyboardPaints
     {
         inst = this;
     }
+    final int clr(int c,int def)
+    {
+        return c==st.DEF_COLOR?def:c;
+    }
     void setDefault(KbdDesign design,int defColor)
     {
         mainColor = design.textColor==st.DEF_COLOR?defColor:design.textColor;
-        if(design.m_kbdFuncKeys!=null&&design.m_kbdFuncKeys.textColor!=st.DEF_COLOR)
-            secondColor = design.m_kbdFuncKeys.textColor;
-        else
-            secondColor = mainColor;
+        mainBitmapPaints =  new Paint[]{null,null,null,null};
+        funcBitmapPaints =  new Paint[]{null,null,null,null};
+        mainColors=new int[]{Color.WHITE,st.DEF_COLOR,st.DEF_COLOR,st.DEF_COLOR};
+        funcColors=new int[]{st.DEF_COLOR,st.DEF_COLOR,st.DEF_COLOR,st.DEF_COLOR};
+        
+        mainColors[0] = mainColor;
+        mainColors[1] = clr(design.secondColor,mainColor);
+        mainColors[2] = clr(design.textColorPressed,mainColor);
+        mainColors[3] = clr(design.secondColorPressed,mainColors[1]);
+        
+        if(design.m_kbdFuncKeys!=null)
+        {
+            funcColors[0] = clr(design.m_kbdFuncKeys.textColor,mainColor);
+            funcColors[1] = clr(design.m_kbdFuncKeys.secondColor,funcColors[0]);
+            funcColors[2] = clr(design.m_kbdFuncKeys.textColorPressed,funcColors[0]);
+            funcColors[3] = clr(design.m_kbdFuncKeys.secondColorPressed,funcColors[1]);
+        }
         m_bMainBold = st.has(design.flags,st.DF_BOLD);
 //        if(design.m_keyBackground!=null)
 //        {
@@ -79,30 +104,52 @@ public class KeyboardPaints
         {
             funcBackDrawable = null;
         }
-        bitmapNormal = new Paint();
-        bitmapNormal.setColorFilter(new PorterDuffColorFilter(mainColor, PorterDuff.Mode.SRC_ATOP));
-        if(secondColor==mainColor)
-            bitmapFunc = bitmapNormal;
-        else
-        {
-            bitmapFunc = new Paint();
-            bitmapFunc.setColorFilter(new PorterDuffColorFilter(secondColor, PorterDuff.Mode.SRC_ATOP));
-        }
         bitmapNoColor = new Paint();
         bitmapPreview = new Paint();
         bitmapPreview.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP));
         st.kv().m_KeyBackDrw.getPadding(padding);
         padding.offset(2,2);
     }
-    public final Paint getBitmapPaint(KeyDrw d)
+    final int getIndex(KeyDrw d,boolean second)
+    {
+        int index = second?1:0;
+        if(d.m_bPressed)
+            index+=2;
+        return index;
+    }
+    public final int getColor(KeyDrw d,boolean second)
+    {
+        int index = getIndex(d, second);
+        return d.m_bFunc?funcColors[index]:mainColors[index];
+    }
+    public final Paint getBitmapPaint(KeyDrw d,boolean second)
     {
         if(d.m_bNoColorIcon)
             return bitmapNoColor;
+        if(!d.m_bFunc)
+        {
+            int dd = 10;
+            int d1 = dd;
+        }
         if(d.m_bPreview)
             return bitmapPreview;
-        if(d.m_bFunc)
-            return bitmapFunc;
-        return bitmapNormal;
+        int index = getIndex(d,second);
+        Paint paints[]=d.m_bFunc?funcBitmapPaints:mainBitmapPaints;
+        Paint pt = paints[index];
+        if(pt!=null)
+            return pt;
+        if(pt==null)
+        {
+            pt = new Paint();
+            int color = getColor(d, second);
+            pt.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
+            paints[index]=pt;
+        }
+        return pt;
+    }
+    public final Paint getBitmapPaint(KeyDrw d)
+    {
+        return getBitmapPaint(d,false);
     }
     final EditSet getDefaultMain()
     {
@@ -241,7 +288,7 @@ public class KeyboardPaints
             case VAL_KEY_HEIGHT_LANDSCAPE:
                 return (float) 0.12;
             case VAL_TEXT_SIZE_MAIN:
-                return (float) 0.04;
+                return (float) 0.045;
             case VAL_TEXT_SIZE_SYMBOL:
                 return (float) 0.025;
             case VAL_TEXT_SIZE_LABEL:

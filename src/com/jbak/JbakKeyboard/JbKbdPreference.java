@@ -4,8 +4,10 @@ package com.jbak.JbakKeyboard;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.List;
 
 import android.app.AlertDialog;
+import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -15,15 +17,17 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
-import android.util.Log;
+import android.provider.Settings;
 import android.view.View;
+import android.view.inputmethod.InputMethodInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jbak.ctrl.IntEditor;
-import com.jbak.words.Words;
 
 public class JbKbdPreference extends PreferenceActivity implements OnSharedPreferenceChangeListener
 {
@@ -31,10 +35,22 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
     public static final String DEF_SHORT_VIBRO = "30";
     public static final String DEF_LONG_VIBRO = "15";
     public static JbKbdPreference inst;
+/** Массив списков с целыми значениями */    
+    IntEntry arIntEntries[];
+        
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         inst = this;
+        arIntEntries = new IntEntry[]{
+                new IntEntry(st.PREF_KEY_USE_SHORT_VIBRO, R.string.set_key_short_vibro_desc, R.array.vibro_short_type,st.ONE_STRING),
+                new IntEntry(st.PREF_KEY_AC_PLACE, R.string.set_key_ac_place_desc, R.array.ac_place,st.ZERO_STRING),
+                new IntEntry(st.PREF_KEY_PORTRAIT_TYPE, R.string.set_key_portrait_input_type_desc, R.array.array_input_type,st.ZERO_STRING),
+                new IntEntry(st.PREF_KEY_LANSCAPE_TYPE, R.string.set_key_landscape_input_type_desc, R.array.array_input_type,st.ZERO_STRING),
+                new IntEntry(st.PREF_KEY_PREVIEW_TYPE, R.string.set_ch_keys_preview_desc, R.array.pv_place,st.ONE_STRING),
+                new IntEntry(st.PREF_KEY_USE_VOLUME_KEYS, R.string.set_key_use_volumeKeys_desc, R.array.vk_use,st.ZERO_STRING),
+                new IntEntry(st.PREF_KEY_SOUND_VOLUME, R.string.set_key_sounds_volume_desc, R.array.integer_vals,"5"),
+            };
         st.upgradeSettings(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pref_view);
@@ -47,35 +63,95 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         pr = getPreferenceScreen().findPreference(st.PREF_KEY_LOAD);
         pr.setSummary(pr.getSummary().toString()+'\n'+getBackupPath());
         setSummary(st.PREF_KEY_CLIPBRD_SIZE, R.string.set_key_clipbrd_size_desc, p.getString(st.PREF_KEY_CLIPBRD_SIZE,DEF_SIZE_CLIPBRD ));
-        int index = Integer.decode(p.getString(st.PREF_KEY_USE_SHORT_VIBRO, st.ONE_STRING));
-        
         CharSequence entries[] = st.getGestureEntries(this);
         CharSequence entValues[] = st.getGestureEntryValues(); 
         setGestureList(p, st.PREF_KEY_GESTURE_LEFT, entries, entValues);
         setGestureList(p, st.PREF_KEY_GESTURE_RIGHT, entries, entValues);
         setGestureList(p, st.PREF_KEY_GESTURE_UP, entries, entValues);
         setGestureList(p, st.PREF_KEY_GESTURE_DOWN, entries, entValues);
-        setSummary(st.PREF_KEY_USE_SHORT_VIBRO, R.string.set_key_short_vibro_desc, strVal(getResources().getStringArray(R.array.vibro_short_type)[index]));
-
-        index = Integer.decode(p.getString(st.PREF_KEY_AC_PLACE, st.ZERO_STRING));
-        setSummary(st.PREF_KEY_AC_PLACE, R.string.set_key_ac_place_desc, strVal(getResources().getStringArray(R.array.ac_place)[index]));
-        index = Integer.decode(p.getString(st.PREF_KEY_PORTRAIT_TYPE, st.ZERO_STRING));
-        setSummary(st.PREF_KEY_PORTRAIT_TYPE, R.string.set_key_portrait_input_type_desc, strVal(getResources().getStringArray(R.array.array_input_type)[index]));
-        index = Integer.decode(p.getString(st.PREF_KEY_LANSCAPE_TYPE, st.ZERO_STRING));
-        setSummary(st.PREF_KEY_LANSCAPE_TYPE, R.string.set_key_landscape_input_type_desc, strVal(getResources().getStringArray(R.array.array_input_type)[index]));
-        index = Integer.decode(p.getString(st.PREF_KEY_PREVIEW_TYPE, st.ONE_STRING));
-        setSummary(st.PREF_KEY_PREVIEW_TYPE, R.string.set_ch_keys_preview_desc, strVal(getResources().getStringArray(R.array.pv_place)[index]));
-        index = Integer.decode(p.getString(st.PREF_KEY_USE_VOLUME_KEYS, st.ZERO_STRING));
-        setSummary(st.PREF_KEY_USE_VOLUME_KEYS, R.string.set_key_use_volumeKeys_desc, strVal(getResources().getStringArray(R.array.vk_use)[index]));
+        setGestureList(p, st.PREF_KEY_GESTURE_SPACE_LEFT, entries, entValues);
+        setGestureList(p, st.PREF_KEY_GESTURE_SPACE_RIGHT, entries, entValues);
+        for(IntEntry ie:arIntEntries)
+        {
+            int index = Integer.decode(p.getString(ie.key, ie.defValue));
+            setSummary(ie.key, ie.descStringId, strVal(getResources().getStringArray(ie.arrayNames)[index]));
+        }
 
         st.pref(this).registerOnSharedPreferenceChangeListener(this);
+    }
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        showHelper();
+    }
+    void showHelper()
+    {
+        Preference pr = getPreferenceScreen().findPreference("helper");
+        if(pr==null)
+            return;
+        InputMethodManager imm = (InputMethodManager)getSystemService(Service.INPUT_METHOD_SERVICE);
+        String pn = getPackageName();
+        List<InputMethodInfo> imlist =  imm.getEnabledInputMethodList();
+        int step = 0;
+        String curId = Settings.Secure.getString(getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
+// Проверяем регистрацию в InputMethodManager        
+        for(InputMethodInfo ii:imlist)
+        {
+            if(pn.equals(ii.getPackageName()))
+            {
+                step = 1;
+                if(ii.getId().equals(curId))
+                    step =2;
+            }
+        }
+        if(step==1)
+        {
+            
+        }
+     // Предлагаем включить клавиатуру в настройках
+        if(step==0)
+        {
+            pr.setTitle(R.string.helper_1);
+            pr.setSummary(getString(R.string.helper_1_desc)+" \""+getString(R.string.ime_name)+"\"");
+        }
+        else if(step==1)
+        {
+            pr.setTitle(R.string.helper_2);
+            pr.setSummary(getString(R.string.helper_1_desc)+" \""+getString(R.string.ime_name)+"\"");
+        }
+        if(step==2)
+            getPreferenceScreen().removePreference(pr);
+        else
+            pr.setOnPreferenceClickListener(getHelperListener(step));
+    }
+    OnPreferenceClickListener getHelperListener(final int step)
+    {
+        return new OnPreferenceClickListener()
+        {
+            
+            @Override
+            public boolean onPreferenceClick(Preference preference)
+            {
+                if(step==0)
+                    startActivity(new Intent(Settings.ACTION_INPUT_METHOD_SETTINGS));
+                else if(step==1)
+                {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Service.INPUT_METHOD_SERVICE);
+                    imm.showInputMethodPicker();
+                }
+                return true;
+            }
+        };
     }
     void setGestureList(SharedPreferences p,final String set,CharSequence entries[],CharSequence entValues[])
     {
         ListPreference lp = (ListPreference)getPreferenceScreen().findPreference(set);
         if(lp!=null)
         {
-            int index = st.getGestureIndexBySetting(p.getString(set, st.ZERO_STRING));
+            String def = st.getGestureDefault(set);
+            String s = p.getString(set, def);
+            int index = st.getGestureIndexBySetting(s);
             if(entries==null)
             {
                 lp.setSummary(strVal(st.getGestureEntries(this)[index].toString()));
@@ -152,6 +228,16 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
             runSetKbd(st.SET_SELECT_SKIN);
             return true;
         }
+        else if("pref_calib_portrait".equals(k))
+        {
+            runSetKbd(st.SET_KEY_CALIBRATE_PORTRAIT);
+            return true;
+        }
+        else if("pref_calib_landscape".equals(k))
+        {
+            runSetKbd(st.SET_KEY_CALIBRATE_LANDSCAPE);
+            return true;
+        }
         else if("pref_port_key_height".equals(k))
         {
             runSetKbd(st.SET_KEY_HEIGHT_PORTRAIT);
@@ -206,6 +292,16 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
                 );
             return true;
         }
+        else if("ac_font".equals(k))
+        {
+            getApplicationContext().startActivity(
+                    new Intent(getApplicationContext(),EditSetActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .putExtra(EditSetActivity.EXTRA_PREF_KEY, st.PREF_KEY_FONT_PANEL_AUTOCOMPLETE)
+                    .putExtra(EditSetActivity.EXTRA_DEFAULT_EDIT_SET, JbCandView.getDefaultEditSet(this).toString())
+                );
+            return true;
+        }
         else if("about_app".equals(k))
         {
             vocabTest();
@@ -241,6 +337,7 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
     {
         if(st.PREF_KEY_GESTURE_LEFT.equals(key)||st.PREF_KEY_GESTURE_RIGHT.equals(key)
             ||st.PREF_KEY_GESTURE_UP.equals(key)||st.PREF_KEY_GESTURE_DOWN.equals(key)
+            ||st.PREF_KEY_GESTURE_SPACE_LEFT.equals(key)||st.PREF_KEY_GESTURE_SPACE_RIGHT.equals(key)
          )
         {
             JbKbdView.inst = null;
@@ -250,35 +347,14 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
             JbKbdView.inst = null;
         if(st.PREF_KEY_SHIFT_STATE.equals(key))
             setShiftState();
-        if(st.PREF_KEY_USE_VOLUME_KEYS.equals(key))
+        for(IntEntry ie:arIntEntries)
         {
-            int index = Integer.decode(sharedPreferences.getString(key, st.ZERO_STRING));
-            setSummary(key, R.string.set_key_use_volumeKeys_desc, strVal(getResources().getStringArray(R.array.vk_use)[index]));
-        }
-        if(st.PREF_KEY_AC_PLACE.equals(key))
-        {
-            int index = Integer.decode(sharedPreferences.getString(key, st.ZERO_STRING));
-            setSummary(key, R.string.set_key_ac_place_desc, strVal(getResources().getStringArray(R.array.ac_place)[index]));
-        }
-        if(st.PREF_KEY_PORTRAIT_TYPE.equals(key))
-        {
-            int index = Integer.decode(sharedPreferences.getString(st.PREF_KEY_PORTRAIT_TYPE, st.ZERO_STRING));
-            setSummary(st.PREF_KEY_PORTRAIT_TYPE, R.string.set_key_portrait_input_type_desc, strVal(getResources().getStringArray(R.array.array_input_type)[index]));
-        }
-        if(st.PREF_KEY_LANSCAPE_TYPE.equals(key))
-        {
-            int index = Integer.decode(sharedPreferences.getString(st.PREF_KEY_LANSCAPE_TYPE, st.ZERO_STRING));
-            setSummary(st.PREF_KEY_LANSCAPE_TYPE, R.string.set_key_portrait_input_type_desc, strVal(getResources().getStringArray(R.array.array_input_type)[index]));
-        }
-        if(st.PREF_KEY_USE_SHORT_VIBRO.equals(key))
-        {
-            int index = Integer.decode(sharedPreferences.getString(st.PREF_KEY_USE_SHORT_VIBRO, st.ONE_STRING));
-            setSummary(st.PREF_KEY_USE_SHORT_VIBRO, R.string.set_key_short_vibro_desc, strVal(getResources().getStringArray(R.array.vibro_short_type)[index]));
-        }
-        if(st.PREF_KEY_PREVIEW_TYPE.equals(key))
-        {
-            int index = Integer.decode(sharedPreferences.getString(st.PREF_KEY_PREVIEW_TYPE, st.ONE_STRING));
-            setSummary(st.PREF_KEY_PREVIEW_TYPE, R.string.set_ch_keys_preview_desc, strVal(getResources().getStringArray(R.array.pv_place)[index]));
+            if(ie.key.equals(key))
+            {
+                int index = Integer.decode(sharedPreferences.getString(key, ie.defValue));
+                setSummary(key, ie.descStringId, strVal(getResources().getStringArray(ie.arrayNames)[index]));
+                break;
+            }
         }
         if(st.PREF_KEY_CLIPBRD_SIZE.equals(key))
         {
@@ -524,4 +600,22 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
 //        log+="} total:"+total;
 //        Log.w("Words test", log);
     }
+    public static class IntEntry
+    {
+        public IntEntry(String prefName,int descString,int names,String defaultValue)
+        {
+            key = prefName;
+            descStringId = descString;
+            arrayNames = names;
+        }
+        String key;
+        int descStringId;
+        int arrayNames;
+        String defValue;
+    }
+    public void onStartService()
+    {
+        showHelper();
+    }
+
 }

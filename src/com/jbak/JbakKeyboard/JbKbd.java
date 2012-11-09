@@ -119,6 +119,8 @@ public class JbKbd extends Keyboard {
         {
             if(k!=null)
             {
+                if(!ret)
+                    ret = k.pressed;
                 k.pressed = false;
                 ((LatinKey)k).processed = false;
             }
@@ -131,8 +133,14 @@ public class JbKbd extends Keyboard {
         for(Iterator<Key>it = ar.iterator();it.hasNext();)
         {
             Key k = it.next();
-            if(k.codes!=null&&k.codes.length>0&&k.codes[0]==code)
-                return (LatinKey)k;
+            if(k.codes!=null)
+            {
+                for(int c:k.codes)
+                {
+                    if(c==code)
+                        return (LatinKey)k;
+                }
+            }
         }
         return null;
     }
@@ -233,9 +241,23 @@ public class JbKbd extends Keyboard {
             int c = codes[0];
             return c<0||c==10;
         }
-        boolean hasLongPress()
+        final boolean hasLongPress()
         {
             return longCode!=0||getUpText()!=null||codes[0]==10||codes[0]==Keyboard.KEYCODE_SHIFT;
+        }
+        @Override
+        public void onPressed()
+        {
+            if(m_kd!=null)
+                m_kd.m_bPressed = true;
+            super.onPressed();
+        }
+        @Override
+        public void onReleased(boolean inside)
+        {
+            if(m_kd!=null)
+                m_kd.m_bPressed = false;
+            super.onPressed();
         }
     }    
 }

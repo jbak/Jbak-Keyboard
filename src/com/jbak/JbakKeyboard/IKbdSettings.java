@@ -47,6 +47,10 @@ public interface IKbdSettings
 
 /** Ключ, boolean, хранящий настройку проигрывания звуков */    
     public static final String PREF_KEY_SOUND = "sound";
+    
+/** Ключ, int, хранящий настройку громкости звуков */    
+    public static final String PREF_KEY_SOUND_VOLUME = "sound_volume";
+
 /** Ключ, String, хранящий путь к клавиатуре для выбраного языка в портрете
  *  Полный ключ выглядит как PREF_KEY_LANG_KBD+"en".*/    
     public static final String PREF_KEY_LANG_KBD_PORTRAIT = "kp_path_";
@@ -85,6 +89,8 @@ public interface IKbdSettings
     public static final String PREF_KEY_SECOND_FONT = "pSecondFont";
     /** Ключ, String, настройка шрифта меток */
     public static final String PREF_KEY_LABEL_FONT = "pLabelFont";
+    /** Ключ, String, настройка шрифта панели автодополнения*/
+    public static final String PREF_KEY_FONT_PANEL_AUTOCOMPLETE = "pAcFont";
     /** Ключ, String, варианты клавиши Shift, строка со значениями:0 - 3-позиц., 1 - normal/shift, 2 - normal/capslock */
     public static final String PREF_KEY_SHIFT_STATE = "shift_state";
     /** Ключ, String, задержка нажатий клавиш в ms (хранится в виде строки, по умолчанию - 0)*/
@@ -113,12 +119,20 @@ public interface IKbdSettings
     public static final String PREF_KEY_GESTURE_UP = "g_up";
     /** Ключ, String, команда для жеста вниз (код команды)*/
     public static final String PREF_KEY_GESTURE_DOWN = "g_down";
+    /** Ключ, String, команда для жеста влево от пробела (код команды)*/
+    public static final String PREF_KEY_GESTURE_SPACE_LEFT = "g_space_left";
+    /** Ключ, String, команда для жеста влево от пробела (код команды)*/
+    public static final String PREF_KEY_GESTURE_SPACE_RIGHT = "g_space_right";
     /** Ключ, String, где показывать автодополнения */
     public static final String PREF_KEY_AC_PLACE = "ac_place";
     /** Ключ, boolean, true - использовать автоисправление */
     public static final String PREF_KEY_AC_AUTOCORRECT = "ac_autocorrect";
     /** Ключ, int, использование клавиш громкости для управления курсором. 0:нет, 1:+ влево, - вправо, 2: - влево, + вправо*/
     public static final String PREF_KEY_USE_VOLUME_KEYS = "use_volume_keys";
+    /** Ключ, int, вертикальная коррекция в портретном режиме */
+    public static final String PREF_KEY_CORR_PORTRAIT = "pref_vertcorr_p";
+    /** Ключ, int, вертикальная коррекция в ландшафтном режиме */
+    public static final String PREF_KEY_CORR_LANDSCAPE = "pref_vertcorr_l";
     
     public static final String EXT_XML = "xml";
     public static final String SETTINGS_BACKUP_FILE= "settings_backup"+'.'+EXT_XML;
@@ -143,6 +157,10 @@ public interface IKbdSettings
     public static final int SET_SELECT_KEYBOARD = 5;
 /** Вызывает настройку внешнего вида клавиатуры (стандартный, айфон..)*/    
     public static final int SET_SELECT_SKIN= 6;
+    
+    public static final int SET_KEY_CALIBRATE_PORTRAIT = 7;
+    public static final int SET_KEY_CALIBRATE_LANDSCAPE = 8;
+
     //-------------------------------------------------------------------    
     /// Список клавиш редактирования текста
     //-------------------------------------------------------------------    
@@ -203,6 +221,7 @@ public interface IKbdSettings
     public static final String DRW_PREFIX = "d_"; 
 /** Тэг для записи в logcat*/
     public static final String TAG = "JBK";
+    public static final String NULL_STRING = "";
     public static final String ZERO_STRING = "0";
     public static final String ONE_STRING = "1";
 
@@ -227,5 +246,8 @@ public interface IKbdSettings
         new  KbdGesture(R.string.mm_templates, CMD_TPL),
         new  KbdGesture(R.string.mm_settings, CMD_PREFERENCES),
         new  KbdGesture(R.string.cmd_close, Keyboard.KEYCODE_CANCEL),
+        new  KbdGesture(R.string.cmd_space, 32),
+        new  KbdGesture(R.string.cmd_bs, Keyboard.KEYCODE_DELETE),
+        new  KbdGesture(R.string.cmd_shift, Keyboard.KEYCODE_SHIFT),
     };
 }

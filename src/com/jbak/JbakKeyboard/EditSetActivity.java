@@ -13,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.jbak.ctrl.IntEditor;
 import com.jbak.ctrl.IntEditor.OnChangeValue;
@@ -127,9 +128,9 @@ public class EditSetActivity extends Activity
     };
     public static class EditSet
     {
-        Typeface typeface = Typeface.DEFAULT;
-        int style = 0;
-        int fontSize = 0;
+        public Typeface typeface = Typeface.DEFAULT;
+        public int style = 0;
+        public int fontSize = 0;
         public EditSet()
         {}
         final boolean isDefault()
@@ -152,7 +153,7 @@ public class EditSetActivity extends Activity
                 return Typeface.MONOSPACE;
             return Typeface.DEFAULT;
         }
-        void setToEditor(EditText et)
+        void setToEditor(TextView et)
         {
             float df = et.getTextSize();
             et.setTypeface(typeface, style);
@@ -201,7 +202,7 @@ public class EditSetActivity extends Activity
                 typeface = intToTypeface(Integer.valueOf(ar[0]));
                 style = Integer.valueOf(ar[1]);
                 float fs = Float.valueOf(ar[2]);
-                if(fs<1&&fs>0)
+                if(fs<1&&fs>=0)
                 {
                     fontSize = KeyboardPaints.percToPixel(st.c(),true, fs,false);
                     return 1;

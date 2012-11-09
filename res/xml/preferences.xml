@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <!-- 0 - Хелпер -->
+    <Preference android:key="helper"/>
     <!-- 0 - предпросмотр -->
 
     <ListPreference
@@ -10,8 +12,11 @@
         android:entryValues="@array/integer_vals"
         android:summary="@string/set_ch_keys_preview_desc"
         android:title="@string/set_ch_keys_preview" />
+    <PreferenceScreen 
+        android:summary="@string/pref_keys_desc"
+        android:title="@string/pref_keys"
+        >
     <!-- 1 - высота клавиш, портрет -->
-
     <Preference
         android:key="pref_port_key_height"
         android:summary="@string/set_key_height_portrait_desc"
@@ -22,6 +27,15 @@
         android:key="pref_land_key_height"
         android:summary="@string/set_key_height_landscape_desc"
         android:title="@string/set_key_height_landscape" />
+    <Preference
+        android:key="pref_calib_portrait"
+        android:summary="@string/calibr_desc"
+        android:title="@string/calibr_portrait" />
+    <Preference
+        android:key="pref_calib_landscape"
+        android:summary="@string/calibr_desc"
+        android:title="@string/calibr_landscape" />
+    </PreferenceScreen>
     <!-- 3 - языки -->
 
     <Preference
@@ -56,7 +70,7 @@
                 />
             
         </PreferenceCategory>
-
+<!-- Смена регистра -->
         <PreferenceCategory android:title="@string/set_key_register" >
 
             <CheckBoxPreference
@@ -97,7 +111,7 @@
                 </PreferenceCategory>
             </PreferenceScreen>
         </PreferenceCategory>
-
+<!-- Автоподстановка пробелов -->
         <PreferenceCategory android:title="@string/set_key_spaces" >
 
             <CheckBoxPreference
@@ -146,7 +160,7 @@
                 android:key="set_key_label_font"
                 android:summary="@string/set_key_font_label_desc"
                 android:title="@string/set_key_font_label" />
-        </PreferenceScreen>
+            </PreferenceScreen>
         <!-- 7 - полноэкранный редактор -->
 
         <PreferenceScreen
@@ -178,8 +192,12 @@
                 android:summary="@string/set_key_landscape_input_settings_desc"
                 android:title="@string/set_key_landscape_input_settings" />
         </PreferenceScreen>
-    </PreferenceScreen>
-    <!-- 4 - вибра -->
+            <Preference
+                android:key="ac_font"
+                android:title="@string/set_ac_font" 
+                android:summary="@string/set_ac_font_desc"/>
+            </PreferenceScreen>
+    <!-- 4 - вибра и звук -->
 
     <PreferenceScreen
         android:summary="@string/set_key_voice_desc"
@@ -190,7 +208,15 @@
             android:key="sound"
             android:summary="@string/set_key_sounds_desc"
             android:title="@string/set_key_sounds" />
-
+        <ListPreference
+            android:defaultValue="5"
+            android:entries="@array/integer_vals"
+            android:entryValues="@array/integer_vals"
+            android:key="sound_volume"
+            android:title="@string/set_key_sounds_volume" 
+            android:summary="@string/set_key_sounds_volume_desc"
+            />
+        
         <ListPreference
             android:defaultValue="1"
             android:entries="@array/vibro_short_type"
@@ -229,7 +255,7 @@
         android:title="@string/set_key_gestures" >
 
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="use_gestures"
             android:summary="@string/set_key_use_gestures_desc"
             android:title="@string/set_key_use_gestures" />
@@ -247,9 +273,16 @@
             android:title="@string/set_key_gesture_up" />
 
         <ListPreference
+            
             android:key="g_down"
             android:title="@string/set_key_gesture_down" />
-    </PreferenceScreen>
+        <ListPreference
+            android:key="g_space_left"
+            android:title="@string/set_key_gesture_space_left" />
+        <ListPreference
+            android:key="g_space_right"
+            android:title="@string/set_key_gesture_space_right" />
+        </PreferenceScreen>
     <!-- прочие настройки -->
 
     <PreferenceScreen

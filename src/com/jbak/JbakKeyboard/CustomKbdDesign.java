@@ -29,7 +29,13 @@ public class CustomKbdDesign
     public static final byte P_SpecKeyStrokeEndColor = 14;
     public static final byte P_SpecKeyTextColor = 15;
     public static final byte P_KeyBackCornerX = 16;
-    public static final byte P_KeyBackCornerY = 16;
+    public static final byte P_KeyBackCornerY = 17;
+    public static final byte P_KeySymbolColor=18;
+    public static final byte P_KeyTextPressedColor=19;
+    public static final byte P_KeySymbolPressedColor=20;
+    public static final byte P_SpecKeySymbolColor=21;
+    public static final byte P_SpecKeyTextPressedColor=22;
+    public static final byte P_SpecKeySymbolPressedColor=23;
     int errorLine = 0;
     String arNames[] = new String[]{
           "KeyBackStartColor",
@@ -49,7 +55,13 @@ public class CustomKbdDesign
           "SpecKeyStrokeEndColor",
           "SpecKeyTextColor",
           "KeyBackCornerX",
-          "KeyBackCornerY"
+          "KeyBackCornerY",
+          "KeySymbolColor",
+          "KeyTextPressedColor",
+          "KeySymbolPressedColor",
+          "SpecKeySymbolColor",
+          "SpecKeyTextPressedColor",
+          "SpecKeySymbolPressedColor",
     };
     String skinPath = "";
     Vector<IntEntry> arValues = new Vector<IntEntry>();
@@ -91,7 +103,11 @@ public class CustomKbdDesign
         }
         return true;
     }
-    int getIntValue(int index,int defVal)
+    final int getColor(int index)
+    {
+        return getIntValue(index, st.DEF_COLOR);
+    }
+    final int getIntValue(int index,int defVal)
     {
         for(IntEntry ie:arValues)
         {
@@ -158,7 +174,9 @@ public class CustomKbdDesign
             if(startColor!=st.DEF_COLOR)
                 gb.setStroke(new GradBack(startColor, endColor).setCorners(cornerX, cornerY).setGap(gap-1));
             ret.setFuncKeysDesign(new KbdDesign(0, 0, textColor, 0, 0).setKeysBackground(gb));
+            ret.m_kbdFuncKeys.setColors(ret.m_kbdFuncKeys.textColor, getColor(P_SpecKeySymbolColor), getColor(P_SpecKeyTextPressedColor), getColor(P_SpecKeySymbolPressedColor));
         }
+        ret.setColors(ret.textColor, getColor(P_KeySymbolColor), getColor(P_KeyTextPressedColor), getColor(P_KeySymbolPressedColor));
         return ret;
     }
     int parseParam(String s)
