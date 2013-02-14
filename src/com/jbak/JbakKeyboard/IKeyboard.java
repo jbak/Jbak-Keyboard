@@ -27,6 +27,11 @@ public class IKeyboard
     public static final int LANG_IT = 5;
     public static final int LANG_DE = 6;
     public static final int LANG_SV = 7;
+    public static final int LANG_TT = 8;
+    public static final int LANG_BA = 9;
+    public static final int LANG_TR = 10;
+    public static final int LANG_HE = 11;
+    public static final int LANG_EL = 12;
     
     public static final int LANG_SYM = 1000;
     public static final int LANG_SYM1 = 1001;
@@ -44,6 +49,11 @@ public class IKeyboard
         new Lang(LANG_IT,"it"),
         new Lang(LANG_DE,"de"),
         new Lang(LANG_SV,"sv"),
+        new Lang(LANG_TT,"tt"),
+        new Lang(LANG_BA,"ba"),
+        new Lang(LANG_TR,"tr"),
+        new Lang(LANG_HE,"he"),
+        new Lang(LANG_EL,"el"),
         new Lang(LANG_SYM,LANG_SYM_KBD),
         new Lang(LANG_SYM1,LANG_SYM_KBD1),
         new Lang(LANG_EDIT,LANG_EDITTEXT),
@@ -91,6 +101,16 @@ public class IKeyboard
         new Keybrd("ru_qwerty_tablet", R.string.kbd_name_qwerty_tablet),
         new Keybrd("en_qwerty_tablet", R.string.kbd_name_qwerty_tablet),
         new Keybrd("sv_qwerty_tablet", R.string.kbd_name_qwerty_tablet),
+        new Keybrd("tr_qwerty", R.string.kbd_name_qwerty),
+        new Keybrd("tr_wide", R.string.kbd_name_wide),
+        new Keybrd("tt_qwerty", R.string.kbd_name_qwerty),
+        new Keybrd("tt_wide", R.string.kbd_name_wide),
+        new Keybrd("ba_qwerty", R.string.kbd_name_qwerty),
+        new Keybrd("ba_wide", R.string.kbd_name_wide),
+        new Keybrd("he_qwerty", R.string.kbd_name_qwerty),
+        new Keybrd("he_wide", R.string.kbd_name_wide),
+        new Keybrd("el_qwerty", R.string.kbd_name_qwerty),
+        new Keybrd("el_wide", R.string.kbd_name_wide),
         new Keybrd("symbol_standard",  R.string.lang_symbol),
         new Keybrd("symbol2_standard", R.string.lang_symbol_shift),
         new Keybrd("edittext_standard",R.string.lang_edittext),
@@ -113,7 +133,7 @@ public class IKeyboard
         // Стандартный дизайн 
         new KbdDesign(R.string.kbd_design_standard, 
                       0, 
-                      DEF_COLOR,
+                      Color.WHITE,
                       0,
                       0),
         // iPhone

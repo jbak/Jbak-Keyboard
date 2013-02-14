@@ -32,6 +32,7 @@ public class CustomKeyboard extends JbKbd
     public static final String VAL_PIXELS = "px";
     public static final String TAG_ROW = "Row";
     public static final String TAG_KEY = "Key";
+    public static final String TAG_REPLACE = "Replace";
     public static final String DRW_PREFIX = "@drawable/sym_keyboard_";
     public static final String A_keyWidth = "keyWidth";
     public static final String A_keyHeight = "keyHeight";
@@ -60,6 +61,8 @@ public class CustomKeyboard extends JbKbd
     public static final String A_noColor="noColor";   
 /** Аттрибут, bool. Если true - по нажатию клавиши происходит переход к qwerty-клавиатуре, false - переход не происходит*/
     public static final String A_goQwerty="goQwerty";   
+    public static final String A_From="from";   
+    public static final String A_To="to";   
 
     public static final  byte B_keyWidth   = 1;
     public static final  byte B_keyHeight  = 2;
@@ -82,6 +85,8 @@ public class CustomKeyboard extends JbKbd
     public static final  byte B_noColor=19;
     public static final  byte B_longKeyOutputText=20;
     public static final  byte B_goQwerty=21;
+    public static final  byte B_from=22;
+    public static final  byte B_to=23;
     
     public static final  byte BA_KBD=(byte)'|';
     public static final  byte BA_ROW=58;//(byte)':'
@@ -212,6 +217,8 @@ public class CustomKeyboard extends JbKbd
                             parseRow(parser);
                         else if(name.equals(TAG_KEY))
                             parseKey(parser, keys);
+                        else if(name.equals(TAG_REPLACE))
+                            parseReplace(parser);
                         break;
                     case XmlPullParser.END_TAG:
                         name = parser.getName();
@@ -511,6 +518,29 @@ public class CustomKeyboard extends JbKbd
         while(b<BA_ROW);
         processKey(k);
         return b;
+    }
+    final boolean parseReplace(XmlPullParser p)
+    {
+        int cnt = p.getAttributeCount();
+        String from=null,to=null;
+        for(int i=0;i<cnt;i++)
+        {
+            String name = attName(p, i);
+            if(name.equals(A_From))
+            {
+                from = p.getAttributeValue(i);
+            }
+            else if(name.equals(A_To))
+            {
+                to = p.getAttributeValue(i);
+            }
+            
+        }
+        if(from==null||to==null)
+            return false;
+        arReplacement.add(new Replacement(from, to));
+        return true;
+        
     }
     final boolean parseKey(XmlPullParser p, List<Key> keys) throws IOException
     {

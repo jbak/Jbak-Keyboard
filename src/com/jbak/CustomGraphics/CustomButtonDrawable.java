@@ -46,12 +46,13 @@ public class CustomButtonDrawable extends StateListDrawable
 		return m_drw;
 	}
 	@Override
-	protected void onBoundsChange(Rect bounds)
+	public void setBounds(int left, int top, int right, int bottom)
 	{
-	    if(m_dependedDrawable!=null)
-	        m_dependedDrawable.setBounds(bounds);
-	    super.onBoundsChange(bounds);
+	    super.setBounds(left, top, right, bottom);
+        if(m_dependedDrawable!=null)
+            m_dependedDrawable.setBounds(left, top-1, right, bottom);
 	}
+	
 	public void setDependentDrawable(StateListDrawable depDrawable)
     {
         m_dependedDrawable = depDrawable;

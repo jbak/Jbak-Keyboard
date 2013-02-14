@@ -82,6 +82,8 @@ public class KeyboardPaints
             funcColors[2] = clr(design.m_kbdFuncKeys.textColorPressed,funcColors[0]);
             funcColors[3] = clr(design.m_kbdFuncKeys.secondColorPressed,funcColors[1]);
         }
+        else
+            funcColors = mainColors;
         m_bMainBold = st.has(design.flags,st.DF_BOLD);
 //        if(design.m_keyBackground!=null)
 //        {
@@ -288,7 +290,7 @@ public class KeyboardPaints
             case VAL_KEY_HEIGHT_LANDSCAPE:
                 return (float) 0.12;
             case VAL_TEXT_SIZE_MAIN:
-                return (float) 0.045;
+                return (float) 0.042;
             case VAL_TEXT_SIZE_SYMBOL:
                 return (float) 0.025;
             case VAL_TEXT_SIZE_LABEL:

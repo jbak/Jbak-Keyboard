@@ -49,7 +49,7 @@ public class GlobDialog
         LinearLayout ll = new LinearLayout(m_c);
         ll.setBackgroundResource(android.R.drawable.dialog_frame);
         ll.setOnKeyListener(m_keyListener);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.gravity = Gravity.CENTER_HORIZONTAL;
         ll.setOrientation(LinearLayout.VERTICAL);
         ll.setLayoutParams(lp);
@@ -64,7 +64,7 @@ public class GlobDialog
             ll.addView(tv);
         }
         LinearLayout.LayoutParams lp1 
-        = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         lp1.setMargins(20, 20, 20, 20);
         LinearLayout butLayout = new LinearLayout(m_c);
         butLayout.setLayoutParams(lp1);

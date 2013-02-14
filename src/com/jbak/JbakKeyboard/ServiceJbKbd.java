@@ -52,6 +52,7 @@ import android.view.inputmethod.InputConnection;
 import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
+import com.jbak.JbakKeyboard.JbKbd.Replacement;
 import com.jbak.JbakKeyboard.Templates.CurInput;
 import com.jbak.ctrl.SameThreadTimer;
 import com.jbak.words.IWords.WordEntry;
@@ -76,6 +77,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public boolean             m_bComplete             = true;
     public static final String PID                     = "a14ef033de91702";
     public boolean m_acAutocorrect = false;
+    public int m_lastInput = 0;
 /** Место, в котором показано окно автодополнения */    
     int m_acPlace = JbCandView.AC_PLACE_TITLE;
 /** Текущий просмотр кандидатов */    
@@ -379,6 +381,19 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             // Буферы не заполняются в том случае, если введена одна буква - сильно ускоряет на тормознутых редакторах при быстром вводе
             if(oldSelStart==oldSelEnd&&m_SelStart-oldSelStart==1)
             {
+                if(m_lastInput!=0)
+                {
+                    boolean separator = isWordSeparator(m_lastInput);
+                    processReplacements();
+                    if(separator)
+                    {
+                        handleWordSeparator(m_lastInput);
+                    }
+                    processCaseAndCandidates();
+                    m_lastInput = 0;
+                }
+                if(m_suggestType!=SUGGEST_NONE&&m_acPlace==JbCandView.AC_PLACE_CURSOR_POS)
+                    m_candView.show(st.kv(), m_acPlace);
             }
             else
             {
@@ -389,6 +404,25 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             }
         }
 //        Log.d(PressArray.TAG, "sendKey "+ms);
+    }
+    boolean processReplacements()
+    {
+        JbKbd kbd = st.curKbd();
+        if(kbd==null||!kbd.hasReplacements())
+            return false;
+        if(m_textBeforeCursor==null)  
+            getTextBeforeCursor();
+        ArrayList<Replacement> ar = kbd.getReplacements(m_textBeforeCursor.toString());
+        if(ar.size()<1)
+            return false;
+        Replacement r = ar.get(0);
+        InputConnection ic = getCurrentInputConnection();
+        ic.beginBatchEdit();
+        ic.deleteSurroundingText(r.from.length(), 0);
+        ic.commitText(r.to, 1);
+        ic.endBatchEdit();
+        getTextBeforeCursor();
+        return true;
     }
     void processCaseAndCandidates()
     {
@@ -514,9 +548,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         if(m_textBeforeCursor==null)
             m_textBeforeCursor = new StringBuffer();
         m_textBeforeCursor.append(ch);
-        if(m_textBeforeCursor.length()>40)
+        if(m_textBeforeCursor.length()>100)
             m_textBeforeCursor.deleteCharAt(0);
-        processCaseAndCandidates();
     }
     /** Helper to send a character to the editor as raw key events. */
     private void sendKey(int keyCode)
@@ -623,12 +656,9 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         {
 
         }
-        else if (isWordSeparator(primaryCode))
+        else 
         {
-            handleWordSeparator(primaryCode);
-        }
-        else
-        {
+            m_lastInput = primaryCode;
             handleCharacter(primaryCode);
         }
         checkGoQwerty(primaryCode);
@@ -678,11 +708,13 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     private final void handleWordSeparator(int primaryCode)
     {
         if(!(m_acAutocorrect&&primaryCode!='\''&&m_candView!=null&&m_candView.applyCorrection(primaryCode)))
-            sendKey(primaryCode);
+        {
+            
+        }
         if (m_bCanAutoInput)
         {
             if (st.has(m_state, STATE_SENTENCE_SPACE) && m_SpaceSymbols.indexOf(primaryCode) > -1)
-                sendKeyChar(' ');
+                sendKey(' ');
         }
     }
 
@@ -721,8 +753,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
                 primaryCode = Character.toUpperCase(primaryCode);
             }
         }
-        processChar((char) primaryCode);
-        sendKeyChar((char) primaryCode);
+        sendKey(primaryCode);
         if (st.has(JbKbdView.inst.m_state, JbKbdView.STATE_TEMP_SHIFT))
         {
             JbKbdView.inst.m_state = st.rem(JbKbdView.inst.m_state, JbKbdView.STATE_TEMP_SHIFT);
@@ -745,11 +776,13 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
         getCurrentInputConnection().commitCompletion(ci);
     }
-    public void setWord(String word)
+    public void setWord(String word,boolean autoCorrect)
     {
         CurInput ci = new CurInput();
         InputConnection ic = getCurrentInputConnection();
         ic.beginBatchEdit();
+        if(autoCorrect)
+            ic.deleteSurroundingText(1, 0);
         if (ci.init(ic))
         {
             ci.replaceCurWord(ic, word);
@@ -886,14 +919,14 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             case KeyEvent.KEYCODE_DPAD_RIGHT:
             case KeyEvent.KEYCODE_DPAD_UP: // Up
             case KeyEvent.KEYCODE_DPAD_DOWN: // Down
-                if ((code == KeyEvent.KEYCODE_DPAD_LEFT || code == KeyEvent.KEYCODE_DPAD_UP) && m_SelStart == 0)
-                    return;
-                if (code == KeyEvent.KEYCODE_DPAD_RIGHT || code == KeyEvent.KEYCODE_DPAD_DOWN)
-                {
-                    CharSequence s = ic.getTextAfterCursor(1, 0);
-                    if (s == null || s.length() == 0)
-                        return;
-                }
+//                if ((code == KeyEvent.KEYCODE_DPAD_LEFT || code == KeyEvent.KEYCODE_DPAD_UP) && m_SelStart == 0)
+//                    return;
+//                if (code == KeyEvent.KEYCODE_DPAD_RIGHT || code == KeyEvent.KEYCODE_DPAD_DOWN)
+//                {
+//                    CharSequence s = ic.getTextAfterCursor(1, 0);
+//                    if (s == null || s.length() == 0)
+//                        return;
+//                }
                 boolean sel = isSelMode();
                 if (sel)
                     ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT));
@@ -995,7 +1028,9 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
         VibroThread.getInstance(this).readSettings();
         if (key==null||st.PREF_KEY_AC_AUTOCORRECT.equals(key))
+        {
             m_acAutocorrect = sharedPreferences.getBoolean(st.PREF_KEY_AC_AUTOCORRECT, false);
+        }
         if (st.PREF_KEY_EDIT_SETTINGS.equals(key))
         {
             m_es.load(st.PREF_KEY_EDIT_SETTINGS);
@@ -1024,7 +1059,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         m_soundVolume/=10f;
         m_LandscapeEditType = Integer.valueOf(sharedPreferences.getString(st.PREF_KEY_LANSCAPE_TYPE, "0"));
         m_PortraitEditType = Integer.valueOf(sharedPreferences.getString(st.PREF_KEY_PORTRAIT_TYPE, "0"));
-        if (sharedPreferences.getBoolean(st.PREF_KEY_AUTO_CASE, false))
+        if (sharedPreferences.getBoolean(st.PREF_KEY_AUTO_CASE, true))
             m_state |= STATE_AUTO_CASE;
         else
             m_state = st.rem(m_state, STATE_AUTO_CASE);
@@ -1247,8 +1282,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 //            m_cursorRect = new Rect((int)r.left,(int)r.top,(int)r.right,(int)r.bottom);
 //            m_cursorRect.offset(newCursor.left,newCursor.top);
         }
-        if(m_suggestType!=SUGGEST_NONE&&m_acPlace==JbCandView.AC_PLACE_CURSOR_POS)
-            m_candView.show(st.kv(), m_acPlace);
         super.onUpdateCursor(newCursor);
     }
     @Override
@@ -1342,7 +1375,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     }
     void getTextBeforeCursor()
     {
-        CharSequence seq = getCurrentInputConnection().getTextBeforeCursor(40, 0);
+        CharSequence seq = getCurrentInputConnection().getTextBeforeCursor(100, 0);
         m_textBeforeCursor = new StringBuffer(seq==null?"":seq);
     }
 }

@@ -113,7 +113,7 @@ public class JbKbdView extends KeyboardView {
     {
         inst = this;
         m_vibro = VibroThread.getInstance(getContext());
-        String path = st.pref().getString(st.PREF_KEY_KBD_SKIN_PATH, ""+st.KBD_DESIGN_STANDARD);
+        String path = st.pref().getString(st.PREF_KEY_KBD_SKIN_PATH, st.NULL_STRING+st.KBD_DESIGN_STANDARD);
         int vertCorrection = -1000;//st.isLandscape(getContext())?20:0;
         KbdDesign d = st.getSkinByPath(path);
         if(d!=g_lastLoadedDesign)

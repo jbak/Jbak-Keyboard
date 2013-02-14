@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.os.Bundle;
@@ -74,7 +75,7 @@ public class SetKbdActivity extends Activity
         }
         else if(m_curAction==st.SET_SELECT_SKIN)
         {
-            String path = st.pref().getString(st.PREF_KEY_KBD_SKIN_PATH, st.ZERO_STRING);
+            String path = st.pref().getString(st.PREF_KEY_KBD_SKIN_PATH, st.NULL_STRING+st.KBD_DESIGN_STANDARD);
             int pos = 0;
             for(KbdDesign kd:st.arDesign)
             {
@@ -500,6 +501,10 @@ public class SetKbdActivity extends Activity
             }
         }
     }
+    public void onConfigurationChanged(Configuration newConfig) 
+    {
+        
+    };
     SpannableString m_calibrTest;
     int m_calibrPos=0;
     ForegroundColorSpan m_autoSpan;

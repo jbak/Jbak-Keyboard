@@ -232,7 +232,7 @@ public class JbCandView extends RelativeLayout
             {
                 CompletionInfo ci = (CompletionInfo)v.getTag();
                 if(ci==null)
-                    ServiceJbKbd.inst.setWord(((TextView)v).getText().toString());
+                    ServiceJbKbd.inst.setWord(((TextView)v).getText().toString(),false);
                 else
                     ServiceJbKbd.inst.setCompletionInfo(ci);
             }
@@ -436,7 +436,7 @@ public class JbCandView extends RelativeLayout
             return false;
         TextView tv = (TextView)m_ll.getChildAt(0);
         String text = tv.getText().toString()+(char)code;
-        ServiceJbKbd.inst.setWord(text);
+        ServiceJbKbd.inst.setWord(text,true);
         return true;
     }
     static EditSet getDefaultEditSet(Context c)

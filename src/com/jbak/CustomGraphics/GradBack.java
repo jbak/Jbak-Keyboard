@@ -45,9 +45,10 @@ public class GradBack extends RectShape
 	boolean m_bDrawPressedBack = true;
 /** Тип градиента, одна из констант GRADIENT_TYPE */	
 	public int m_gradType = GRADIENT_TYPE_LINEAR;
-    public int shadowColor = Color.RED;
+    public int shadowColor = 0x88888888;
 /** Фон обводки. Если не null - рисуется под основным фоном, и в этом случае будет рисоваться его тень*/    
     GradBack m_stroke=null;
+    GradBack m_pressed = null;
 /** Толщина обводки*/    
     int m_strokeSize=1;
     boolean m_bUseCache = true;
@@ -84,9 +85,11 @@ public class GradBack extends RectShape
         gb.m_bDrawPressedBack = m_bDrawPressedBack;
 	    if(m_stroke!=null)
 	        gb.m_stroke = m_stroke.clone();
+	    if(m_pressed!=null)
+	        gb.m_pressed = m_pressed.clone();
 	    return gb;
 	}
-/** Конструктор, задающий цвета градииента
+/** Конструктор, задающий цвета градиента
  * @param startColor Начальный цвет градиента
  * @param endColor Конечный цвет градиента */
 	public GradBack (int startColor,int endColor)
@@ -125,6 +128,11 @@ public class GradBack extends RectShape
 	    m_bDrawPressedBack = bDrawPressed;
 	    return this;
 	}
+    public GradBack setPressedGradBack(GradBack pressed)
+    {
+        m_pressed = pressed;
+        return this;
+    }
 /** Устанавливает радиус скругления углов 
 *@param cx Радиус скругления по оси X
 *@param cy Радиус скругления по оси Y
@@ -147,8 +155,8 @@ public class GradBack extends RectShape
 	protected Paint newColorPaint(int color)
 	{
 		Paint ret = newPaint();
-		ret.setColor(color);
         ret.setStyle(Style.FILL);
+		ret.setColor(color);
 		return ret;
 	}
 /** Возвращает объект {@link Drawable}, который содержит текущий объект*/	
@@ -165,7 +173,8 @@ public class GradBack extends RectShape
 	{
         if(m_clrEnd==DEFAULT_COLOR)
         {
-            return newColorPaint(m_clrStart);
+            m_clrEnd = m_clrStart;
+            //return newColorPaint(m_clrStart);
         }
         Paint pt = newPaint();
         if(m_gradType==GRADIENT_TYPE_SWEEP)
@@ -188,7 +197,9 @@ public class GradBack extends RectShape
 	    if(m_dependentBack!=null)
 	        m_dependentBack.resize(width, height);
         if(m_stroke!=null)
-            m_stroke.onResize(width, height);
+            m_stroke.resize(width, height);
+        if(m_pressed!=null)
+            m_pressed.resize(width, height);
 	    if(m_ptFill!=null&&width==m_rect.width()+m_gap*2&&height==m_rect.height()+m_gap*2)
 	        return;
         m_rect.set(m_gap, m_gap, width-m_gap, height-m_gap);
@@ -220,12 +231,19 @@ public class GradBack extends RectShape
 	{
 	    if(m_stroke!=null)
 	    {
-	        m_stroke.draw(canvas, paint);
+	        m_stroke.draw(canvas, null);
 	    }
 	    if(m_ptFill!=null)
 	    {
-	        m_ptFill.setColorFilter(m_bDrawPressedBack&&m_bPressed?m_pressFilter:null);
-	        canvas.drawRoundRect(m_rect, m_cornerX, m_cornerY, m_ptFill);
+	        if(m_bPressed&&m_pressed!=null)
+	        {
+	            m_pressed.draw(canvas, null);
+	        }
+	        else
+	        {
+    	        m_ptFill.setColorFilter(m_bDrawPressedBack&&m_bPressed?m_pressFilter:null);
+    	        canvas.drawRoundRect(m_rect, m_cornerX, m_cornerY, m_ptFill);
+	        }
 	    }
 //		if(m_bDrawPressedBack&&hasState(android.R.attr.state_pressed))
 //			canvas.drawRoundRect(m_rect, m_cornerX, m_cornerY, m_ptFillPressed);

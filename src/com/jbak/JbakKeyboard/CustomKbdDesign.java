@@ -36,6 +36,16 @@ public class CustomKbdDesign
     public static final byte P_SpecKeySymbolColor=21;
     public static final byte P_SpecKeyTextPressedColor=22;
     public static final byte P_SpecKeySymbolPressedColor=23;
+    public static final byte P_KeyBackPressedStartColor=24;
+    public static final byte P_KeyBackPressedEndColor=25;
+    public static final byte P_KeyBackPressedGradientType=26;
+    public static final byte P_KeyPressedStrokeStartColor=27;
+    public static final byte P_KeyPressedStrokeEndColor=28;
+    public static final byte P_SpecKeyBackPressedStartColor=29;
+    public static final byte P_SpecKeyBackPressedEndColor=30;
+    public static final byte P_SpecKeyBackPressedGradientType=31;
+    public static final byte P_SpecKeyPressedStrokeStartColor=32;
+    public static final byte P_SpecKeyPressedStrokeEndColor=33;
     int errorLine = 0;
     String arNames[] = new String[]{
           "KeyBackStartColor",
@@ -62,6 +72,16 @@ public class CustomKbdDesign
           "SpecKeySymbolColor",
           "SpecKeyTextPressedColor",
           "SpecKeySymbolPressedColor",
+          "KeyBackPressedStartColor",
+          "KeyBackPressedEndColor",
+          "KeyBackPressedGradientType",
+          "KeyPressedStrokeStartColor",
+          "KeyPressedStrokeEndColor",
+          "SpecKeyBackPressedStartColor",
+          "SpecKeyBackPressedEndColor",
+          "SpecKeyBackPressedGradientType",
+          "SpecKeyPressedStrokeStartColor",
+          "SpecKeyPressedStrokeEndColor",
     };
     String skinPath = "";
     Vector<IntEntry> arValues = new Vector<IntEntry>();
@@ -133,6 +153,7 @@ public class CustomKbdDesign
                                        .setGradType(gradType)
                                        .setGap(gap)
                                        .setCorners(cornerX, cornerY)
+                                       .setGradType(getIntValue(P_KeyBackPressedGradientType, GradBack.GRADIENT_TYPE_LINEAR))
                                         );
         }
         startColor = getIntValue(P_KeyboardBackgroundStartColor, st.DEF_COLOR);
@@ -156,6 +177,26 @@ public class CustomKbdDesign
                         .setCorners(cornerX, cornerY)
                             );
         }
+        startColor = getColor(P_KeyBackPressedStartColor);
+        endColor = getColor(P_KeyBackPressedEndColor);
+        if(startColor!=st.DEF_COLOR&&ret.m_keyBackground!=null)
+        {
+            GradBack pressed = new GradBack(startColor,endColor)
+                .setGap(gap)
+                .setCorners(cornerX, cornerY)
+                .setGradType(getIntValue(P_SpecKeyBackPressedGradientType, GradBack.GRADIENT_TYPE_LINEAR));
+            startColor = getColor(P_KeyPressedStrokeStartColor);
+            endColor = getColor(P_KeyPressedStrokeEndColor);
+            if(startColor!=st.DEF_COLOR)
+            {
+                pressed.setStroke(
+                        new GradBack(startColor,endColor)
+                        .setGap(gap-1)
+                        .setCorners(cornerX, cornerY)
+                        );
+            }
+            ret.m_keyBackground.setPressedGradBack(pressed);
+        }
         
         ret.textColor = getIntValue(P_KeyTextColor, st.DEF_COLOR);
         if(getIntValue(P_KeyTextBold, 0)==1)
@@ -165,9 +206,9 @@ public class CustomKbdDesign
         if(startColor!=st.DEF_COLOR)
         {
             int textColor = getIntValue(P_SpecKeyTextColor, st.DEF_COLOR);
-            GradBack gb = new BitmapCachedGradBack(startColor, endColor).
-            setGradType(ret.m_kbdBackground.m_gradType)
-            .setGap(gap);
+            GradBack gb = new BitmapCachedGradBack(startColor, endColor)
+                .setGradType(ret.m_kbdBackground.m_gradType)
+                .setGap(gap);
             gb.setCorners(cornerX, cornerY);
             startColor = getIntValue(P_SpecKeyStrokeStartColor, st.DEF_COLOR);
             endColor = getIntValue(P_SpecKeyStrokeEndColor, st.DEF_COLOR);
@@ -175,6 +216,26 @@ public class CustomKbdDesign
                 gb.setStroke(new GradBack(startColor, endColor).setCorners(cornerX, cornerY).setGap(gap-1));
             ret.setFuncKeysDesign(new KbdDesign(0, 0, textColor, 0, 0).setKeysBackground(gb));
             ret.m_kbdFuncKeys.setColors(ret.m_kbdFuncKeys.textColor, getColor(P_SpecKeySymbolColor), getColor(P_SpecKeyTextPressedColor), getColor(P_SpecKeySymbolPressedColor));
+            startColor = getColor(P_SpecKeyBackPressedStartColor);
+            endColor = getColor(P_SpecKeyBackPressedEndColor);
+            if(startColor!=st.DEF_COLOR&&ret.m_keyBackground!=null)
+            {
+                GradBack pressed = new GradBack(startColor,endColor)
+                    .setGap(gap)
+                    .setCorners(cornerX, cornerY);
+                startColor = getColor(P_KeyPressedStrokeStartColor);
+                endColor = getColor(P_KeyPressedStrokeEndColor);
+                if(startColor!=st.DEF_COLOR)
+                {
+                    pressed.setStroke(
+                            new GradBack(startColor,endColor)
+                            .setGap(gap-1)
+                            .setCorners(cornerX, cornerY)
+                            );
+                }
+                ret.m_kbdFuncKeys.m_keyBackground.setPressedGradBack(pressed);
+            }
+
         }
         ret.setColors(ret.textColor, getColor(P_KeySymbolColor), getColor(P_KeyTextPressedColor), getColor(P_KeySymbolPressedColor));
         return ret;

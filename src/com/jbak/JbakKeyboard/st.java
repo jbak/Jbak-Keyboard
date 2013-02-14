@@ -561,11 +561,6 @@ public class st extends IKeyboard implements IKbdSettings
             ped.putString(st.PREF_KEY_USE_SHORT_VIBRO,vt);
             ped.remove(st.PREF_KEY_VIBRO_SHORT_KEY);
         }
-// 0.92 - 0.93 Меняем старую автосмену регистра на новую         
-        if(!pref.contains(st.PREF_KEY_AUTO_CASE))
-        {
-            ped.putBoolean(PREF_KEY_AUTO_CASE, pref.getBoolean(PREF_KEY_UP_AFTER_SYMBOLS, false));
-        }
  // 0.94 - 0.95 Меняем настройку "показ просмотра клавиш" на трёхпозиционную настройку PREF_KEY_PREVIEW_TYPE
         if(!pref.contains(PREF_KEY_PREVIEW_TYPE))
         {

@@ -239,7 +239,7 @@
 	<string name="about_author">Автор:</string>
 	<string name="about_author_desc">Юрий \"Jbak\" Бакунин \njbak1979@gmail.com</string>
 	<string name="about_other">Прочее:</string>
-	<string name="about_other_desc">Автор иконок: Али Гамидов (ali.gamidov@mail.ru) \nКлассный сайт про Андроид: http://samandroid.ru</string>
+	<string name="about_other_desc">Автор иконок: Али Гамидов (ali.gamidov@mail.ru) \nКлассный сайт про Андроид: http://samandroid.ru \n\n Башкирская, татарская раскладки и словарь татарского языка  - Ильдар Киньябулатов и Рустам Кафеев (http://ildar.me/ba)\n\n Словарь башкирского языка - лаборатория компьютерной филологии БашГУ (http://lcph.bashedu.ru)</string>
     <string name="about_web">Сайт: http://jbak.ru/jbakkeyboard</string>
 	    
 <!-- Names for various keyboards -->

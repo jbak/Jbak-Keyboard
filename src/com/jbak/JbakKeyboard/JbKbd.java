@@ -16,6 +16,7 @@
 
 package com.jbak.JbakKeyboard;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,9 +32,10 @@ import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 
 public class JbKbd extends Keyboard {
-
     private LatinKey mEnterKey;
     public Keybrd kbd;
+    ArrayList<Replacement> arReplacement = new ArrayList<Replacement>();
+    ArrayList<Replacement> tempReplace = new ArrayList<Replacement>();
     public JbKbd(Context context, Keybrd kbd) {
         super(context, kbd.resId);
         this.kbd = kbd;
@@ -63,6 +65,20 @@ public class JbKbd extends Keyboard {
                 return true;
         }
         return false;
+    }
+    public final boolean hasReplacements()
+    {
+        return arReplacement.size()>0;
+    }
+    public final ArrayList<Replacement> getReplacements(String prefix)
+    {
+        tempReplace.clear();
+        for(Replacement r:arReplacement)
+        {
+            if(r.isEqual(prefix))
+                tempReplace.add(r);
+        }
+        return tempReplace;
     }
     @Override
     protected Key createKeyFromXml(Resources res, Row parent, int x, int y, 
@@ -257,7 +273,25 @@ public class JbKbd extends Keyboard {
         {
             if(m_kd!=null)
                 m_kd.m_bPressed = false;
-            super.onPressed();
+            super.onReleased(inside);
         }
-    }    
+    }
+    public static class Replacement
+    {
+        public String from;
+        public String to;
+        public Replacement(String from,String to)
+        {
+            this.from = from;
+            this.to = to;
+        }
+        boolean isEqual(String prefix)
+        {
+            if(prefix.length()<from.length())
+                return false;
+            if(prefix.substring(prefix.length()-from.length()).equals(from))
+                return true;
+            return false;
+        }
+    }
 }
