@@ -17,8 +17,6 @@
 package com.jbak.JbakKeyboard;
 
 import java.lang.reflect.Field;
-import java.util.List;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -27,7 +25,6 @@ import android.graphics.drawable.StateListDrawable;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
-import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.TextPaint;
@@ -37,7 +34,6 @@ import android.view.MotionEvent;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 import com.jbak.JbakKeyboard.IKbdSettings.KbdGesture;
 import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
@@ -114,7 +110,6 @@ public class JbKbdView extends KeyboardView {
         inst = this;
         m_vibro = VibroThread.getInstance(getContext());
         String path = st.pref().getString(st.PREF_KEY_KBD_SKIN_PATH, st.NULL_STRING+st.KBD_DESIGN_STANDARD);
-        int vertCorrection = -1000;//st.isLandscape(getContext())?20:0;
         KbdDesign d = st.getSkinByPath(path);
         if(d!=g_lastLoadedDesign)
         {
@@ -321,6 +316,8 @@ public class JbKbdView extends KeyboardView {
         }
         else 
         {
+        	if(key.runSpecialInstructions(true))
+        		return true;
             String t = key.getUpText();
             if(t!=null)
             {
@@ -494,27 +491,55 @@ public class JbKbdView extends KeyboardView {
         return m_curDesign==null||m_curDesign.m_keyBackground==null;
     }
     boolean m_bStopInvalidate = false;
-    public void handleLangChange()
+    public void setLang(String newLang)
+    {
+        Keybrd k = st.getKeybrdForLangName(newLang);
+        if(k==null)
+        {
+            Toast.makeText(getContext(), "No keyboards for lang "+newLang, Toast.LENGTH_LONG).show();
+            return;
+        }
+        setKeyboard(st.loadKeyboard(k));
+        st.saveCurLang();
+        if(isUserInput())
+        {
+        	ServiceJbKbd.inst.getCandidates();
+        }
+    }
+    /** 
+     * Смена языка
+     * @param canUseMenu Если false - меню выбора языков не выводится
+     * @param nextLang следующий язык, false - предыдущий 
+     */
+    public void handleLangChange(boolean canUseMenu,boolean nextLang)
     {
         String ls[]=st.getLangsArray(st.c());
+        if(canUseMenu&&ls.length>3&&isUserInput())
+        {
+        	ComMenu.showLangs(getContext());
+        	return;
+        }
         String cl = st.getCurLang();
         if(st.tempEnglishQwerty)
             cl = st.arLangs[0].name;
         st.tempEnglishQwerty = false;
         int f = st.searchStr(cl, ls);
         String newLang = st.defKbd().lang.name;
-        if(f==ls.length-1)
-            newLang = ls[0];
-        else if(f<ls.length-1)
-            newLang = ls[f+1];
-        Keybrd k = st.kbdForLangName(newLang);
-        if(k==null)
+        if(nextLang)
         {
-            Toast.makeText(getContext(), "No keyboards for lang "+newLang, 700).show();
-            return;
+	        if(f==ls.length-1)
+	            newLang = ls[0];
+	        else if(f<ls.length-1)
+	            newLang = ls[f+1];
         }
-        setKeyboard(st.loadKeyboard(k));
-        st.saveCurLang();
+        else
+        {
+	        if(f==0)
+	            newLang = ls[ls.length-1];
+	        else if(f<ls.length-1)
+	            newLang = ls[f-1];
+        }
+        setLang(newLang);
     }
     void reload()
     {
@@ -681,9 +706,11 @@ public class JbKbdView extends KeyboardView {
                k.iconPreview = m_PreviewDrw.getDrawable();
                m_popup.show(inst, k, false);
             }
-
+            
             if(!m_vibro.hasVibroOnPress())
                 m_vibro.runVibro(VibroThread.VIBRO_SHORT);
+            if(k.runSpecialInstructions(false))
+            	return;
             m_extListener.onKey(primaryCode,keyCodes);
         }
         @Override
@@ -723,6 +750,10 @@ public class JbKbdView extends KeyboardView {
     public void setOnKeyboardActionListener(OnKeyboardActionListener listener) 
     {
         m_extListener = listener;
+        if(isUserInput())
+        	inst = this;
+        else if(inst==this&&listener==null)
+        	inst = null;
         super.setOnKeyboardActionListener(m_actionListener);
     };
     @Override

@@ -174,7 +174,6 @@ public class JbKbdPreference extends PreferenceActivity implements OnSharedPrefe
         st.pref(this).unregisterOnSharedPreferenceChangeListener(this);
         if(JbKbdView.inst!=null)
             JbKbdView.inst.setPreferences();
-        inst = null;
         super.onDestroy();
     }
     void runSetKbd(int action)

@@ -119,6 +119,8 @@ public class IKeyboard
         new Keybrd("num_kbd",          R.string.lang_numbers),
         new Keybrd("en_qwerty_5_row",  R.string.kbd_name_5_rows),
         new Keybrd("symbol_wide",      R.string.kbd_name_wide),
+        new Keybrd("en_two_sides",  R.string.kbd_name_2_sides),
+        new Keybrd("ru_two_sides",  R.string.kbd_name_2_sides),
     };
 // Флаги дизайна (Design Flags)
 /** Жирный шрифт */    
@@ -306,6 +308,19 @@ public class IKeyboard
         /** Строка с названием языка из ресурсов */
         public int strId;
         boolean bVirtual = false;
+        static String getLangDisplayName(String lang)
+        {
+        	try{
+                String ln = new Locale(lang).getDisplayName();
+                if(ln.length()>1)
+                {
+                    return Character.toUpperCase(ln.charAt(0))+ln.substring(1);
+                }
+        	}
+        	catch (Throwable e) {
+			}
+        	return lang;
+        }
         String getName(Context c)
         {
             try
@@ -316,11 +331,7 @@ public class IKeyboard
                 }
                 else
                 {
-                    String ln = new Locale(name).getDisplayName();
-                    if(ln.length()>1)
-                    {
-                        return Character.toUpperCase(ln.charAt(0))+ln.substring(1);
-                    }
+                	return getLangDisplayName(name);
                 }
             }
             catch (Throwable e) 
@@ -349,6 +360,8 @@ public class IKeyboard
         public String path = null;
         public boolean isWide = false;
         public static final String WIDE_SUFFIX = "_wide";
+        public static final String TABLET_SUFFIX = "_tablet";
+        public static final String TABLET_HALF_SUFFIX = "_tablet_half";
 /** Конструктор
  * @param kbdCode Код клавиатуры, одна из констант KBD_
  * @param lang  Язык клавиатуры, один из элементов массива arLangs
@@ -364,9 +377,17 @@ public class IKeyboard
             isWide = asset.endsWith(WIDE_SUFFIX);
             this.resName = resName;
         }
+        Keybrd(Keybrd k)
+        {
+            this.kbdCode = k.kbdCode;
+            this.lang = k.lang;
+            this.resId = k.resId;
+            this.resName = k.resName;
+            isWide = k.isWide;
+            path = k.path;
+        }
         Keybrd(int kbdCode,Lang lang, int resId,int resName)
         {
-            
             this.kbdCode = kbdCode;
             this.lang = lang;
             this.resId = resId;

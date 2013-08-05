@@ -2,10 +2,6 @@ package com.jbak.JbakKeyboard;
 
 import java.util.Vector;
 
-import com.jbak.JbakKeyboard.IKeyboard.Lang;
-import com.jbak.JbakKeyboard.UpdateDownloader.VersionDiff;
-import com.jbak.words.WordsService;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.jbak.JbakKeyboard.IKeyboard.Lang;
+import com.jbak.JbakKeyboard.UpdateDownloader.VersionDiff;
 
 public class UpdVocabActivity extends Activity
 {

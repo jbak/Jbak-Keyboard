@@ -8,7 +8,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
-import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.Keyboard.Key;
 
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
@@ -132,122 +131,6 @@ class KeyDrw extends RectShape
         if(m_bFunc&&st.paint().funcBackDrawable!=null)
             st.paint().funcBackDrawable.draw(canvas);
     }
-//    @Override
-//    public void draw(Canvas canvas, Paint paint)
-//    {
-//        if(txtMain==null&&bmp==null||JbKbdView.inst==null)
-//            return;
-////      Rect rb = canvas.getClipBounds();
-//        Paint p1 = st.paint().main;
-//        if(txtMain==null&&bmp!=null)
-//        {
-//// Рисуем просто картинку, без текста (по центру)
-//            if(!m_bPreview)
-//                canvas.translate(0-rb.width()/2, 0-rb.height()/2);
-//            drawFuncBackground(canvas);
-//            drawSingleBitmap(canvas,rb.width()/2-bmp.getWidth()/2,rb.height()/2-bmp.getHeight()/2, paint);
-//            return;
-//        }
-//        if(m_bPreview)
-//        {
-////Рисуем просмотр     
-//            if(txtMain!=null)
-//            {
-//                p1 = JbKbdView.inst.m_tpPreview;
-//                float mw = p1.measureText(txtMain);
-//                float y = rb.height()/2+(0-p1.ascent())/2;
-//                float x = rb.width()/2-mw/2;
-//                if(txtMain.length()>1)
-//                {
-//                    p1.setTextSize(st.kv().m_PreviewTextSize/2);
-//                }
-//                canvas.drawText(txtMain, x, y, p1);
-//            }
-//            return;
-//        }
-////Если текст длинее 1 символа - считаем меткой и рисуем с помощью JbKbdView.m_tpLabel 
-//        if(m_bSmallLabel)
-//        {
-//            p1 = st.paint().second;
-//        }
-//        else if(txtMain.length()>1)
-//        {
-//            p1 = st.paint().label;
-//        }
-//        useTextColor(p1);
-////canvas сдвинут к середине, вернём его в позицию 0,0           
-//        canvas.translate(0-rb.width()/2, 0-rb.height()/2);
-//        drawFuncBackground(canvas);
-//        Paint p2 = st.paint().second;
-//        useTextColor(p2);
-//        if(txtMain.length()==1)
-//        {
-//            if(JbKbdView.inst.isUpperCase())
-//                txtMain = txtMain.toUpperCase();
-//            else
-//                txtMain = txtMain.toLowerCase();
-//        }
-//        Rect b = new Rect();
-//        p1.getTextBounds(txtMain, 0, txtMain.length(), b);
-//        int a1 = (int) (0-p1.ascent());
-//        int a2 = (int) (0-p2.ascent());
-//        int d1 = (int) p1.descent();
-//        int d2 = (int) p2.descent();
-//        int w1,h1=d1+a1,w2,h2;
-//        if(bmp!=null)
-//        {
-//            h2 = bmp.getHeight();
-//            w2 = bmp.getWidth();
-//        }
-//        else if(txtSmall!=null)
-//        {
-//            h2 = a2+d2;
-//            w2 = (int) p2.measureText(txtSmall);
-//        }
-//        else
-//        {
-//            h2 = w2 = 0;
-//        }
-//        w1 = (int) p1.measureText(txtMain);
-//        int fh = GAP*2+h1+h2+DELIM; // Полная высота
-//        if(fh>rb.height())
-//        {
-//            // Изображение основного текста и доп. символов не умещается в высоту
-//            int x2 = rb.width()-GAP-w2;
-//            if(bmp!=null)
-//            {
-//                drawSingleBitmap(canvas, x2, GAP+3, p2);
-//            }
-//            else if(txtSmall!=null)
-//            {
-//                canvas.drawText(txtSmall, x2, GAP+a2, p2);
-//            }
-//            if(txtMain!=null)
-//            {
-//                int x = rb.width()/2-w1/2;
-//                while(x+w1>x2-DELIM&&x>GAP)
-//                    --x;
-//                canvas.drawText(txtMain, x, rb.height()-GAP-d1-1, p1);
-//            }
-//        }
-//        else
-//        {
-//            // Всё изображение умещается
-//            if(bmp!=null)
-//            {
-//              drawSingleBitmap(canvas, rb.width()/2-w2/2, GAP+3, p2);
-//            }
-//            else if(txtSmall!=null)
-//            {
-//                canvas.drawText(txtSmall, rb.width()/2-w2/2, GAP+a2, p2);
-//            }
-//            int y = h2+GAP+a1;
-//            int dy = (rb.height()-GAP-y)/2;
-//            if(dy<4)
-//                dy = 0;
-//            canvas.drawText(txtMain, rb.width()/2-w1/2, y+dy, p1);
-//        }
-//    }
     static class DrwCache
     {
         String mainLower;
@@ -258,6 +141,7 @@ class KeyDrw extends RectShape
         float m_yMainUpper;
         float m_xSmall;
         float m_ySmall;
+        boolean isHalfSmallLabel=false;
     };
     final int horzX(int minX,int preferX,int mainTextWidth,int secondTextPos)
     {
@@ -340,6 +224,12 @@ class KeyDrw extends RectShape
             h2 = w2 = 0;
         }
         w1 = (int) p1.measureText(m_c.mainLower);
+        if(w1>rb.width()-4&&m_c.mainLower.length()>1)
+        {
+            m_c.isHalfSmallLabel = true;
+            p1 = st.paint().halfLabel;
+            w1 = (int) p1.measureText(m_c.mainLower);
+        }
         int fh = st.paint().padding.top+st.paint().padding.left+h1+h2+DELIM; // Полная высота
         if(fh>rb.height())
         {
@@ -448,16 +338,20 @@ class KeyDrw extends RectShape
         }
 //Если текст длинее 1 символа - считаем меткой и рисуем с помощью JbKbdView.m_tpLabel 
         boolean bUp = JbKbdView.inst.isUpperCase(); 
+        if(m_c.isHalfSmallLabel)
+            p1 = st.paint().halfLabel;
         if(m_bSmallLabel)
         {
             bUp = false;
-            p1 = st.paint().second;
+            if(!m_c.isHalfSmallLabel)
+                p1 = st.paint().second;
         }
         else if(txtMain.length()>1)
         {
             if(!m_bMultiCode)
                 bUp = false;
-            p1 = st.paint().label;
+            if(!m_c.isHalfSmallLabel)
+                p1 = st.paint().label;
         }
         useTextColor(p1,false);
 //canvas сдвинут к середине, вернём его в позицию 0,0           

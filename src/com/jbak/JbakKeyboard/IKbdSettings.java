@@ -183,6 +183,7 @@ public interface IKbdSettings
     public static final int TXT_ED_CUT = -322;
 /** Команда текстовой клавиатуры - выделить всё*/
     public static final int TXT_ED_SELECT_ALL = -323;
+    public static final int TXT_ED_COPY_ALL = -324;
     public static final int TXT_ED_LAST = -399;
 	//-------------------------------------------------------------------    
 	/// Список команд 
@@ -202,8 +203,16 @@ public interface IKbdSettings
     public static final int CMD_TPL_NEW_FOLDER = -505;
 /** Внутреняя команда - запуск редактора шаблонов */    
     public static final int CMD_TPL_EDITOR = -506;
-/** Внутреняя команда - переключение языка */    
+/** Выбор клавиатуры для текущей ориентации экрана */    
+    public static final int CMD_SELECT_KEYBOARD = -508;
+/** Внутреняя команда - переключение языка. Если языков больше 3 - показываем меню*/    
     public static final int CMD_LANG_CHANGE = -20;
+    /** Внутреняя команда - выбор языка из меню */    
+    public static final int CMD_LANG_MENU = -21;
+    /** Внутреняя команда - переключение языка без вывода меню, переход к предыдущему языку */    
+    public static final int CMD_LANG_CHANGE_PREV_LANG = -22; 
+    /** Внутреняя команда - переключение языка без вывода меню, переход к следующему языку*/    
+    public static final int CMD_LANG_CHANGE_NEXT_LANG = -23; 
 /** Внутреняя команда - компиляция клавиатур */    
     public static final int CMD_COMPILE_KEYBOARDS = -10000;
     
@@ -216,6 +225,8 @@ public interface IKbdSettings
     public static final String SET_INTENT_ACTION = "sa";
  /**  Параметр String - название языка, для которого производится выбор клавиатуры */    
     public static final String SET_INTENT_LANG_NAME = "sl";
+/**  Параметр int - ориентация экрана, для которой выбирается раскладка 0- оба типа, 1 - портрет, 2 - ландшафт*/    
+    public static final String SET_SCREEN_TYPE = "screen";
     
 /** Строковый префикс для кнопки, где метка для длинного нажатия является иконкой */
     public static final String DRW_PREFIX = "d_"; 

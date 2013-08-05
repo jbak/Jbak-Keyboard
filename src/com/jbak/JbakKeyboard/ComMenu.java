@@ -2,22 +2,27 @@ package com.jbak.JbakKeyboard;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.shapes.RectShape;
+import android.text.ClipboardManager;
+import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
-import android.view.HapticFeedbackConstants;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+
+import com.jbak.CustomGraphics.GradBack;
+import com.jbak.JbakKeyboard.IKeyboard.Lang;
+import com.jbak.JbakKeyboard.Templates.CurInput;
 import com.jbak.ctrl.GlobDialog;
 
 /** Универсальное меню. Используется как для выпадающего, так и для контекстного меню */
@@ -79,7 +84,13 @@ public class ComMenu
         }
         else
         {
-            btn.setBackgroundDrawable(st.kv().m_curDesign.m_keyBackground.clone().getStateDrawable());
+        	try{
+        	RectShape clon = st.kv().m_curDesign.m_keyBackground.clone();
+            btn.setBackgroundDrawable(((GradBack)clon).getStateDrawable());
+        	}
+        	catch (Throwable e) {
+				// TODO: handle exception
+			}
         }
 //        setButtonKeyboardBackground(btn);
         btn.setHeight(st.kv().m_KeyHeight);
@@ -128,24 +139,6 @@ public class ComMenu
                 m_MenuObserver.OnObserver(new Integer(me.id),new Boolean(true));
             }
             return true;
-        }
-    };
-/** Обработчик событий сенсора. Нужен для отрисовки кнопок меню */    
-    OnTouchListener m_btnListener = new OnTouchListener()
-    {
-        @Override
-        public boolean onTouch(View v, MotionEvent event)
-        {
-            int act =event.getAction(); 
-            if(act==MotionEvent.ACTION_DOWN)
-            {
-                v.setBackgroundDrawable(st.kv().m_drwKeyPress);
-            }
-            if(act==MotionEvent.ACTION_UP||act==MotionEvent.ACTION_CANCEL)
-            {
-                v.setBackgroundDrawable(st.kv().m_drwKeyBack);
-            }
-            return false;
         }
     };
 /** Сторонний обработчик, который был передан в функции {@link #show(com.jbak.JbakTaskMan.st.UniObserver)}*/    
@@ -269,8 +262,58 @@ public class ComMenu
         lp.height = st.kv().getHeight();
         m_MainView.setLayoutParams(lp);
     }
+    public static void showCopy(final Context c)
+    {
+    	final CurInput ci = new CurInput();
+    	if(!ci.init(ServiceJbKbd.inst.getCurrentInputConnection()))
+    		return;
+    	final ComMenu menu = new ComMenu();
+    	menu.add(R.string.menu_copy_all, R.string.menu_copy_all);
+    	if(ci.hasCurLine)
+    		menu.add(R.string.menu_copy_paragraph, R.string.menu_copy_paragraph);
+    	String word = ci.getWordText(); 
+    	if(!TextUtils.isEmpty(word))
+    		menu.add(R.string.menu_copy_word, R.string.menu_copy_word);
+    	menu.show(new st.UniObserver() {
+			
+			@Override
+			public int OnObserver(Object param1, Object param2) {
+				ClipboardManager cm = (ClipboardManager)c.getSystemService(Service.CLIPBOARD_SERVICE);
+				switch((Integer)param1)
+				{
+					case R.string.menu_copy_all:
+						ServiceJbKbd.inst.processTextEditKey(st.TXT_ED_COPY_ALL);
+						break;
+					case R.string.menu_copy_word:
+						cm.setText(ci.getWordText());
+						break;
+					case R.string.menu_copy_paragraph:
+						cm.setText(ci.getLineText());
+						break;
+				}
+				return 0;
+			}
+		});
+    }
+    public static void showLangs(Context с)
+    {
+    	final String lang[] = st.getLangsArray(с);
+    	final ComMenu menu = new ComMenu();
+    	for(int i=0;i<lang.length;i++)
+    	{
+    		menu.add(Lang.getLangDisplayName(lang[i]),i);
+    	}
+    	menu.show(new st.UniObserver() {
+			
+			@Override
+			public int OnObserver(Object param1, Object param2) {
+				st.kv().setLang(lang[(Integer)param1]);
+				return 0;
+			}
+		});
+    }
 /** Функция создаёт меню для мультибуфера обмена */    
-    static boolean showClipboard()
+    public static boolean showClipboard()
     {
         Cursor c = st.stor().getClipboardCursor();
         if(c==null)
@@ -379,4 +422,5 @@ public class ComMenu
         else
             m_adapter.notifyDataSetChanged();
     }
+    
 }

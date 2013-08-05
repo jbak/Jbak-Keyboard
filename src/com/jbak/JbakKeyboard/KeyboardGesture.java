@@ -17,7 +17,7 @@ public class KeyboardGesture extends GestureDetector
         JbKbdView m_kv;
         int minGestSize = 100;
         float deltaDelim = (float) 1.5;
-        int minVelocity = 200;
+        int minVelocity = 150;
         public KvListener setKeyboardView(JbKbdView kv)
         {
             m_kv = kv;

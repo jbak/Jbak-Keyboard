@@ -32,6 +32,7 @@ public class KeyboardPaints
     public Paint second;
 /** Шрифт клавиатуры для меток */    
     public Paint label;
+    public Paint halfLabel;
     Paint mainBitmapPaints[]=new Paint[]{null,null,null,null};
     Paint funcBitmapPaints[]=new Paint[]{null,null,null,null};
 /** Цвета текстов. 0 - основной текст, 1 - текст доп символов, 2 - основной текст в нажатом состоянии, 3 - доп. символы в нажатом состоянии*/    
@@ -194,6 +195,8 @@ public class KeyboardPaints
             label = getDefaultLabel().getTextPaint();
         else
             label = es.getTextPaint();
+        halfLabel = new Paint(label);
+        halfLabel.setTextSize(halfLabel.getTextSize()/2);
     }
     void addBitmap(BitmapCache c)
     {

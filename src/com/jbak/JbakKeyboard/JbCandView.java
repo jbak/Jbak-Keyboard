@@ -4,7 +4,8 @@ import java.util.Vector;
 
 import android.app.Service;
 import android.content.Context;
-import android.graphics.Rect;
+import android.content.res.Configuration;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.IBinder;
 import android.util.AttributeSet;
@@ -41,6 +42,9 @@ public class JbCandView extends RelativeLayout
     boolean m_bBlockClickOnce = false;
     CompletionInfo m_completions[];
     EditSet m_es;
+    int m_defaultFontSize=0;
+    int m_minWidth = 0;
+    int m_maxWidth=0;
     public static final String[] DEF_WORDS = new String[]
     {
         ",",
@@ -70,15 +74,27 @@ public class JbCandView extends RelativeLayout
     void init(Context context)
     {
         m_height = context.getResources().getDimensionPixelSize(R.dimen.cand_height);
+        m_defaultFontSize = context.getResources().getDimensionPixelSize(R.dimen.candidate_font_height);
+        m_inflater = (LayoutInflater)context.getSystemService(Service.LAYOUT_INFLATER_SERVICE);
+        wm = (WindowManager) getContext().getSystemService(Service.WINDOW_SERVICE);
+        m_lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        Point sz = new Point();
+        if(android.os.Build.VERSION.SDK_INT >=13)
+        {
+        	wm.getDefaultDisplay().getSize(sz);
+        }
+        else
+        {
+        	sz.x = wm.getDefaultDisplay().getWidth();
+        	sz.y = wm.getDefaultDisplay().getHeight();
+        }
+        m_maxWidth = Math.min(sz.x,sz.y)-10;
         if(st.pref(context).contains(st.PREF_KEY_FONT_PANEL_AUTOCOMPLETE))
         {
             m_es = new EditSet();
             m_es.load(st.PREF_KEY_FONT_PANEL_AUTOCOMPLETE);
             calcEditSet();
         }
-        wm = (WindowManager) getContext().getSystemService(Service.WINDOW_SERVICE);
-        m_lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        m_inflater = (LayoutInflater)context.getSystemService(Service.LAYOUT_INFLATER_SERVICE);
         setTexts(null);
 
     }
@@ -198,8 +214,8 @@ public class JbCandView extends RelativeLayout
             }
             else
             {
-                tv = newTextView(false);
-                m_ll.addView(tv,m_lp);
+                tv = createTextView(false);
+                m_ll.addView(tv);
             }
             if(m_es!=null)
                 m_es.setToEditor(tv);
@@ -309,7 +325,7 @@ public class JbCandView extends RelativeLayout
     void addFullViewPart(LinearLayout parent,int width,int pos)
     {
         LinearLayout ll = new LinearLayout(getContext());
-        
+        ll.setClipChildren(false);
         parent.addView(ll);
         int w = 0;
         while (pos<m_texts.length)
@@ -317,7 +333,7 @@ public class JbCandView extends RelativeLayout
             String txt = m_texts[pos];
             if(txt==null)
                 return;
-            TextView tv = newTextView(true);
+            TextView tv = createTextView(true);
             tv.setText(txt);
             tv.measure(0, 0);
             w+=tv.getMeasuredWidth();
@@ -388,7 +404,7 @@ public class JbCandView extends RelativeLayout
         m_yPos = yPos;
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = m_height;
         lp.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                     |WindowManager.LayoutParams.FLAG_FULLSCREEN
                     |WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
@@ -409,9 +425,7 @@ public class JbCandView extends RelativeLayout
     int m_lines=2;
     void calcEditSet()
     {
-        int dp2 = (int)st.floatDp(2, getContext());
-        int fh = m_es.fontSize*2+dp2*2;
-        if(fh>=m_height)
+        if(m_es.fontSize<=m_defaultFontSize)
         {
             m_lines = 2;
         }
@@ -419,12 +433,25 @@ public class JbCandView extends RelativeLayout
         {
             m_lines = 1;
         }
+        TextView tv = createTextView(false);
+        tv.setText("Tgd");
+        tv.measure(0, 0);
+        m_minWidth = tv.getMeasuredHeight();
+    	m_height = tv.getMeasuredHeight();//(m_es.fontSize+m_es.fontSize/2)*m_lines+dp2*2;
     }
-    public TextView newTextView(boolean fullView)
+    public TextView createTextView(boolean fullView)
     {
-        TextView tv = (TextView)m_inflater.inflate(R.layout.candidate_item, null);
-        tv.setIncludeFontPadding(fullView);
-        tv.setMaxLines(m_lines);
+        TextView tv = new TextView(getContext());
+        tv.setGravity(Gravity.CENTER);
+        tv.setMaxWidth(m_maxWidth);
+//        tv.setBackgroundColor(0xffffffff);
+        tv.setBackgroundResource(R.drawable.cand_item_background);
+        tv.setMinWidth(m_minWidth);
+        tv.setTextColor(0xff000000);
+        //(TextView)m_inflater.inflate(R.layout.candidate_item, null);
+    	tv.setIncludeFontPadding(false);
+        if(!fullView)
+        	tv.setMaxLines(m_lines);
         tv.setOnClickListener(m_textClickListener);
         if(m_es!=null)
             m_es.setToEditor(tv);

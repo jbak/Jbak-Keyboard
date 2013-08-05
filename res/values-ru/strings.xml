@@ -248,7 +248,8 @@
 	<string name="kbd_name_wide">Широкие клавиши</string>
 	<string name="kbd_name_sym_edit">Символы и редактирование</string>
 	<string name="kbd_name_5_rows">5 строк</string>
-	    	    
+	<string name="kbd_name_2_sides">Двусторонняя</string>
+		    	    
 <!-- Names for keyboards designs -->
 	<string name="kbd_design_standard">Стандартный</string>    
 	<string name="kbd_design_iphone">Псевдо iPhone</string>
@@ -272,5 +273,8 @@
  	<string name="cmd_none">Ничего не делать</string>   
  	<string name="cmd_close">Закрыть клавиатуру</string>   
  	<string name="cmd_space">Пробел</string>   
- 		    	
+ 	<string name="menu_copy_all">Копировать весь текст</string>
+ 	<string name="menu_copy_paragraph">Копировать абзац</string>
+ 	<string name="menu_copy_word">Копировать слово</string>
+ 			    	
 </resources>

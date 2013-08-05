@@ -1,6 +1,7 @@
 package com.jbak.CustomGraphics;
 
 import android.R;
+import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
@@ -30,6 +31,10 @@ public class CustomButtonDrawable extends StateListDrawable
 		return this;
 	}
 	@Override
+	public boolean selectDrawable(int idx) {
+		return true;
+	}
+	@Override
 	protected boolean onStateChange(int[] stateSet)
 	{
         if(m_dependedDrawable!=null)
@@ -41,6 +46,10 @@ public class CustomButtonDrawable extends StateListDrawable
 		return false;
 	}
 	@Override
+	public void draw(Canvas canvas) {
+		m_grad.draw(canvas, null);
+	}
+	@Override
 	public Drawable getCurrent()
 	{
 		return m_drw;
@@ -49,6 +58,7 @@ public class CustomButtonDrawable extends StateListDrawable
 	public void setBounds(int left, int top, int right, int bottom)
 	{
 	    super.setBounds(left, top, right, bottom);
+	    m_grad.resize(right-left, bottom-top);
         if(m_dependedDrawable!=null)
             m_dependedDrawable.setBounds(left, top-1, right, bottom);
 	}
@@ -63,5 +73,10 @@ public class CustomButtonDrawable extends StateListDrawable
 	    int g = m_grad.m_gap+1;
 	    padding.set(g, g, g, g);
 	    return true;
+	}
+	public void recycle()
+	{
+		if(m_grad instanceof BitmapCachedGradBack)
+			((BitmapCachedGradBack)m_grad).recycle();
 	}
 }

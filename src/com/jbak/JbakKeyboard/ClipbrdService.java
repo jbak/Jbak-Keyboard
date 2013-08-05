@@ -3,63 +3,32 @@ package com.jbak.JbakKeyboard;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.jbak.ctrl.SameThreadTimer;
+
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.IBinder;
 import android.text.ClipboardManager;
 /** Сервис для забора значений по таймеру */
-public class ClipbrdService extends Service
+public class ClipbrdService extends SameThreadTimer 
 {
-    static ClipbrdService inst;
-    @Override
-    public IBinder onBind(Intent intent)
-    {
-        return null;
-    }
-    @Override
-    public void onCreate()
-    {
+    public ClipbrdService(Context c) {
+		super(CLIPBRD_INTERVAL, CLIPBRD_INTERVAL);
         inst = this;
-        m_cm = (ClipboardManager)getSystemService(Service.CLIPBOARD_SERVICE);
-        super.onCreate();
+        m_cm = (ClipboardManager)c.getSystemService(Service.CLIPBOARD_SERVICE);
         IntentFilter filt = new IntentFilter();
         filt.addAction(Intent.ACTION_SCREEN_ON);
         filt.addAction(Intent.ACTION_SCREEN_OFF);
-        registerReceiver(m_recv, filt);
-        startTimer();
-    }
-    @Override
-    public void onDestroy()
+        c.registerReceiver(m_recv, filt);
+        start();
+	}
+	static ClipbrdService inst;
+    public void delete(Context c)
     {
         inst = null;
-        unregisterReceiver(m_recv);
-        super.onDestroy();
-    }
-    void startTimer()
-    {
-        m_timer = new Timer();
-        m_timer.schedule(new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                checkClipboardString();
-            }
-        }, CLIPBRD_INTERVAL, CLIPBRD_INTERVAL);
-        
-    }
-    void stopTimer()
-    {
-        m_timer.cancel();
-    }
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId)
-    {
-        
-        return START_STICKY;
+        c.unregisterReceiver(m_recv);
     }
     void checkClipboardString()
     {
@@ -71,6 +40,7 @@ public class ClipbrdService extends Service
     }
     void checkString(String str)
     {
+    	cancel();
         try{
             if(str.equals(m_sLastClipStr))
             {
@@ -83,6 +53,7 @@ public class ClipbrdService extends Service
         {
             
         }
+        start();
     }
     BroadcastReceiver m_recv = new BroadcastReceiver()
     {
@@ -92,11 +63,11 @@ public class ClipbrdService extends Service
             String act = intent.getAction();
             if(Intent.ACTION_SCREEN_ON.equals(act))
             {
-                startTimer();
+                start();
             }
             if(Intent.ACTION_SCREEN_OFF.equals(act))
             {
-                stopTimer();
+                cancel();
             }
         }
     };
@@ -105,4 +76,8 @@ public class ClipbrdService extends Service
     public static final int CLIPBRD_INTERVAL = 5000;
     ClipboardManager m_cm;
     Timer m_timer;
+	@Override
+	public void onTimer(SameThreadTimer timer) {
+		checkClipboardString();
+	}
 }

@@ -20,16 +20,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.ads.f;
-import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
-
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.inputmethodservice.Keyboard;
-import android.view.KeyEvent;
+import android.text.TextUtils;
 import android.view.inputmethod.EditorInfo;
+
+import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 
 public class JbKbd extends Keyboard {
     private LatinKey mEnterKey;
@@ -177,8 +175,18 @@ public class JbKbd extends Keyboard {
  */
     static class LatinKey extends Keyboard.Key {
         
+    	/** По нажатию клавиши происходит переход на qwerty-клавиатуру */
         public static final int FLAG_GO_QWERTY     = 0x000001;
+    	/** По нажатию клавиши запрещен переход на qwerty-клавиатуру */
         public static final int FLAG_NOT_GO_QWERTY = 0x000002;
+    	/** Нажатие клавиши открывает клавиатуру, прописанную в mainText*/
+        public static final int FLAG_USER_KEYBOARD = 0x000004;
+    	/** Нажатие клавиши выполняет шаблон, прописанный в mainText*/
+        public static final int FLAG_USER_TEMPLATE = 0x000008;
+    	/** Удержание клавиши открывает клавиатуру, прописанную в longText */
+        public static final int FLAG_USER_KEYBOARD_LONG = 0x000010;
+    	/** Удержание клавиши выполняет шаблон, прописанный в longText */
+        public static final int FLAG_USER_TEMPLATE_LONG = 0x000020;
         KeyDrw m_kd;
         int longCode = 0;
         int specKey = -1;
@@ -257,9 +265,59 @@ public class JbKbd extends Keyboard {
             int c = codes[0];
             return c<0||c==10;
         }
+        public boolean runSpecialInstructions(boolean longpress)
+        {
+        	if(!processTemplate(longpress)&&!processUserKeyboard(longpress))
+        		return false;
+        	return true;
+        }
+        final boolean processTemplate(boolean longPress)
+        {
+        	int flag = longPress?FLAG_USER_TEMPLATE_LONG:FLAG_USER_TEMPLATE;
+        	if(!st.has(flags, flag))
+        		return false;
+        	String t = longPress?longText:mainText;
+        	Templates.inst.processTemplate(t);
+        	return true;
+        }
+        final boolean processUserKeyboard(boolean longPress)
+        {
+        	int flag = longPress?FLAG_USER_KEYBOARD_LONG:FLAG_USER_KEYBOARD;
+        	if(!st.has(flags, flag))
+        		return false;
+        	String t = longPress?longText:mainText;
+        	if(TextUtils.isEmpty(t))
+        		return false;
+        	Keybrd kb = null;
+        	try{
+	        	if(t.startsWith("$$"))
+	        	{
+	        		kb = new Keybrd(st.getKeybrdForLangName(t.substring(2)));
+	        		kb.lang = st.getLangByName(IKeyboard.LANG_SYM_KBD);
+	        	}
+	        	else if(t.startsWith("$"))
+	        	{
+	        		kb = new Keybrd(t.substring(1), R.string.kbd_name_qwerty);
+	        	}
+	        	else
+	        	{
+	        		if(!t.startsWith("/"))
+	        			t = st.getSettingsPath()+CustomKeyboard.KEYBOARD_FOLDER+"/"+t;
+	        		kb = new Keybrd(IKeyboard.KBD_SYM, st.getLangByName(IKeyboard.LANG_SYM_KBD), R.xml.kbd_empty, R.string.kbd_name_sym_edit);
+	        		kb.path = t;
+	        	}
+	        	st.kv().setKeyboard(st.loadKeyboard(kb));	
+	        	return true;
+        	}
+        	catch(Throwable e)
+        	{
+        		e.printStackTrace();
+        	}
+    		return false;
+        }
         final boolean hasLongPress()
         {
-            return longCode!=0||getUpText()!=null||codes[0]==10||codes[0]==Keyboard.KEYCODE_SHIFT;
+            return longCode!=0||getUpText()!=null||codes[0]==10||codes[0]==Keyboard.KEYCODE_SHIFT||st.has(flags, FLAG_USER_KEYBOARD_LONG)||st.has(flags, FLAG_USER_TEMPLATE_LONG);
         }
         @Override
         public void onPressed()

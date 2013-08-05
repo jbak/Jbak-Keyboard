@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="JbakKeyboard" default="help">
+<project name="JbakKeyboard" default="help" xmlns:zaa="antlib:com.zutubi.android.ant">
+	<taskdef uri="antlib:com.zutubi.android.ant"
+             resource="com/zutubi/android/ant/antlib.xml"
+             classpath="increment_version.jar"/>
 
     <!-- The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked into
@@ -87,6 +90,30 @@
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
     <!-- version-tag: 1 -->
+	<target name="increment-version" >
+	    <zaa:bumpversion bumpname="true"/>
+	</target>
+
+	<target name="rename-release-with-version-number">
+		<xmlproperty file="AndroidManifest.xml" 
+					 prefix="themanifest" 
+					 collapseAttributes="true"/>
+		
+		<!--  see ${sdk.dir}/tools/ant/build.xml -set-release-mode -->
+		<property name="out.final.file" 
+		          location="${out.absolute.dir}/test-${ant.project.name}-${themanifest.manifest.android:versionName}.apk" />
+	</target>
+	<target name="-set-release-mode"
+		 depends="rename-release-with-version-number,android_rules.-set-release-mode">
+		<echo message="target: ${build.target}"></echo>
+	</target>
+
+	<target name="test-release" >
+		<antcall target="increment-version"/>
+		<antcall target="clean"/>
+		<antcall target="release"/>
+	</target>    
+
     <import file="${sdk.dir}/tools/ant/build.xml" />
 
 </project>

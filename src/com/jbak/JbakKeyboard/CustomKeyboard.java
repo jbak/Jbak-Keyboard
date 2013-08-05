@@ -63,6 +63,10 @@ public class CustomKeyboard extends JbKbd
     public static final String A_goQwerty="goQwerty";   
     public static final String A_From="from";   
     public static final String A_To="to";   
+    public static final String A_Template="template";   
+    public static final String A_TemplateLong="longTemplate";   
+    public static final String A_Keyboard="keyboard";   
+    public static final String A_KeyboardLong="longKeyboard";   
 
     public static final  byte B_keyWidth   = 1;
     public static final  byte B_keyHeight  = 2;
@@ -87,6 +91,10 @@ public class CustomKeyboard extends JbKbd
     public static final  byte B_goQwerty=21;
     public static final  byte B_from=22;
     public static final  byte B_to=23;
+    public static final  byte B_keyboard=24;
+    public static final  byte B_keyboardLong=25;
+    public static final  byte B_template=26;
+    public static final  byte B_templateLong=27;
     
     public static final  byte BA_KBD=(byte)'|';
     public static final  byte BA_ROW=58;//(byte)':'
@@ -96,6 +104,8 @@ public class CustomKeyboard extends JbKbd
     int m_x = 0;
     int m_y = 0;
     int m_rowHeight;
+    float m_fraction = 0f;
+    float m_globalFraction = 0f;
     List<Key> m_keys;
     Row m_row = null;
     Context m_context;
@@ -251,7 +261,6 @@ public class CustomKeyboard extends JbKbd
         }
         catch (Throwable e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         
@@ -283,14 +292,13 @@ public class CustomKeyboard extends JbKbd
             b = is.readByte();
             if(b==BA_ROW)
                 break;
-            float f;
             switch (b)
             {
                 case B_keyWidth:
                     out+=A_ANDROID+A_keyWidth+"=\""+is.readFloat()+"%p\" ";
                     break;
                 default:
-                    f = is.readFloat();
+                    is.readFloat();
                 break;
             }
         }
@@ -307,14 +315,15 @@ public class CustomKeyboard extends JbKbd
             b = is.readByte();
             if(b==BA_ROW)
                 break;
-            float f;
             switch (b)
             {
                 case B_keyWidth:
-                    setKeyWidth(getPercentSize(is));
+                	float w = getPercentSizeFloat(is);
+                    setKeyWidth(floatToInt(w));
+                    m_globalFraction = floatToIntFraction(w);
                     break;
                 default:
-                    f = is.readFloat();
+                    is.readFloat();
                 break;
             }
         }
@@ -329,21 +338,23 @@ public class CustomKeyboard extends JbKbd
             String name = attName(p, i);
             if(name.equals(A_keyWidth))
             {
-                int sz = getSize(p.getAttributeValue(i),m_displayWidth,m_displayWidth/10,B_keyWidth);
-                setKeyWidth(sz);
+                float sz = getSizeFloat(p.getAttributeValue(i),m_displayWidth,m_displayWidth/10,B_keyWidth);
+                setKeyWidth(floatToInt(sz));
+                m_globalFraction = floatToIntFraction(sz);
             }
             else if(name.equals(A_keyHeight))
                 setKeyWidth(getSize(p.getAttributeValue(i),m_displayHeight,50,B_keyHeight));
             else if(name.equals(A_verticalGap))
                 setVerticalGap(getSize(p.getAttributeValue(i),m_displayWidth,0,B_verticalGap));
             else if(name.equals(A_horizontalGap))
-                setVerticalGap(getSize(p.getAttributeValue(i),m_displayHeight,0,B_horizontalGap));
+                setHorizontalGap(getSize(p.getAttributeValue(i),m_displayHeight,0,B_horizontalGap));
         }
         return true;
     }
     final boolean parseRow(XmlPullParser p) throws IOException
     {
         m_x = 0;
+        m_fraction = 0f;
         if(m_os!=null)
         {
             m_os.writeByte(BA_ROW);
@@ -466,17 +477,37 @@ public class CustomKeyboard extends JbKbd
     final byte parseKey(DataInputStream is) throws IOException
     {
         LatinKey k = newKey();
+        boolean setWidth = false;
         byte b = 0;
         do{
             b = is.readByte();
             switch(b)
             {
                 case B_keyWidth:
-                    k.width = getPercentSize(is);
+                	float w = getPercentSizeFloat(is);
+                    k.width = floatToInt(w);
+                    m_fraction+=floatToIntFraction(w);
+                    setWidth = true;
                     break;
                 case B_codes:
                     k.codes = parseCodes(is.readUTF());
                     break;
+                case B_template:
+                    k.mainText = is.readUTF();
+                    k.flags|=LatinKey.FLAG_USER_TEMPLATE;
+                    break;
+                case B_keyboard:
+                    k.mainText = is.readUTF();
+                    k.flags|=LatinKey.FLAG_USER_KEYBOARD;
+                    break;
+                case B_templateLong:   
+	                k.longText = is.readUTF();
+	                k.flags|=LatinKey.FLAG_USER_TEMPLATE_LONG;
+	                break;
+                case B_keyboardLong:   
+	                k.longText = is.readUTF();
+	                k.flags|=LatinKey.FLAG_USER_KEYBOARD_LONG;
+	                break;
                 case B_upCode:
                     k.longCode = is.readInt();
                     break;
@@ -505,7 +536,15 @@ public class CustomKeyboard extends JbKbd
                     k.specKey = is.readBoolean()?1:0;
                     break;
                 case B_horizontalGap:    
-                    k.gap = getPercentSize(is);
+                	float g = getPercentSizeFloat(is);
+                	k.gap  = floatToInt(g);
+                    m_fraction+=floatToIntFraction(g);
+                    if(m_fraction>1f)
+                    {
+                    	k.gap++;
+                    	m_fraction-=1f;
+                    }
+                    	
                     break;
                 case B_keyOutputText:    
                     k.text = is.readUTF();
@@ -516,6 +555,13 @@ public class CustomKeyboard extends JbKbd
             }
         }
         while(b<BA_ROW);
+        if(!setWidth)
+        	m_fraction+=m_globalFraction;
+        if(m_fraction>1f)
+        {
+        	k.width++;
+        	m_fraction-=1;
+        }
         processKey(k);
         return b;
     }
@@ -542,17 +588,34 @@ public class CustomKeyboard extends JbKbd
         return true;
         
     }
+    final void processKeyPercentWidth(float width,LatinKey k)
+    {
+    	k.width = floatToInt(width);
+    	m_fraction+=floatToIntFraction(width);
+    	if(m_fraction>=1f)
+    	{
+    		k.width++;
+    		m_fraction-=1f;
+    	}
+    }
     final boolean parseKey(XmlPullParser p, List<Key> keys) throws IOException
     {
         LatinKey k = newKey();
         if(m_os!=null)
             m_os.writeByte(BA_KEY);
+        boolean setWidth = false;
         int cnt = p.getAttributeCount();
         for(int i=0;i<cnt;i++)
         {
             String name = attName(p, i);
             if(name.equals(A_keyWidth))
-                k.width = getSize(p.getAttributeValue(i), m_displayWidth, getKeyWidth(),B_keyWidth);
+            {
+            	setWidth = true;
+            	float sz = getSizeFloat(p.getAttributeValue(i), m_displayWidth, getKeyWidth(),B_keyWidth); 
+                k.width = floatToInt(sz);
+                m_fraction+=floatToIntFraction(sz);
+                
+            }
             else if(name.equals(A_keyHeight))
                 k.height = getSize(p.getAttributeValue(i), m_displayHeight, getKeyWidth(),B_keyHeight);
             else if(name.equals(A_codes))
@@ -571,7 +634,16 @@ public class CustomKeyboard extends JbKbd
             else if(name.equals(A_noColor))
                 k.noColorIcon = getBoolean(p.getAttributeValue(i), B_noColor);
             else if(name.equals(A_horizontalGap))
-                k.gap = getSize(p.getAttributeValue(i), m_displayWidth, getHorizontalGap(),B_horizontalGap);
+            {
+            	float g = getSizeFloat(p.getAttributeValue(i), m_displayWidth, getHorizontalGap(),B_horizontalGap); 
+                k.gap = floatToInt(g);
+                m_fraction+=floatToIntFraction(g);
+                if(m_fraction>=1f)
+                {
+                	k.gap++;
+                	m_fraction-=1f;
+                }
+            }
             else if(name.equals(A_keyIcon))
                 k.icon = getDrawable(p.getAttributeValue(i),false);
             else if(name.equals(A_isSticky))
@@ -587,12 +659,40 @@ public class CustomKeyboard extends JbKbd
                 k.popupResId = R.xml.kbd_empty;
                 k.popupCharacters =p.getAttributeValue(i);
             } 
+            else if(name.equals(A_Keyboard))
+            {
+            	k.mainText = getString(p.getAttributeValue(i),B_keyboard);
+            	k.flags|=LatinKey.FLAG_USER_KEYBOARD;
+            }
+            else if(name.equals(A_KeyboardLong))
+            {
+            	k.longText = getString(p.getAttributeValue(i),B_keyboardLong);
+            	k.flags|=LatinKey.FLAG_USER_KEYBOARD_LONG;
+            }
+            else if(name.equals(A_Template))
+            {
+            	k.mainText = getString(p.getAttributeValue(i),B_template);
+            	k.flags|=LatinKey.FLAG_USER_TEMPLATE;
+            }
+            else if(name.equals(A_TemplateLong))
+            {
+            	k.longText = getString(p.getAttributeValue(i),B_templateLong);
+            	k.flags|=LatinKey.FLAG_USER_TEMPLATE_LONG;
+            }
+            
             else if(name.equals(A_keyOutputText))
                 k.mainText = getString(p.getAttributeValue(i),B_keyOutputText);
             else if(name.equals(A_longKeyOutputText))
                 k.longText = getString(p.getAttributeValue(i),B_longKeyOutputText);
             else if(name.equals(A_goQwerty))
                 k.setGoQwerty(getBoolean(p.getAttributeValue(i),B_goQwerty));
+        }
+        if(!setWidth)
+        	m_fraction+=m_globalFraction;
+        if(m_fraction>1f)
+        {
+        	k.width++;
+        	m_fraction-=1f;
         }
         processKey(k);
         return true;
@@ -646,7 +746,15 @@ public class CustomKeyboard extends JbKbd
             return name.substring(A_ANDROID.length());
         return name;
     }
-    int getSize(String att,float percentBase,int defValue,byte type) throws IOException
+    final int floatToInt(float val)
+    {
+        return (int)val;
+    }
+    final float floatToIntFraction(float val)
+    {
+    	return val - floatToInt(val);
+    }
+    float getSizeFloat(String att,float percentBase,int defValue,byte type)throws IOException
     {
         float ret = defValue;
         if(att.endsWith(VAL_PERCENT))
@@ -657,7 +765,7 @@ public class CustomKeyboard extends JbKbd
                 m_os.writeByte(type);
                 m_os.writeFloat(Float.valueOf(v));
             }
-            ret = (float) (Float.valueOf(v)*percentBase/100.0);
+            ret = (float) (Float.valueOf(v)*percentBase/100f);
         }
         else if(att.endsWith(VAL_PIXELS))
         {
@@ -669,7 +777,11 @@ public class CustomKeyboard extends JbKbd
             }
             ret = Float.valueOf(v);
         }
-        return (int)ret;
+        return ret;
+    }
+    int getSize(String att,float percentBase,int defValue,byte type) throws IOException
+    {
+        return floatToInt(getSizeFloat(att, percentBase, defValue, type));
     }
     final boolean getBoolean(String att,byte type) throws IOException
     {
@@ -776,11 +888,14 @@ public class CustomKeyboard extends JbKbd
         }
         return null;
     }
-    public int getPercentSize(DataInputStream is) throws IOException
+    public final float getPercentSizeFloat(DataInputStream is) throws IOException
     {
         float f = is.readFloat();
-        f=f*m_displayWidth/100;
-        return (int)f;
+        return f*(float)m_displayWidth/100f;
+    }
+    public int getPercentSize(DataInputStream is) throws IOException
+    {
+        return floatToInt(getPercentSizeFloat(is));
     }
     public static Keybrd processCustomKeyboardFile(File kf,boolean bCompile)
     {

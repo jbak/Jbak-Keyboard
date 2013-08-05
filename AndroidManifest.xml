@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" 
         package="com.jbak.JbakKeyboard"
-        android:versionName="0.97"
-        android:versionCode="23"
+        android:versionName="0.97.7"
+        android:versionCode="35"
+        
         >
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.VIBRATE"/>
@@ -22,13 +23,10 @@
             <meta-data android:name="android.view.im" android:resource="@xml/method" />
         </service>
 <!-- ============================================================================== -->
-        <service android:name="ClipbrdService">
-        </service>
         <service android:name="com.jbak.words.WordsService">
         </service>
 <!-- ============================================================================== -->
         <activity android:name="JbKbdPreference" 
-				android:excludeFromRecents="true"
         		android:label="@string/ime_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -38,12 +36,10 @@
         
 <!-- ============================================================================== -->
             <activity android:name="UpdVocabActivity"
-        		  android:excludeFromRecents="true"
         		  android:label="@string/set_key_ac_load_vocab"
         	/>
 <!-- ============================================================================== -->
         <activity android:name="SetKbdActivity"
-        		  android:excludeFromRecents="true"
         	>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -63,19 +59,16 @@
         </activity>
 <!-- ============================================================================== -->
 		<activity android:name="LangSetActivity" 
-					android:excludeFromRecents="true"
 					android:label="@string/set_languages"
 					android:configChanges="orientation"
 					/>
 <!-- ============================================================================== -->
 		<activity android:name="AboutActivity" 
-					android:excludeFromRecents="true"
 					android:label="@string/about"
 					android:configChanges="orientation"
 					/>
 <!-- ============================================================================== -->
 		<activity android:name="EditSetActivity" 
-					android:excludeFromRecents="true"
 					android:label="@string/es_title"
 					android:configChanges="orientation"
 					/>
@@ -83,5 +76,16 @@
 	<!-- admob -->
 				<activity android:name="com.google.ads.AdActivity"
 		              android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
-		              </application>
+				
+    <service android:name="com.google.android.voiceime.ServiceHelper" />
+    <activity
+        android:name="com.google.android.voiceime.ActivityHelper"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        android:excludeFromRecents="true"
+        android:windowSoftInputMode="stateAlwaysHidden"
+        android:finishOnTaskLaunch="true"
+        android:configChanges="keyboardHidden|orientation"/>
+    				
+	</application>
+		              
 </manifest>

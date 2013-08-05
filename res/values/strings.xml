@@ -255,7 +255,8 @@
 	<string name="kbd_name_qwerty_tablet">Qwerty for tablet</string>
 	<string name="kbd_name_sym_edit">Symbols and edit</string>
 	<string name="kbd_name_5_rows">5 rows</string>
-	    	    	    
+	<string name="kbd_name_2_sides">Two sides</string>
+		    	    	    
  <!-- Names for keyboards designs -->
 	<string name="kbd_design_standard">Standard</string>    
 	<string name="kbd_design_iphone">Pseudo iPhone</string>
@@ -283,4 +284,9 @@
  	<string name="cmd_space">Space</string>   
  	<string name="cmd_bs">Backspace</string>   
  	<string name="cmd_shift">Shift</string>   
+ 	
+ 	<string name="menu_copy_all">Copy all text</string>
+ 	<string name="menu_copy_paragraph">Copy paragraph</string>
+ 	<string name="menu_copy_word">Copy word</string>
+ 		
 </resources>

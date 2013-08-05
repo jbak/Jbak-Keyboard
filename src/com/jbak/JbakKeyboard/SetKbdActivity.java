@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jbak.CustomGraphics.BitmapCachedGradBack;
 import com.jbak.JbakKeyboard.IKeyboard.KbdDesign;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
@@ -43,7 +44,7 @@ public class SetKbdActivity extends Activity
     int m_curSkin;
     boolean m_calibrateAuto = true;
 /** Текущий тип экрана, для которого выбирается клава. 0- оба типа, 1 - портрет, 2 - ландшафт*/    
-    int m_screenType;
+    int m_screenType=-1;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -100,7 +101,7 @@ public class SetKbdActivity extends Activity
                     m_curSkin = m_curKbd;
                     try{
                         Toast.makeText(inst, R.string.settings_saved, 700).show();
-                        finish();
+                        onBackPressed();
                         }
                     catch (Throwable e) {
                     }
@@ -110,6 +111,7 @@ public class SetKbdActivity extends Activity
         }
         else if(m_curAction==st.SET_SELECT_KEYBOARD)
         {
+        	CustomKeyboard.loadCustomKeyboards(false);
             m_MainView.findViewById(R.id.set_height).setVisibility(View.GONE);
             m_MainView.findViewById(R.id.select_kbd).setVisibility(View.VISIBLE);
             m_MainView.findViewById(R.id.save).setOnClickListener(new OnClickListener()
@@ -133,6 +135,9 @@ public class SetKbdActivity extends Activity
             setTitle(R.string.set_select_keyboard);
             m_LangName = getIntent().getStringExtra(st.SET_INTENT_LANG_NAME);
             m_curKbd = -1;
+            m_screenType = getIntent().getIntExtra(st.SET_SCREEN_TYPE, -1);
+            if(m_screenType>-1)
+                setScreenType(m_screenType);
             changeKbd(true);
         }
         int flags = WindowManager.LayoutParams.FLAG_FULLSCREEN;
@@ -208,14 +213,19 @@ public class SetKbdActivity extends Activity
     @Override
     protected void onDestroy()
     {
+        super.onDestroy();
+    }
+    @Override
+    public void onBackPressed() {
         if(m_curAction==st.SET_SELECT_SKIN)
         {
             st.pref().edit().putString(st.PREF_KEY_KBD_SKIN_PATH, st.getSkinPath(st.arDesign[m_curSkin])).commit();
         }
         m_kbd.setOnKeyboardActionListener(null);
-        JbKbdView.inst = null;
-        inst = null;
-        super.onDestroy();
+        if(ServiceJbKbd.inst!=null)
+        	ServiceJbKbd.inst.reinitKeyboardView();
+        BitmapCachedGradBack.clearAllCache();
+    	super.onBackPressed();
     }
 /** */
     void changeSkin(boolean bNext)
@@ -274,10 +284,13 @@ public class SetKbdActivity extends Activity
             {
                 m_curKbd = 0;
             }
-            int sel = 0;
-            if(!pv.equals(lv))
-                sel = bLandscape?2:1;
-            setScreenType(sel);
+            if(m_screenType<0)
+            {
+                int sel = 0;
+                if(!pv.equals(lv))
+                    sel = bLandscape?2:1;
+                setScreenType(sel);
+            }
         }
         else
         {
@@ -343,7 +356,7 @@ public class SetKbdActivity extends Activity
             }
             if(primaryCode==st.CMD_LANG_CHANGE&&m_curAction!=st.SET_LANGUAGES_SELECTION)
             {
-                st.kv().handleLangChange();
+                st.kv().handleLangChange(true,true);
             }
         }
     };
@@ -545,7 +558,7 @@ public class SetKbdActivity extends Activity
                 st.pref().edit().putInt(st.PREF_KEY_CORR_PORTRAIT, value).commit();
             else
                 st.pref().edit().putInt(st.PREF_KEY_CORR_LANDSCAPE, value).commit();
-            finish();
+            onBackPressed();
             return;
         }
         String alert = String.format(getString(R.string.calibr_save), value,JbKbdView.defaultVertCorr);
@@ -564,7 +577,7 @@ public class SetKbdActivity extends Activity
                     if(m_calibrateAuto)
                         resetCalibrate();
                     else
-                        finish();
+                        onBackPressed();
                 }
                 return 0;
             }

@@ -85,7 +85,7 @@ public class st extends IKeyboard implements IKbdSettings
         }
     }
 /** Возвращает клавиатуру для языка с именем langName */    
-    public static Keybrd kbdForLangName(String langName)
+    public static Keybrd getKeybrdForLangName(String langName)
     {
         boolean isLandscape = isLandscape(c());
         String pname = isLandscape?st.PREF_KEY_LANG_KBD_LANDSCAPE:st.PREF_KEY_LANG_KBD_PORTRAIT;
@@ -112,7 +112,7 @@ public class st extends IKeyboard implements IKbdSettings
         }
         Context c = st.c();
         if(c!=null)
-            Toast.makeText(c, "Lang not found:"+langName, 700).show();
+            Toast.makeText(c, "Lang not found:"+langName, Toast.LENGTH_LONG).show();
         return arKbd[0];
     }
     public static float screenDens(Context c)
@@ -143,7 +143,7 @@ public class st extends IKeyboard implements IKbdSettings
         if(p==null||!p.contains(PREF_KEY_LAST_LANG))
         {
             String lang = Locale.getDefault().getLanguage();
-            Keybrd l = kbdForLangName(lang);
+            Keybrd l = getKeybrdForLangName(lang);
             if(l!=null)
                 return l;
             return defKbd();
@@ -166,7 +166,7 @@ public class st extends IKeyboard implements IKbdSettings
             else
                 lang = defKbd().lang.name;
         }
-        return kbdForLangName(lang);
+        return getKeybrdForLangName(lang);
     }
 /** Возвращает текущую клавиатуру или null*/    
     public static JbKbd curKbd()
@@ -185,9 +185,7 @@ public class st extends IKeyboard implements IKbdSettings
             return LangSetActivity.inst;
         if(EditSetActivity.inst!=null)
             return EditSetActivity.inst;
-        if(JbKbdPreference.inst!=null)
-            return JbKbdPreference.inst;
-        return ClipbrdService.inst;
+        return JbKbdPreference.inst;
     }
   //********************************************************************
     /** Класс для запуска пользовательского кода синхронно или асинхронно
@@ -252,23 +250,23 @@ public class st extends IKeyboard implements IKbdSettings
 /** Установка клавиатуры редактирования текста */
     public static void setTextEditKeyboard()
     {
-        JbKbdView.inst.setKeyboard(loadKeyboard(kbdForLangName(LANG_EDITTEXT)));
+        JbKbdView.inst.setKeyboard(loadKeyboard(getKeybrdForLangName(LANG_EDITTEXT)));
     }
 /** Установка клавиатуры смайликов */
     public static void setSmilesKeyboard()
     {
-        JbKbdView.inst.setKeyboard(loadKeyboard(kbdForLangName(LANG_SMILE)));
+        JbKbdView.inst.setKeyboard(loadKeyboard(getKeybrdForLangName(LANG_SMILE)));
     }
     /** Установка цифровой клавиатуры */
     public static void setNumberKeyboard()
     {
-        JbKbdView.inst.setKeyboard(loadKeyboard(kbdForLangName(LANG_NUMBER)));
+        JbKbdView.inst.setKeyboard(loadKeyboard(getKeybrdForLangName(LANG_NUMBER)));
     }
 /** Установка символьной клавиатуры 
 *@param bShift true - для установки symbol_shift, false - для symbol */
     public static void setSymbolKeyboard(boolean bShift)
     {
-        Keybrd k = kbdForLangName(bShift?LANG_SYM_KBD1:LANG_SYM_KBD);
+        Keybrd k = getKeybrdForLangName(bShift?LANG_SYM_KBD1:LANG_SYM_KBD);
         JbKbdView.inst.setKeyboard(loadKeyboard(k));
     }
 /** Установка qwerty-клавиатуры с учётом последнего использования */    
@@ -313,7 +311,7 @@ public class st extends IKeyboard implements IKbdSettings
     {
         tempEnglishQwerty = true;
         JbKbd kb = curKbd();
-        Keybrd k = kbdForLangName(arLangs[LANG_EN].name);
+        Keybrd k = getKeybrdForLangName(arLangs[LANG_EN].name);
 //        if(kb!=null&&kb.resId==k.resId)
 //            return;
         JbKbdView.inst.setKeyboard(loadKeyboard(k));
@@ -334,7 +332,7 @@ public class st extends IKeyboard implements IKbdSettings
     {
         String lang = Locale.getDefault().getLanguage();
         String defKbdLang = defKbd().lang.name;
-        if(kbdForLangName(lang)!=null&&!lang.equals(defKbdLang))
+        if(getKeybrdForLangName(lang)!=null&&!lang.equals(defKbdLang))
         {
             return lang+','+defKbdLang;
         }
@@ -376,10 +374,10 @@ public class st extends IKeyboard implements IKbdSettings
     {
         try{
             
-            c.startActivity(
+            c.getApplicationContext().startActivity(
                     new Intent(Intent.ACTION_VIEW)
                         .setComponent(new ComponentName(c,cls))
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             );
         }
         catch(Throwable e)
@@ -407,8 +405,10 @@ public class st extends IKeyboard implements IKbdSettings
                 {
                     ServiceJbKbd.inst.onOptions();
                 }break;
-            case CMD_VOICE_RECOGNIZER: 
-                new VRTest().startVoice(); return true;//return runAct(VRActivity.class);
+            case CMD_VOICE_RECOGNIZER:
+            	ServiceJbKbd.inst.m_voice.startVoiceRecognition();
+//                new VRTest().startVoice(); 
+            	return true;//return runAct(VRActivity.class);
             case CMD_TPL_EDITOR: return runAct(TplEditorActivity.class);
             case CMD_TPL_NEW_FOLDER: 
                 if(Templates.inst==null)
@@ -420,6 +420,15 @@ public class st extends IKeyboard implements IKbdSettings
                 if(ServiceJbKbd.inst!=null)
                     ServiceJbKbd.inst.forceHide();
                 return runAct(JbKbdPreference.class);
+            case CMD_SELECT_KEYBOARD:
+                if(ServiceJbKbd.inst!=null)
+                    ServiceJbKbd.inst.forceHide();
+                c().getApplicationContext().startActivity(new Intent(st.c(),SetKbdActivity.class)
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    .putExtra(SET_INTENT_LANG_NAME, getCurLang())
+                                    .putExtra(SET_INTENT_ACTION, st.SET_SELECT_KEYBOARD)
+                                    .putExtra(SET_SCREEN_TYPE, isLandscape(c())?2:1));
+                break;
             case CMD_CLIPBOARD: return ComMenu.showClipboard();
             default: 
                 if(ServiceJbKbd.inst!=null)
@@ -525,6 +534,7 @@ public class st extends IKeyboard implements IKbdSettings
         return ZERO_STRING;
     }
 /** Обновление настроек. Если у юзера старые настройки - меняем их на новые */    
+    @SuppressWarnings("deprecation")
     public static void upgradeSettings(Context c)
     {
         SharedPreferences pref = st.pref(c);

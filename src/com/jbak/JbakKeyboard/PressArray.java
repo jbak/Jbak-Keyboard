@@ -120,6 +120,7 @@ public class PressArray
         return pi.type;
     }
     static final String TAG = "jbKbdPress";
+    @SuppressWarnings("deprecation")
     public boolean onTouchEvent(MotionEvent me,JbKbd kbd,KeyboardView.OnKeyboardActionListener listener)
     {
 //        Log.d(TAG, "act:"+me.getAction()+", x="+me.getX()+", y="+me.getY()+", pc="+me.getPointerCount());

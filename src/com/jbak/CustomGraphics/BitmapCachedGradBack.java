@@ -1,11 +1,16 @@
 package com.jbak.CustomGraphics;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Vector;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.drawable.shapes.RectShape;
+import android.os.Environment;
 
 public class BitmapCachedGradBack extends GradBack
 {
@@ -13,9 +18,23 @@ public class BitmapCachedGradBack extends GradBack
     static Vector<Vector<BmpCacheEntry>> caches = new Vector<Vector<BmpCacheEntry>>();
     Vector<BmpCacheEntry> m_cache = new Vector<BitmapCachedGradBack.BmpCacheEntry>();
     BmpCacheEntry m_curEntry;
+    public BitmapCachedGradBack()
+    {
+        super();
+    }
+    public BitmapCachedGradBack(Vector<BmpCacheEntry> cache)
+    {
+        super();
+        m_cache = cache;
+    }
     public BitmapCachedGradBack(int startColor, int endColor)
     {
         super(startColor, endColor);
+    }
+    @Override
+    public RectShape clone() throws CloneNotSupportedException 
+    {
+    	return copyProperties(new BitmapCachedGradBack(m_cache));
     }
     @Override
     protected void onResize(float width, float height) 
@@ -48,10 +67,25 @@ public class BitmapCachedGradBack extends GradBack
         m_cache.add(m_curEntry);
         m_bPressed = press;
         m_bCheckable = ch;
+//        try {
+//        	File f = new File(Environment.getExternalStorageDirectory()+"/test"+System.currentTimeMillis()+".jpg");
+//        	f.createNewFile();
+//			boolean ok = m_curEntry.bmpNormal.compress(CompressFormat.JPEG, 100, new FileOutputStream(f));
+//			if(!ok||!f.exists())
+//			{
+//				long aa = 1;
+//				long bb = aa;
+//			}
+//		} catch (Throwable e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
     }
     @Override
     public void draw(Canvas canvas, Paint paint) 
     {
+    	if(m_curEntry==null)
+    		return;
         if(!m_curEntry.isValid())
         {
             onResize(m_curEntry.w, m_curEntry.h);
@@ -82,6 +116,7 @@ public class BitmapCachedGradBack extends GradBack
             ce.recycle();
         }
         m_cache.clear();
+        caches.remove(m_cache);
     }
     public static class BmpCacheEntry
     {
@@ -112,5 +147,6 @@ public class BitmapCachedGradBack extends GradBack
             cache.clear();
         }
         caches.clear();
+        System.gc();
     }
 }

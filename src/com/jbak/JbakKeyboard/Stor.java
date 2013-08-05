@@ -114,7 +114,7 @@ public class Stor extends SQLiteOpenHelper
         String sql = "DELETE FROM "+TABLE_CLIPBOARD+" WHERE "+C_DATE+"="+date;
         if(date2>0)
         {
-            sql+=" OR "+C_DATE+"="+date2;
+            sql+=" OR "+C_DATE+"<="+date2;
         }
         runSql(sql);
     }
@@ -150,15 +150,15 @@ public class Stor extends SQLiteOpenHelper
                         date = cursor.getLong(2);// Нашли одинаковую строку, удаляем
                         --count;
                     }
-                    if(count==CLIPBOARD_LIMIT-1)
-                    {
-                        date2 = cursor.getLong(2);
-                    }
+                }
+                if(count==CLIPBOARD_LIMIT)
+                {
+                    date2 = cursor.getLong(2);
                 }
                 ++count;
             }while(cursor.moveToPrevious());
             cursor.close();
-            if(date>0)
+            if(date>0||date2>0)
                 removeClipboardByDate(date, date2);
             saveClipboardString(txt);
         }

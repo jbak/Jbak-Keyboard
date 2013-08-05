@@ -169,7 +169,7 @@ public class Templates
         }
         return null;
     }
-/** Преобразует специальные инструкции в тексте шаблона s, возвращает модифицированную строку*/ 
+/** Выполняет шаблон s в текущем сервисе */ 
     void processTemplate(String s)
     {
         if(s==null)
@@ -362,6 +362,7 @@ public class Templates
         String lineEnd;
         String sel="";
         boolean bInited = false;
+        public boolean hasCurLine = false;
         boolean isInited()
         {
             return bInited;
@@ -440,6 +441,7 @@ public class Templates
                     {
                         lineStart = bef.substring(s); 
                         lineEnd =aft.substring(0,e); 
+                        hasCurLine = s>0&&e<aft.length();
                     }
                     wordStart = getCurWordStart(sec1,sec1.length()==4000); 
                     wordEnd = getCurWordEnd(sec2,sec2.length()==4000); 

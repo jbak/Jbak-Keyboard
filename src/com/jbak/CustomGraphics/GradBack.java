@@ -76,18 +76,28 @@ public class GradBack extends RectShape
 		m_ptFillChecked = newColorPaint(Color.GREEN);
 		m_ptFillCheckable = newColorPaint(Color.DKGRAY);
 	}
-	public GradBack clone()
+	protected GradBack copyProperties(GradBack gb)
 	{
-	    GradBack gb = new GradBack(m_clrStart, m_clrEnd);
+		gb.m_clrStart = m_clrStart;
+		gb.m_clrEnd = m_clrEnd;
 	    gb.setCorners(m_cornerX, m_cornerY);
 	    gb.m_gap = m_gap;
 	    gb.m_gradType = m_gradType;
         gb.m_bDrawPressedBack = m_bDrawPressedBack;
+        try{
 	    if(m_stroke!=null)
-	        gb.m_stroke = m_stroke.clone();
+	        gb.m_stroke = (GradBack)m_stroke.clone();
 	    if(m_pressed!=null)
-	        gb.m_pressed = m_pressed.clone();
+	        gb.m_pressed = (GradBack)m_pressed.clone();
+        }
+        catch (Throwable e) {
+		}
 	    return gb;
+	}
+	@Override
+	public RectShape clone() throws CloneNotSupportedException {
+	    GradBack gb = new GradBack(m_clrStart, m_clrEnd);
+	    return copyProperties(gb);
 	}
 /** Конструктор, задающий цвета градиента
  * @param startColor Начальный цвет градиента

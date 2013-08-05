@@ -33,15 +33,15 @@ import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.media.AudioManager;
+import android.os.Bundle;
 import android.os.Debug;
 import android.os.Handler;
-import android.util.Log;
+import android.os.SystemClock;
+import android.text.ClipboardManager;
+import android.view.InputDevice;
 import android.view.KeyEvent;
-import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
@@ -49,6 +49,8 @@ import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 
+import com.google.android.voiceime.VoiceRecognitionTrigger;
+import com.jbak.CustomGraphics.BitmapCachedGradBack;
 import com.jbak.JbakKeyboard.EditSetActivity.EditSet;
 import com.jbak.JbakKeyboard.IKeyboard.Keybrd;
 import com.jbak.JbakKeyboard.JbKbd.LatinKey;
@@ -113,6 +115,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     int m_volumeKeys = 0;
     float m_soundVolume = 5;
     final static int MSG_SHOW_PANEL = 0x11;
+    VoiceRecognitionTrigger m_voice;
     Handler                    m_autoCompleteHandler   = new Handler()
    {
        @Override
@@ -136,13 +139,14 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         super.onCreate();
         if(JbKbdPreference.inst!=null)
             JbKbdPreference.inst.onStartService();
+        new ClipbrdService(this);
+        m_voice = new VoiceRecognitionTrigger(this);
         m_audio = (AudioManager)getSystemService(Service.AUDIO_SERVICE);
         inst = this;
         m_wm = (WindowManager)getSystemService(WINDOW_SERVICE);
         WordsService.g_serviceHandler = m_autoCompleteHandler;
         WordsService.start(this);
         st.upgradeSettings(inst);
-        startService(new Intent(this, ClipbrdService.class));
         m_candView = createNewCandView();
         SharedPreferences pref = st.pref();
         m_es.load(st.PREF_KEY_EDIT_SETTINGS);
@@ -156,7 +160,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 //        JbKbdView.inst = null;
         removeCandView();
         if (ClipbrdService.inst != null)
-            ClipbrdService.inst.stopSelf();
+            ClipbrdService.inst.delete(inst);
         st.pref().unregisterOnSharedPreferenceChangeListener(this);
         KeyboardPaints.inst = null;
         if (VibroThread.inst != null)
@@ -191,10 +195,20 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
         return (JbCandView) getLayoutInflater().inflate(R.layout.candidates, null);
     }
+    void forceFullScreen(EditorInfo attribute)
+    {
+        int set = st.isLandscape(this) ? m_LandscapeEditType : m_PortraitEditType;
+        if(set==st.PREF_VAL_EDIT_TYPE_FULLSCREEN)
+        {
+        	attribute.imeOptions = st.rem(attribute.imeOptions, EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+        	attribute.imeOptions = st.rem(attribute.imeOptions, 0x02000000/*EditorInfo.IME_FLAG_NO_FULLSCREEN*/);
+        }
+    }
     @Override
     public void onStartInputView(EditorInfo attribute, boolean restarting)
     {
-        super.onStartInputView(attribute, restarting);
+    	super.onStartInputView(attribute, restarting);
+        m_voice.onStartInputView();
         if(!restarting)
         {
         m_SelStart = attribute.initialSelStart;
@@ -203,12 +217,10 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         m_textAfterCursor = null;
         m_textBeforeCursor = null;
         if (JbKbdView.inst == null)
-        {
-            getLayoutInflater().inflate(R.layout.input, null);
-            setInputView(st.kv());
-            JbKbdView.inst.setOnKeyboardActionListener(this);
-        }
+        	reinitKeyboardView();
         int var = attribute.inputType & EditorInfo.TYPE_MASK_VARIATION;
+        if(restarting)
+        	return;
         switch (attribute.inputType & EditorInfo.TYPE_MASK_CLASS)
         {
             case EditorInfo.TYPE_CLASS_NUMBER:
@@ -223,14 +235,15 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
                     changeCase(false);
                 else
                     st.kv().setTempShift(false, false);
-                if (var == EditorInfo.TYPE_TEXT_VARIATION_URI || var == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS || var == EditorInfo.TYPE_TEXT_VARIATION_PASSWORD || var == EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
-                    st.setTempEnglishQwerty();
-                else
+//                if (var == EditorInfo.TYPE_TEXT_VARIATION_URI || var == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS || var == EditorInfo.TYPE_TEXT_VARIATION_PASSWORD || var == EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
+//                    st.setTempEnglishQwerty();
+//                else
                     st.setQwertyKeyboard();
             break;
         }
         st.curKbd().setImeOptions(getResources(), attribute.imeOptions);
-        startExtractingText(false);
+        updateFullscreenMode();
+        makeExtractingText(false);
     }
     int m_StatusBarHeight = 0;
 /** Проверяет тип дополнений, запоминает в {@link #m_suggestType}*/    
@@ -298,10 +311,10 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
         if(m_candView!=null)
             showCandView(false);
-        st.log("onStartInput " + attribute.packageName);
         if (attribute.initialSelStart < 0 && attribute.initialSelEnd < 0&&attribute.imeOptions==0)
         {
             requestHideSelf(0);
+            BitmapCachedGradBack.clearAllCache();
         }
         super.onStartInput(attribute, restarting);
     }
@@ -319,7 +332,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     @Override
     public void onBindInput()
     {
-        st.log("onBindInput ");
         super.onBindInput();
     };
 
@@ -431,8 +443,10 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         if(m_suggestType==SUGGEST_VOCAB)
             getCandidates();
     }
-    void getCandidates()
+    public void getCandidates()
     {
+  	  if(m_suggestType!=SUGGEST_VOCAB)
+		  return;
       try{  
           if(m_acPlace==JbCandView.AC_PLACE_NONE)
               return;
@@ -572,7 +586,46 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             break;
         }
     }
-
+    public final KeyEvent generateHardwareEvent(int action,int code, int meta)
+    {
+    	return new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), action, code, 0, meta, 0, 0,KeyEvent.FLAG_KEEP_TOUCH_MODE|KeyEvent.FLAG_VIRTUAL_HARD_KEY);
+    }
+    public int getModifier(int code)
+    {
+    	if(KeyEvent.isModifierKey(code))
+    	{
+    		switch(code)
+    		{
+    			case KeyEvent.KEYCODE_ALT_LEFT:
+    			case KeyEvent.KEYCODE_ALT_RIGHT:
+    				return KeyEvent.META_ALT_ON;
+    			case KeyEvent.KEYCODE_CTRL_LEFT:
+    			case KeyEvent.KEYCODE_CTRL_RIGHT:
+    				return KeyEvent.META_CTRL_ON;
+    			case KeyEvent.KEYCODE_SHIFT_LEFT:
+    			case KeyEvent.KEYCODE_SHIFT_RIGHT:
+    				return KeyEvent.META_SHIFT_ON;
+    			
+    		}
+    	}
+    	return 0;
+    }
+    public final void sendHardwareSequence(InputConnection ic,Integer ...vals )
+    {
+    	int meta = 0;
+    	for(int i=0;i<vals.length;i++)
+    	{
+    		int code = vals[i];
+    		ic.sendKeyEvent(generateHardwareEvent(KeyEvent.ACTION_DOWN, code, meta));
+    		meta|=getModifier(code);
+    	}
+    	for(int i=vals.length-1;i>=0;i--)
+    	{
+    		int code = vals[i];
+    		ic.sendKeyEvent(generateHardwareEvent(KeyEvent.ACTION_UP, code, meta));
+    		meta = st.rem(meta, getModifier(code));
+    	}
+    }
     public final void processKey(int primaryCode)
     {
         // st.kv().performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
@@ -635,12 +688,24 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
 //        }
         else if (primaryCode == st.CMD_LANG_CHANGE)
         {
-            st.kv().handleLangChange();
-//            checkSuggestType(getCurrentInputEditorInfo());
-            if(m_suggestType==SUGGEST_VOCAB)
-                getCandidates();
+            st.kv().handleLangChange(true,true);
         }
-
+        else if (primaryCode == st.CMD_LANG_CHANGE_PREV_LANG)
+        {
+            st.kv().handleLangChange(false,false);
+        }
+        else if (primaryCode == st.CMD_LANG_CHANGE_NEXT_LANG)
+        {
+            st.kv().handleLangChange(false,true);
+        }
+        else if (primaryCode == st.CMD_LANG_CHANGE)
+        {
+            st.kv().handleLangChange(true,true);
+        }
+        else if(primaryCode==st.CMD_LANG_MENU)
+        {
+        	ComMenu.showLangs(inst);
+        }
         else if (primaryCode == Keyboard.KEYCODE_MODE_CHANGE && JbKbdView.inst != null)
         {
             if (st.isQwertyKeyboard(st.curKbd().kbd))
@@ -683,6 +748,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     }
     public void onKey(int primaryCode, int[] keyCodes)
     {
+    	if(!isInputViewShown())
+    		return;
         processKey(primaryCode);
     }
 
@@ -728,7 +795,6 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             if (isWordSeparator(pc))
             {
                 handleWordSeparator(pc);
-                return;
             }
         }
         InputConnection ic = getCurrentInputConnection();
@@ -762,7 +828,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         }
     }
 
-    private void handleClose()
+    public void handleClose()
     {
         JbKbdView.inst.closing();
         forceHide();
@@ -841,6 +907,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
         menu.add(R.string.mm_templates, st.CMD_TPL);
         menu.add(R.string.mm_multiclipboard, st.CMD_CLIPBOARD);
         menu.add(R.string.mm_settings, st.CMD_PREFERENCES);
+        menu.add(R.string.set_select_keyboard, st.CMD_SELECT_KEYBOARD);
         if (st.kv().m_curDesign.path != null)
             menu.add(R.string.mm_reload_skin, -10);
         if (Debug.isDebuggerConnected())
@@ -921,21 +988,46 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
             case KeyEvent.KEYCODE_DPAD_DOWN: // Down
 //                if ((code == KeyEvent.KEYCODE_DPAD_LEFT || code == KeyEvent.KEYCODE_DPAD_UP) && m_SelStart == 0)
 //                    return;
-//                if (code == KeyEvent.KEYCODE_DPAD_RIGHT || code == KeyEvent.KEYCODE_DPAD_DOWN)
-//                {
-//                    CharSequence s = ic.getTextAfterCursor(1, 0);
-//                    if (s == null || s.length() == 0)
-//                        return;
-//                }
+                if (code == KeyEvent.KEYCODE_DPAD_RIGHT || code == KeyEvent.KEYCODE_DPAD_DOWN)
+                {
+                    CharSequence s = ic.getTextAfterCursor(1, 0);
+                    if (s == null || s.length() == 0)
+                    {
+                    	if(code == KeyEvent.KEYCODE_DPAD_RIGHT)
+                    		processTextEditKey(st.TXT_ED_START);
+                        return;
+                    }
+                }
+                if (code == KeyEvent.KEYCODE_DPAD_LEFT || code == KeyEvent.KEYCODE_DPAD_UP)
+                {
+                    CharSequence s = ic.getTextBeforeCursor(1, 0);
+                    if (s == null || s.length() == 0)
+                    {
+                    	if(code == KeyEvent.KEYCODE_DPAD_LEFT)
+                    		processTextEditKey(st.TXT_ED_FINISH);
+                        return;
+                    }
+                }
                 boolean sel = isSelMode();
-                if (sel)
-                    ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT));
-                keyDownUp(code);
-                if (sel)
-                    ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT));
+                if(sel)
+                	sendHardwareSequence(ic, KeyEvent.KEYCODE_SHIFT_LEFT,code);
+                else
+                	sendHardwareSequence(ic, code);
+                if(code == KeyEvent.KEYCODE_DPAD_LEFT)
+                	ic.setSelection(m_SelStart-1, m_SelStart-1);
+                
+//                if (sel)
+//                    ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT));
+//                keyDownUp(code);
+//                if (sel)
+//                    ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT));
             break;
             case st.TXT_ED_START:
-                ic.setSelection(isSelMode()?m_SelEnd:0, 0);
+                boolean ret = ic.setSelection(isSelMode()?m_SelEnd:0, 0);
+                if(!ret)
+                {
+                	ic.setSelection(0, 0);
+                }
                 break;
             case st.TXT_ED_HOME: // Home
                 handleHome(isSelMode());
@@ -948,16 +1040,36 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
                 handleEnd(isSelMode());
             break;
             case st.TXT_ED_COPY: // Copy
-                ic.performContextMenuAction(android.R.id.copy);
+            	if(m_SelStart==m_SelEnd)
+            	{
+            		ComMenu.showCopy(inst);
+            	}
+            	else
+            	{
+            		ic.performContextMenuAction(android.R.id.copy);
+            	}
             break;
             case st.TXT_ED_PASTE: // Paste
-                ic.performContextMenuAction(android.R.id.paste);
+            	ClipboardManager cm = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+            	CharSequence str = cm.getText();
+            	int pos = Math.min(m_SelStart, m_SelEnd)+(str.length());
+            	onText(str);
+            	getCurrentInputConnection().setSelection(pos, pos);
+                //ic.performContextMenuAction(android.R.id.paste);
             break;
             case st.TXT_ED_CUT: // Cut
                 ic.performContextMenuAction(android.R.id.cut);
             break;
             case st.TXT_ED_SELECT_ALL: // Select all
-                ic.performContextMenuAction(android.R.id.selectAll);
+            	sendHardwareSequence(ic, KeyEvent.KEYCODE_CTRL_LEFT,KeyEvent.KEYCODE_A);
+                //ic.performContextMenuAction(android.R.id.selectAll);
+            break;
+            case st.TXT_ED_COPY_ALL: // Select all
+                ic.beginBatchEdit();
+            	ic.performContextMenuAction(android.R.id.selectAll);
+            	ic.performContextMenuAction(android.R.id.copy);
+            	ic.setSelection(m_SelStart, m_SelEnd);
+            	ic.endBatchEdit();
             break;
         }
 
@@ -1270,6 +1382,8 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     public void onUpdateCursor(Rect newCursor)
     {
         m_cursorRect = newCursor;
+        EditorInfo ei = getCurrentInputEditorInfo();
+        CharSequence seq = getCurrentInputConnection().getTextBeforeCursor(5, 0);
         if(isFullscreenMode()&&m_extraText!=null)
         {
 //            int h = m_extraText.getHeight();
@@ -1296,7 +1410,7 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     }
     ExtractedText mExtractedText;
     int mExtractedToken=1;
-    void startExtractingText(boolean inputChanged) {
+    void makeExtractingText(boolean inputChanged) {
         final ExtractEditText eet = m_extraText;
         if (eet != null && getCurrentInputStarted()
                 && isFullscreenMode()) {
@@ -1377,5 +1491,17 @@ public class ServiceJbKbd extends InputMethodService implements KeyboardView.OnK
     {
         CharSequence seq = getCurrentInputConnection().getTextBeforeCursor(100, 0);
         m_textBeforeCursor = new StringBuffer(seq==null?"":seq);
+    }
+    public void reinitKeyboardView()
+    {
+    	setInputView(onCreateInputView());
+    }
+    public void onViewClicked(boolean focusChanged) {
+    	super.onViewClicked(focusChanged);
+    }
+    @Override
+    public void onExtractedSelectionChanged(int start, int end) {
+    	// TODO Auto-generated method stub
+    	super.onExtractedSelectionChanged(start, end);
     }
 }
